@@ -1,40 +1,36 @@
 <?php
-// +--------------------------------------------------------------------------+
-// | Image_Graph                                                              |
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2003, 2004 Jesper Veggerby                                 |
-// | Email         pear.nosey@veggerby.dk                                     |
-// | Web           http://pear.veggerby.dk                                    |
-// | PEAR          http://pear.php.net/package/Image_Graph                    |
-// +--------------------------------------------------------------------------+
-// | This library is free software; you can redistribute it and/or            |
-// | modify it under the terms of the GNU Lesser General Public               |
-// | License as published by the Free Software Foundation; either             |
-// | version 2.1 of the License, or (at your option) any later version.       |
-// |                                                                          |
-// | This library is distributed in the hope that it will be useful,          |
-// | but WITHOUT ANY WARRANTY; without even the implied warranty of           |
-// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU        |
-// | Lesser General Public License for more details.                          |
-// |                                                                          |
-// | You should have received a copy of the GNU Lesser General Public         |
-// | License along with this library; if not, write to the Free Software      |
-// | Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA |
-// +--------------------------------------------------------------------------+
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
  * Class for handling output in PDF format.
+ * 
  * Requires PEAR::File_PDF
  *
- * @package Image_Graph
+ * PHP versions 4 and 5
+ *
+ * LICENSE: This library is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version. This library is distributed in the hope that it
+ * will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
+ * General Public License for more details. You should have received a copy of
+ * the GNU Lesser General Public License along with this library; if not, write
+ * to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307 USA
+ *
+ * @category   Images
+ * @package    Image_Graph
  * @subpackage Driver
- * @category images
- * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
- * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
- * @author Jesper Veggerby <pear.nosey@veggerby.dk>
- * @version $Id$
- * @since 0.3.0dev2
+ * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version    CVS: $Id$
+ * @link       http://pear.php.net/package/Image_Graph
+ * @since      File available since Release 0.3.0dev2
  */
+
 
 /**
  * Include file File/PDF.php
@@ -48,10 +44,16 @@ require_once 'Image/Graph/Color.php';
 
 /**
  * PDF Driver class.
- * @author Jesper Veggerby <pear.nosey@veggerby.dk>
- * @package Image_Graph
+ *
+ * @category   Images
+ * @package    Image_Graph
  * @subpackage Driver
- * @since 0.3.0dev2
+ * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version    Release: @package_version@
+ * @link       http://pear.php.net/package/Image_Graph
+ * @since      Class available since Release 0.3.0dev2
  */
 class Image_Graph_Driver_PDF extends Image_Graph_Driver
 {
