@@ -59,19 +59,6 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
     }
 
     /**
-    * !static function! Draw all diagram elements in this stacking-group
-    *
-    * @param array    references to dataElements (objects of this type)
-    * @access private
-    */
-    function stackingDrawGD(&$dataElements, &$img)
-    {
-        foreach($dataElements as $element) {
-            $element->drawGD($img);
-        }
-    }
-
-    /**
     * Draws diagram element 
     *
     * @param gd-resource image-resource to draw to
@@ -90,19 +77,27 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
         } else {
           $halfWidthPixel = floor(($xAxe->valueToPixelRelative(1) - $xAxe->valueToPixelRelative(0)) / 2 * $this->_attributes['width']);
         }
-
+        
         for ($counter=0; $counter<$numData; $counter++) {
-            if (!is_null($this->_data[$counter])) { // otherwise do not draw
-              $xPos = $xAxe->valueToPixelAbsolute($counter);
-              if ($this->_data[$counter] > $yAxe->_boundsEffective['max']) { // clip big value to the drawingarea
-                imagefilledrectangle ($img, $xPos-$halfWidthPixel, $graph->_drawingareaPos[1],
-                                            $xPos+$halfWidthPixel, $graph->_drawingareaPos[1]+$graph->_drawingareaSize[1]-2,
+            if (!is_array($this->_stackingData)) {
+                $currData = array(0, $this->_data[$counter]);
+            } else {
+                $currData = $this->_stackingData[$counter];
+            }
+            if (!is_null($currData[0]) && !is_null($currData[1])) {
+                // otherwise do not draw
+                $xPos = $xAxe->valueToPixelAbsolute($counter);
+                
+                // clip if necessary
+                if ($currData[0] < $yAxe->_boundsEffective['min']) {
+                    $currData[0] = $yAxe->_boundsEffective['min'];
+                }
+                if ($currData[1] > $yAxe->_boundsEffective['max']) {
+                    $currData[1] = $yAxe->_boundsEffective['max'];
+                }
+                imagefilledrectangle ($img, $xPos-$halfWidthPixel, $yAxe->valueToPixelAbsolute($currData[1]),
+                                            $xPos+$halfWidthPixel, $yAxe->valueToPixelAbsolute($currData[0]),
                                       $drawColor);
-              } elseif ($this->_data[$counter] >= $yAxe->_boundsEffective['min']) {
-                imagefilledrectangle ($img, $xPos-$halfWidthPixel, $yAxe->valueToPixelAbsolute($this->_data[$counter]),
-                                            $xPos+$halfWidthPixel, $graph->_drawingareaPos[1]+$graph->_drawingareaSize[1]-2,
-                                      $drawColor);
-              }
             }
         }
     }

@@ -42,7 +42,6 @@
                     );
 
     $graph->setDataDefaultColor(array(0xCC,0x29,0x29));
-//    $graph->addData($data, "line", array("axeId" => 0));
     $graph->addData($data, "bar",  array("axeId" => 1, "color" => array(0xBF,0xBF,0x30)));
 
     $data    = array( 15.8,
@@ -72,8 +71,8 @@
 
     $graph->axeX->setTickStyle(IMAGE_GRAPH_TICKS_BOTH);
     $graph->axeX->setTickSize (5);
-
-    $graph->stackData("bar");
+    
+    $graph->stackData();
 
     $image = $graph->getGDImage();
 

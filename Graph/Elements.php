@@ -594,7 +594,7 @@ class Image_Graph_Axe_Y extends Image_Graph_Axe
                 $newMax = ceil($this->_boundsEffective['max'] / $stepfaktor) * $stepfaktor;
             }
             $currSteps = (($newMax-$newMin) / $stepfaktor) + 1;
-            if ($currSteps<$maxSteps)
+            if ($currSteps < $this->_ticksAutoSteps['major'])
             {
                 $faktor = $faktor * 0.1;
             }

@@ -183,6 +183,19 @@ class Image_Graph_Data_Common
     }
 
     /**
+    * !static function! Draw all diagram elements in this stacking-group
+    *
+    * @param array    references to dataElements (objects of this type)
+    * @access private
+    */
+    function stackingDrawGD(&$dataElements, &$img)
+    {
+        foreach($dataElements as $element) {
+            $element->drawGD($img);
+        }
+    }
+
+    /**
     * Draws diagram element 
     *
     * @param gd-resource image-resource to draw to

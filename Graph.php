@@ -344,15 +344,29 @@ class Image_Graph
             if (isset($this->{$currAxe}->_bounds['min'])) {
                 $this->{$currAxe}->_boundsEffective['min'] = $this->{$currAxe}->_bounds['min'];
             } else {
-                foreach ($this->_dataElements as $currDataElement) {
+                foreach ($this->_dataElementsEffective as $currDataElement) {
                     if ($currDataElement->_attributes['axeId'] == $axeCount) {
+                        // workaround - maybe solve this more elegant
+                        if (!is_array($currDataElement)) {
+                            $currDataElementTemp = array(& $currDataElement);
+                        } else {
+                            $currDataElementTemp = & $currDataElement;
+                        }
+
                         if (!isset($this->{$currAxe}->_boundsEffective['min'])) {
-                            $this->{$currAxe}->_boundsEffective['min'] = $currDataElement->_data[0];
+                            $this->{$currAxe}->_boundsEffective['min'] = $currDataElementTemp[0]->_data[0];
                         }
     
-                        foreach ($currDataElement->_data as $currData) {
-                            if ($this->{$currAxe}->_boundsEffective['min'] > $currData) {
-                                $this->{$currAxe}->_boundsEffective['min'] = $currData;
+                        foreach ($currDataElementTemp as $currDataElementEffective) {
+                            if (!is_null($currDataElementEffective->_stackingData)) {
+                                $dataTemp = & $currDataElementEffective->_stackingData[0];
+                            } else {
+                                $dataTemp = & $currDataElementEffective->_data;
+                            }
+                            foreach ($dataTemp as $currData) {
+                                if ($this->{$currAxe}->_boundsEffective['min'] > $currData) {
+                                    $this->{$currAxe}->_boundsEffective['min'] = $currData;
+                                }
                             }
                         }
                     }
@@ -362,15 +376,29 @@ class Image_Graph
             if (isset($this->{$currAxe}->_bounds['max'])) {
                 $this->{$currAxe}->_boundsEffective['max'] = $this->{$currAxe}->_bounds['max'];
             } else {
-                foreach ($this->_dataElements as $currDataElement) {
+                foreach ($this->_dataElementsEffective as $currDataElement) {
                     if ($currDataElement->_attributes['axeId'] == $axeCount) {
+                        // workaround - maybe solve this more elegant
+                        if (!is_array($currDataElement)) {
+                            $currDataElementTemp = array(& $currDataElement);
+                        } else {
+                            $currDataElementTemp = & $currDataElement;
+                        }
+
                         if (!isset($this->{$currAxe}->_boundsEffective['max'])) {
-                            $this->{$currAxe}->_boundsEffective['max'] = $currDataElement->_data[0];
+                            $this->{$currAxe}->_boundsEffective['max'] = $currDataElementTemp[0]->_data[0];
                         }
     
-                        foreach ($currDataElement->_data as $currData) {
-                            if ($this->{$currAxe}->_boundsEffective['max'] < $currData) {
-                                $this->{$currAxe}->_boundsEffective['max'] = $currData;
+                        foreach ($currDataElementTemp as $currDataElementEffective) {
+                            if (!is_null($currDataElementEffective->_stackingData)) {
+                                $dataTemp = & $currDataElementEffective->_stackingData[1];
+                            } else {
+                                $dataTemp = & $currDataElementEffective->_data;
+                            }
+                            foreach ($dataTemp as $currData) {
+                                if ($this->{$currAxe}->_boundsEffective['max'] < $currData) {
+                                    $this->{$currAxe}->_boundsEffective['max'] = $currData;
+                                }
                             }
                         }
                     }
@@ -437,27 +465,37 @@ class Image_Graph
         // if string, assume it's "all"
         // everything else would have been converted into an array by stackData()
         if (is_string($this->_stackData)) {
-            foreach ($this->_dataElements as $element) {
+            foreach ($this->_dataElements as $key => $value) {
+                $element = &$this->_dataElements[$key];
                 $class = get_class($element);
-                $internalName = $class."-".$element->_attributes['axeId'];
-                if (!isset($tempDataElements[$internalName])) {
-                    $tempDataElements[$internalName] = array();
-                }
-                $tempDataElements[$internalName][] = $element;
-            }
-        } else {
-            foreach ($this->_dataElements as $element) {
-                $class = get_class($element);
-                // use strtolower so that it will "hopefully" make this class a bit more PHP5-compatible :-)
-                $datatype = str_replace("image_graph_data_", "", strtolower($class));
-                if (in_array($datatype, $this->_stackData)) {
+                if (is_callable(array($class, "stackingPrepare"))) {
+                    // if data-element supports stacking
+
                     $internalName = $class."-".$element->_attributes['axeId'];
                     if (!isset($tempDataElements[$internalName])) {
                         $tempDataElements[$internalName] = array();
                     }
-                    $tempDataElements[$internalName][] = $element;
+                    $tempDataElements[$internalName][] = & $element;
                 } else {
-                    $tempDataElements[] = $element;
+                    // if data-element does not support stacking
+                    
+                    $tempDataElements[] = & $element;
+                }
+            }
+        } else {
+            foreach ($this->_dataElements as $key => $value) {
+                $element = &$this->_dataElements[$key];
+                $class = get_class($element);
+                // use strtolower so that it will "hopefully" make this class a bit more PHP5-compatible :-)
+                $datatype = str_replace("image_graph_data_", "", strtolower($class));
+                if (in_array($datatype, $this->_stackData) && is_callable(array($class, "stackingPrepare"))) {
+                    $internalName = $class."-".$element->_attributes['axeId'];
+                    if (!isset($tempDataElements[$internalName])) {
+                        $tempDataElements[$internalName] = array();
+                    }
+                    $tempDataElements[$internalName][] = & $element;
+                } else {
+                    $tempDataElements[] = & $element;
                 }
             }
         }
@@ -466,7 +504,8 @@ class Image_Graph
         // not really needed, but it's cleaner this way
         // and while we're processing the elements also do some stacking-preparations
         $this->_dataElementsEffective = array();
-        foreach ($tempDataElements as $element) {
+        foreach ($tempDataElements as $key => $value) {
+            $element = & $tempDataElements[$key]; // workaround for PHP4
             // if element is a "stack-group" call static method of the class to prepare stacking
             if (is_array($element)) {
                 $class = get_class($element[0]);
@@ -476,7 +515,7 @@ class Image_Graph
                 // not really needed, but it's cleaner this way
                 $element->_stackingData = null;
             }
-            $this->_dataElementsEffective[] = $element;
+            $this->_dataElementsEffective[] = & $element;
         }
     }
 
@@ -780,8 +819,6 @@ class Image_Graph
 
                     $tempText->align(IMAGE_TEXT_ALIGN_CENTER);
                     $textSize = $tempText->getSize();
-// @TO DO: replace this hack (_relativeXPositions) by an official way to hand over the values between functions!
-//                    $textX = $this->_drawingareaPos[0] + $this->_relativeXPositions[$labelCount];
                     $textX = $this->axeX->valueToPixelAbsolute($labelCount);
 
                     if (is_null($this->axeX->_numbercolor)) {
@@ -918,8 +955,13 @@ class Image_Graph
         $this->_drawGDtitles($img);
 
         // loop through all data-objects and display them
-        foreach ($this->_dataElements as $currDataElement) {
-            $currDataElement->drawGD($img, $this);
+        foreach ($this->_dataElementsEffective as $currDataElement) {
+            if (is_array($currDataElement)) {
+                $class = get_class($currDataElement[0]);
+                call_user_func(array($class, "stackingDrawGD"), $currDataElement, $img);
+            } else {
+                $currDataElement->drawGD($img);
+            }
         }
 
         // elements to draw after the data
