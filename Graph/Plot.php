@@ -134,7 +134,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
         parent::Image_Graph_Common();
         if ($dataset) {
             if (is_array($dataset)) {
-                $this->_dataset = & $dataset;
+                $this->_dataset =& $dataset;
             } else {
                 $this->_dataset = array(&$dataset);
             }
@@ -190,7 +190,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
     function &setMarker(& $marker)
     {
         $this->add($marker);
-        $this->_marker = & $marker;
+        $this->_marker =& $marker;
         return $marker;
     }
 
@@ -202,7 +202,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
      */
     function setDataSelector(& $dataSelector)
     {
-        $this->_dataSelector = & $dataSelector;
+        $this->_dataSelector =& $dataSelector;
     }
 
     /**
@@ -355,7 +355,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
             $number = 0;
             $keys = array_keys($this->_dataset);
             foreach ($keys as $key) {
-                $dataset = & $this->_dataset[$key];
+                $dataset =& $this->_dataset[$key];
                 $totals['MINIMUM_X'] = $dataset->minimumX();
                 $totals['MAXIMUM_X'] = $dataset->maximumX();
                 $totals['MINIMUM_Y'] = $dataset->minimumY();
@@ -517,7 +517,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
         if (is_array($this->_dataset)) {
             $keys = array_keys($this->_dataset);
             foreach ($keys as $key) {
-                $dataset = & $this->_dataset[$key];
+                $dataset =& $this->_dataset[$key];
 
                 if ($this->_multiType == 'normal') {
                     if (isset($maxY)) {
@@ -614,7 +614,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
 
         $keys = array_keys($this->_dataset);
         foreach ($keys as $key) {
-            $dataset = & $this->_dataset[$key];
+            $dataset =& $this->_dataset[$key];
 
             $dataset->_reset();
             while ($point = $dataset->_next()) {

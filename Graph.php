@@ -389,6 +389,10 @@ class Image_Graph extends Image_Graph_Element
      *
      * 'gradient' = Image_Graph_Fill_Gradient
      *
+     * 'icon_marker' = Image_Graph_Marker_Icon
+     *
+     * 'value_marker' = Image_Graph_Marker_Value
+     *
      * @param string $class The class for the new object
      * @param mixed $params The paramaters to pass to the constructor
      * @return object A new object for the class
@@ -396,122 +400,53 @@ class Image_Graph extends Image_Graph_Element
      */
     function &factory($class, $params = null)
     {
+    	static $Image_Graph_classAliases = array(
+			'graph'          => 'Image_Graph',
+			'plotarea'       => 'Image_Graph_Plotarea',            
+
+			'line'           => 'Image_Graph_Plot_Line',
+			'area'           => 'Image_Graph_Plot_Area',
+			'bar'            => 'Image_Graph_Plot_Bar',
+			'smooth_line'    => 'Image_Graph_Plot_Smoothed_Line',
+			'smooth_area'    => 'Image_Graph_Plot_Smoothed_Area',
+			'pie'            => 'Image_Graph_Plot_Pie',
+			'radar'          => 'Image_Graph_Plot_Radar',
+			'step'           => 'Image_Graph_Plot_Step',
+			'impulse'        => 'Image_Graph_Plot_Impulse',
+			'dot'            => 'Image_Graph_Plot_Dot',
+            'scatter'        => 'Image_Graph_Plot_Dot',
+
+			'dataset'        => 'Image_Graph_Dataset_Trivial',
+			'random'         => 'Image_Graph_Dataset_Random',
+			'function'       => 'Image_Graph_Dataset_Function',
+			'vector'         => 'Image_Graph_Dataset_VectorFunction',
+
+			'axis'           => 'Image_Graph_Axis',
+			'axis_log'       => 'Image_Graph_Axis_Logarithmic',
+
+			'title'          => 'Image_Graph_Title',
+
+			'line_grid'      => 'Image_Graph_Grid_Lines',
+			'bar_grid'       => 'Image_Graph_Grid_Bars',
+			'polar_grid'     => 'Image_Graph_Grid_Polar',
+
+			'legend'         => 'Image_Graph_Legend',
+			'ttf_font'       => 'Image_Graph_Font_TTF',
+			'gradient'       => 'Image_Graph_Fill_Gradient',
+
+			'icon_marker'    => 'Image_Graph_Marker_Icon',
+			'value_marker'   => 'Image_Graph_Marker_Value'
+		);
+    		    		    	
         if (substr($class, 0, 11) != 'Image_Graph') {
-            switch ($class) {
-            case 'graph':
-                $class = 'Image_Graph';
-                break;
-
-            case 'plotarea':
-                $class = 'Image_Graph_Plotarea';
-                break;
-
-            case 'line':
-                $class = 'Image_Graph_Plot_Line';
-                break;
-
-            case 'area':
-                $class = 'Image_Graph_Plot_Area';
-                break;
-
-            case 'bar':
-                $class = 'Image_Graph_Plot_Bar';
-                break;
-
-            case 'smooth_line':
-                $class = 'Image_Graph_Plot_Smoothed_Line';
-                break;
-
-            case 'smooth_area':
-                $class = 'Image_Graph_Plot_Smoothed_Area';
-                break;
-
-            case 'pie':
-                $class = 'Image_Graph_Plot_Pie';
-                break;
-
-            case 'radar':
-                $class = 'Image_Graph_Plot_Radar';
-                break;
-
-            case 'step':
-                $class = 'Image_Graph_Plot_Step';
-                break;
-
-            case 'impulse':
-                $class = 'Image_Graph_Plot_Impulse';
-                break;
-
-            case 'dot':
-            case 'scatter':
-                $class = 'Image_Graph_Plot_Dot';
-                break;
-
-            case 'dataset':
-                $class = 'Image_Graph_Dataset_Trivial';
-                break;
-
-            case 'random':
-                $class = 'Image_Graph_Dataset_Random';
-                break;
-
-            case 'function':
-                $class = 'Image_Graph_Dataset_Function';
-                break;
-
-            case 'vector':
-                $class = 'Image_Graph_Dataset_VectorFunction';
-                break;
-
-            case 'axis':
-                $class = 'Image_Graph_Axis';
-                break;
-
-            case 'axis_log':
-                $class = 'Image_Graph_Axis_Logarithmic';
-                break;
-
-            case 'title':
-                $class = 'Image_Graph_Title';
-                break;
-
-            case 'line_grid':
-                $class = 'Image_Graph_Grid_Lines';
-                break;
-
-            case 'bar_grid':
-                $class = 'Image_Graph_Grid_Bars';
-                break;
-
-            case 'polar_grid':
-                $class = 'Image_Graph_Grid_Polar';
-                break;
-
-            case 'legend':
-                $class = 'Image_Graph_Legend';
-                break;
-
-            case 'ttf_font':
-                $class = 'Image_Graph_Font_TTF';
-                break;
-
-            case 'gradient':
-                $class = 'Image_Graph_Fill_Gradient';
-                break;
-
-            default:
-                $class = 'Image_Graph_' . $class;
-                break;
-
-            }
+        	if (isset($Image_Graph_classAliases[$class])) {
+        		$class = $Image_Graph_classAliases[$class];
+        	} else {
+        		$class = 'Image_Graph_' . $class;
+        	}
         }
 
-        /* A small check whether the class/file should be included or not, since
-         * it appears as if include_once is pretty 'time' consuming
-         */         
-        if (!class_exists($class)) {
-    	   include_once str_replace('_', '/', $class) . '.php';
-        }
+        include_once str_replace('_', '/', $class) . '.php';
 
         if (is_array($params)) {
             switch (count($params)) {
@@ -908,5 +843,5 @@ class Image_Graph extends Image_Graph_Element
 // TODO Implement a way to display graphs when there are *no* data
 // TODO Create bar-chart-type where bar have individual widths (i.e. in the dataset fx).
 // TODO Update private tags to protected wherever necessary
-// TODO Check performance with recursive/polymorphic methods
+//  
 ?>

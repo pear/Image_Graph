@@ -84,9 +84,9 @@ class Image_Graph_Fill_Array extends Image_Graph_Fill
     function &add(& $style, $id = '')
     {
         if ($id == '') {
-            $this->_fillStyles[] = & $style;
+            $this->_fillStyles[] =& $style;
         } else {
-            $this->_fillStyles[$id] = & $style;
+            $this->_fillStyles[$id] =& $style;
         }
         reset($this->_fillStyles);
     }

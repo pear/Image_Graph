@@ -64,7 +64,7 @@ $Graph->add(
     )
 );
 
-$DS[0][0] = & Image_Graph::factory('dataset', array(array('A' => 1, 'B' => 2, 'C' => 0, 'D' => 4, 'E' => 3)));
+$DS[0][0] =& Image_Graph::factory('dataset', array(array('A' => 1, 'B' => 2, 'C' => 0, 'D' => 4, 'E' => 3)));
 $DS[0][1] =& Image_Graph::factory('dataset', array(array('A' => 1, 'B' => -2, 'C' => 1, 'D' => 3, 'E' => -1)));
 $DS[1][0] =& Image_Graph::factory('dataset', array(array('A' => 2, 'B' => 3, 'C' => 1, 'D' => 4, 'E' => 2)));
 $DS[1][1] =& Image_Graph::factory('dataset', array(array('A' => -1, 'B' => -3, 'C' => -2, 'D' => -4, 'E' => -1)));

@@ -108,7 +108,7 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
      */
     function &setDataPreprocessor(& $dataPreprocessor)
     {
-        $this->_dataPreprocessor = & $dataPreprocessor;
+        $this->_dataPreprocessor =& $dataPreprocessor;
         return $dataPreprocessor;
     }
 
@@ -180,7 +180,11 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
             $value = $this->_dataPreprocessor->_process($value);
         }
 
-        $this->_driver->setFont($this->_getFont());
+        if ($this->_defaultFontOptions !== false) {
+            $this->_driver->setFont($this->_defaultFontOptions);
+        } else {        
+            $this->_driver->setFont($this->_getFont());
+        }
 
         $width = $this->_driver->textWidth($value);
         $height = $this->_driver->textHeight($value);

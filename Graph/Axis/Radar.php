@@ -90,19 +90,20 @@ class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
     }
 
     /**
-     * Get the step each pixel on the canvas will represent on the axis.
+     * Calculate the delta value (the number of pixels representing one unit
+     * on the axis)
      *
-     * @return double The step a pixel represents
+     * @return double The label interval
      * @access private
      */
-    function _delta()
+    function _calcDelta()
     {
         if (abs($this->_getMaximum() - $this->_getMinimum()) == 0) {
-            return 0;
-        }
-
-        return 360 / ($this->_getMaximum() - $this->_getMinimum());
-    }
+            $this->_delta = false;
+        } else {
+            $this->_delta = 360 / ($this->_getMaximum() - $this->_getMinimum());
+        }                
+    }    
 
     /**
      * Get the pixel position represented by a value on the canvas
@@ -113,7 +114,7 @@ class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
      */
     function _point($value)
     {
-        return (90 + (int) ($this->_value($value) * $this->_delta())) % 360;
+        return (90 + (int) ($this->_value($value) * $this->_delta)) % 360;
     }
 
     /**

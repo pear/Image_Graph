@@ -150,7 +150,7 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
         $number = 0;
         $keys = array_keys($this->_dataset);
         foreach ($keys as $key) {
-            $dataset = & $this->_dataset[$key];
+            $dataset =& $this->_dataset[$key];
             $dataset->_reset();
             while ($point = $dataset->_next()) {
 

@@ -191,7 +191,7 @@ class Image_Graph_Common
      */
     function &addNew($class, $params = null, $additional = false)
     {
-        require_once 'Image/Graph.php';
+        include_once 'Image/Graph.php';
         $element =& Image_Graph::factory($class, $params);
         if ($additional === false) {
             return $this->add($element);

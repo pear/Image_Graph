@@ -108,7 +108,7 @@ class Image_Graph_Layout_Plotarea extends Image_Graph_Layout
         $font =& Image_Graph::factory('Image_Graph_Font');
         $fontV =& Image_Graph::factory('Image_Graph_Font_Vertical');
 
-        $this->_plotarea = & Image_Graph::factory('plotarea');
+        $this->_plotarea =& Image_Graph::factory('plotarea');
         $this->_title =& Image_Graph::factory(
             'title',
             array($title, array('size_rel' => 4))

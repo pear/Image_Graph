@@ -86,7 +86,7 @@ class Image_Graph_Marker extends Image_Graph_Plotarea_Element
      */
     function setSecondaryMarker(& $secondaryMarker)
     {
-        $this->_secondaryMarker = & $secondaryMarker;
+        $this->_secondaryMarker =& $secondaryMarker;
         $this->_secondaryMarker->_setParent($this);
     }
 

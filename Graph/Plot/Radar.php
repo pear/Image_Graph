@@ -88,7 +88,7 @@ class Image_Graph_Plot_Radar extends Image_Graph_Plot
         if (is_a($this->_parent, 'Image_Graph_Plotarea_Radar')) {
             $keys = array_keys($this->_dataset);
             foreach ($keys as $key) {
-                $dataset = & $this->_dataset[$key];
+                $dataset =& $this->_dataset[$key];
                 $maxY = $dataset->maximumY();
                 $count = $dataset->count();
 

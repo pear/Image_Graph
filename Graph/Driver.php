@@ -555,9 +555,9 @@ class Image_Graph_Driver
         if ($driver == 'LIBSWF') {
             $driver = 'LibSWF';
         }
-
-        include_once 'Image/Graph/Driver/'. str_replace('_', '/', $driver) . '.php';
+        
         $class = 'Image_Graph_Driver_'. $driver;
+      	include_once 'Image/Graph/Driver/'. str_replace('_', '/', $driver) . '.php';
         return new $class($param);
     }
 

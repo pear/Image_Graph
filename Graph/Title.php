@@ -83,7 +83,7 @@ class Image_Graph_Title extends Image_Graph_Layout
     {
         parent::Image_Graph_Layout();
         if (is_object($fontOptions)) {
-            $this->_font = & $fontOptions;
+            $this->_font =& $fontOptions;
         } else {
             if (is_array($fontOptions)) {
                 $this->_fontOptions = $fontOptions;
@@ -112,7 +112,12 @@ class Image_Graph_Title extends Image_Graph_Layout
      */
     function _getAutoSize()
     {
-        $this->_driver->setFont($this->_getFont());
+        if ($this->_defaultFontOptions !== false) {
+            $this->_driver->setFont($this->_defaultFontOptions);
+        } else {        
+            $this->_driver->setFont($this->_getFont());
+        }
+
         return $this->_driver->textHeight($this->_text);
     }
 
@@ -124,7 +129,11 @@ class Image_Graph_Title extends Image_Graph_Layout
      */
     function _done()
     {
-        $this->_driver->setFont($this->_getFont());
+        if ($this->_defaultFontOptions !== false) {
+            $this->_driver->setFont($this->_defaultFontOptions);
+        } else {        
+            $this->_driver->setFont($this->_getFont());
+        }
 
         if (!is_a($this->_parent, 'Image_Graph_Layout')) {
             $this->_setCoords(

@@ -404,7 +404,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
         }
         
         if (is_array($lineStyle)) {
-            // TODO Check if it is possible to configure linestyle in PDF
+            // TODO Implement linestyles in PDFlib (using pdf_setcolor(.., 'pattern'...); ?
             reset($lineStyle);
             $lineStyle = current($lineStyle);
         } 

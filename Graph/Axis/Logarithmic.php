@@ -77,7 +77,7 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
     function _calcLabelInterval()
     {
         $result = parent::_calcLabelInterval();
-        $this->_axisValueSpan = $this->_value($this->_axisSpan);
+        $this->_axisValueSpan = $this->_value($this->_axisSpan);                
         return $result;
     }
 

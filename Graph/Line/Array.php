@@ -76,9 +76,9 @@ class Image_Graph_Line_Array extends Image_Graph_Common
             parent::add($style);
         }
         if ($id === false) {
-            $this->_lineStyles[] = & $style;
+            $this->_lineStyles[] =& $style;
         } else {
-            $this->_lineStyles[$id] = & $style;
+            $this->_lineStyles[$id] =& $style;
         }
         reset($this->_lineStyles);
 

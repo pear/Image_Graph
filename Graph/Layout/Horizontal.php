@@ -103,8 +103,8 @@ class Image_Graph_Layout_Horizontal extends Image_Graph_Layout
                 array('part1' => &$part1, 'part2' => &$part2)
             );
         } else {
-            $this->_part1 = & $part1;
-            $this->_part2 = & $part2;
+            $this->_part1 =& $part1;
+            $this->_part2 =& $part2;
             $this->add($this->_part1);
             $this->add($this->_part2);
         };

@@ -56,9 +56,9 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
     {
         parent::Image_Graph_Element();
         $this->_padding = 10;
-        $this->_axisX = & Image_Graph::factory('Image_Graph_Axis_Radar');
+        $this->_axisX =& Image_Graph::factory('Image_Graph_Axis_Radar');
         $this->_axisX->_setParent($this);
-        $this->_axisY = & Image_Graph::factory('Image_Graph_Axis', IMAGE_GRAPH_AXIS_Y);
+        $this->_axisY =& Image_Graph::factory('Image_Graph_Axis', IMAGE_GRAPH_AXIS_Y);
         $this->_axisY->_setParent($this);
         $this->_axisY->_setMinimum(0);
     }
@@ -228,6 +228,15 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
         $this->_plotBottom = $this->_fillBottom();
 
         Image_Graph_Element::_updateCoords();
+        
+        if (is_object($this->_axisX)) {
+            $this->_axisX->_updateCoords();
+        }
+
+        if (is_object($this->_axisY)) {
+            $this->_axisY->_updateCoords();
+        }
+        
     }
 
 }

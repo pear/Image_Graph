@@ -173,7 +173,7 @@ class Image_Graph_Element extends Image_Graph_Common
                 get_class($background), array('background' => &$background)
             );
         } else {
-            $this->_background = & $background;
+            $this->_background =& $background;
             $this->add($background);
         }
     }
@@ -231,7 +231,7 @@ class Image_Graph_Element extends Image_Graph_Common
                 get_class($borderStyle), array('borderstyle' => &$borderStyle)
             );
         } else {
-            $this->_borderStyle = & $borderStyle;
+            $this->_borderStyle =& $borderStyle;
             $this->add($borderStyle);
         }
     }
@@ -283,7 +283,7 @@ class Image_Graph_Element extends Image_Graph_Common
                 get_class($lineStyle), array('linestyle' => &$lineStyle)
             );
         } else {
-            $this->_lineStyle = & $lineStyle;
+            $this->_lineStyle =& $lineStyle;
             $this->add($lineStyle);
         }
     }
@@ -341,7 +341,7 @@ class Image_Graph_Element extends Image_Graph_Common
                 get_class($fillStyle), array('fillstyle' => &$fillStyle)
             );
         } else {
-            $this->_fillStyle = & $fillStyle;
+            $this->_fillStyle =& $fillStyle;
             $this->add($fillStyle);
         }
     }
@@ -389,8 +389,15 @@ class Image_Graph_Element extends Image_Graph_Common
      */
     function _getFont($options = false)
     {
+    	// TODO Look at further optimization here (sample20.php = 416 calls!)
         if (($options === false) && ($this->_defaultFontOptions !== false)) {
             return $this->_defaultFontOptions;
+        }
+        
+        if ($options === false) {
+        	$saveDefault = true;
+        } else {
+        	$saveDefault = false;
         }
         
         if ($options === false) {
@@ -409,6 +416,11 @@ class Image_Graph_Element extends Image_Graph_Common
             $result['size'] += $result['size_rel'];
             unset($result['size_rel']);
         }
+        
+        if ($saveDefault) {
+        	$this->_defaultFontOptions = $result;
+        }
+        
         return $result;
     }
 
@@ -423,7 +435,7 @@ class Image_Graph_Element extends Image_Graph_Common
         if (!is_a($font, 'Image_Graph_Font')) {
             $this->_error('Invalid font set on ' . get_class($this));
         } else {
-            $this->_font = & $font;
+            $this->_font =& $font;
             $this->add($font);
         }
     }
@@ -653,7 +665,11 @@ class Image_Graph_Element extends Image_Graph_Common
      */
     function write($x, $y, $text, $alignment = false, $font = false)
     {
-        $font = $this->_getFont($font);
+        if (($font === false) && ($this->_defaultFontOptions !== false)) {
+            $font = $this->_defaultFontOptions;
+        } else {
+            $font = $this->_getFont($font);
+        }
 
         if ($alignment === false) {
             $alignment = IMAGE_GRAPH_ALIGN_LEFT + IMAGE_GRAPH_ALIGN_TOP;
@@ -672,10 +688,11 @@ class Image_Graph_Element extends Image_Graph_Common
      */
     function _done()
     {
-        $this->_defaultFontOptions = $this->_getFont();
-        $this->_getBackground();
-        $this->_getBorderStyle();
-        $this->_driver->rectangle($this->_left, $this->_top, $this->_right, $this->_bottom);
+        $background = $this->_getBackground();
+        $border = $this->_getBorderStyle();
+        if (($background) || ($border)) {
+            $this->_driver->rectangle($this->_left, $this->_top, $this->_right, $this->_bottom);
+        }
 
         $result = parent::_done();
 

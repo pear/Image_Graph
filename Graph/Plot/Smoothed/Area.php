@@ -87,7 +87,7 @@ class Image_Graph_Plot_Smoothed_Area extends Image_Graph_Plot_Smoothed_Bezier
 
         $keys = array_keys($this->_dataset);
         foreach ($keys as $key) {
-            $dataset = & $this->_dataset[$key];
+            $dataset =& $this->_dataset[$key];
             $dataset->_reset();
             $first = true;
             while ($p1 = $dataset->_next()) {

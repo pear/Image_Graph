@@ -103,6 +103,15 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      * @access private
      */
     var $_axisValueSpan = false;
+
+    /**
+     * The number of "pixels" representing 1 unit on the axis
+     * 
+     * This is primarily included for performance reasons
+     * @var double
+     * @access private
+     */
+    var $_delta = false;
     
     /**
      * Specify if the axis should label the minimum value
@@ -252,7 +261,11 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     function _getTitleFont()
     {
         if ($this->_titleFont === false) {
-            return $this->_getFont();
+            if ($this->_defaultFontOptions !== false) {
+                return $this->_defaultFontOptions;
+            } else {
+                return $this->_getFont();
+            }
         } else {
             if (is_object($this->_titleFont)) {
                 return $this->_titleFont->_getFont();
@@ -293,7 +306,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      */
     function setDataPreProcessor(& $dataPreProcessor)
     {
-        $this->_dataPreProcessor = & $dataPreProcessor;
+        $this->_dataPreProcessor =& $dataPreProcessor;
     }
 
     /**
@@ -403,7 +416,6 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      */
     function _labelDistance($level = 1)
     {
-        // TODO This will probably fail if using setLabelInterval()
         $l1 = $this->_getNextLabel(false, $level);
         $l2 = $this->_getNextLabel($l1, $level);
         return abs($this->_point($l2) - $this->_point($l1));
@@ -516,25 +528,6 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     }
 
     /**
-     * Get the step each pixel on the canvas will represent on the axis.
-     *
-     * @return double The step a pixel represents
-     * @access private
-     */
-    function _delta()
-    {
-        if (($span = $this->_axisValueSpan) == 0) {
-            return 0;
-        }
-
-        if ($this->_type == IMAGE_GRAPH_AXIS_X) {
-            return $this->width() / $span;
-        } else {
-            return $this->height() / $span;
-        }
-    }
-
-    /**
      * Preprocessor for values, ie for using logarithmic axis
      *
      * @param double $value The value to preprocess
@@ -570,19 +563,19 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      * @return double The pixel position along the axis
      * @access private
      */
-    function _point($value)
+    function _point($value)    
     {
         if ($this->_type == IMAGE_GRAPH_AXIS_X) {
             if ($this->_invert) {                
-                return $this->_right - $this->_delta() * $this->_value($value);
+                return $this->_right - $this->_delta * $this->_value($value);
             } else {
-                return $this->_left + $this->_delta() * $this->_value($value);
+                return $this->_left + $this->_delta * $this->_value($value);
             }                
         } else {
             if ($this->_invert) {                
-                return $this->_top + $this->_delta() * $this->_value($value);
+                return $this->_top + $this->_delta * $this->_value($value);
             } else {
-                return $this->_bottom - $this->_delta() * $this->_value($value);
+                return $this->_bottom - $this->_delta * $this->_value($value);
             }
         }
     }
@@ -633,6 +626,24 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
         
         return $this->_point($value);
     }
+    
+    /**
+     * Calculate the delta value (the number of pixels representing one unit
+     * on the axis)
+     *
+     * @return double The label interval
+     * @access private
+     */
+    function _calcDelta()
+    {
+        if ($this->_axisValueSpan == 0) {
+            $this->_delta = false;
+        } elseif ($this->_type == IMAGE_GRAPH_AXIS_X) {
+            $this->_delta = $this->width() / $this->_axisValueSpan;
+        } else {
+            $this->_delta = $this->height() / $this->_axisValueSpan;
+        }
+    }        
     
     /**
      * Calculate the label interval
@@ -797,8 +808,6 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
         $totalMaxSize = 0;
 
-        $this->_driver->setFont($this->_getFont());
-
         foreach ($this->_labelOptions as $level => $labelOptions) {
             if ((isset($labelOptions['showoffset'])) && ($labelOptions['showoffset'] === true)) {
                 $this->_labelOptions[$level]['offset'] = $totalMaxSize;
@@ -814,11 +823,15 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
                 )               
             ) {
                 if (isset($labelOptions['font'])) {
-                    $font = $labelOptions['font'];
+                    $font = $this->_getFont($labelOptions['font']);
                 } else {
-                    $font = false;
+                    if ($this->_defaultFontOptions !== false) {
+                        $font = $this->_defaultFontOptions;
+                    } else {
+                        $font = $this->_getFont();
+                    }
                 }
-                $this->_driver->setFont($this->_getFont($font));
+                $this->_driver->setFont($font);
 
                 $value = false;
                 $maxSize = 0;
@@ -1021,12 +1034,15 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
                     $this->_labelText[] = $labelText;
 
                     if (isset($labelOptions['font'])) {
-                        $font = $labelOptions['font'];
+                        $font = $this->_getFont($labelOptions['font']);
                     } else {
-                        $font = false;
+                        if ($this->_defaultFontOptions !== false) {
+                            $font = $this->_defaultFontOptions;
+                        } else {
+                            $font = $this->_getFont();
+                        }
                     }
-
-                    $font = $this->_getFont($font);
+                    $this->_driver->setFont($font);
                     
                     if (
                         (isset($labelOptions['position'])) && 
@@ -1220,6 +1236,20 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     }
 
     /**
+     * Causes the object to update all sub elements coordinates
+     *
+     * (Image_Graph_Common, does not itself have coordinates, this is basically
+     * an abstract method)
+     *
+     * @access private
+     */
+    function _updateCoords()
+    {
+        parent::_updateCoords();
+        $this->_calcDelta();
+    }
+    
+    /**
      * Output the axis
      *
      * @return bool Was the output 'good' (true) or 'bad' (false).
@@ -1230,7 +1260,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
         if (parent::_done() === false) {
             return false;
         }
-
+        
         $this->_drawAxisLines();
 
         ksort($this->_labelOptions);

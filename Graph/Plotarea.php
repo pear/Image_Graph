@@ -721,6 +721,16 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
         }
 
         Image_Graph_Element::_updateCoords();
+
+        if ($this->_axisX != null) {
+            $this->_axisX->_updateCoords();
+        }
+        if ($this->_axisY != null) {
+            $this->_axisY->_updateCoords();
+        }
+        if ($this->_axisYSecondary != null) {
+            $this->_axisYSecondary->_updateCoords();
+        }
     }
 
     /**
@@ -731,7 +741,6 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
      */
     function _done()
     {
-
         if ($this->_axisX != null) {
             $this->add($this->_axisX);
         }

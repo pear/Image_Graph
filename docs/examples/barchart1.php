@@ -1,93 +1,129 @@
 <?php
-    include 'Image/Graph.php';
+/**
+ * Usage example for Image_Graph.
+ * 
+ * This example demonstrates basic functionality of creating the plot, datasets
+ * and setting the appearances.
+ * 
+ * $Id$
+ * 
+ * @package Image_Graph
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ */
+ 
+include 'Image/Graph.php';
+
+// create the graph
+$Graph =& Image_Graph::factory('graph', array(400, 300));
+
+// add a TrueType font
+$Arial =& $Graph->addNew('ttf_font', 'Gothic');
+// set the font size to 8 pixels
+$Arial->setSize(8);
+// set default font color to white
+$Arial->setColor('white');
+
+// make the entire graph use this font
+$Graph->setFont($Arial);
     
-    // create the graph
-    $Graph =& Image_Graph::factory('graph', array(400, 300));
-    
-    // add a TrueType font
-    $Arial =& $Graph->addNew('ttf_font', 'arial.ttf');
-    // set the font size to 15 pixels
-    $Arial->setSize(11);
-    
-    $Arial1 =& $Graph->addNew('ttf_font', 'arial.ttf');
-    // set the font size to 15 pixels
-    $Arial1->setSize(9);
-    $Arial1->setAngle(90);
-    
-    // add a TrueType font
-    $Arial2 =& $Graph->addNew('ttf_font', 'arial.ttf');
-    // set the font size to 15 pixels
-    $Arial2->setSize(9);
-    $Arial2->setAngle(270);
-    
-    // create the plotarea
-    $Graph->add(
+// create the graph layout
+$Graph->add(
+    Image_Graph::vertical(
+        Image_Graph::factory('title', array('German Car Popularity', 11)),
         Image_Graph::vertical(
-            Image_Graph::factory('title', array('German Car Popularity', &$Arial)),
-            Image_Graph::horizontal(
-                Image_Graph::factory('title', array('Popularity', &$Arial1)),
-                Image_Graph::horizontal(
-                    Image_Graph::vertical(
-                        $Plotarea = Image_Graph::factory('plotarea'),
-                        $Legend = Image_Graph::factory('legend'),
-                        95
-                    ),
-                    Image_Graph::factory('title', array('Defects / 1000 units', &$Arial2)),
-                    95
-                ),
-                7
-            ),
-            5
-        )
-    );
-    
-    $Legend->setPlotarea($Plotarea);
-    
-    // create the dataset
-    $Dataset =& Image_Graph::factory('dataset');
-    $Dataset->addPoint('Audi', 100);
-    $Dataset->addPoint('Mercedes', 41);
-    $Dataset->addPoint('Porsche', 78);
-    $Dataset->addPoint('BMW', 12);
-    //$Dataset =& Image_Graph::factory('random', array(10, 2, 15, true));
-    
-    $Dataset2 =& Image_Graph::factory('dataset');
-    $Dataset2->addPoint('Audi', 10);
-    $Dataset2->addPoint('Mercedes', 17);
-    $Dataset2->addPoint('Porsche', 12);
-    $Dataset2->addPoint('BMW', 21);
-    
-    $GridY =& $Plotarea->addNew('bar_grid', null, IMAGE_GRAPH_AXIS_Y);
-    $GridY->setFillStyle(Image_Graph::factory('gradient', array(IMAGE_GRAPH_GRAD_VERTICAL, 'white', 'lightgrey')));
-    
-    // create the plot as bar chart using the dataset
-    $Plot =& $Plotarea->addNew('bar', array(&$Dataset, 'normal', 'Popularity'));
-    $FillArray =& Image_Graph::factory('Image_Graph_Fill_Array');
-    $Plot->setFillStyle($FillArray);
-    $FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_VERTICAL, 'green', 'white'));
-    $FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_VERTICAL, 'blue', 'white'));
-    $FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_VERTICAL, 'yellow', 'white'));
-    $FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_VERTICAL, 'red', 'white'));
-    $FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_VERTICAL, 'orange', 'white'));
-    
-    $Marker =& $Graph->addNew('Image_Graph_Marker_Array');
-    $Marker->addNew('Image_Graph_Marker_Icon', './images/audi.png');
-    $Marker->addNew('Image_Graph_Marker_Icon', './images/mercedes.png');
-    $Marker->addNew('Image_Graph_Marker_Icon', './images/porsche.png');
-    $Marker->addNew('Image_Graph_Marker_Icon', './images/bmw.png');
-    
-    $Plot->setMarker($Marker);
-    
-    $Plot2 =& $Plotarea->addNew('line', array(&$Dataset2, 'normal', 'Defects'), IMAGE_GRAPH_AXIS_Y_SECONDARY);
-    $Plot2->setLineColor('blue@0.4');
-    
-    $Marker =& $Graph->addNew('Image_Graph_Marker_Value', IMAGE_GRAPH_VALUE_Y);
-    $Plot2->setMarker($Marker);
-    
-    $AxisY =& $Plotarea->getAxis(IMAGE_GRAPH_AXIS_Y);
-    $AxisY->setDataPreprocessor(Image_Graph::factory('Image_Graph_DataPreprocessor_Formatted', '%0.0f%%'));
-    $AxisY->forceMaximum(105);
-    
-    // output the Graph
-    $Graph->done();
+            $Plotarea = Image_Graph::factory('plotarea'),
+            $Legend = Image_Graph::factory('legend'),
+            90
+        ),
+        7
+    )
+);
+
+// associate the legend with the plotarea
+$Legend->setPlotarea($Plotarea);
+
+// make the graph have a gradient filled background    
+$Graph->setBackground(Image_Graph::factory('gradient', array(IMAGE_GRAPH_GRAD_VERTICAL, 'green', 'lightblue')));
+// and a black border
+$Graph->setBorderColor('black');
+
+// create and populate the dataset for 'popularity'
+$Dataset =& Image_Graph::factory('dataset');
+$Dataset->addPoint('Audi', 100);
+$Dataset->addPoint('Mercedes', 41);
+$Dataset->addPoint('Porsche', 78);
+$Dataset->addPoint('BMW', 12);
+
+// create and populate the dataset for 'defects / 1000 units'
+$Dataset2 =& Image_Graph::factory('dataset');
+$Dataset2->addPoint('Audi', 10);
+$Dataset2->addPoint('Mercedes', 17);
+$Dataset2->addPoint('Porsche', 12);
+$Dataset2->addPoint('BMW', 21);
+
+// add a line grid  
+$GridY =& $Plotarea->addNew('line_grid', null, IMAGE_GRAPH_AXIS_Y);
+// make it have a slightly transparent white color
+$GridY->setLineColor('white@0.8');
+
+// create the plot as bar chart using the 'popularity' dataset
+$Plot =& $Plotarea->addNew('bar', array(&$Dataset));
+// set the plot title (for legends)    
+$Plot->setTitle('Popularity');
+
+// create a fill array to make the bars have individual fill's
+$FillArray =& Image_Graph::factory('Image_Graph_Fill_Array');
+$FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_VERTICAL, 'white', 'orange'));
+$FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_VERTICAL, 'white', 'blue'));
+$FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_VERTICAL, 'white', 'yellow'));
+$FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_VERTICAL, 'white', 'red'));
+
+// make the 'popularity' plot use this fillarray   
+$Plot->setFillStyle($FillArray);
+
+// create a marker array and populate it with icon markers
+$Marker =& $Graph->addNew('Image_Graph_Marker_Array');
+$Marker->addNew('icon_marker', './images/audi.png');
+$Marker->addNew('icon_marker', './images/mercedes.png');
+$Marker->addNew('icon_marker', './images/porsche.png');
+$Marker->addNew('icon_marker', './images/bmw.png');
+
+// make the plot use the marker array    
+$Plot->setMarker($Marker);
+
+// create the 2nd plot ('defects / 1000 units') as a line plot and associate
+// it with the secondary y-axis (implicitly this creates a y-axis of the class
+// Image_Graph_Axis)
+$Plot2 =& $Plotarea->addNew('line', &$Dataset2, IMAGE_GRAPH_AXIS_Y_SECONDARY);
+// set the plot title
+$Plot2->setTitle('Defects');    
+// and line style
+$Plot2->setLineColor('gray@0.8');
+
+// create a value marker to display the actual y-values
+$Marker =& $Graph->addNew('value_marker', IMAGE_GRAPH_VALUE_Y);
+// and make the line plot use this
+$Plot2->setMarker($Marker);
+// make the marker print using font-size 7
+$Marker->setFontSize(7);
+// ... in blue
+$Marker->setFontColor('blue');
+
+// get the y-axis
+$AxisY =& $Plotarea->getAxis(IMAGE_GRAPH_AXIS_Y);
+// and create a datapreprocessor to make the labels print out as percentage valuexs    
+$AxisY->setDataPreprocessor(Image_Graph::factory('Image_Graph_DataPreprocessor_Formatted', '%0.0f%%'));    
+// force a maximum on the y-axis to 105
+$AxisY->forceMaximum(105);
+// set the axis title and make it display vertically ('vertical' = down->up)
+$AxisY->setTitle('Popularity', 'vertical');
+
+// get the secondary y-axis
+$AxisYsec =& $Plotarea->getAxis(IMAGE_GRAPH_AXIS_Y_SECONDARY);
+// set the axis title and make it display vertically ('vertical2' = up->down)
+$AxisYsec->setTitle('Defects / 1000 units', 'vertical2');
+
+// output the Graph
+$Graph->done();
+
 ?>

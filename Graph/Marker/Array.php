@@ -72,7 +72,7 @@ class Image_Graph_Marker_Array extends Image_Graph_Marker
         if (is_a($marker, 'Image_Graph_Element')) {
             parent::add($marker);
         }
-        $this->_markers[] = & $marker;
+        $this->_markers[] =& $marker;
         reset($this->_markers);
     }
 
@@ -93,7 +93,7 @@ class Image_Graph_Marker_Array extends Image_Graph_Marker
         if (!next($this->_markers)) {
             reset($this->_markers);
         }
-        $marker = & $this->_markers[$ID];
+        $marker =& $this->_markers[$ID];
 
         if ($marker != null) {
             $marker->_drawMarker($x, $y, $values);

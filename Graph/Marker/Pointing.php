@@ -93,7 +93,7 @@ class Image_Graph_Marker_Pointing extends Image_Graph_Marker
         $this->_deltaX = $deltaX;
         $this->_deltaY = $deltaY;
         $this->_markerStart = null;
-        $this->_markerEnd = & $markerEnd;
+        $this->_markerEnd =& $markerEnd;
     }
 
     /**
@@ -104,7 +104,7 @@ class Image_Graph_Marker_Pointing extends Image_Graph_Marker
      */
     function setMarkerStart(& $markerStart)
     {
-        $this->_markerStart = & $markerStart;
+        $this->_markerStart =& $markerStart;
         $this->_markerStart->_setParent($this);
     }
 

@@ -1,53 +1,63 @@
 <?php
-	include 'Image/Graph.php';
-    
-	// create the graph
-	$Graph =& Image_Graph::factory('graph', array(400, 300));
+include 'Image/Graph.php';
 
-    // add a TrueType font
-    $Arial =& $Graph->addNew('ttf_font', 'arial.ttf');
-    // set the font size to 11 pixels
-    $Arial->setSize(11);
-    // add a title using the created font    
-		
-	// create the plotarea
-	$Graph->add(
-        Image_Graph::vertical(
-            Image_Graph::factory('title', array('Meat Export', &$Arial)),
+// create the graph
+$Graph =& Image_Graph::factory('graph', array(400, 300));
+
+// add a TrueType font
+$Font =& $Graph->addNew('ttf_font', 'Gothic');
+// set the font size to 7 pixels
+$Font->setSize(7);
+
+$Graph->setFont($Font);
+	
+// create the plotarea
+$Graph->add(
+    Image_Graph::vertical(
+        Image_Graph::factory('title', array('Meat Export', 12)),
+        Image_Graph::horizontal(
             $Plotarea = Image_Graph::factory('plotarea'),
-            5            
-        )
-    );
-			
-	// create the 1st dataset
-	$Dataset1 =& Image_Graph::factory('dataset');
-	$Dataset1->addPoint('Beef', rand(1, 10));
-	$Dataset1->addPoint('Pork', rand(1, 10));
-	$Dataset1->addPoint('Poultry', rand(1, 10));
-	$Dataset1->addPoint('Camels', rand(1, 10));
-	$Dataset1->addPoint('Other', rand(1, 10));
-	// create the 1st plot as smoothed area chart using the 1st dataset
-	$Plot1 =& $Plotarea->addNew('Image_Graph_Plot_Pie', &$Dataset1);
-	$Plotarea->hideAxis();
-	
-	// create a Y data value marker
-	$Marker =& $Plot1->addNew('Image_Graph_Marker_Value', VALUE_X);
-	// create a pin-point marker type
-	$PointingMarker =& $Plot1->addNew('Image_Graph_Marker_Pointing_Angular', array(20, &$Marker));
-	// and use the marker on the 1st plot
-	$Plot1->setMarker($PointingMarker);	
-	// format value marker labels as percentage values
-	
-	$Plot1->Radius = 2;
-	
-	$FillArray =& Image_Graph::factory('Image_Graph_Fill_Array');
-	$Plot1->setFillStyle($FillArray);
-    $FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_RADIAL, 'green', 'white'));
-    $FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_RADIAL, 'blue', 'white'));
-    $FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_RADIAL, 'yellow', 'white'));
-    $FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_RADIAL, 'red', 'white'));
-    $FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_RADIAL, 'orange', 'white'));
+            $Legend = Image_Graph::factory('legend'),
+            70
+        ),
+        5            
+    )
+);
+
+$Legend->setPlotarea($Plotarea);
 		
-	// output the Graph
-	$Graph->done();
+// create the 1st dataset
+$Dataset1 =& Image_Graph::factory('dataset');
+$Dataset1->addPoint('Beef', rand(1, 10));
+$Dataset1->addPoint('Pork', rand(1, 10));
+$Dataset1->addPoint('Poultry', rand(1, 10));
+$Dataset1->addPoint('Camels', rand(1, 10));
+$Dataset1->addPoint('Other', rand(1, 10));
+// create the 1st plot as smoothed area chart using the 1st dataset
+$Plot =& $Plotarea->addNew('pie', &$Dataset1);
+$Plotarea->hideAxis();
+
+// create a Y data value marker
+$Marker =& $Plot->addNew('value_marker', IMAGE_GRAPH_PCT_Y_TOTAL);
+// create a pin-point marker type
+$PointingMarker =& $Plot->addNew('Image_Graph_Marker_Pointing_Angular', array(20, &$Marker));
+// and use the marker on the 1st plot
+$Plot->setMarker($PointingMarker);	
+// format value marker labels as percentage values
+$Marker->setDataPreprocessor(Image_Graph::factory('Image_Graph_DataPreprocessor_Formatted', '%0.1f%%'));
+
+$Plot->Radius = 2;
+
+$FillArray =& Image_Graph::factory('Image_Graph_Fill_Array');
+$Plot->setFillStyle($FillArray);
+$FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_RADIAL, 'white', 'green'));
+$FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_RADIAL, 'white', 'blue'));
+$FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_RADIAL, 'white', 'yellow'));
+$FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_RADIAL, 'white', 'red'));
+$FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_RADIAL, 'white', 'orange'));
+
+$Plot->explode(5);
+	   
+// output the Graph
+$Graph->done();
 ?>

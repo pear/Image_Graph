@@ -1,6 +1,10 @@
 *************************
  Image_Graph - Changelog
 *************************
+Version 0.x.y-state [2005-xxx-yy] - Jesper Veggerby <pear.nosey@veggerby.dk>
+    * Fixed bug #3346 "double as data"
+    * Performance optimizations
+
 Version 0.3.0-dev4 [2005-Jan-28] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Fixed problem with logarithmic axis causing an infinite loop
 
@@ -71,8 +75,8 @@ Version 0.3.0-dev2 [2005-Jan-13] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Fixed problems with Image_Graph_Axis_Radar showing values in wrong order
     * Fixed bug causing negative bars to display incorrecly (why o' why is 0 == 'some string'?)
     * Fixed bug causing setLineStyle() to fail
-    * Fixed Bug #2684 "Source typo breaking data selectors"
-    * Fixed Bug #2685 "Plots do not honor ID tags for fills"
+    * Fixed bug #2684 "Source typo breaking data selectors"
+    * Fixed bug #2685 "Plots do not honor ID tags for fills"
     * Fixed bug #2791 "wrong x-axis label position when using ttf font"
     * Fixed bug causing displayErrors() to generate WARNING and FATAL ERROR
     * Fixed problems with gradient fills (did not display propery using GD drivers)

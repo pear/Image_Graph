@@ -23,7 +23,8 @@
 // +--------------------------------------------------------------------------+
 
 /**
- * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * Class file containing a axis marker used for explicitly highlighting a area
+ * on the graph, based on an interval specified on an axis.
  * @package Image_Graph
  * @subpackage Grid
  * @category images

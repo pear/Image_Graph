@@ -115,7 +115,7 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
 
         reset($this->_dataset);
         $key = key($this->_dataset);
-        $dataset = & $this->_dataset[$key];
+        $dataset =& $this->_dataset[$key];
 
         $first = $dataset->first();
         $point = array ('X' => $first['X'], 'Y' => '#min_pos#');
@@ -130,7 +130,7 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
 
         $keys = array_keys($this->_dataset);
         foreach ($keys as $key) {
-            $dataset = & $this->_dataset[$key];
+            $dataset =& $this->_dataset[$key];
             $dataset->_reset();
             $polygon = array_reverse($base);
             unset ($base);

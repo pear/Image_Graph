@@ -212,7 +212,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
      */
     function setPlotarea(& $plotarea)
     {
-        $this->_plotarea = & $plotarea;
+        $this->_plotarea =& $plotarea;
     }
 
     /**
@@ -226,7 +226,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
     {
         parent::_setParent($parent);
         if ($this->_plotarea === false) {
-            $this->_plotarea = & $parent;
+            $this->_plotarea =& $parent;
         }
     }
 

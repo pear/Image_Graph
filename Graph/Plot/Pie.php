@@ -143,7 +143,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
             $diameter = min($this->height(), $this->width()) * 0.75;
             $keys = array_keys($this->_dataset);
             foreach ($keys as $key) {
-                $dataset = & $this->_dataset[$key];
+                $dataset =& $this->_dataset[$key];
 
                 if (count($this->_dataset) == 1) {
                     $totals['RADIUS0'] = false;
@@ -220,7 +220,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
 
         $keys = array_keys($this->_dataset);
         foreach ($keys as $key) {
-            $dataset = & $this->_dataset[$key];
+            $dataset =& $this->_dataset[$key];
 
             $totalY = 0;
             $dataset->_reset();

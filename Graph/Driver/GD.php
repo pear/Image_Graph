@@ -97,7 +97,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
      */
     var $_fontMap = array(
     );
-
+    
     /**
      * Create the GD driver.
      *
@@ -723,66 +723,68 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
                 $dx = abs($point['X'] - $lastPoint['X']);
                 $dy = abs($point['Y'] - $lastPoint['Y']);
                 $d = sqrt($dx * $dx + $dy * $dy);
-                $interval = 1 / $d;
-                for ($t = 0; $t <= 1; $t = $t + $interval) {
-                    $x = Image_Graph_Tool::bezier(
-                        $t,
-                        $lastPoint['X'],
-                        $lastPoint['P1X'],
-                        $lastPoint['P2X'],
-                        $point['X']
-                    );
-
-                    $y = Image_Graph_Tool::bezier(
-                        $t,
-                        $lastPoint['Y'],
-                        $lastPoint['P1Y'],
-                        $lastPoint['P2Y'],
-                        $point['Y']
-                    );
-
-                    if (!isset($low['X'])) {
-                        $low['X'] = $x;
-                    } else {
-                        $low['X'] = min($x, $low['X']);
+                if ($d > 0) {
+                    $interval = 1 / $d;
+                    for ($t = 0; $t <= 1; $t = $t + $interval) {
+                        $x = Image_Graph_Tool::bezier(
+                            $t,
+                            $lastPoint['X'],
+                            $lastPoint['P1X'],
+                            $lastPoint['P2X'],
+                            $point['X']
+                        );
+    
+                        $y = Image_Graph_Tool::bezier(
+                            $t,
+                            $lastPoint['Y'],
+                            $lastPoint['P1Y'],
+                            $lastPoint['P2Y'],
+                            $point['Y']
+                        );
+    
+                        if (!isset($low['X'])) {
+                            $low['X'] = $x;
+                        } else {
+                            $low['X'] = min($x, $low['X']);
+                        }
+                        if (!isset($high['X'])) {
+                            $high['X'] = $x;
+                        } else {
+                            $high['X'] = max($x, $high['X']);
+                        }
+                        if (!isset($low['Y'])) {
+                            $low['Y'] = $y;
+                        } else {
+                            $low['Y'] = min($y, $low['Y']);
+                        }
+                        if (!isset($high['Y'])) {
+                            $high['Y'] = $y;
+                        } else {
+                            $high['Y'] = max($y, $high['Y']);
+                        }
+                        $polygon[] = $x;
+                        $polygon[] = $y;
                     }
-                    if (!isset($high['X'])) {
-                        $high['X'] = $x;
-                    } else {
-                        $high['X'] = max($x, $high['X']);
+                    if (($t - $interval) < 1) {
+                        $x = Image_Graph_Tool::bezier(
+                            1,
+                            $lastPoint['X'],
+                            $lastPoint['P1X'],
+                            $lastPoint['P2X'],
+                            $point['X']
+                        );
+    
+                        $y = Image_Graph_Tool::bezier(
+                            1,
+                            $lastPoint['Y'],
+                            $lastPoint['P1Y'],
+                            $lastPoint['P2Y'],
+                            $point['Y']
+                        );
+    
+                        $polygon[] = $x;
+                        $polygon[] = $y;
                     }
-                    if (!isset($low['Y'])) {
-                        $low['Y'] = $y;
-                    } else {
-                        $low['Y'] = min($y, $low['Y']);
-                    }
-                    if (!isset($high['Y'])) {
-                        $high['Y'] = $y;
-                    } else {
-                        $high['Y'] = max($y, $high['Y']);
-                    }
-                    $polygon[] = $x;
-                    $polygon[] = $y;
-                }
-                if (($t - $interval) < 1) {
-                    $x = Image_Graph_Tool::bezier(
-                        1,
-                        $lastPoint['X'],
-                        $lastPoint['P1X'],
-                        $lastPoint['P2X'],
-                        $point['X']
-                    );
-
-                    $y = Image_Graph_Tool::bezier(
-                        1,
-                        $lastPoint['Y'],
-                        $lastPoint['P1Y'],
-                        $lastPoint['P2Y'],
-                        $point['Y']
-                    );
-
-                    $polygon[] = $x;
-                    $polygon[] = $y;
                 }
             } else {
                 if (!isset($low['X'])) {

@@ -82,7 +82,7 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
      */
     function _setPrimaryAxis(& $axis)
     {
-        $this->_primaryAxis = & $axis;
+        $this->_primaryAxis =& $axis;
     }
 
     /**
@@ -93,7 +93,7 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
      */
     function _setSecondaryAxis(& $axis)
     {
-        $this->_secondaryAxis = & $axis;
+        $this->_secondaryAxis =& $axis;
     }
 
     /**

@@ -381,7 +381,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
         if (Image_Graph_Element::_done() === false) {
             return false;
         }
-
+        
         $label = false;
         while (($label = $this->_getNextLabel($label)) !== false) {
             $this->_drawTick($label);

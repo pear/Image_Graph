@@ -64,7 +64,7 @@ class Image_Graph_Plot_Smoothed_Radar extends Image_Graph_Plot_Smoothed_Bezier
         if (is_a($this->_parent, 'Image_Graph_Plotarea_Radar')) {
             $keys = array_keys($this->_dataset);
             foreach ($keys as $key) {
-                $dataset = & $this->_dataset[$key];
+                $dataset =& $this->_dataset[$key];
                 if ($dataset->count() >= 3) {
                     $dataset->_reset();
                     $p1_ = $dataset->_next();
