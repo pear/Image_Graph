@@ -33,7 +33,7 @@ define('IMAGE_GRAPH_AXETYPE_TEXT',   'text');
 define('IMAGE_GRAPH_AXETYPE_LINEAR', 'linear');
 
 require_once 'Image/Graph/Elements.php';
-require_once 'Image/Graph/Data/Common.php';  // include to have IMAGE_GRAPH_DRAW_*-constants available
+require_once 'Image/Graph/Data/Common.php';  // include to have IMAGE_GRAPH_DRAW_*-constants
 
 /**
 * Class for drawing graphs out of numerical data

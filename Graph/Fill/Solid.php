@@ -23,9 +23,9 @@ class Image_Graph_Fill_Solid extends Image_Graph_Fill_Common
     {
         parent::Image_Graph_Fill_Common($attributes);
     }
-    
+
     /**
-    * Draws fill element, shape: box 
+    * Draws fill element, shape: box
     *
     * @param  gd-resource              image-resource to draw to
     * @param  array of array of int    absolute position for upper left and lower right edge
@@ -37,7 +37,7 @@ class Image_Graph_Fill_Solid extends Image_Graph_Fill_Common
 
         imagefilledrectangle ($img, $pos[0][0], $pos[0][1], $pos[1][0], $pos[1][1], $drawColor);
     }
-    
+
     /**
     * Draws fill element, shape: polygon
     *
@@ -48,7 +48,7 @@ class Image_Graph_Fill_Solid extends Image_Graph_Fill_Common
     function drawGDPolygon(&$img, $pos)
     {
         // TO DO: check if there is a number of maximum points imagefilledpolygon supports
-        
+
         $drawColor = imagecolorallocate($img, $this->_attributes["color"][0], $this->_attributes["color"][1], $this->_attributes["color"][2]);
 
         $points=array();
@@ -57,19 +57,6 @@ class Image_Graph_Fill_Solid extends Image_Graph_Fill_Common
             $points[] = $currPos[1];
         }
         imagefilledpolygon ($img, $points, count($pos), $drawColor);
-    }
-    
-    /**
-    * Draws fill element, shape: columns of pixels (
-    *
-    * @param  gd-resource              image-resource to draw to
-    * @param  int                      left y-coord of pixelcolumn to fill
-    * @param  array of array of int    top and bottom x-coords for each column to fill
-    * @access private
-    */
-    function drawGDPixelcolumns(&$img, $yLeft, $xTopBottom)
-    {
-        // not yet implemented
     }
 }
 ?>

@@ -7,6 +7,7 @@
 * @package  Image_Graph
 * @access   private
 */
+
 class Image_Graph_Fill_Common
 {
     /**
@@ -27,9 +28,9 @@ class Image_Graph_Fill_Common
     {
         $this->_attributes = $attributes;
     }
-    
+
     /**
-    * Draws fill element, shape: box 
+    * Draws fill element, shape: box
     *
     * @param  gd-resource              image-resource to draw to
     * @param  array of array of int    absolute position for upper left and lower right edge
@@ -39,7 +40,7 @@ class Image_Graph_Fill_Common
     {
         // implementation of this function in the derived fill-element-classes
     }
-    
+
     /**
     * Draws fill element, shape: polygon
     *
@@ -51,7 +52,7 @@ class Image_Graph_Fill_Common
     {
         // implementation of this function in the derived fill-element-classes
     }
-    
+
     /**
     * Draws fill element, shape: columns of pixels (
     *

@@ -23,9 +23,9 @@ class Image_Graph_Fill_Linear extends Image_Graph_Fill_Common
     {
         parent::Image_Graph_Fill_Common($attributes);
     }
-    
+
     /**
-    * Draws fill element, shape: box 
+    * Draws fill element, shape: box
     *
     * @param  gd-resource              image-resource to draw to
     * @param  array of array of int    absolute position for upper left and lower right edge
@@ -35,7 +35,7 @@ class Image_Graph_Fill_Linear extends Image_Graph_Fill_Common
     {
         // only horizontal gradient implemented yet
         // gradient runs from top to bottom
-        
+
         $numSteps = $pos[1][1]-$pos[0][1];
         $colorObj = &new Image_Color();
         $tempCol1 = Image_Color::rgb2hex($this->_attributes["color"][0]);
@@ -52,7 +52,7 @@ class Image_Graph_Fill_Linear extends Image_Graph_Fill_Common
           imageline ($img, $pos[0][0], $pos[0][1]+$step, $pos[1][0], $pos[0][1]+$step, $drawColor);
         }
     }
-    
+
     /**
     * Draws fill element, shape: polygon
     *
@@ -64,17 +64,17 @@ class Image_Graph_Fill_Linear extends Image_Graph_Fill_Common
     {
         // only horizontal gradient implemented yet
         // gradient runs from top to bottom
-        
+
         // we need at least 3 points to fill a polygon
         if (count($pos)<3) {
             return false;
         }
-        
+
         // our special type of polygons always has an equal number of points
         if ((count($pos)%2) != 0) {
             return false;
         }
-        
+
         // determine minY/maxY
         $minY = $pos[0][1];
         $maxY = $pos[0][1];
@@ -138,19 +138,6 @@ class Image_Graph_Fill_Linear extends Image_Graph_Fill_Common
                 imageline ($img, round($tempLeft), $upDownCounter, round($tempRight), $upDownCounter, $colorsAllocated[$upDownCounter-$minY]);
             }
         }
-    }
-    
-    /**
-    * Draws fill element, shape: columns of pixels (
-    *
-    * @param  gd-resource              image-resource to draw to
-    * @param  int                      left y-coord of pixelcolumn to fill
-    * @param  array of array of int    top and bottom x-coords for each column to fill
-    * @access private
-    */
-    function drawGDPixelcolumns(&$img, $yLeft, $xTopBottom)
-    {
-        // not yet implemented
     }
 }
 ?>
