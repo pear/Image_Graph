@@ -134,7 +134,14 @@ class Image_Graph_Title extends Image_Graph_Layout
             $this->_driver->setFont($this->_getFont());
         }
 
-        if (!is_a($this->_parent, 'Image_Graph_Layout')) {
+        if (is_a($this->_parent, 'Image_Graph_Plotarea')) {            
+            $this->_setCoords(
+                $this->_parent->_left,
+                $this->_parent->_top,
+                $this->_parent->_right,
+                $this->_parent->_top + $this->_driver->textHeight($this->_text)
+            );
+        } elseif (!is_a($this->_parent, 'Image_Graph_Layout')) {
             $this->_setCoords(
                 $this->_parent->_fillLeft(),
                 $this->_parent->_fillTop(),
