@@ -80,9 +80,13 @@ class Image_Graph_Figure_Polygon extends Image_Graph_Element
             return false;
         }
 
+        $this->_driver->startGroup(get_class($this));
+           
         $this->_getFillStyle();
         $this->_getLineStyle();
         $this->_driver->polygonEnd();
+        
+        $this->_driver->endGroup();
         return true;
     }
 

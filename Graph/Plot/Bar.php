@@ -84,7 +84,7 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
      * @param int $space The number of pixels between 2 bars, should be a
      *   multipla of 2 (ie an even number)
      */
-    function spacing($space)
+    function setSpacing($space)
     {
         $this->_space = (int) ($space / 2);
     }
@@ -104,7 +104,7 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
      * @param string $width The width of any bar
      * @param string $unit The unit of the width
      */
-    function barWidth($width, $unit = false)
+    function setBarWidth($width, $unit = false)
     {
         if ($width == 'auto') {
             $this->_width = $width;
@@ -132,14 +132,16 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
             return false;
         }
 
+        $this->_driver->startGroup(get_class($this) . '_' . $this->_title);
+
         if ($this->_width == 'auto') {
-            $width = $this->_parent->_labelDistance(IMAGE_GRAPH_AXIS_X) / 2;
+            $width = $this->_parent->_labelDistance(IMAGE_GRAPH_AXIS_X) / 2;            
         } elseif ($this->_width['unit'] == '%') {
             $width = $this->_width['width'] * $this->width() / 200;
         } elseif ($this->_width['unit'] == 'px') {
             $width = $this->_width['width'] / 2;
         }
-
+        
         if ($this->_multiType == 'stacked100pct') {
             $total = $this->_getTotals();
         }
@@ -154,8 +156,19 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
             $dataset->_reset();
             while ($point = $dataset->_next()) {
 
-                $x1 = $this->_pointX($point) - $width + $this->_space;
-                $x2 = $this->_pointX($point) + $width - $this->_space;
+                $x1 = $this->_pointX($point) - $width;
+                $x2 = $this->_pointX($point) + $width;
+                
+                if ($x2 - $this->_space > $x1 + $this->_space) {
+                    /*
+                     * Take bar spacing into account _only_ if the space doesn't
+                     * turn the bar "inside-out", i.e. if the actual bar width
+                     * is smaller than the space between the bars
+                     */
+                    $x2 -= $this->_space;
+                    $x1 += $this->_space;
+                }                   
+                    
 
                 if (($this->_multiType == 'stacked') ||
                     ($this->_multiType == 'stacked100pct'))
@@ -204,8 +217,8 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
                     }
                 } else {
                     if (count($this->_dataset) > 1) {
-                        $w = $width / count($this->_dataset);
-                        $x2 = ($x1 = ($x1 + $x2 - $width) / 2 + $number * $w) + $w;
+                        $w = 2 * ($width - $this->_space) / count($this->_dataset);
+                        $x2 = ($x1 = ($x1 + $x2) / 2  - ($width - $this->_space) + $number * $w) + $w;
                     }
                     $p0 = array('X' => $point['X'], 'Y' => 0);
                     $p1 = $point;
@@ -248,6 +261,8 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
         unset($keys);
 
         $this->_drawMarker();
+        
+        $this->_driver->endGroup();        
         return true;
     }
 }

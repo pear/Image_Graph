@@ -78,6 +78,8 @@ class Image_Graph_Grid_Polar extends Image_Graph_Grid
             return false;
         }
 
+        $this->_driver->startGroup(get_class($this));
+        
         $value = false;
 
         $p0 = array ('X' => '#min#', 'Y' => '#min#');
@@ -100,6 +102,9 @@ class Image_Graph_Grid_Polar extends Image_Graph_Grid
             $this->_getLineStyle();
             $this->_driver->ellipse($cx, $cy, $r, $r);
         }
+        
+        $this->_driver->endGroup();
+        
         return true;
     }
 

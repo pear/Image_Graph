@@ -83,6 +83,8 @@ class Image_Graph_Axis_Marker_Line extends Image_Graph_Grid
         if (!$this->_primaryAxis) {
             return false;
         }
+        
+        $this->_driver->startGroup(get_class($this));
 
         $i = 0;
 
@@ -111,6 +113,9 @@ class Image_Graph_Axis_Marker_Line extends Image_Graph_Grid
             $this->_getLineStyle();
             $this->_driver->line($x1, $y1, $x2, $y2);
         }
+        
+        $this->_driver->endGroup();
+        
         return true;
     }
 

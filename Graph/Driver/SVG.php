@@ -76,6 +76,27 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
     var $_defs = '';
 
     /**
+     * The current indention level
+     * @var string
+     * @access private
+     */
+    var $_indent = '    ';
+
+    /**
+     * A unieuq id counter
+     * @var int
+     * @access private
+     */
+    var $_id = 1;
+
+    /**
+     * The current group ids
+     * @var array
+     * @access private
+     */
+    var $_groupIDs = array();
+
+    /**
      * Create the SVG driver.
      *
      * Parameters available:
@@ -90,6 +111,26 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
     {
         parent::Image_Graph_Driver($param);
         $this->_reset();        
+    }
+
+    /**
+     * Add a SVG "element" to the output
+     *
+     * @param string $element The element
+     * @access private
+     */
+    function _addElement($element) {
+        $this->_elements .= $this->_indent . $element . "\n";
+    }
+
+    /**
+     * Add a SVG "define" to the output
+     *
+     * @param string $def The define
+     * @access private
+     */
+    function _addDefine($def) {
+        $this->_defs .= '        ' . $def . "\n";
     }
 
     /**
@@ -145,6 +186,8 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
             $lineStyle = $this->_lineStyle;
         }
 
+        // TODO Linestyles (i.e. fx. dotted) does not work
+
         if (($lineStyle != 'transparent') && ($lineStyle !== false)) {
             $result = 'stroke-width:' . $this->_thickness . ';';
             $result .= 'stroke:' .$this->_color($lineStyle) . ';';
@@ -172,7 +215,7 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
 
         if (is_array($fillStyle)) {
             if ($fillStyle['type'] == 'gradient') {
-                $id = 'gradient_' . rand(0, 10000);
+                $id = 'gradient_' . ($this->_id++);
                 $startColor = $this->_color($fillStyle['start']);
                 $endColor = $this->_color($fillStyle['end']);
                 $startOpacity = $this->_opacity($fillStyle['start']);
@@ -190,9 +233,9 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
                 case IMAGE_GRAPH_GRAD_VERTICAL:
                 case IMAGE_GRAPH_GRAD_VERTICAL_MIRRORED:
                     $x1 = '0%';
-                    $y1 = '0%';
+                    $y1 = '100%';
                     $x2 = '0%';
-                    $y2 = '100%';
+                    $y2 = '0%';
                     break;
 
                 case IMAGE_GRAPH_GRAD_DIAGONALLY_TL_BR:
@@ -203,10 +246,10 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
                     break;
 
                 case IMAGE_GRAPH_GRAD_DIAGONALLY_BL_TR:
-                    $x1 = '100%';
-                    $y1 = '0%';
-                    $x2 = '0%';
-                    $y2 = '100%';
+                    $x1 = '0%';
+                    $y1 = '100%';
+                    $x2 = '100%';
+                    $y2 = '0%';
                     break;
 
                 case IMAGE_GRAPH_GRAD_RADIAL:
@@ -220,46 +263,69 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
                 }
 
                 if ($fillStyle['direction'] == IMAGE_GRAPH_GRAD_RADIAL) {
-                    $this->_defs .=
-                        "\t" . '<radialGradient id="' . $id . '" cx="' .
+                    $this->_addDefine(
+                        '<radialGradient id="' . $id . '" cx="' .
                             $cx .'" cy="' . $cy .'" r="' . $r .'" fx="' .
-                            $fx .'" fy="' . $fy .'">' . "\n" .
-                        "\t\t" . '<stop offset="0%" style="stop-color:' .
+                            $fx .'" fy="' . $fy .'">'
+                    );
+                    $this->_addDefine(
+                        '    <stop offset="0%" style="stop-color:' .
                             $startColor. ';' . ($startOpacity ? 'stop-opacity:' .
-                            $startOpacity . ';' : ''). '"/>' . "\n" .
-                        "\t\t" . '<stop offset="100%" style="stop-color:' .
+                            $startOpacity . ';' : ''). '"/>'
+                    );
+                    $this->_addDefine(
+                        '    <stop offset="100%" style="stop-color:' .
                             $endColor. ';' . ($endOpacity ? 'stop-opacity:' .
-                            $endOpacity . ';' : ''). '"/>' . "\n" .
-                        "\t" . '</radialGradient>' . "\n";
+                            $endOpacity . ';' : ''). '"/>'
+                    );
+                    $this->_addDefine(
+                        '</radialGradient>'
+                    );
                 } elseif (($fillStyle['direction'] == IMAGE_GRAPH_GRAD_VERTICAL_MIRRORED) ||
                     ($fillStyle['direction'] == IMAGE_GRAPH_GRAD_HORIZONTAL_MIRRORED))
                 {
-                    $this->_defs .=
-                        "\t" . '<linearGradient id="' . $id . '" x1="' .
+                    $this->_addDefine(
+                        '<linearGradient id="' . $id . '" x1="' .
                             $x1 .'" y1="' . $y1 .'" x2="' . $x2 .'" y2="' .
-                            $y2 .'">' . "\n" .
-                        "\t\t" . '<stop offset="0%" style="stop-color:' .
+                            $y2 .'">'
+                    );
+                    $this->_addDefine(
+                        '    <stop offset="0%" style="stop-color:' .
                             $startColor. ';' . ($startOpacity ? 'stop-opacity:' .
-                            $startOpacity . ';' : ''). '"/>' . "\n" .
-                        "\t\t" . '<stop offset="50%" style="stop-color:' .
+                            $startOpacity . ';' : ''). '"/>'
+                    );
+                    $this->_addDefine(
+                        '    <stop offset="50%" style="stop-color:' .
                             $endColor. ';' . ($endOpacity ? 'stop-opacity:' .
-                            $endOpacity . ';' : ''). '"/>' . "\n" .
-                        "\t\t" . '<stop offset="100%" style="stop-color:' .
+                            $endOpacity . ';' : ''). '"/>'
+                    );
+                    $this->_addDefine(
+                        '    <stop offset="100%" style="stop-color:' .
                             $startColor. ';' . ($startOpacity ? 'stop-opacity:' .
-                            $startOpacity . ';' : ''). '"/>' . "\n" .
-                        "\t" . '</linearGradient>' . "\n";
+                            $startOpacity . ';' : ''). '"/>'
+                    );
+                    $this->_addDefine(
+                        '</linearGradient>'
+                    );
                 } else {
-                    $this->_defs .=
-                        "\t" . '<linearGradient id="' . $id . '" x1="' .
+                    $this->_addDefine(
+                        '<linearGradient id="' . $id . '" x1="' .
                             $x1 .'" y1="' . $y1 .'" x2="' . $x2 .'" y2="' .
-                            $y2 .'">' . "\n" .
-                        "\t\t" . '<stop offset="0%" style="stop-color:' .
+                            $y2 .'">'
+                    );
+                    $this->_addDefine(
+                        '    <stop offset="0%" style="stop-color:' .
                             $startColor. ';' . ($startOpacity ? 'stop-opacity:' .
-                            $startOpacity . ';' : ''). '"/>' . "\n" .
-                        "\t\t" . '<stop offset="100%" style="stop-color:' .
+                            $startOpacity . ';' : ''). '"/>'
+                    );
+                    $this->_addDefine(
+                        '    <stop offset="100%" style="stop-color:' .
                             $endColor. ';' . ($endOpacity ? 'stop-opacity:' .
-                            $endOpacity . ';' : ''). '"/>' . "\n" .
-                        "\t" . '</linearGradient>' . "\n";
+                            $endOpacity . ';' : ''). '"/>'
+                    );
+                    $this->_addDefine(
+                        '</linearGradient>'
+                    );
                 }
 
                 return 'fill:url(#' . $id . ');';
@@ -328,14 +394,15 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
     {
         $style = $this->_getLineStyle($color) . $this->_getFillStyle('transparent');
         if ($style != '') {
-            $this->_elements .=
-            '<line ' .
-                'x1="' . round($x0) . '" ' .
-                'y1="' . round($y0) . '" ' .
-                'x2="' . round($x1) . '" ' .
-                'y2="' . round($y1) . '" ' .
-                'style="' . $style . '"' .
-            '/>' . "\n";
+            $this->_addElement(
+                '<line ' .
+                    'x1="' . round($x0) . '" ' .
+                    'y1="' . round($y0) . '" ' .
+                    'x2="' . round($x1) . '" ' .
+                    'y2="' . round($y1) . '" ' .
+                    'style="' . $style . '"' .
+                '/>'
+            );
         }
         parent::line($x0, $y0, $x1, $y1, $color);
     }
@@ -363,13 +430,14 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
             $points .= round($point['X']) . ',' . round($point['Y']);
         }
         if ($connectEnds) {
-            $point .= ' Z';
+            $points .= ' Z';
         }
-        $this->_elements .=
+        $this->_addElement(
             '<path ' .
                  'd="' . $points . '" ' .
                  'style="' . $style . '"' .
-            '/>' . "\n";
+            '/>'
+        );
 
         parent::polygonEnd($connectEnds);
     }
@@ -417,11 +485,12 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
         if ($connectEnds) {
             $point .= ' Z';
         }
-        $this->_elements .=
+        $this->_addElement(
             '<path ' .
                  'd="' . $points . '" ' .
                  'style="' . $style . '"' .
-            '/>' . "\n";
+            '/>'
+        );
 
         parent::splineEnd($connectEnds);
     }
@@ -440,14 +509,15 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
     {
         $style = $this->_getLineStyle($lineColor) . $this->_getFillStyle($fillColor);
         if ($style != '') {
-            $this->_elements .=
+            $this->_addElement(
                 '<rect ' .
                     'x="' . round($x0) . '" ' .
                     'y="' . round($y0) . '" ' .
                     'width="' . round(abs($x1 - $x0)) . '" ' .
                     'height="' . round(abs($y1 - $y0)) . '" ' .
                     'style="' . $style . '"' .
-                '/>' . "\n";
+                '/>'
+            );
         }
         parent::rectangle($x0, $y0, $x1, $y1, $fillColor, $lineColor);
     }
@@ -466,14 +536,15 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
     {
         $style = $this->_getLineStyle($lineColor) . $this->_getFillStyle($fillColor);
         if ($style != '') {
-            $this->_elements .=
+            $this->_addElement(
                 '<ellipse ' .
                     'cx="' . round($x) . '" ' .
                     'cy="' . round($y) . '" ' .
                     'rx="' . round($rx) . '" ' .
                     'ry="' . round($ry) . '" ' .
                     'style="' . $style . '"' .
-                '/>' . "\n";
+                '/>'
+            );
         }
         parent::ellipse($x, $y, $rx, $ry, $fillColor, $lineColor);
     }
@@ -501,7 +572,7 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
             $y1 = ($y + $ry * sin(deg2rad(min($v1, $v2) % 360)));
             $x2 = ($x + $rx * cos(deg2rad(max($v1, $v2) % 360)));
             $y2 = ($y + $ry * sin(deg2rad(max($v1, $v2) % 360)));
-            $this->_elements .=
+            $this->_addElement(
                 '<path d="' .
                     'M' . round($x) . ',' . round($y) . ' ' .
                     'L' . round($x1) . ',' . round($y1) . ' ' .
@@ -509,7 +580,8 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
                         round($x2) . ',' . round($y2) . ' ' .
                     'z" ' .
                     'style="' . $style . '"' .
-                '/>' . "\n";
+                '/>'
+            );
         }
     }
 
@@ -554,7 +626,6 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
      */
     function write($x, $y, $text, $alignment, $color = false)
     {
-        // TODO Consider using text path all together for this
         $textHeight = $this->textHeight($text);
 
         $align = '';
@@ -590,14 +661,14 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
         $textColor = $this->_color($color);
         $textOpacity = $this->_opacity($color);
 
-        $this->_elements .=
+        $this->_addElement(
             '<text ' .
                 'x="' . round($x) . '" ' .
                 'y="' . round($y) . '" ' .
-                (isset($this->_font['angle']) && ($this->_font['angle'] > 0) ?
+/*                (isset($this->_font['angle']) && ($this->_font['angle'] > 0) ?
                     'rotate="' . $this->_font['angle'] . '" ' :
                     ''
-                ) .
+                ) .*/
                 'style="' .
                 (isset($this->_font['file']) ?
                     'font-family:' . $this->_font['file'] . ';' : '') .
@@ -607,7 +678,8 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
                     ''
                 ) . ';' . $align . '">' .
                 str_replace('&', '&amp;', $text) .
-            '</text>' . "\n";
+            '</text>'
+        );
         parent::write($x, $y, $text, $alignment);
     }
 
@@ -625,12 +697,43 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
     {
         // TODO Make images work in SVG
         $filename = 'file:///' . str_replace('\\', '/', $filename);
-        $this->_elements .=
+        $this->_addElement(
             '<image xlink:href="' . $filename . '" x="' . $x . '" y="' . $y .
                 ($width ? '" width="' . $width : '') .
                 ($height ? '" height="' . $height : '') .
-            '"/>';
+            '"/>'
+        );
         parent::overlayImage($x, $y, $filename, $width, $height);
+    }
+
+    /**
+     * Start a group.
+     * 
+     * What this does, depends on the driver/format.
+     *
+     * @param string $name The name of the group
+     */
+    function startGroup($name = false)
+    {
+        $name = strtolower(str_replace(' ', '_', $name));
+        if (in_array($name, $this->_groupIDs)) {
+            $name .= $this->_id;
+            $this->_id++;
+        }
+        $this->_groupIDs[] = $name;
+        $this->_addElement('<g id="' . $name . '">');
+        $this->_indent .= '    ';        
+    }
+
+    /**
+     * End the "current" group.
+     * 
+     * What this does, depends on the driver/format.
+     */
+    function endGroup()
+    {
+        $this->_indent = substr($this->_indent, 0, -4);
+        $this->_addElement('</g>');
     }
 
     /**
@@ -648,9 +751,9 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
             '<svg width="' . $this->_width . '" height="' . $this->_height .
                 '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' . "\n" .
             ($this->_defs ?
-                '<defs>' . "\n" .
+                '    <defs>' . "\n" .
                 $this->_defs .
-                '</defs>' . "\n" :
+                '    </defs>' . "\n" :
                 ''
             ) .
             $this->_elements .

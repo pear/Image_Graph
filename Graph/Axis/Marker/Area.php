@@ -110,6 +110,8 @@ class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid
             return false;
         }
 
+        $this->_driver->startGroup(get_class($this));
+        
         $i = 0;
 
         $this->_lower = max($this->_primaryAxis->_getMinimum(), $this->_lower);
@@ -143,6 +145,9 @@ class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid
             $this->_getFillStyle();
             $this->_driver->polygonEnd();
         }
+        
+        $this->_driver->endGroup();
+        
         return true;
     }
 

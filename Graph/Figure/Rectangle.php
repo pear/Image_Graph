@@ -75,6 +75,8 @@ class Image_Graph_Figure_Rectangle extends Image_Graph_Element
             return false;
         }
 
+        $this->_driver->startGroup(get_class($this));
+        
         $this->_getFillStyle();
         $this->_getLineStyle();
         $this->_driver->rectangle(
@@ -83,6 +85,9 @@ class Image_Graph_Figure_Rectangle extends Image_Graph_Element
             $this->_right,
             $this->_bottom
         );
+        
+        $this->_driver->endGroup();
+        
         return true;
     }
 

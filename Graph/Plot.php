@@ -173,13 +173,19 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
     /**
      * Sets the Y axis to plot the data
      *
-     * @param int $axisY The Y axis (either IMAGE_GRAPH_AXIS_Y or
-     *   IMAGE_GRAPH_AXIS_Y_SECONDARY (defaults to IMAGE_GRAPH_AXIS_Y))
+     * @param int $axisY The Y axis (either IMAGE_GRAPH_AXIS_Y / 'y' or
+     * IMAGE_GRAPH_AXIS_Y_SECONDARY / 'ysec' (defaults to IMAGE_GRAPH_AXIS_Y))
      * @access private
      */
     function _setAxisY($axisY)
     {
-        $this->_axisY = $axisY;
+        if ($axisY == 'y') {
+           $this->_axisY = IMAGE_GRAPH_AXIS_Y;
+        } elseif ($axisY == 'ysec') {
+           $this->_axisY = IMAGE_GRAPH_AXIS_Y_SECONDARY;
+        } else {
+            $this->_axisY = $axisY;
+        }
     }
 
     /**
@@ -347,8 +353,10 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
      * @access private
      */
     function _drawMarker()
-    {
+    {        
         if (($this->_marker) && (is_array($this->_dataset))) {
+            $this->_driver->startGroup(get_class($this) . '_marker');
+            
             $totals = $this->_getTotals();
             $totals['WIDTH'] = $this->width() / ($this->_maximumX() + 2) / 2;
 
@@ -398,7 +406,8 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
                 }
             }
             unset($keys);
-        }
+            $this->_driver->endGroup();
+        }              
     }
 
     /**
@@ -676,7 +685,9 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
             $caption = ($dataset->_name ? $dataset->_name : $this->_title);
 
             $this->_driver->setFont($param['font']);
-            $x2 = $param['x'] + 20 + $param['width'] + $this->_driver->textWidth($caption);
+            $width = 20 + $param['width'] + $this->_driver->textWidth($caption);
+            $param['maxwidth'] = max($param['maxwidth'], $width);
+            $x2 = $param['x'] + $width;
             $y2 = $param['y'] + $param['height']+5;
 
             if ((($param['align'] & IMAGE_GRAPH_ALIGN_VERTICAL) != 0) && ($y2 > $param['bottom'])) {
@@ -725,7 +736,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
         }
         unset($keys);
     }
-
+    
 }
 
 ?>

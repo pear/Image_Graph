@@ -85,6 +85,7 @@ class Image_Graph_Plot_Smoothed_Area extends Image_Graph_Plot_Smoothed_Bezier
             return false;
         }
 
+        $this->_driver->startGroup(get_class($this) . '_' . $this->_title);
         $keys = array_keys($this->_dataset);
         foreach ($keys as $key) {
             $dataset =& $this->_dataset[$key];
@@ -131,6 +132,7 @@ class Image_Graph_Plot_Smoothed_Area extends Image_Graph_Plot_Smoothed_Bezier
         }
         unset($keys);
         $this->_drawMarker();
+        $this->_driver->endGroup();
         return true;
     }
 

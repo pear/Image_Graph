@@ -48,12 +48,15 @@ require_once 'Image/Graph/Plotarea/Element.php';
  */
 class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 {
+    
+    // TODO There seems to be a problem with axis labels not printing after setting new driver (i.e. a reset)
 
     /**
      * The type of the axis, possible values are:
      * <ul>
      * <li>IMAGE_GRAPH_AXIS_X / IMAGE_GRAPH_AXIS_HORIZONTAL
-     * <li>IMAGE_GRAPH_AXIS_Y / IMAGE_GRAPH_AXIS_VERTICAL / IMAGE_GRAPH_AXIS_Y_SECONDARY
+     * <li>IMAGE_GRAPH_AXIS_Y / IMAGE_GRAPH_AXIS_VERTICAL /
+     * IMAGE_GRAPH_AXIS_Y_SECONDARY
      * </ul>
      * @var int
      * @access private
@@ -235,6 +238,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      */
     function &Image_Graph_Axis($type = IMAGE_GRAPH_AXIS_X)
     {
+
         parent::Image_Graph_Element();
         $this->_type = $type;
     }
@@ -417,7 +421,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     function _labelDistance($level = 1)
     {
         $l1 = $this->_getNextLabel(false, $level);
-        $l2 = $this->_getNextLabel($l1, $level);
+        $l2 = $this->_getNextLabel($l1, $level);;
         return abs($this->_point($l2) - $this->_point($l1));
     }
 
@@ -962,6 +966,13 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      */
     function setAxisIntersection($intersection, $axis = 'default')
     {
+        if ($axis == 'x') {
+            $axis = IMAGE_GRAPH_AXIS_X;
+        } elseif ($axis = 'y') {
+            $axis = IMAGE_GRAPH_AXIS_Y;
+        } elseif ($axis = 'ysec') {
+            $axis = IMAGE_GRAPH_AXIS_Y_SECONDARY;
+        }
         $this->_intersect = array(
             'value' => $intersection,
             'axis' => $axis
@@ -1002,6 +1013,17 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
         }
         
         return array('value' => $value, 'axis' => $axis);
+    }
+    
+    /**
+     * Resets the elements
+     *
+     * @access private
+     */
+    function _reset()
+    {
+        parent::_reset();
+        $this->_labelText = array();
     }
     
     /**
@@ -1257,12 +1279,15 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      */
     function _done()
     {
+        $this->_driver->startGroup(get_class($this));        
+
         if (parent::_done() === false) {
             return false;
         }
         
         $this->_drawAxisLines();
 
+        $this->_driver->startGroup(get_class($this) . '_ticks');        
         ksort($this->_labelOptions);
         foreach ($this->_labelOptions as $level => $labelOption) {
             $value = false;
@@ -1276,6 +1301,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
                 }
             }
         }
+        $this->_driver->endGroup();        
 
         $tickStart = -3;
         $tickEnd = 2;
@@ -1323,6 +1349,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
                 $this->_driver->polygonEnd();
             }
         }
+        $this->_driver->endGroup();        
         return true;
     }
 

@@ -493,6 +493,26 @@ class Image_Graph_Driver
     }
 
     /**
+     * Start a group.
+     * 
+     * What this does, depends on the driver/format.
+     *
+     * @param string $name The name of the group
+     */
+    function startGroup($name = false)
+    {
+    }
+
+    /**
+     * End the "current" group.
+     * 
+     * What this does, depends on the driver/format.
+     */
+    function endGroup()
+    {
+    }
+
+    /**
      * Output the result of the driver
      *
      * @param array $param Parameter array

@@ -2,7 +2,20 @@
  Image_Graph - Changelog
 *************************
 Version 0.x.y-state [2005-xxx-yy] - Jesper Veggerby <pear.nosey@veggerby.dk>
+    * Added possibility to use arrays of the type $data[$id] = array('x' => $x, 'y' => $y) for easy data addition to a dataset
+    * Added use of 'null' y-values in line plots (normal and smoothed) causing a break in the line (instead of dropping to zero)
+    * Added possibility to make one legend use multiple plotareas
+    * Added grouping to drivers (currently only fully supported by SVG driver)
+    * Implemented simple shadows (and removed shadow images from distribution)
     * Fixed bug #3346 "double as data"
+    * Fixed a problem with normal multi-data bar charts not displaying expected bar width
+    * Fixed problem with legends when overlayed    
+    * Fixed axis not displaying labels after resetting driver
+    * Fixed problem in SVG driver with vertical texts
+    * Changed which changes API causing minor BC breaks
+        - Renamed Image_Graph_Plot_Bar::barWidth() to Image_Graph_Plot_Bar::setBarWidth()
+        - Renamed Image_Graph_Plot_Bar::spacing() to Image_Graph_Plot_Bar::setSpacing()
+        - Removed Image_Graph_Layout_Plotarea, it being completely obsolete with introduction of Image_Graph_Axis::setTitle()
     * Performance optimizations
 
 Version 0.3.0-dev4 [2005-Jan-28] - Jesper Veggerby <pear.nosey@veggerby.dk>

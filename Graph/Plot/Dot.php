@@ -77,7 +77,13 @@ class Image_Graph_Plot_Dot extends Image_Graph_Plot
         if (Image_Graph_Plot::_done() === false) {
             return false;
         }
+
+        $this->_driver->startGroup(get_class($this) . '_' . $this->_title);
+        
         $this->_drawMarker();
+        
+        $this->_driver->endGroup();
+        
         return true;
     }
 }

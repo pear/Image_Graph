@@ -66,6 +66,8 @@ class Image_Graph_Grid_Bars extends Image_Graph_Grid
         if (!$this->_primaryAxis) {
             return false;
         }
+        
+        $this->_driver->startGroup(get_class($this));
 
         $i = 0;
         $value = false;
@@ -103,6 +105,9 @@ class Image_Graph_Grid_Bars extends Image_Graph_Grid
             $i = 1 - $i;
             $previousValue = $value;
         }
+        
+        $this->_driver->endGroup();
+        
         return true;
     }
 

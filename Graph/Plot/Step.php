@@ -107,6 +107,8 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
             return false;
         }
 
+        $this->_driver->startGroup(get_class($this) . '_' . $this->_title);
+        
         if ($this->_multiType == 'stacked100pct') {
             $total = $this->_getTotals();
         }
@@ -172,6 +174,7 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
         }
         unset($keys);
         $this->_drawMarker();
+        $this->_driver->endGroup();
         return true;
     }
 }

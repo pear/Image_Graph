@@ -98,6 +98,8 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
         if (!is_array($this->_dataset)) {
             return false;
         }
+        
+        $this->_driver->startGroup(get_class($this) . '_' . $this->_title);
 
         reset($this->_dataset);
 
@@ -111,6 +113,7 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
         foreach ($keys as $key) {
             $dataset =& $this->_dataset[$key];
             $dataset->_reset();
+            $numPoints = 0;
             while ($point = $dataset->_next()) {
                 if (($this->_multiType == 'stacked') ||
                     ($this->_multiType == 'stacked100pct'))
@@ -128,16 +131,28 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
                     $point['Y'] = $py;
                 }
 
-                $p2['X'] = $this->_pointX($point);
-                $p2['Y'] = $this->_pointY($point);
-
-                $this->_driver->polygonAdd($p2['X'], $p2['Y']);
+                if ($point['Y'] === null) {
+                    if ($numPoints > 1) {
+                        $this->_getLineStyle($key);
+                        $this->_driver->polygonEnd(false);
+                    }
+                    $numPoints = 0;
+                } else {
+                    $p2['X'] = $this->_pointX($point);
+                    $p2['Y'] = $this->_pointY($point);
+    
+                    $this->_driver->polygonAdd($p2['X'], $p2['Y']);
+                    $numPoints++;
+                }
             }
-            $this->_getLineStyle($key);
-            $this->_driver->polygonEnd(false);
+            if ($numPoints > 1) {
+                $this->_getLineStyle($key);
+                $this->_driver->polygonEnd(false);
+            }
         }
         unset($keys);
         $this->_drawMarker();
+        $this->_driver->endGroup();
         return true;
     }
 

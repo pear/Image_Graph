@@ -74,6 +74,8 @@ class Image_Graph_Figure_Ellipse extends Image_Graph_Element
         if (parent::_done() === false) {
             return false;
         }
+        
+        $this->_driver->startGroup(get_class($this));
 
         $this->_getFillStyle();
         $this->_getLineStyle();
@@ -83,6 +85,9 @@ class Image_Graph_Figure_Ellipse extends Image_Graph_Element
             $this->width(),
             $this->height()
         );
+        
+        $this->_driver->endGroup();
+        
         return true;
     }
 

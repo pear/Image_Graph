@@ -63,11 +63,11 @@ class Image_Graph_Legend extends Image_Graph_Layout
     var $_alignment = false;
 
     /**
-     * The plotarea to show the legend for
-     * @var Plotarea
+     * The plotarea(s) to show the legend for
+     * @var array
      * @access private
      */
-    var $_plotarea = false;
+    var $_plotareas = array();
 
     /**
      * Should markers be shown or not on this legend
@@ -93,21 +93,50 @@ class Image_Graph_Legend extends Image_Graph_Layout
      */
     function _plotCount()
     {
-        if (is_a($this->_plotarea, 'Image_Graph_Plotarea')) {
-            $elements = $this->_plotarea->_elements;
-
-            $maxSize = 0;
-            $count = 0;
-            $keys = array_keys($elements);
-            foreach ($keys as $key) {
-                $element =& $elements[$key];
-                if (is_a($element, 'Image_Graph_Plot')) {
-                    $count ++;
+        $count = 0;
+        $keys = array_keys($this->_plotareas);
+        foreach($keys as $key) {
+            $plotarea =& $this->_plotareas[$key];
+            if (is_a($plotarea, 'Image_Graph_Plotarea')) {
+                $keys2 = array_keys($plotarea->_elements);
+                foreach ($keys2 as $key) {
+                    $element =& $plotarea->_elements[$key];
+                    if (is_a($element, 'Image_Graph_Plot')) {
+                        $count ++;
+                    }
                 }
+                unset($keys2);
             }
-            unset($keys);
-            return $count;
         }
+        unset($keys);
+        return $count;
+    }
+    
+    /**
+     * Get a default parameter array for legendSamples
+     * @param bool $simulate Whether the array should be used for simulation or
+     * not
+     * @return array Default parameter array
+     * @access private
+     */
+    function _parameterArray($simulate = false) {
+        $param['left'] = $this->_left + $this->_padding;
+        $param['top'] = $this->_top + $this->_padding;
+        $param['right'] = $this->_right - $this->_padding;
+        $param['bottom'] = $this->_bottom - $this->_padding;
+        $param['align'] = $this->_alignment;
+        $param['x'] = $this->_left + $this->_padding;
+        $param['y'] = $this->_top + $this->_padding;
+        $param['width'] = 16;
+        $param['height'] = 16;
+        $param['show_marker'] = $this->_showMarker;
+        $param['maxwidth'] = 0;
+        $param['font'] = $this->_getFont();
+        if ($simulate) {
+            $param['simulate'] = true;
+        }
+            
+        return $param;
     }
 
     /**
@@ -120,11 +149,24 @@ class Image_Graph_Legend extends Image_Graph_Layout
     {
         $parent = (is_object($this->_parent) ? get_class($this->_parent) : $this->_parent);
 
-        if (strtolower($parent) == 'Image_Graph_plotarea') {
-            $count = $this->_plotCount();
-            return $count * 10 + // The height of 'plot'-legends
-             ($count -1) * $this->_padding + // The space between plots
-            2 * $this->_padding; // Top and bottom padding
+        if (strtolower($parent) == 'image_graph_plotarea') {
+            $param = $this->_parameterArray(true);
+            $param['align'] = IMAGE_GRAPH_ALIGN_VERTICAL;
+            $param0 = $param;
+            $keys = array_keys($this->_plotareas);
+            foreach($keys as $key) {
+                $plotarea =& $this->_plotareas[$key];
+                $keys2 = array_keys($plotarea->_elements);
+                foreach($keys2 as $key) {
+                    $element =& $plotarea->_elements[$key];
+                    if (is_a($element, 'Image_Graph_Plot')) {
+                        $element->_legendSample($param);
+                    }
+                }
+                unset($keys2);
+            }
+            unset($keys);
+            return abs($param['y'] - $param0['y']) + 2*$this->_padding;
         } else {
             return parent::height();
         }
@@ -140,24 +182,23 @@ class Image_Graph_Legend extends Image_Graph_Layout
     {
         $parent = (is_object($this->_parent) ? get_class($this->_parent) : $this->_parent);
 
-        if (strtolower($parent) == 'Image_Graph_plotarea') {
-            $elements = $this->_plotarea->_elements;
-
-            $this->_driver->setFont($this->_getFont());
-
-            $maxSize = 0;
-            $keys = array_keys($elements);
-            foreach ($keys as $key) {
-                $element =& $elements[$key];
-                if (is_a($element, 'Image_Graph_Plot')) {
-                    $maxSize = max($maxSize, $this->_driver->textWidth($element->Title));
+        if (strtolower($parent) == 'image_graph_plotarea') {
+            $param = $this->_parameterArray(true);
+            $param['align'] = IMAGE_GRAPH_ALIGN_VERTICAL;
+            $keys = array_keys($this->_plotareas);
+            foreach($keys as $key) {
+                $plotarea =& $this->_plotareas[$key];
+                $keys2 = array_keys($plotarea->_elements);
+                foreach($keys2 as $key) {
+                    $element =& $plotarea->_elements[$key];
+                    if (is_a($element, 'Image_Graph_Plot')) {
+                        $element->_legendSample($param);
+                    }
                 }
+                unset($keys2);
             }
             unset($keys);
-            return $maxSize + // The width of the text
-            10 + // Spacing between legend and text
-            10 + // The width of the legend
-            2 * $this->_padding; // Left and right padding
+            return $param['maxwidth'];
         } else {
             return parent::width();
         }
@@ -185,23 +226,26 @@ class Image_Graph_Legend extends Image_Graph_Layout
         $parent = (is_object($this->_parent) ? get_class($this->_parent) : $this->_parent);
 
         if (strtolower($parent) == 'image_graph_plotarea') {
+            $w = $this->_width();
+            $h = $this->_height();
+            
             if ($this->_alignment === false) {
                 $this->_alignment = IMAGE_GRAPH_ALIGN_TOP + IMAGE_GRAPH_ALIGN_RIGHT;
             }
 
             if (($this->_alignment & IMAGE_GRAPH_ALIGN_BOTTOM) != 0) {
-                $y = $this->_parent->_fillBottom() - $this->_height() - 5 - 10;
+                $y = $this->_parent->_fillBottom() - $h;
             } else {
                 $y = $this->_parent->_fillTop();
             }
 
             if (($this->_alignment & IMAGE_GRAPH_ALIGN_LEFT) != 0) {
-                $x = $this->_parent->_fillLeft() + $this->_width() + 10;
+                $x = $this->_parent->_fillLeft();
             } else {
-                $x = $this->_parent->_fillRight() - 5;
+                $x = $this->_parent->_fillRight() - $w;
             }
 
-            $this->_setCoords($x, $y, $x + $this->_width(), $y + $this->_height());
+            $this->_setCoords($x, $y, $x + $w, $y + $h);
         }
     }
 
@@ -212,7 +256,9 @@ class Image_Graph_Legend extends Image_Graph_Layout
      */
     function setPlotarea(& $plotarea)
     {
-        $this->_plotarea =& $plotarea;
+        if (is_a($plotarea, 'Image_Graph_Plotarea')) {
+            $this->_plotareas[] =& $plotarea;
+        }
     }
 
     /**
@@ -225,8 +271,8 @@ class Image_Graph_Legend extends Image_Graph_Layout
     function _setParent(& $parent)
     {
         parent::_setParent($parent);
-        if ($this->_plotarea === false) {
-            $this->_plotarea =& $parent;
+        if (count($this->_plotareas) == 0) {
+            $this->setPlotarea($parent);
         }
     }
 
@@ -250,97 +296,87 @@ class Image_Graph_Legend extends Image_Graph_Layout
     function _done()
     {
 
-        $shadow = $this->_shadow;
-        $this->_shadow = false;
-
         if (Image_Graph_Element::_done() === false) {
             return false;
         }
+        
+        $this->_driver->startGroup(get_class($this));
 
-        $param['left'] = $this->_left + $this->_padding;
-        $param['top'] = $this->_top + $this->_padding;
-        $param['right'] = $this->_right - $this->_padding;
-        $param['bottom'] = $this->_bottom - $this->_padding;
-        $param['align'] = $this->_alignment;
-        $param['x'] = $this->_left + $this->_padding;
-        $param['y'] = $this->_top + $this->_padding;
-        $param['width'] = 16;
-        $param['height'] = 16;
-        $param['show_marker'] = $this->_showMarker;
+        $param = $this->_parameterArray();
 
-        $legend = 0;
-        if (is_a($this->_plotarea, 'Image_Graph_Plotarea')) {
-            $elements = $this->_plotarea->_elements;
+        $parent = (is_object($this->_parent) ?
+            get_class($this->_parent) :
+            $this->_parent
+        );
 
-            if (is_array($elements)) {
-                $param['font'] = $this->_getFont();
+        if (strtolower($parent) == 'image_graph_plotarea') {                    
+            $this->_getFillStyle();
+            $this->_getLineStyle();
+            $this->_driver->rectangle(
+                $this->_left,
+                $this->_top,
+                $this->_right,
+                $this->_bottom
+            );
 
-                $parent = (is_object($this->_parent) ?
-                    get_class($this->_parent) :
-                    $this->_parent
-                );
-
-                if (strtolower($parent) == 'image_graph_plotarea') {
-                    $this->_setCoords(
-                        $this->_right - $this->_width(),
-                        $this->_top,
-                        $this->_right,
-                        $this->_top + $this->_height()
-                    );
-
-                    $this->_getFillStyle();
-                    $this->_getLineStyle();
-                    $this->_driver->rectangle(
-                        $this->_left,
-                        $this->_top,
-                        $this->_right,
-                        $this->_bottom
-                    );
-
-                    $y = 0;
-                    $keys = array_keys($elements);
-                    foreach($keys as $key) {
-                        $element =& $elements[$key];
-                        if (is_a($element, 'Image_Graph_Plot')) {
-                            $element->_legendSample($param);
-                        }
+            $param = $this->_parameterArray();
+            
+            $keys = array_keys($this->_plotareas);
+            foreach($keys as $key) {
+                $plotarea =& $this->_plotareas[$key];
+                $keys2 = array_keys($plotarea->_elements);
+                foreach($keys2 as $key) {
+                    $element =& $plotarea->_elements[$key];
+                    if (is_a($element, 'Image_Graph_Plot')) {
+                        $element->_legendSample($param);
                     }
-                    unset($keys);
-                } else {
-                    $param0 = $param;
-                    $param0['simulate'] = true;
-                    $keys = array_keys($elements);
-                    foreach($keys as $key) {
-                        $element =& $elements[$key];
-                        if (is_a($element, 'Image_Graph_Plot')) {
-                            $element->_legendSample($param0);
-                        }
+                }
+                unset($keys2);
+            }
+            unset($keys);
+        } else {
+            $param0 = $param;
+            $param0['simulate'] = true;
+            $keys = array_keys($this->_plotareas);
+            foreach($keys as $key) {
+                $plotarea =& $this->_plotareas[$key];
+                $keys2 = array_keys($plotarea->_elements);
+                foreach($keys2 as $key) {
+                    $element =& $plotarea->_elements[$key];
+                    if (is_a($element, 'Image_Graph_Plot')) {
+                        $element->_legendSample($param0);
                     }
-                    unset($keys);
-                    if (($this->_alignment & IMAGE_GRAPH_ALIGN_VERTICAL) != 0) {
-                        if ($param0['x'] == $param['x']) {
-                            $param['y'] = $param['y'] + ($this->_height() - ($param0['y'] - $param['y']))/2;
-                        }
-                    } else {
-                        if ($param0['y'] == $param['y']) {
-                            $param['x'] = $param['x'] + ($this->_width() - ($param0['x'] - $param['x']))/2;
-                        }
-                    }
-
-                    if ($plotCount = $this->_plotCount()) {
-                        $legendWidth = $this->_width() / $plotCount;
-                    }
-                    $keys = array_keys($elements);
-                    foreach ($keys as $key) {
-                        $element =& $elements[$key];
-                        if (is_a($element, 'Image_Graph_Plot')) {
-                            $element->_legendSample($param);
-                        }
-                    }
-                    unset($keys);
+                }
+                unset($keys2);
+            }
+            unset($keys);
+            if (($this->_alignment & IMAGE_GRAPH_ALIGN_VERTICAL) != 0) {
+                if ($param0['x'] == $param['x']) {
+                    $param['y'] = $param['y'] + ($this->_height() - ($param0['y'] - $param['y']))/2;
+                }
+            } else {
+                if ($param0['y'] == $param['y']) {
+                    $param['x'] = $param['x'] + ($this->_width() - ($param0['x'] - $param['x']))/2;
                 }
             }
+
+            $keys = array_keys($this->_plotareas);
+            foreach($keys as $key) {
+                $plotarea =& $this->_plotareas[$key];
+                $keys2 = array_keys($plotarea->_elements);
+                foreach($keys2 as $key) {
+                    $element =& $plotarea->_elements[$key];
+                    if (is_a($element, 'Image_Graph_Plot')) {
+                        $element->_legendSample($param);
+                    }
+                }
+                unset($keys2);
+            }
+            unset($keys);
         }
+        
+        $this->_driver->endGroup();
+        
         return true;
     }
 }

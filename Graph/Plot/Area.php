@@ -88,6 +88,7 @@ class Image_Graph_Plot_Area extends Image_Graph_Plot
             return false;
         }
 
+        $this->_driver->startGroup(get_class($this) . '_' . $this->_title);
         if ($this->_multiType == 'stacked') {
             reset($this->_dataset);
             $key = key($this->_dataset);
@@ -165,6 +166,7 @@ class Image_Graph_Plot_Area extends Image_Graph_Plot
         }
         unset($keys);
         $this->_drawMarker();
+        $this->_driver->endGroup();
         return true;
     }
 

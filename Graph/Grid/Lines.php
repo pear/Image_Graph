@@ -76,6 +76,8 @@ class Image_Graph_Grid_Lines extends Image_Graph_Grid
             return false;
         }
 
+        $this->_driver->startGroup(get_class($this));
+        
         $value = false;
 
         $secondaryPoints = $this->_getSecondaryAxisPoints();
@@ -103,6 +105,9 @@ class Image_Graph_Grid_Lines extends Image_Graph_Grid
                 $this->_driver->line($x1, $y1, $x2, $y2);
             }
         }
+        
+        $this->_driver->endGroup();
+        
         return true;
     }
 

@@ -120,24 +120,30 @@ class Image_Graph_Dataset
      */
     function addPoint($x, $y = false, $ID = false)
     {
-        if (is_array($y)) {
-            $maxY = max($y);
-            $minY = min($y);
-        } else {
-            $maxY = $y;
-            $minY = $y;
+        if ($y !== null) {
+            if (is_array($y)) {
+                $maxY = max($y);
+                $minY = min($y);
+            } else {
+                $maxY = $y;
+                $minY = $y;
+            }
         }
 
         if ($this->_count) {
             $this->_minimumX = min($x, $this->_minimumX);
             $this->_maximumX = max($x, $this->_maximumX);
-            $this->_minimumY = min($minY, $this->_minimumY);
-            $this->_maximumY = max($maxY, $this->_maximumY);
+            if ($y !== null) {
+                $this->_minimumY = min($minY, $this->_minimumY);
+                $this->_maximumY = max($maxY, $this->_maximumY);
+            }
         } else {
             $this->_minimumX = $x;
             $this->_maximumX = $x;
-            $this->_minimumY = $minY;
-            $this->_maximumY = $maxY;
+            if ($y !== null) {
+                $this->_minimumY = $minY;
+                $this->_maximumY = $maxY;
+            }
         }
 
         $this->_count++;
@@ -176,7 +182,7 @@ class Image_Graph_Dataset
      */
     function _getPointY($x)
     {
-        return $y;
+        return $x;
     }
 
     /**

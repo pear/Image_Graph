@@ -136,8 +136,8 @@ class Image_Graph_Element extends Image_Graph_Common
     var $_defaultFontOptions = false;
 
     /**
-     * Enable shadows on the element
-     * @var bool
+     * Shadows options of the element
+     * @var mixed
      * @access private
      */
     var $_shadow = false;
@@ -148,16 +148,6 @@ class Image_Graph_Element extends Image_Graph_Common
      * @access private
      */
     var $_padding = 0;
-
-    /**
-     * Resets the elements
-     *
-     * @access private
-     */
-    function _reset()
-    {
-        parent::_reset();
-    }
 
     /**
      * Sets the background fill style of the element
@@ -181,9 +171,12 @@ class Image_Graph_Element extends Image_Graph_Common
     /**
      * Shows shadow on the element
      */
-    function showShadow()
+    function showShadow($color = 'black@0.2', $size = 5)
     {
-        $this->_shadow = true;
+        $this->_shadow = array(
+            'color' => $color,
+            'size' => $size
+        );
     }
 
     /**
@@ -505,7 +498,7 @@ class Image_Graph_Element extends Image_Graph_Common
         $this->_left = min($left, $right);
         $this->_top = min($top, $bottom);
         $this->_right = max($left, $right);
-        $this->_bottom = max($top, $bottom);
+        $this->_bottom = max($top, $bottom);        
     }
 
     /**
@@ -652,7 +645,18 @@ class Image_Graph_Element extends Image_Graph_Common
      */
     function _displayShadow()
     {        
-        // TODO Implement shadows
+        if (is_array($this->_shadow)) {
+            $this->_driver->startGroup(get_class($this) . '_shadow');
+            $this->_driver->setFillColor($this->_shadow['color']);        
+            $this->_driver->polygonAdd($this->_right + 1, $this->_top + $this->_shadow['size']);
+            $this->_driver->polygonAdd($this->_right + $this->_shadow['size'], $this->_top + $this->_shadow['size']);
+            $this->_driver->polygonAdd($this->_right + $this->_shadow['size'], $this->_bottom + $this->_shadow['size']);
+            $this->_driver->polygonAdd($this->_left + $this->_shadow['size'], $this->_bottom + $this->_shadow['size']);
+            $this->_driver->polygonAdd($this->_left + $this->_shadow['size'], $this->_bottom + 1);
+            $this->_driver->polygonAdd($this->_right + 1, $this->_bottom + 1);
+            $this->_driver->polygonEnd();            
+            $this->_driver->endGroup();
+        }
     }
 
     /**
@@ -695,6 +699,10 @@ class Image_Graph_Element extends Image_Graph_Common
         }
 
         $result = parent::_done();
+        
+        if ($this->_shadow !== false) {
+            $this->_displayShadow();
+        }
 
         return $result;
     }

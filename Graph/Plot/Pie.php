@@ -287,6 +287,9 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
     function _legendSample(&$param)
     {
         if (is_array($this->_dataset)) {
+            
+            $this->_driver->startGroup(get_class($this) . '_' . $this->_title);
+            
             $totals = $this->_getTotals();
             $totals['CENTER_X'] = (int) (($this->_left + $this->_right) / 2);
             $totals['CENTER_Y'] = (int) (($this->_top + $this->_bottom) / 2);
@@ -304,9 +307,11 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
                     $caption = $point['X'];
     
                     $this->_driver->setFont($param['font']);
-                    $x2 = $param['x'] + 20 + $param['width'] + $this->_driver->textWidth($caption);
+                    $width = 20 + $param['width'] + $this->_driver->textWidth($caption);
+                    $param['maxwidth'] = max($param['maxwidth'], $width);
+                    $x2 = $param['x'] + $width;
                     $y2 = $param['y'] + $param['height']+5;
-    
+                        
                     if ((($param['align'] & IMAGE_GRAPH_ALIGN_VERTICAL) != 0) && ($y2 > $param['bottom'])) {
                         $param['y'] = $param['top'];
                         $param['x'] = $x2;
@@ -351,6 +356,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
                 }
             }
             unset($keys);
+            $this->_driver->endGroup();
         }
     }
 

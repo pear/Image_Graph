@@ -94,35 +94,60 @@ class Image_Graph_Plot_Smoothed_Line extends Image_Graph_Plot_Smoothed_Bezier
             return false;
         }
 
+        $this->_driver->startGroup(get_class($this) . '_' . $this->_title);
         $keys = array_keys($this->_dataset);
         foreach ($keys as $key) {
             $dataset =& $this->_dataset[$key];
             $dataset->_reset();
+            $numPoints = 0;
             while ($p1 = $dataset->_next()) {
-                $p0 = $dataset->_nearby(-2);
-                $p2 = $dataset->_nearby(0);
-                $p3 = $dataset->_nearby(1);
-                if ($p2) {
-                    $cp = $this->_getControlPoints($p1, $p0, $p2, $p3);
-                    $this->_driver->splineAdd(
-                        $cp['X'],
-                        $cp['Y'],
-                        $cp['P1X'],
-                        $cp['P1Y'],
-                        $cp['P2X'],
-                        $cp['P2Y']
-                    );
+                if ($p1['Y'] === null) {
+                    if ($numPoints > 1) {
+                        $this->_getLineStyle($key);
+                        $this->_driver->splineEnd(false);
+                    }
+                    $numPoints = 0;
                 } else {
-                    $x = $this->_pointX($p1);
-                    $y = $this->_pointY($p1);
-                    $this->_driver->polygonAdd($x, $y);
+                    $p0 = $dataset->_nearby(-2);
+                    $p2 = $dataset->_nearby(0);
+                    $p3 = $dataset->_nearby(1);
+
+                    if (($p0) && ($p0['Y'] === null)) {
+                        $p0 = false;
+                    }
+                    if (($p2) && ($p2['Y'] === null)) {
+                        $p2 = false;
+                    }
+                    if (($p3) && ($p3['Y'] === null)) {
+                        $p3 = false;
+                    }
+
+                    if ($p2) {
+                        $cp = $this->_getControlPoints($p1, $p0, $p2, $p3);
+                        $this->_driver->splineAdd(
+                            $cp['X'],
+                            $cp['Y'],
+                            $cp['P1X'],
+                            $cp['P1Y'],
+                            $cp['P2X'],
+                            $cp['P2Y']
+                        );
+                    } else {
+                        $x = $this->_pointX($p1);
+                        $y = $this->_pointY($p1);
+                        $this->_driver->polygonAdd($x, $y);
+                    }
+                    $numPoints++;
                 }
             }
-            $this->_getLineStyle();
-            $this->_driver->splineEnd(false);
+            if ($numPoints > 1) {
+                $this->_getLineStyle();
+                $this->_driver->splineEnd(false);
+            }
         }
         unset($keys);
         $this->_drawMarker();
+        $this->_driver->endGroup();
         return true;
     }
 

@@ -378,17 +378,24 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      */
     function _done()
     {
+        $result = true;
         if (Image_Graph_Element::_done() === false) {
-            return false;
+            $result = false;
         }
         
+        $this->_driver->startGroup(get_class($this));
+        
+        $this->_drawAxisLines();
+        
+        $this->_driver->startGroup(get_class($this) . '_ticks');
         $label = false;
         while (($label = $this->_getNextLabel($label)) !== false) {
             $this->_drawTick($label);
         }
+        $this->_driver->endGroup();       
 
-        $this->_drawAxisLines();
-        return true;
+        $this->_driver->endGroup();
+        return $result;
     }
 
 }

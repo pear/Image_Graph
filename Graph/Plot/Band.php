@@ -102,6 +102,7 @@ class Image_Graph_Plot_Band extends Image_Graph_Plot
 
         $current = array();
 
+        $this->_driver->startGroup(get_class($this) . '_' . $this->_title);
         $keys = array_keys($this->_dataset);
         foreach ($keys as $key) {
             $dataset =& $this->_dataset[$key];
@@ -138,6 +139,7 @@ class Image_Graph_Plot_Band extends Image_Graph_Plot
         }
         unset($keys);
         $this->_drawMarker();
+        $this->_driver->endGroup();
         return true;
     }
 

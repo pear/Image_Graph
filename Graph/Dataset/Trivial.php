@@ -59,11 +59,15 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
     /**
      * Image_Graph_Dataset_Trivial [Constructor]
      *
-     * Pass an assictaed array ($data[$x] = $y) to the constructor for easy data
-     * addition.
+     * Pass an associated array ($data[$x] = $y) to the constructor for easy
+     * data addition. Alternatively (if multiple entries with same x value is
+     * required) pass an array with (x, y) values: $data[$id] = array('x' => $x,
+     * 'y' => $y); 
      *
-     * NB! If passing an array at this point, the x-values will also be used for
-     * ID tags, i.e. when using {@link Image_Graph_Fill_Array}.
+     * NB! If passing the 1st type array at this point, the x-values will also
+     * be used for ID tags, i.e. when using {@link Image_Graph_Fill_Array}. In
+     * the 2nd type the key/index of the "outermost" array will be the id tag
+     * (i.e. $id in the example)
      *
      * @param array $dataArray An associated array with values to the dataset
      */
@@ -75,8 +79,12 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
             reset($dataArray);
             $keys = array_keys($dataArray);
             foreach ($keys as $x) {
-                $y = $dataArray[$x];
-                $this->addPoint($x, $y, $x);
+                $y =& $dataArray[$x];
+                if ((is_array($y)) && (isset($y['x'])) && (isset($y['y']))) {
+                    $this->addPoint($y['x'], $y['y'], $x);
+                } else {
+                    $this->addPoint($x, $y, $x);
+                }
             }
         }
     }
@@ -128,7 +136,7 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
      */
     function _getPointX($x)
     {
-        if (isset ($this->_data[$x]['X'])) {
+        if (isset($this->_data[$x])) {
             return $this->_data[$x]['X'];
         } else {
             return false;
@@ -145,7 +153,7 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
      */
     function _getPointY($x)
     {
-        if (isset ($this->_data[$x]['Y'])) {
+        if (isset($this->_data[$x])) {
             return $this->_data[$x]['Y'];
         } else {
             return false;
@@ -162,7 +170,7 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
      */
     function _getPointID($x)
     {
-        if (isset ($this->_data[$x]['ID'])) {
+        if (isset($this->_data[$x])) {
             return $this->_data[$x]['ID'];
         } else {
             return false;
@@ -207,7 +215,7 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
         $ID = $this->_getPointID($this->_posX);
         $this->_posX += $this->_stepX();
 
-        return array ('X' => $x, 'Y' => $y, 'ID' => $ID);
+        return array('X' => $x, 'Y' => $y, 'ID' => $ID);
     }
 
 }
