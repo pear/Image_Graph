@@ -32,6 +32,7 @@
     <deps>
       <dep type="ext" rel="has" version="2">gd</dep>
       <dep type="pkg" rel="ge" version="0.2">Image_Text</dep>
+      <dep type="pkg" rel="ge" version="0.4">Image_Color</dep>
     </deps> 
     <filelist>
       <dir name="/" baseinstalldir="Image">
@@ -51,6 +52,7 @@
           </dir> 
           <dir name="Fill" role="php">
             <file>Common.php</file>
+            <file>Linear.php</file>
             <file>Solid.php</file>
           </dir> 
         </dir> 
