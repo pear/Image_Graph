@@ -154,6 +154,25 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
         return 1;
     }
 
+    /**
+     * Get the axis intersection pixel position
+     *
+     * This is only to be called prior to output! I.e. between the user
+     * invokation of Image_Graph::done() and any actual output is performed.
+     * This is because it can change the axis range.
+     *
+     * @param double $value the intersection value to get the pixel-point for
+     * @return double The pixel position along the axis
+     * @access private
+     */
+    function _intersectPoint($value)
+    {
+        if ($value <= 0) {
+            $value = 1;
+        }
+        return parent::_intersectPoint($value);
+    }
+    
 }
 
 ?>
