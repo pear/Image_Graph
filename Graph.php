@@ -430,20 +430,28 @@ class Image_Graph
     {
         for ($axisCount=0; $axisCount<=1; $axisCount++) {
             $currAxis = "axisY".$axisCount;
-            if (isset($this->{$currAxis}->_bounds['min'])) {
-                $this->{$currAxis}->_boundsEffective['min'] = $this->{$currAxis}->_bounds['min'];
-            } else {
-                foreach ($this->_dataElementsEffective as $currDataElement) {
-                    if ($currDataElement->_attributes['axisId'] == $axisCount) {
-                        // workaround - maybe solve this more elegant
-                        if (!is_array($currDataElement)) {
-                            $currDataElementTemp = array(& $currDataElement);
-                        } else {
-                            $currDataElementTemp = & $currDataElement;
-                        }
+            $bounds_min_auto = !isset($this->{$currAxis}->_bounds['min']);
+            $bounds_max_auto = !isset($this->{$currAxis}->_bounds['max']);
 
-                        if (!isset($this->{$currAxis}->_boundsEffective['min'])) {
+            if (!$bounds_min_auto) {
+                $this->{$currAxis}->_boundsEffective['min'] = $this->{$currAxis}->_bounds['min'];
+            }
+            if (!$bounds_max_auto) {
+                $this->{$currAxis}->_boundsEffective['max'] = $this->{$currAxis}->_bounds['max'];
+            }
+            if (($bounds_min_auto) || ($bounds_max_auto)) {
+                foreach ($this->_dataElementsEffective as $currDataElement) {
+                    if (!is_array($currDataElement)) {
+                        $currDataElementTemp = array($currDataElement);
+                    } else {
+                        $currDataElementTemp = $currDataElement;
+                    }
+                    if ($currDataElementTemp[0]->_attributes['axisId'] == $axisCount) {
+                        if ($bounds_min_auto && !isset($this->{$currAxis}->_boundsEffective['min'])) {
                             $this->{$currAxis}->_boundsEffective['min'] = $currDataElementTemp[0]->_data[0];
+                        }
+                        if ($bounds_max_auto && !isset($this->{$currAxis}->_boundsEffective['max'])) {
+                            $this->{$currAxis}->_boundsEffective['max'] = $currDataElementTemp[0]->_data[0];
                         }
     
                         foreach ($currDataElementTemp as $currDataElementEffective) {
@@ -453,39 +461,10 @@ class Image_Graph
                                 $dataTemp = & $currDataElementEffective->_data;
                             }
                             foreach ($dataTemp as $currData) {
-                                if ($this->{$currAxis}->_boundsEffective['min'] > $currData) {
+                                if ($bounds_min_auto && ($this->{$currAxis}->_boundsEffective['min'] > $currData)) {
                                     $this->{$currAxis}->_boundsEffective['min'] = $currData;
                                 }
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (isset($this->{$currAxis}->_bounds['max'])) {
-                $this->{$currAxis}->_boundsEffective['max'] = $this->{$currAxis}->_bounds['max'];
-            } else {
-                foreach ($this->_dataElementsEffective as $currDataElement) {
-                    if ($currDataElement->_attributes['axisId'] == $axisCount) {
-                        // workaround - maybe solve this more elegant
-                        if (!is_array($currDataElement)) {
-                            $currDataElementTemp = array(& $currDataElement);
-                        } else {
-                            $currDataElementTemp = & $currDataElement;
-                        }
-
-                        if (!isset($this->{$currAxis}->_boundsEffective['max'])) {
-                            $this->{$currAxis}->_boundsEffective['max'] = $currDataElementTemp[0]->_data[0];
-                        }
-    
-                        foreach ($currDataElementTemp as $currDataElementEffective) {
-                            if (!is_null($currDataElementEffective->_stackingData)) {
-                                $dataTemp = & $currDataElementEffective->_stackingData[1];
-                            } else {
-                                $dataTemp = & $currDataElementEffective->_data;
-                            }
-                            foreach ($dataTemp as $currData) {
-                                if ($this->{$currAxis}->_boundsEffective['max'] < $currData) {
+                                if ($bounds_max_auto && ($this->{$currAxis}->_boundsEffective['max'] < $currData)) {
                                     $this->{$currAxis}->_boundsEffective['max'] = $currData;
                                 }
                             }
@@ -738,6 +717,8 @@ class Image_Graph
                     }
                 }
                 $borderspaceSum["bottom"] += $maxHeight;
+                $borderspaceSum["bottom"] += $this->axisX->_spacer['top'];
+                $borderspaceSum["bottom"] += $this->axisX->_spacer['bottom'];
             }
 
             if (($this->axisX->_tickStyle == IMAGE_GRAPH_TICKS_OUTSIDE) ||
@@ -765,11 +746,14 @@ class Image_Graph
                     $this->{$currAxis}->_internalTempValues['maxNumWidth'] = $maxWidth;
 
                     if ($maxWidth > 0) {
-                        $maxWidth += 2; // add a few pixels between text and axis-major-ticks
                         if ($axisCount == 0) { // axis 0 (left axis)
-                            $borderspaceSum["left"]  += $maxWidth;
+                             $borderspaceSum["left"] += $maxWidth;
+                             $borderspaceSum["left"] += $this->{$currAxis}->_spacer['left'];
+                             $borderspaceSum["left"] += $this->{$currAxis}->_spacer['right'];
                         } else { // axis 1 (right axis)
-                            $borderspaceSum["right"] += $maxWidth;
+                             $borderspaceSum["right"] += $maxWidth;
+                             $borderspaceSum["right"] += $this->{$currAxis}->_spacer['left'];
+                             $borderspaceSum["right"] += $this->{$currAxis}->_spacer['right'];
                         }
                     }
                 }
@@ -929,6 +913,7 @@ class Image_Graph
                 $textY += $this->axisX->_tickSize;
             }
             $textY += round($this->axisX->_internalTempValues['maxLabelHeight'] / 2);
+            $textY += $this->axisX->_spacer['top'];
             $tempText->set('height', $this->axisX->_internalTempValues['maxLabelHeight']);
 
 
