@@ -295,12 +295,17 @@ class Image_Graph_Element extends Image_Graph_Common
      * @see Image_Graph_Line
      * @access private
      */
-    function _getLineStyle()
+    function _getLineStyle($ID = false)
     {
         if (is_object($this->_lineStyle)) {
-            $result = $this->_lineStyle->_getLineStyle();
-            $this->_driver->setLineThickness($result['thickness']);
-            $this->_driver->setLineColor($result['color']);
+            $result = $this->_lineStyle->_getLineStyle($ID);
+            if (is_array($result)) {
+                $this->_driver->setLineThickness($result['thickness']);
+                $this->_driver->setLineColor($result['color']);
+            } else {
+                $this->_driver->setLineThickness(1);
+                $this->_driver->setLineColor($result);
+            }
         } elseif ($this->_lineStyle != null) {
             $this->_driver->setLineThickness(1);
             $this->_driver->setLineColor($this->_lineStyle);
@@ -413,7 +418,8 @@ class Image_Graph_Element extends Image_Graph_Common
      *
      * @param int $size The size of the font
      */
-    function setFontSize($size) {
+    function setFontSize($size)
+    {
         $this->_fontOptions['size'] = $size;
     }
 
@@ -422,7 +428,8 @@ class Image_Graph_Element extends Image_Graph_Common
      *
      * @param int $angle The angle of the font
      */
-    function setFontAngle($angle) {
+    function setFontAngle($angle)
+    {
         if ($angle == 'vertical') {
             $this->_fontOptions['vertical'] = true;
             $this->_fontOptions['angle'] = 90;
@@ -436,7 +443,8 @@ class Image_Graph_Element extends Image_Graph_Common
      *
      * @param mixed $color The color of the font
      */
-    function setFontColor($color) {
+    function setFontColor($color)
+    {
         $this->_fontOptions['color'] = $color;
     }
 

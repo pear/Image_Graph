@@ -125,7 +125,7 @@ class Image_Graph_Fill_Array extends Image_Graph_Fill
 
         if (is_object($fillStyle)) {
             return $fillStyle->_getFillStyle($ID);
-        } elseif ($fillStyle != null) {
+        } elseif ($fillStyle !== null) {
             return $fillStyle;
         } else {
             return parent::_getFillStyle($ID);

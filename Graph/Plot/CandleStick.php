@@ -56,15 +56,16 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
      *
      * @access private
      */
-    function _drawCandleStick($x, $w, $y_min, $y_open, $y_close, $y_max, $ID) {
-                $this->_getLineStyle();
-                $this->_driver->line($x, min($y_open, $y_close), $x, $y_max);
-                $this->_getLineStyle();
-                $this->_driver->line($x, max($y_open, $y_close), $x, $y_min);
-
-                $this->_getLineStyle();
-                $this->_getFillStyle($ID);
-                $this->_driver->rectangle($x - $w, min($y_open, $y_close), $x + $w, max($y_open, $y_close));
+    function _drawCandleStick($x, $w, $y_min, $y_open, $y_close, $y_max, $ID) 
+    {
+        $this->_getLineStyle($ID);
+        $this->_driver->line($x, min($y_open, $y_close), $x, $y_max);
+        $this->_getLineStyle($ID);
+        $this->_driver->line($x, max($y_open, $y_close), $x, $y_min);
+    
+        $this->_getLineStyle($ID);
+        $this->_getFillStyle($ID);
+        $this->_driver->rectangle($x - $w, min($y_open, $y_close), $x + $w, max($y_open, $y_close));
     }
 
     /**

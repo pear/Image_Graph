@@ -96,7 +96,8 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
 	 * @since 0.3.0dev2
      * @access private
      */
-    function _calcEdgeOffset($alignSize, $offset, $total, $multiplier) {
+    function _calcEdgeOffset($alignSize, $offset, $total, $multiplier)
+    {
         if ($alignSize['unit'] == 'percentage') {
             return $offset + $multiplier * ($total * $alignSize['value'] / 100);
         } elseif ($alignSize['unit'] == 'pixels') {

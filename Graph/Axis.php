@@ -916,7 +916,8 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      * @param bool $invert True if the axis is to be inverted, false if not
      * @since 0.3.0dev3
      */
-    function setInverted($invert) {
+    function setInverted($invert)
+    {
         $this->_invert = $invert;
     }
 

@@ -195,7 +195,8 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
      * @param int $explode Radius to explode with (or an array)
      * @param string $x The 'x' value to explode or omitted
      */
-    function explode($explode, $x = false) {
+    function explode($explode, $x = false)
+    {
         if ($x === false) {
             $this->_explode = $explode;
         } else {
@@ -324,7 +325,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
     
                     if (!isset($param['simulate'])) {
                         $this->_getFillStyle($point['ID']);
-                        $this->_getLineStyle();
+                        $this->_getLineStyle($point['ID']);
                         $this->_drawLegendSample($x0, $y0, $x1, $y1);
     
                         if (($this->_marker) && ($dataset) && ($param['show_marker'])) {

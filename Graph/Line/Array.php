@@ -70,14 +70,34 @@ class Image_Graph_Line_Array extends Image_Graph_Common
      *
      * @param Image_Graph_Line $style The style to add
      */
-    function add(& $style)
+    function add(& $style, $id = false)
     {
         if (is_a($style, 'Image_Graph_Element')) {
             parent::add($style);
         }
-        $this->_lineStyles[] = & $style;
+        if ($id === false) {
+            $this->_lineStyles[] = & $style;
+        } else {
+            $this->_lineStyles[$id] = & $style;
+        }
         reset($this->_lineStyles);
 
+    }
+
+    /**
+     * Add a color to the array
+     *
+     * @param int $color The color
+     * @param string $id The id or name of the color
+     */
+    function addColor($color, $id = false)
+    {
+        if ($id !== false) {
+            $this->_lineStyles[$id] = $color;
+        } else {
+            $this->_lineStyles[] = $color;
+        }
+        reset($this->_lineStyles);
     }
 
     /**
@@ -88,18 +108,17 @@ class Image_Graph_Line_Array extends Image_Graph_Common
      */
     function _getLineStyle($ID = false)
     {
-        if (($ID === false) || (!$this->_lineStyles[$ID])) {
+        if (($ID === false) || (!isset($this->_lineStyles[$ID]))) {
             $ID = key($this->_lineStyles);
             if (!next($this->_lineStyles)) {
                 reset($this->_lineStyles);
             }
         }
-        $lineStyle = & $this->_lineStyles[$ID];
-
+        $lineStyle =& $this->_lineStyles[$ID];
 
         if (is_object($lineStyle)) {
             return $lineStyle->_getLineStyle($ID);
-        } elseif ($lineStyle != null) {
+        } elseif ($lineStyle !== null) {
             return $lineStyle;
         } else {
             return parent::_getLineStyle($ID);

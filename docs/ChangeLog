@@ -9,6 +9,9 @@ Version 0.3.0-dev3 [2005-xxx-xx] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Fixed PDF (PDFlib) driver to display images correctly
     * Fixed factory method class name alias 'vector', tried to create Image_Graph_Dataset_Vector instead of Image_Graph_Dataset_VectorFunction
     * Fixed a minor problem in category axis when adding more that one point with the same value, i.e. ('A', 10), ('A', 20)
+    * Added possiblitity to add simple colors to Image_Graph_Line_Array
+    * Added id tags for line styles
+    * Performance optimization/tuning (axis)
     * Added more tests
 
 Version 0.3.0-dev2 [2005-Jan-13] - Jesper Veggerby <pear.nosey@veggerby.dk>

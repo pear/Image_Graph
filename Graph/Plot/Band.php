@@ -132,7 +132,7 @@ class Image_Graph_Plot_Band extends Image_Graph_Plot
             unset($upperBand);
             unset($lowerBand);
 
-            $this->_getLineStyle();
+            $this->_getLineStyle($key);
             $this->_getFillStyle($key);
             $this->_driver->polygonEnd();
         }

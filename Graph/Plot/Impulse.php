@@ -72,6 +72,8 @@ class Image_Graph_Plot_Impulse extends Image_Graph_Plot
      */
     function _done()
     {
+        // TODO Check problem with array fill!
+        
         if (parent::_done() === false) {
             return false;
         }
@@ -174,7 +176,7 @@ class Image_Graph_Plot_Impulse extends Image_Graph_Plot
                     if (($ID === false) && (count($this->_dataset) > 1)) {
                         $ID = $key;
                     }
-                    $this->_getLineStyle($ID);
+                    $this->_getLineStyle($key);
                     $this->_driver->line($x1, $y1, $x2, $y2);
                 }
             }
