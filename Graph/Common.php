@@ -230,38 +230,6 @@ class Image_Graph_Common
     }
 
     /**
-     * Returns the total width of the graph's canvas
-     *
-     * @see Image_Graph
-     * @return int The width of the canvas
-     * @access private
-     */
-    function _graphWidth()
-    {
-        if ($this->_parent) {
-            return $this->_parent->_graphWidth();
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * Returns the total height of the graph's canvas
-     *
-     * @see Image_Graph
-     * @return int The height of the canvas
-     * @access private
-     */
-    function _graphHeight()
-    {
-        if ($this->_parent) {
-            return $this->_parent->_graphHeight();
-        } else {
-            return 0;
-        }
-    }
-
-    /**
      * Causes the object to update all sub elements coordinates
      *
      * (Image_Graph_Common, does not itself have coordinates, this is basically
@@ -286,7 +254,7 @@ class Image_Graph_Common
      * The last method to call. Calling Done causes output to the canvas. All
      * sub elements done() method will be invoked
      *
-     * @return bool True if successfull, false if errors
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
     function _done()

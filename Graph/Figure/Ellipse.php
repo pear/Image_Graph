@@ -66,6 +66,7 @@ class Image_Graph_Figure_Ellipse extends Image_Graph_Element
     /**
      * Output the ellipse
      *
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
     function _done()
@@ -82,6 +83,7 @@ class Image_Graph_Figure_Ellipse extends Image_Graph_Element
             $this->width(),
             $this->height()
         );
+        return true;
     }
 
 }

@@ -81,14 +81,14 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
     /**
      * Calculate marker point data
      *
-     * @param Array Point The point to calculate data for
-     * @param Array NextPoint The next point
-     * @param Array PrevPoint The previous point
-     * @param Array Totals The pre-calculated totals, if needed
-     * @return Array An array containing marker point data
+     * @param array $point The point to calculate data for
+     * @param array $nextPoint The next point
+     * @param array $prevPoint The previous point
+     * @param array $totals The pre-calculated totals, if needed
+     * @return array An array containing marker point data
      * @access private
      */
-    function _getMarkerData($point, $nextPoint, $prevPoint, & $totals)
+    function _getMarkerData($point, $nextPoint, $prevPoint, &$totals)
     {
         $point = parent::_getMarkerData($point, $nextPoint, $prevPoint, &$totals);
 
@@ -102,9 +102,6 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
         $point['AX'] = -10 * $point['ANG_X'];
         $point['AY'] = -10 * $point['ANG_Y'];
 
-//        if ((isset($totals['TOTAL_X'])) && ($totals['TOTAL_X'] != 0)) {
-//            $point['PCT_MIN_X'] = $point['PCT_MAX_X'] = (100 * $point['X'] / $totals['TOTAL_X']);
-//        }
         if ((isset($totals['ALL_SUM_Y'])) && ($totals['ALL_SUM_Y'] != 0)) {
             $point['PCT_MIN_Y'] = $point['PCT_MAX_Y'] = (100 * $point['Y'] / $totals['ALL_SUM_Y']);
         }
@@ -209,6 +206,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
     /**
      * Output the plot
      *
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
     function _done()
@@ -249,11 +247,6 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
                 $angle1 = 360 * ($currentY / $totalY);
                 $currentY += $point['Y'];
                 $angle2 = 360 * ($currentY / $totalY);
-/*                $dX = $diameter * ($this->_radius / 100) *
-                    cos(deg2rad(($angle1 + $angle2) / 2));
-                $dY = $diameter * ($this->_radius / 100) *
-                    sin(deg2rad(($angle1 + $angle2) / 2));
-                $dD = sqrt($dX * $dX + $dY * $dY);*/
 
                 $x = $point['X'];
                 $id = $point['ID'];
@@ -281,6 +274,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
         }
         unset($keys);
         $this->_drawMarker();
+        return true;
     }
 
     /**
@@ -291,75 +285,72 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
      */
     function _legendSample(&$param)
     {
-
-        if (!is_array($this->_dataset)) {
-            return false;
-        }
-
-        $totals = $this->_getTotals();
-        $totals['CENTER_X'] = (int) (($this->_left + $this->_right) / 2);
-        $totals['CENTER_Y'] = (int) (($this->_top + $this->_bottom) / 2);
-        $totals['RADIUS'] = min($this->height(), $this->width()) * 0.75 * 0.5;
-        $totals['CURRENT_Y'] = 0;
-
-        $count = 0;
-        $keys = array_keys($this->_dataset);
-        foreach ($keys as $key) {
-            $dataset =& $this->_dataset[$key];
-            $count++;
-
-            $dataset->_reset();
-            while ($point = $dataset->_next()) {
-                $caption = $point['X'];
-
-                $this->_driver->setFont($param['font']);
-                $x2 = $param['x'] + 20 + $param['width'] + $this->_driver->textWidth($caption);
-                $y2 = $param['y'] + $param['height']+5;
-
-                if ((($param['align'] & IMAGE_GRAPH_ALIGN_VERTICAL) != 0) && ($y2 > $param['bottom'])) {
-                    $param['y'] = $param['top'];
-                    $param['x'] = $x2;
-                    $y2 = $param['y'] + $param['height'];
-                } elseif ((($param['align'] & IMAGE_GRAPH_ALIGN_VERTICAL) == 0) && ($x2 > $param['right'])) {
-                    $param['x'] = $param['left'];
-                    $param['y'] = $y2;
+        if (is_array($this->_dataset)) {
+            $totals = $this->_getTotals();
+            $totals['CENTER_X'] = (int) (($this->_left + $this->_right) / 2);
+            $totals['CENTER_Y'] = (int) (($this->_top + $this->_bottom) / 2);
+            $totals['RADIUS'] = min($this->height(), $this->width()) * 0.75 * 0.5;
+            $totals['CURRENT_Y'] = 0;
+    
+            $count = 0;
+            $keys = array_keys($this->_dataset);
+            foreach ($keys as $key) {
+                $dataset =& $this->_dataset[$key];
+                $count++;
+    
+                $dataset->_reset();
+                while ($point = $dataset->_next()) {
+                    $caption = $point['X'];
+    
+                    $this->_driver->setFont($param['font']);
                     $x2 = $param['x'] + 20 + $param['width'] + $this->_driver->textWidth($caption);
-                }
-
-                $x = $x0 = $param['x'];
-                $y = $param['y'];
-                $y0 = $param['y'] - $param['height']/2;
-                $x1 = $param['x'] + $param['width'];
-                $y1 = $param['y'] + $param['height']/2;
-
-                if (!isset($param['simulate'])) {
-                    $this->_getFillStyle($point['ID']);
-                    $this->_getLineStyle();
-                    $this->_drawLegendSample($x0, $y0, $x1, $y1);
-
-                    if (($this->_marker) && ($dataset) && ($param['show_marker'])) {
-                        $prevPoint = $dataset->_nearby(-2);
-                        $nextPoint = $dataset->_nearby();
-
-                        $p = $this->_getMarkerData($point, $nextPoint, $prevPoint, $totals);
-                        if (is_array($point)) {
-                            $p['MARKER_X'] = $x+$param['width']/2;
-                            $p['MARKER_Y'] = $y;
-                            unset ($p['AVERAGE_Y']);
-                            $this->_marker->_drawMarker($p['MARKER_X'], $p['MARKER_Y'], $p);
-                        }
+                    $y2 = $param['y'] + $param['height']+5;
+    
+                    if ((($param['align'] & IMAGE_GRAPH_ALIGN_VERTICAL) != 0) && ($y2 > $param['bottom'])) {
+                        $param['y'] = $param['top'];
+                        $param['x'] = $x2;
+                        $y2 = $param['y'] + $param['height'];
+                    } elseif ((($param['align'] & IMAGE_GRAPH_ALIGN_VERTICAL) == 0) && ($x2 > $param['right'])) {
+                        $param['x'] = $param['left'];
+                        $param['y'] = $y2;
+                        $x2 = $param['x'] + 20 + $param['width'] + $this->_driver->textWidth($caption);
                     }
-                    $this->write($x + $param['width'] +10, $y, $caption, IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_LEFT, $param['font']);
-                }
-
-                if (($param['align'] & IMAGE_GRAPH_ALIGN_VERTICAL) != 0) {
-                    $param['y'] = $y2;
-                } else {
-                    $param['x'] = $x2;
+    
+                    $x = $x0 = $param['x'];
+                    $y = $param['y'];
+                    $y0 = $param['y'] - $param['height']/2;
+                    $x1 = $param['x'] + $param['width'];
+                    $y1 = $param['y'] + $param['height']/2;
+    
+                    if (!isset($param['simulate'])) {
+                        $this->_getFillStyle($point['ID']);
+                        $this->_getLineStyle();
+                        $this->_drawLegendSample($x0, $y0, $x1, $y1);
+    
+                        if (($this->_marker) && ($dataset) && ($param['show_marker'])) {
+                            $prevPoint = $dataset->_nearby(-2);
+                            $nextPoint = $dataset->_nearby();
+    
+                            $p = $this->_getMarkerData($point, $nextPoint, $prevPoint, $totals);
+                            if (is_array($point)) {
+                                $p['MARKER_X'] = $x+$param['width']/2;
+                                $p['MARKER_Y'] = $y;
+                                unset ($p['AVERAGE_Y']);
+                                $this->_marker->_drawMarker($p['MARKER_X'], $p['MARKER_Y'], $p);
+                            }
+                        }
+                        $this->write($x + $param['width'] +10, $y, $caption, IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_LEFT, $param['font']);
+                    }
+    
+                    if (($param['align'] & IMAGE_GRAPH_ALIGN_VERTICAL) != 0) {
+                        $param['y'] = $y2;
+                    } else {
+                        $param['x'] = $x2;
+                    }
                 }
             }
+            unset($keys);
         }
-        unset($keys);
     }
 
 }

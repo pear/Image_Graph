@@ -177,18 +177,23 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
     /**
      * Output the layout to the canvas
      *
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
     function _done()
     {
+        $result = true;
         for ($i = 0; $i < $this->_rows; $i++) {
             for ($j = 0; $j < $this->_cols; $j++) {
                 $element =& $this->getEntry($i, $j);
                 if ($element) {
-                    $element->_done();
+                    if (!$element->_done()) {
+                        $result = false;
+                    }
                 }
             }
         }
+        return $result;
     }
 
 }

@@ -371,6 +371,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
     /**
      * Output the axis
      *
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
     function _done()
@@ -385,6 +386,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
         }
 
         $this->_drawAxisLines();
+        return true;
     }
 
 }

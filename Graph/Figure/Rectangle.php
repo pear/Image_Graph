@@ -66,6 +66,7 @@ class Image_Graph_Figure_Rectangle extends Image_Graph_Element
     /**
      * Output the box
      *
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
     function _done()
@@ -82,6 +83,7 @@ class Image_Graph_Figure_Rectangle extends Image_Graph_Element
             $this->_right,
             $this->_bottom
         );
+        return true;
     }
 
 }

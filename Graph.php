@@ -85,13 +85,6 @@ class Image_Graph extends Image_Graph_Element
     var $_showTime = false;
 
     /**
-     * Specifies whether the logo should be displayed or not
-     * @var boolean
-     * @access private
-     */
-    var $_hideLogo = false;
-
-    /**
      * Display errors on the canvas
      * @var boolean
      * @access private
@@ -234,20 +227,6 @@ class Image_Graph extends Image_Graph_Element
     }
 
     /**
-     * Hides (or unhides) the logo from the output.
-     *
-     * The Image_Graph logo is displayed by default [as a small promotion :)].
-     * This is often not desireable in a production environment. Use this method
-     * to disable the display of the Image_Graph logo.
-     *
-     * @param bool $hideit Hide the logo (true) or unhide it (false)
-     */
-    function hideLogo($hideit = true)
-    {
-        $this->_hideLogo = $hideit;
-    }
-
-    /**
      * Gets the width of this graph.
      *
      * The width is returned as 'defined' by the driver.
@@ -269,34 +248,6 @@ class Image_Graph extends Image_Graph_Element
     function height()
     {
         return $this->_driver->getHeight();
-    }
-
-    /**
-     * Gets the width of this graph.
-     *
-     * The width is returned as 'defined' by the driver.
-     * {@link Image_Graph::width()}
-     *
-     * @return int the width of this graph
-     * @access private
-     */
-    function _graphWidth()
-    {
-        return $this->width();
-    }
-
-    /**
-     * Gets the height of this graph.
-     *
-     * The height is returned as 'defined' by the driver.
-     * {@link Image_Graph::height()}
-     *
-     * @return int the height of this graph
-     * @access private
-     */
-    function _graphHeight()
-    {
-        return $this->height();
     }
 
     /**
@@ -726,7 +677,7 @@ class Image_Graph extends Image_Graph_Element
      * The error handling routine set by set_error_handler().
      *
      * This method is used internaly by Image_Graph and PHP as a proxy for {@link
-     * Image_Graph::_error()}. This method should *not* be called explicitly.
+     * Image_Graph::_error()}. 
      *
      * @param string $error_type The type of error being handled.
      * @param string $error_msg The error message being handled.
@@ -903,11 +854,7 @@ class Image_Graph extends Image_Graph_Element
                 );
             }
 
-            if (!file_exists(dirname(__FILE__).'/Graph/Images/logo.png')) {
-                $this->_error('Could not find Logo your installation may be incomplete');
-            } else {
-                $result = parent::_done();
-            }
+            $result = parent::_done();
 
             if ($this->_displayErrors) {
                 $this->_displayErrors();
@@ -926,17 +873,6 @@ class Image_Graph extends Image_Graph_Element
                 );
             }
 
-    		if (!$this->_hideLogo) {
-                include_once 'Image/Graph/Logo.php';
-                $logo = Image_Graph::factory('Image_Graph_Logo',
-                    array(
-                        dirname(__FILE__).'/Graph/Images/logo.png',
-                        IMAGE_GRAPH_ALIGN_TOP_RIGHT
-                    )
-                );
-                $logo->_setParent($this);
-                $logo->_done();
-            }
         }
 
         return $this->_driver->done($param);

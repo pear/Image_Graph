@@ -71,6 +71,7 @@ class Image_Graph_Figure_Polygon extends Image_Graph_Element
     /**
      * Output the polygon
      *
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
     function _done()
@@ -82,6 +83,7 @@ class Image_Graph_Figure_Polygon extends Image_Graph_Element
         $this->_getFillStyle();
         $this->_getLineStyle();
         $this->_driver->polygonEnd();
+        return true;
     }
 
 }

@@ -593,64 +593,14 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Draws a shadow 'around' the element
+     * 
+     * Not implemented yet.
      *
      * @access private
      */
     function _displayShadow()
-    {
-/*        if
-            ((!file_exists(dirname(__FILE__).'/Images/Shadows/tr.png')) ||
-            (!file_exists(dirname(__FILE__).'/Images/Shadows/r.png')) ||
-            (!file_exists(dirname(__FILE__).'/Images/Shadows/bl.png')) ||
-            (!file_exists(dirname(__FILE__).'/Images/Shadows/b.png')) ||
-            (!file_exists(dirname(__FILE__).'/Images/Shadows/br.png'))) {
-            $this->_error('Shadows incomplete, cannot continue');
-        } else {
-            $shadows['TR'] = ImageCreateFromPNG(dirname(__FILE__).'/Images/Shadows/tr.png');
-            $shadows['R'] = ImageCreateFromPNG(dirname(__FILE__).'/Images/Shadows/r.png');
-            $shadows['BL'] = ImageCreateFromPNG(dirname(__FILE__).'/Images/Shadows/bl.png');
-            $shadows['B'] = ImageCreateFromPNG(dirname(__FILE__).'/Images/Shadows/b.png');
-            $shadows['BR'] = ImageCreateFromPNG(dirname(__FILE__).'/Images/Shadows/br.png');
-
-            $tR['X'] = floor($this->_right+1);
-            $tR['Y'] = floor($this->_top);
-            $tR['W'] = ImageSX($shadows['TR']);
-            $tR['H'] = ImageSY($shadows['TR']);
-
-            $r['X'] = $tR['X'];
-            $r['Y'] = $tR['Y'] + $tR['H'];
-            $r['W'] = ImageSX($shadows['R']);
-            $r['H'] = floor($this->_bottom - $r['Y'] + 1);
-
-            $bR['X'] = $tR['X'];
-            $bR['Y'] = $r['Y'] + $r['H'];
-            $bR['W'] = ImageSX($shadows['BR']);
-            $bR['H'] = ImageSY($shadows['BR']);
-
-            $bL['X'] = floor($this->_left);
-            $bL['Y'] = $bR['Y'];
-            $bL['W'] = ImageSX($shadows['BL']);
-            $bL['H'] = ImageSY($shadows['BL']);
-
-            $b['X'] = $bL['X'] + $bL['W'];
-            $b['Y'] = $bL['Y'];
-            $b['W'] = floor($bR['X']-$bL['X']-$bL['W']);
-            $b['H'] = ImageSY($shadows['B']);
-
-
-            ImageCopyResampled($this->_canvas(), $shadows['TR'], $tR['X'], $tR['Y'], 0, 0, $tR['W'], $tR['H'], $tR['W'], $tR['H']);
-            ImageCopyResampled($this->_canvas(), $shadows['BR'], $bR['X'], $bR['Y'], 0, 0, $bR['W'], $bR['H'], $bR['W'], $bR['H']);
-            ImageCopyResampled($this->_canvas(), $shadows['BL'], $bL['X'], $bL['Y'], 0, 0, $bL['W'], $bL['H'], $bL['W'], $bL['H']);
-
-            ImageCopyResampled($this->_canvas(), $shadows['R'], $r['X'], $r['Y'], 0, 0, $r['W'], $r['H'], $r['W'], ImageSY($shadows['R']));
-            ImageCopyResampled($this->_canvas(), $shadows['B'], $b['X'], $b['Y'], 0, 0, $b['W'], $b['H'], ImageSX($shadows['B']), $b['H']);
-
-            ImageDestroy($shadows['TR']);
-            ImageDestroy($shadows['R']);
-            ImageDestroy($shadows['BL']);
-            ImageDestroy($shadows['B']);
-            ImageDestroy($shadows['BR']);
-        }*/
+    {        
+        // TODO Implement shadows
     }
 
     /**
@@ -680,6 +630,7 @@ class Image_Graph_Element extends Image_Graph_Common
     /**
      * Output the element to the canvas
      *
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @see Image_Graph_Common
      * @access private
      */

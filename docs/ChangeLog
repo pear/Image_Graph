@@ -1,7 +1,7 @@
 *************************
  Image_Graph - Changelog
 *************************
-Version 0.4.0-alpha [2004-Dec-20] - Jesper Veggerby <pear.nosey@veggerby.dk>
+Version 0.3.0-dev2 [2004-Jan-xx] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Added functionality for multi-level labels (ticks, text, etc.) to support for minor and major labels (and more if needed)
     * Added fontmapping in GD drivers useful for mapping mnemonic fontnames, i.e. Times New Roman to font file names (either partial or full)
     * Added configuration option in Config.php (IMAGE_GRAPH_SYSTEM_FONT_PATH) enabling to specify default search path for system fonts
@@ -19,6 +19,7 @@ Version 0.4.0-alpha [2004-Dec-20] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Added possibility to use user-defined values as axis-labels
     * Added support for adding an array to Image_Graph_Dataset_Trivial for easy point addition
     * Added some error/insanity checks
+    * Added Image_Graph_Tool class with static function for bezier curve-smoothing for drivers without native support (fx. GD)
     * Implemented drivers to support different output formats
         - Currently full GD (JPEG/PNG/GIF/WBMP), SVG and PDF (PDFlib) support
         - Semi-supported drivers SWF (Ming)
@@ -56,6 +57,8 @@ Version 0.4.0-alpha [2004-Dec-20] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Fixed problems with gradient fills (did not display propery using GD drivers)
     * Fixed problem with bar-, area-, step- and impulse-charts when using forceMinimum(), causing bars to display 'below' x-axis
     * Fixed Image_Graph_Axis::force(Minimum|Maximum)
+    * Removed default Image_Graph logo
+    * Removed _graphWidth() and _graphHeight(), they are now handled by the driver
 
 Version 0.3.0dev1 [2004-Oct-25] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * First PEAR version - GraPHPite changes to Image_Graph

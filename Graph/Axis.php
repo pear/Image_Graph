@@ -134,14 +134,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
             'showoffset' => false,
             'font' => array(),
             'offset' => 0
-        )/*,
-        2 => array(
-            'interval' => 0.5,
-            'type' => 'manual',
-            'tick' => array('start' => -1, 'end' => 1),
-            'showtext' => false,
-            'showoffset' => true
-        )*/
+        )
     );
 
     /**
@@ -966,6 +959,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     /**
      * Output the axis
      *
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
     function _done()
@@ -1037,6 +1031,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
                 $this->_driver->polygonEnd();
             }
         }
+        return true;
     }
 
 }

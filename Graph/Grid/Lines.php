@@ -63,6 +63,7 @@ class Image_Graph_Grid_Lines extends Image_Graph_Grid
     /**
      * Output the grid
      *
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
     function _done()
@@ -105,6 +106,7 @@ class Image_Graph_Grid_Lines extends Image_Graph_Grid
             }
             $value = $this->_primaryAxis->_getNextLabel($value);
         }
+        return true;
     }
 
 }

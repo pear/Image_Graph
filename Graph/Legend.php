@@ -244,6 +244,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
     /**
      * Output the plot
      *
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
     function _done()
@@ -340,9 +341,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
                 }
             }
         }
-/*        if ($shadow) {
-            $this->displayShadow();
-        }*/
+        return true;
     }
 }
 ?>

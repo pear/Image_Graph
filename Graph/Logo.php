@@ -56,7 +56,7 @@ class Image_Graph_Logo extends Image_Graph_Element
      * @var stirng
      * @access private
      */
-    var $_fileName;
+    var $_filename;
 
     /**
      * The GD Image resource
@@ -77,10 +77,10 @@ class Image_Graph_Logo extends Image_Graph_Element
      *
      * @param string $filename The filename and path of the image to use for logo
      */
-    function &Image_Graph_Logo($fileName, $alignment = IMAGE_GRAPH_ALIGN_TOP_RIGHT)
+    function &Image_Graph_Logo($filename, $alignment = IMAGE_GRAPH_ALIGN_TOP_RIGHT)
     {
         parent::Image_Graph_Element();
-        $this->_fileName = $fileName;
+        $this->_filename = $filename;
         $this->_alignment = $alignment;
     }
 
@@ -105,6 +105,7 @@ class Image_Graph_Logo extends Image_Graph_Element
     /**
      * Output the logo
      *
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
     function _done()
@@ -132,11 +133,12 @@ class Image_Graph_Logo extends Image_Graph_Element
         $this->_driver->overlayImage(
             $x,
             $y,
-            $this->_fileName,
+            $this->_filename,
             false,
             false,
             $this->_alignment
         );
+        return true;
     }
 
 }

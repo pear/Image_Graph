@@ -171,14 +171,15 @@ class Image_Graph_Layout_Horizontal extends Image_Graph_Layout
     /**
      * Output the layout to the canvas
      *
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
     function _done()
     {
         if (($this->_part1) && ($this->_part2)) {
-            $this->_part1->_done();
-            $this->_part2->_done();
+            return (($this->_part1->_done()) && ($this->_part2->_done()));            
         }
+        return true;
     }
 
 }

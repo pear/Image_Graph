@@ -71,6 +71,7 @@ class Image_Graph_Axis_Marker_Line extends Image_Graph_Grid
     /**
      * Output the grid
      *
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
     function _done()
@@ -110,6 +111,7 @@ class Image_Graph_Axis_Marker_Line extends Image_Graph_Grid
             $this->_getLineStyle();
             $this->_driver->line($x1, $y1, $x2, $y2);
         }
+        return true;
     }
 
 }

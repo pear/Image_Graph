@@ -145,27 +145,6 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
                 -1
             );
 
-/*            $left =
-                $this->_parent->_fillLeft() + ($this->_alignSize['left'] <= 1 ?
-                    $this->_parent->_fillWidth() * $this->_alignSize['left'] :
-                    $this->_alignSize['left']
-                );
-
-            $top = $this->_parent->_fillTop() + ($this->_alignSize['top'] <= 1 ?
-                $this->_parent->_fillHeight() * $this->_alignSize['top'] :
-                $this->_alignSize['top']
-            );
-
-            $right = $this->_parent->_fillRight() - ($this->_alignSize['right'] <= 1 ?
-                $this->_parent->_fillWidth() * $this->_alignSize['right'] :
-                $this->_alignSize['right']
-            );
-
-            $bottom = $this->_parent->_fillBottom() - ($this->_alignSize['bottom'] <= 1 ?
-                $this->_parent->_fillHeight() * $this->_alignSize['bottom'] :
-                $this->_alignSize['bottom']
-            );*/
-
             $this->_setCoords(
                 $left + $this->_padding,
                 $top + $this->_padding,

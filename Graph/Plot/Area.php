@@ -79,6 +79,7 @@ class Image_Graph_Plot_Area extends Image_Graph_Plot
     /**
      * Output the plot
      *
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
     function _done()
@@ -168,6 +169,7 @@ class Image_Graph_Plot_Area extends Image_Graph_Plot
         }
         unset($keys);
         $this->_drawMarker();
+        return true;
     }
 
 }

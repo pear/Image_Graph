@@ -76,6 +76,7 @@ class Image_Graph_Plot_Smoothed_Area extends Image_Graph_Plot_Smoothed_Bezier
     /**
      * Output the Bezier smoothed plot as an Area Chart
      *
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
     function _done()
@@ -130,6 +131,7 @@ class Image_Graph_Plot_Smoothed_Area extends Image_Graph_Plot_Smoothed_Bezier
         }
         unset($keys);
         $this->_drawMarker();
+        return true;
     }
 
 }

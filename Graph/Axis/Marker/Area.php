@@ -95,6 +95,7 @@ class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid
     /**
      * Output the grid
      *
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
     function _done()
@@ -140,6 +141,7 @@ class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid
             $this->_getFillStyle();
             $this->_driver->polygonEnd();
         }
+        return true;
     }
 
 }

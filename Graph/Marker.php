@@ -111,10 +111,12 @@ class Image_Graph_Marker extends Image_Graph_Plotarea_Element
     /**
      * Output to the canvas
      *
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
-    function _done()
+    function _done()    
     {
+        return true;
     }
 
 }

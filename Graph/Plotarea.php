@@ -657,6 +657,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
     /**
      * Output the plotarea to the canvas
      *
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
     function _done()
@@ -680,10 +681,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
             $this->_plotBottom
         );
 
-        if (parent::_done() === false) {
-            return false;
-        }
-
+        return parent::_done();
     }
 
 }

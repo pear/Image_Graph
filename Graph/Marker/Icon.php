@@ -54,7 +54,7 @@ class Image_Graph_Marker_Icon extends Image_Graph_Marker
      * @var string
      * @access private
      */
-    var $_fileName;
+    var $_filename;
 
     /**
      * X Point of the icon to use as data 'center'
@@ -73,14 +73,14 @@ class Image_Graph_Marker_Icon extends Image_Graph_Marker
     /**
      * Create an icon marker
      *
-     * @param string $fileName The filename of the icon
+     * @param string $filename The filename of the icon
      * @param int $width The 'new' width of the icon if it is to be resized
      * @param int $height The 'new' height of the icon if it is to be resized
      */
-    function &Image_Graph_Marker_Icon($fileName, $width = 0, $height = 0)
+    function &Image_Graph_Marker_Icon($filename, $width = 0, $height = 0)
     {
         parent::Image_Graph_Marker();
-        $this->_fileName = $fileName;
+        $this->_filename = $filename;
     }
 
     /**
@@ -117,8 +117,8 @@ class Image_Graph_Marker_Icon extends Image_Graph_Marker
     function _drawMarker($x, $y, $values = false)
     {
         parent::_drawMarker($x, $y, $values);
-        if ($this->_fileName) {
-            $this->_driver->overlayImage($x, $y, $this->_fileName, false, false, IMAGE_GRAPH_ALIGN_CENTER);
+        if ($this->_filename) {
+            $this->_driver->overlayImage($x, $y, $this->_filename, false, false, IMAGE_GRAPH_ALIGN_CENTER);
         }
     }
 

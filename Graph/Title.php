@@ -119,6 +119,7 @@ class Image_Graph_Title extends Image_Graph_Layout
     /**
      * Output the text
      *
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
     function _done()
@@ -141,16 +142,13 @@ class Image_Graph_Title extends Image_Graph_Layout
         $x = ($this->_left + $this->_right) / 2;
         $y = ($this->_top + $this->_bottom) / 2;
 
-/*        $this->_getFillStyle();
-        $this->_getLineStyle();
-        $this->_driver->rectangle($this->_left, $this->_top, $this->_right, $this->_bottom);*/
-
         $this->write(
             $x,
             $y,
             $this->_text,
             IMAGE_GRAPH_ALIGN_CENTER_X + IMAGE_GRAPH_ALIGN_CENTER_Y
         );
+        return true;
     }
 
 }

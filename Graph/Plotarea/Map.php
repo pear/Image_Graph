@@ -269,6 +269,7 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
     /**
      * Output the plotarea to the canvas
      *
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
     function _done()
@@ -292,10 +293,7 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
             $scaledHeight
         );
 
-        if (Image_Graph_Layout::_done() === false) {
-            return false;
-        }
-
+        return Image_Graph_Layout::_done();
     }
 
 }

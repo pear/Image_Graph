@@ -54,7 +54,7 @@ class Image_Graph_Fill_Image extends Image_Graph_Fill
      * @var stirng
      * @access private
      */
-    var $_fileName;
+    var $_filename;
 
     /**
      * The GD Image resource
@@ -75,10 +75,10 @@ class Image_Graph_Fill_Image extends Image_Graph_Fill
      *
      * @param string $filename The filename and path of the image to use for filling
      */
-    function &Image_Graph_Fill_Image($fileName)
+    function &Image_Graph_Fill_Image($filename)
     {
         parent::Image_Graph_Fill();
-        $this->_fileName = $fileName;
+        $this->_filename = $filename;
     }
 
     /**
@@ -90,7 +90,7 @@ class Image_Graph_Fill_Image extends Image_Graph_Fill
      */
     function _getFillStyle($ID = false)
     {
-        return $this->_fileName;
+        return $this->_filename;
     }
 
 }

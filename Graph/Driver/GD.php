@@ -217,29 +217,6 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
     }
 
     /**
-     * Calculates a Bezier point
-     *
-     * This function must be called for BOTH X and Y coordinates
-     * (will it work for 3D coordinates!?)
-     *
-     * @param double t A position between P2 and P3, value between 0 and 1
-     * @param double P1 Point to use for calculating control points
-     * @param double P2 Point 1 to calculate bezier curve between
-     * @param double P3 Point 2 to calculate bezier curve between
-     * @param double P4 Point to use for calculating control points
-     * @return double The bezier value of the point t between P2 and P3 using P1
-     *   and P4 to calculate control points
-     * @access private
-     */
-    function _bezier($t, $p1, $p2, $p3, $p4)
-    {
-        return pow(1 - $t, 3) * $p1 +
-            3 * pow(1 - $t, 2) * $t * $p2 +
-            3 * (1 - $t) * pow($t, 2) * $p3 +
-            pow($t, 3) * $p4;
-    }
-
-    /**
      * Get an GD image resource from a file
      *
      * @param string $filename
@@ -729,6 +706,9 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
      */
     function splineEnd($connectEnds = true, $fillColor = false, $lineColor = false)
     {
+        
+        include_once 'Image/Graph/Tool.php';
+        
         if (!$connectEnds) {
             $fillColor = 'transparent';
         }
@@ -745,7 +725,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
                 $d = sqrt($dx * $dx + $dy * $dy);
                 $interval = 1 / $d;
                 for ($t = 0; $t <= 1; $t = $t + $interval) {
-                    $x = $this->_bezier(
+                    $x = Image_Graph_Tool::bezier(
                         $t,
                         $lastPoint['X'],
                         $lastPoint['P1X'],
@@ -753,7 +733,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
                         $point['X']
                     );
 
-                    $y = $this->_bezier(
+                    $y = Image_Graph_Tool::bezier(
                         $t,
                         $lastPoint['Y'],
                         $lastPoint['P1Y'],
@@ -785,7 +765,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
                     $polygon[] = $y;
                 }
                 if (($t - $interval) < 1) {
-                    $x = $this->_bezier(
+                    $x = Image_Graph_Tool::bezier(
                         1,
                         $lastPoint['X'],
                         $lastPoint['P1X'],
@@ -793,7 +773,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
                         $point['X']
                     );
 
-                    $y = $this->_bezier(
+                    $y = Image_Graph_Tool::bezier(
                         1,
                         $lastPoint['Y'],
                         $lastPoint['P1Y'],
@@ -1136,6 +1116,8 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
         if (file_exists($filename)) {
             if (strtolower(substr($filename, -4)) == '.png') {
                 $image = ImageCreateFromPNG($filename);
+            } elseif (strtolower(substr($filename, -4)) == '.gif') {
+                $image = ImageCreateFromGIF($filename);
             } else {
                 $image = ImageCreateFromJPEG($filename);
             }
