@@ -72,6 +72,7 @@ class Image_Graph_Fill_Image extends Image_Graph_Fill
 
     /**
      * Image_Graph_ImageFill [Constructor]
+     *
      * @param string $filename The filename and path of the image to use for filling 
      */
     function &Image_Graph_Fill_Image($fileName)
@@ -82,6 +83,8 @@ class Image_Graph_Fill_Image extends Image_Graph_Fill
 
     /**
      * Return the fillstyle
+     *
+     * @param (something) $ID (Add description)
      * @return int A GD fillstyle 
      * @access private 
      */

@@ -217,15 +217,18 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
     }
 
     /**
-     * Calculates a Bezier point, this function must be called for BOTH X and
-     * Y coordinates (will it work for 3D coordinates!?)
+     * Calculates a Bezier point
+     *
+     * This function must be called for BOTH X and Y coordinates
+     * (will it work for 3D coordinates!?)
+     *
      * @param double t A position between P2 and P3, value between 0 and 1
      * @param double P1 Point to use for calculating control points
      * @param double P2 Point 1 to calculate bezier curve between
      * @param double P3 Point 2 to calculate bezier curve between
      * @param double P4 Point to use for calculating control points
      * @return double The bezier value of the point t between P2 and P3 using P1
-     * and P4 to calculate control points
+     *   and P4 to calculate control points
      * @access private 
      */
     function _bezier($t, $p1, $p2, $p3, $p4)
@@ -238,6 +241,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
         
     /** 
      * Get an GD image resource from a file
+     *
      * @param string $filename
      * @return mixed The GD image resource
      * @access private
@@ -253,6 +257,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
 
     /**
      * Get the color index for the RGB color
+     *
      * @param int $color The color
      * @return int The GD image index of the color
      * @access private
@@ -268,8 +273,9 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
     
     /**
      * Get the GD applicable linestyle
+     *
      * @param mixed $lineStyle The line style to return, false if the one
-     * explicitly set
+     *   explicitly set
      * @return mixed A GD compatible linestyle
      * @access private
      */
@@ -302,8 +308,9 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
 
     /**
      * Get the GD applicable fillstyle
+     *
      * @param mixed $fillStyle The fillstyle to return, false if the one
-     * explicitly set
+     *   explicitly set
      * @return mixed A GD compatible fillstyle
      * @access private
      */
@@ -584,6 +591,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
         
     /**
      * Sets an image that should be used for filling
+     *
      * @param string $filename The filename of the image to fill with
      */
     function setFillImage($filename)
@@ -602,6 +610,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
      * 'size' = size in pixels
      * 
      * 'angle' = the angle with which to write the text
+     *
      * @param array $font The font options.
      */
     function setFont($fontOptions)
@@ -625,6 +634,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
         
     /**
      * Draw a line
+     *
      * @param int $x0 X start point 
      * @param int $y0 X start point 
      * @param int $x1 X end point 
@@ -645,8 +655,9 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
 
     /**
      * Draws a polygon
+     *
      * @param bool $connectEnds Specifies wether the start point should be
-     * conencted to the endpoint (closed polygon) or not (connected line)
+     *   connected to the endpoint (closed polygon) or not (connected line)
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
      */
@@ -710,8 +721,9 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
 
     /**
      * Ends a spline
+     *
      * @param bool $connectEnds Specifies wether the start point should be
-     * conencted to the endpoint (closed polygon) or not (connected line)
+     *   connected to the endpoint (closed polygon) or not (connected line)
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
      */
@@ -855,6 +867,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
 
     /**
      * Draw a rectangle
+     *
      * @param int $x0 X start point 
      * @param int $y0 X start point 
      * @param int $x1 X end point 
@@ -881,6 +894,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
 
     /**
      * Draw an ellipse
+     *
      * @param int $x Center point x-value 
      * @param int $y Center point y-value
      * @param int $rx X-radius of ellipse 
@@ -907,6 +921,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
 
     /**
      * Draw a pie slice
+     *
      * @param int $x Center point x-value 
      * @param int $y Center point y-value
      * @param int $rx X-radius of pie slice 
@@ -963,6 +978,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
     
     /**
      * Get the width of a text,
+     *
      * @param string $text The text to get the width of
      * @return int The width of the text
      */ 
@@ -994,6 +1010,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
 
     /**
      * Get the height of a text,
+     *
      * @param string $text The text to get the height of
      * @return int The height of the text
      */ 
@@ -1025,6 +1042,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
 
     /**
      * Writes text
+     *
      * @param int $x X-point of text 
      * @param int $y Y-point of text
      * @param string $text The text to write
@@ -1102,12 +1120,13 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
     
     /**
      * Overlay image
+     *
      * @param int $x X-point of overlayed image 
      * @param int $y Y-point of overlayed image
      * @param string $filename The filename of the image to overlay  
      * @param int $width The width of the overlayed image (resizing if possible)
      * @param int $height The height of the overlayed image (resizing if
-     * possible)
+     *   possible)
      */
     function overlayImage($x, $y, $filename, $width = false, $height = false, $alignment = false)
     {
@@ -1188,6 +1207,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
 
     /**
      * Resets the driver.
+     *
      * Include fillstyle, linestyle, thickness and polygon
      * @access private
      */
@@ -1201,8 +1221,9 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
        
     /**
      * Check which version of GD is installed
-     * @return int 0 if GD isn't installed, 1 if GD 1.x is installed and 2 if GD
-     * 2.x is installed
+     *
+     * @return int 0 if GD isn't installed, 1 if GD 1.x is installed and 2 if
+     *   GD 2.x is installed
      * @access private
      */
     function _version()

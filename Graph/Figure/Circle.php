@@ -51,6 +51,7 @@ class Image_Graph_Figure_Circle extends Image_Graph_Figure_Ellipse
 
     /**
      * Image_Graph_Circle [Constructor]
+     *
      * @param int $x The center pixel of the circle on the canvas 
      * @param int $y The center pixel of the circle on the canvas 
      * @param int $radius The radius in pixels of the circle 

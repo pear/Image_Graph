@@ -342,6 +342,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
 
     /**
      * Get the x-point from the relative to absolute coordinates
+     *
      * @param float $x The relative x-coordinate (in percentage of total width) 
      * @return float The x-coordinate as applied to the driver
      * @access private
@@ -353,6 +354,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
 
     /**
      * Get the y-point from the relative to absolute coordinates
+     *
      * @param float $y The relative y-coordinate (in percentage of total width) 
      * @return float The y-coordinate as applied to the driver
      * @access private
@@ -364,6 +366,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
        
     /**
      * Get the color index for the RGB color
+     *
      * @param int $color The color
      * @return int The GD image index of the color
      * @access private
@@ -383,8 +386,9 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
     
     /**
      * Get the PDF linestyle
+     *
      * @param mixed $lineStyle The line style to return, false if the one
-     * explicitly set
+     *   explicitly set
      * @return bool True if set (so that a line should be drawn)
      * @access private
      */
@@ -411,8 +415,9 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
 
     /**
      * Set the PDF fill style
+     *
      * @param mixed $fillStyle The fillstyle to return, false if the one
-     * explicitly set
+     *   explicitly set
      * @return bool True if set (so that a line should be drawn)
      * @access private
      */
@@ -438,6 +443,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
         
     /**
      * Set the PDF font
+     *
      * @access private
      */
     function _setFont()
@@ -460,6 +466,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
      * Sets an image that should be used for filling.
      * 
      * Image filling is not supported with PDF, filling 'transparent'
+     *
      * @param string $filename The filename of the image to fill with
      */
     function setFillImage($filename)
@@ -471,6 +478,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
      * Sets a gradient fill
      * 
      * Gradient filling is not supported with PDF, end color used as solid fill.
+     *
      * @param array $gradient Gradient fill options
      */
     function setGradientFill($gradient)
@@ -489,6 +497,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
      * 'size' = size in pixels
      * 
      * 'angle' = the angle with which to write the text
+     *
      * @param array $font The font options.
      */
     function setFont($fontOptions)
@@ -526,7 +535,9 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
 
     /**
      * Resets the driver.
-     * Include fillstyle, linestyle, thickness and polygon
+     *
+     * Includes fillstyle, linestyle, thickness and polygon
+     *
      * @access private
      */
     function _reset()
@@ -537,6 +548,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
                     
     /**
      * Draw a line
+     *
      * @param int $x0 X start point 
      * @param int $y0 X start point 
      * @param int $x1 X end point 
@@ -555,8 +567,9 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
     
     /**
      * Draws a polygon
+     *
      * @param bool $connectEnds Specifies wether the start point should be
-     * conencted to the endpoint (closed polygon) or not (connected line)
+     *   connected to the endpoint (closed polygon) or not (connected line)
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
      */
@@ -596,8 +609,9 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
 
     /**
      * Draws a polygon
+     *
      * @param bool $connectEnds Specifies wether the start point should be
-     * conencted to the endpoint (closed polygon) or not (connected line)
+     *   connected to the endpoint (closed polygon) or not (connected line)
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
      */
@@ -664,6 +678,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
     
     /**
      * Draw a rectangle
+     *
      * @param int $x0 X start point 
      * @param int $y0 X start point 
      * @param int $x1 X end point 
@@ -690,6 +705,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
 
     /**
      * Draw an ellipse
+     *
      * @param int $x Center point x-value 
      * @param int $y Center point y-value
      * @param int $rx X-radius of ellipse 
@@ -741,6 +757,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
 
     /**
      * Draw a pie slice
+     *
      * @param int $x Center point x-value 
      * @param int $y Center point y-value
      * @param int $rx X-radius of pie slice 
@@ -760,6 +777,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
     
     /**
      * Get the width of a text,
+     *
      * @param string $text The text to get the width of
      * @return int The width of the text
      */ 
@@ -774,6 +792,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
 
     /**
      * Get the height of a text,
+     *
      * @param string $text The text to get the height of
      * @return int The height of the text
      */ 
@@ -790,6 +809,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
      * Writes text.
      * 
      * Angled text not supported on PDF.
+     *
      * @param int $x X-point of text 
      * @param int $y Y-point of text
      * @param string $text The text to write
@@ -826,12 +846,13 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
 
     /**
      * Overlay image
+     *
      * @param int $x X-point of overlayed image 
      * @param int $y Y-point of overlayed image
      * @param string $filename The filename of the image to overlay  
      * @param int $width The width of the overlayed image (resizing if possible)
      * @param int $height The height of the overlayed image (resizing if
-     * possible)
+     *   possible)
      */
     function overlayImage($x, $y, $filename, $width = false, $height = false, $alignment = false)
     {
@@ -872,6 +893,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
         
     /**
      * Output the result of the driver
+     *
      * @param array $param Parameter array
      * @abstract
      */
@@ -900,6 +922,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
 
     /**
      * Check which major version of PDFlib is installed
+     *
      * @return int The mahor version number of PDFlib
      * @access private
      */

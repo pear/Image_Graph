@@ -54,6 +54,7 @@ class Image_Graph_Line_Dashed extends Image_Graph_Line_Formatted
 
     /**
      * Image_Graph_DashedLine [Constructor]
+     *
      * @param mixed $color1 The color for the 'dashes' 
      * @param mixed $color2 The color for the 'spaces' 
      */

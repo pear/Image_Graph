@@ -89,11 +89,12 @@ class Image_Graph_Layout_Plotarea extends Image_Graph_Layout
 
     /**
      * PlotareaLayout [Constructor]
+     *
      * @param string $title The plotarea title
      * @param string $axisXTitle The title displayed on the X-axis (i.e. at the
-     * bottom)
+     *   bottom)
      * @param string $axisYTitle The title displayed on the Y-axis (i.e. on the
-     * left - vertically)
+     *   left - vertically)
      */
     function &Image_Graph_Layout_Plotarea($title, $axisXTitle, $axisYTitle)
     {
@@ -149,6 +150,7 @@ class Image_Graph_Layout_Plotarea extends Image_Graph_Layout
     
     /**
      * Get the plotarea
+     *
      * @return Image_Graph_Plotarea The plotarea 
      */
     function &getPlotarea()
@@ -158,6 +160,7 @@ class Image_Graph_Layout_Plotarea extends Image_Graph_Layout
 
     /**
      * Get the title
+     *
      * @return Image_Graph_Title The title
      */
     function &getTitle()
@@ -167,6 +170,7 @@ class Image_Graph_Layout_Plotarea extends Image_Graph_Layout
 
     /**
      * Get the X-axis title
+     *
      * @return Image_Graph_Title The x-axis title
      */
     function &getTitleAxisX()
@@ -176,6 +180,7 @@ class Image_Graph_Layout_Plotarea extends Image_Graph_Layout
 
     /**
      * Get the X-axis title
+     *
      * @return Image_Graph_Title The x-axis title
      */
     function &getTitleAxisY()
@@ -186,6 +191,7 @@ class Image_Graph_Layout_Plotarea extends Image_Graph_Layout
     
     /**
      * Get the legend
+     *
      * @return Image_Graph_Legend The legend 
      */
     function &getLegend()

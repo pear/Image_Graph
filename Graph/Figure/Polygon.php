@@ -51,6 +51,7 @@ class Image_Graph_Figure_Polygon extends Image_Graph_Element
 
     /**
      * Polygon vertices
+     *
      * @var array
      * @access private
      */
@@ -58,6 +59,9 @@ class Image_Graph_Figure_Polygon extends Image_Graph_Element
 
     /**
      * Add a vertex to the polygon
+     *
+     * @param int $x X-coordinate
+     * @param int $y Y-coordinate
      */
     function addVertex($x, $y)
     {
@@ -66,6 +70,7 @@ class Image_Graph_Figure_Polygon extends Image_Graph_Element
 
     /**
      * Output the polygon
+     *
      * @access private
      */
     function _done()

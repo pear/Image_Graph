@@ -67,6 +67,7 @@ class Image_Graph_Line_Array extends Image_Graph_Common
 
     /**
      * Add a line style to the array
+     *
      * @param Image_Graph_Line $style The style to add
      */
     function add(& $style)
@@ -81,6 +82,7 @@ class Image_Graph_Line_Array extends Image_Graph_Common
 
     /**
      * Return the linestyle
+     *
      * @return int A GD Linestyle 
      * @access private
      */

@@ -92,6 +92,7 @@ class Image_Graph_Fill_Gradient extends Image_Graph_Fill //Image_Graph_Fill_Imag
 
     /**
      * Image_Graph_GradientFill [Constructor]
+     *
      * @param int $direction The direction of the gradient
      * @param mixed $startColor The value of the starting color
      * @param mixed $endColor The value of the ending color
@@ -106,6 +107,7 @@ class Image_Graph_Fill_Gradient extends Image_Graph_Fill //Image_Graph_Fill_Imag
     
     /**
      * Return the fillstyle
+     *
      * @return int A GD fillstyle 
      * @access private 
      */

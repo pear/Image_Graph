@@ -94,6 +94,7 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
 
     /**
      * Create the SVG driver
+     *
      * @param array $param Parameter array
      */
     function &Image_Graph_Driver_XMLSVG($param)
@@ -117,8 +118,9 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
 
     /**
      * Get the color index for the RGB color
+     *
      * @param int $color The color
-     * @return int A SVG compatible color
+     * @return string A SVG compatible color
      * @access private
      */
     function _color($color = false)
@@ -133,6 +135,7 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
 
     /**
      * Get the opacity for the RGB color
+     *
      * @param int $color The color
      * @return int A SVG compatible opacity value
      * @access private
@@ -153,8 +156,9 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
 
     /**
      * Get the SVG applicable linestyle
+     *
      * @param mixed $lineStyle The line style to return, false if the one
-     * explicitly set
+     *   explicitly set
      * @return mixed A SVG compatible linestyle
      * @access private
      */
@@ -176,8 +180,9 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
 
     /**
      * Get the SVG applicable fillstyle
+     *
      * @param mixed $fillStyle The fillstyle to return, false if the one
-     * explicitly set
+     *   explicitly set
      * @return mixed A SVG compatible fillstyle
      * @access private
      */
@@ -209,6 +214,7 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
         
     /**
      * Get the width of the canvas
+     *
      * @return int The width
      */
     function getWidth()
@@ -218,6 +224,7 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
 
     /**
      * Get the height of the canvas
+     *
      * @return int The height
      */
     function getHeight()
@@ -227,6 +234,7 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
     
     /**
      * Sets an image that should be used for filling
+     *
      * @param string $filename The filename of the image to fill with
      */
     function setFillImage($filename)
@@ -235,6 +243,7 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
     
     /**
      * Draw a line
+     *
      * @param int $x0 X start point 
      * @param int $y0 X start point 
      * @param int $x1 X end point 
@@ -258,6 +267,7 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
 
     /**
      * Draw a rectangle
+     *
      * @param int $x0 X start point 
      * @param int $y0 X start point 
      * @param int $x1 X end point 
@@ -282,6 +292,7 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
 
     /**
      * Draw an ellipse
+     *
      * @param int $x Center point x-value 
      * @param int $y Center point y-value
      * @param int $rx X-radius of ellipse 
@@ -306,6 +317,7 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
     
     /**
      * Output the result of the driver
+     *
      * @param array $param Parameter array
      * @abstract
      */

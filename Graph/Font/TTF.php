@@ -59,8 +59,9 @@ class Image_Graph_Font_TTF extends Image_Graph_Font_Extended
 
     /**
      * FontTTF [Constructor]
+     *
      * @param string $fontFile The filename of the TTF font file. On Windows
-     * systems they will be located in %SYSTEMROOT%\FONTS, ie C:\WINDOWS\FONTS
+     *   systems they will be located in %SYSTEMROOT%\FONTS, ie C:\WINDOWS\FONTS
      */
     function &Image_Graph_Font_TTF($fontFile)
     {
@@ -70,8 +71,9 @@ class Image_Graph_Font_TTF extends Image_Graph_Font_Extended
 
     /**
      * Set another font file
+     *
      * @param string $fontFile The filename of the TTF font file. On Windows
-     * systems they will be located in %SYSTEMROOT%\FONTS, ie C:\WINDOWS\FONTS
+     *   systems they will be located in %SYSTEMROOT%\FONTS, ie C:\WINDOWS\FONTS
      */
     function setFontFile($fontFile)
     {
@@ -80,6 +82,7 @@ class Image_Graph_Font_TTF extends Image_Graph_Font_Extended
 
     /**
      * Get the font 'array'
+     *
      * @return array The font 'summary' to pass to the driver 
      * @access private 
      */

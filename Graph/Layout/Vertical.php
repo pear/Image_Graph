@@ -55,8 +55,10 @@ class Image_Graph_Layout_Vertical extends Image_Graph_Layout_Horizontal
 {
 
     /**
+     * (Add description here)
      * 
      * @since 0.3.0dev2
+     *
      * @access private
      */    
     function _getAbsolute(&$part)
@@ -83,6 +85,7 @@ class Image_Graph_Layout_Vertical extends Image_Graph_Layout_Horizontal
 
     /**
      * Splits the layout between the parts, by the specified percentage
+     *
      * @access private
      */
     function _split()

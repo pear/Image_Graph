@@ -54,6 +54,7 @@ class Image_Graph_Line_Formatted extends Image_Graph_Line_Solid
 
     /**
      * The style of the line
+     *
      * @var array
      * @access private
      */
@@ -61,6 +62,7 @@ class Image_Graph_Line_Formatted extends Image_Graph_Line_Solid
 
     /**
      * Image_Graph_FormattedLine [Constructor]
+     *
      * @param array $style The style of the line 
      */
     function &Image_Graph_Line_Formatted($style)
@@ -71,6 +73,7 @@ class Image_Graph_Line_Formatted extends Image_Graph_Line_Solid
 
     /**
      * Gets the line style of the element	 
+     *
      * @return int A GD linestyle representing the line style 
      * @see Image_Graph_Line
      * @access private

@@ -51,6 +51,7 @@ class Image_Graph_Figure_Ellipse extends Image_Graph_Element
 
     /**
      * Ellipse [Constructor]
+     *
      * @param int $x The center pixel of the ellipse on the canvas 
      * @param int $y The center pixel of the ellipse on the canvas 
      * @param int $radiusX The width in pixels of the box on the canvas 
@@ -64,6 +65,7 @@ class Image_Graph_Figure_Ellipse extends Image_Graph_Element
 
     /**
      * Output the ellipse
+     *
      * @access private
      */     
     function _done()

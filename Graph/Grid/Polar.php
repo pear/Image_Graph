@@ -64,6 +64,7 @@ class Image_Graph_Grid_Polar extends Image_Graph_Grid
 
     /**
      * Output the grid
+     *
      * @access private
      */
     function _done()

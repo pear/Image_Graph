@@ -54,6 +54,7 @@ class Image_Graph_Line_Dotted extends Image_Graph_Line_Formatted
 
     /**
      * DottedLine [Constructor]
+     *
      * @param mixed $color1 The color representing the dots 
      * @param mixed $color2 The color representing the spaces 
      */

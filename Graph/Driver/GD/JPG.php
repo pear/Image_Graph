@@ -53,6 +53,7 @@ class Image_Graph_Driver_GD_JPG extends Image_Graph_Driver_GD
 {   
     /**
      * Create the JPEG driver
+     *
      * @param array $param Parameter array
      */
     function &Image_Graph_Driver_GD_JPG($param)
@@ -71,6 +72,7 @@ class Image_Graph_Driver_GD_JPG extends Image_Graph_Driver_GD
  
     /**
      * Output the result of the driver
+     *
      * @param array $param Parameter array
      * @abstract
      */

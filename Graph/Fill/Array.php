@@ -67,6 +67,7 @@ class Image_Graph_Fill_Array extends Image_Graph_Fill
 
     /**
      * Resets the fillstyle
+     *
      * @access private 
      */
     function _reset()
@@ -76,6 +77,7 @@ class Image_Graph_Fill_Array extends Image_Graph_Fill
 
     /**
      * Add a fill style to the array
+     *
      * @param Image_Graph_Fill $style The style to add
      * @param string $id The id or name of the style
      */
@@ -91,6 +93,7 @@ class Image_Graph_Fill_Array extends Image_Graph_Fill
 
     /**
      * Add a color to the array    
+     *
      * @param int $color The color
      * @param string $id The id or name of the color
      */
@@ -106,6 +109,7 @@ class Image_Graph_Fill_Array extends Image_Graph_Fill
 
     /**
      * Return the fillstyle
+     *
      * @return int A GD fillstyle 
      * @access private 
      */

@@ -84,6 +84,7 @@ class Image_Graph_Layout_Horizontal extends Image_Graph_Layout
 
     /**
      * HorizontalLayout [Constructor]
+     *
      * @param Image_Graph_Element $part1 The 1st part of the layout
      * @param Image_Graph_Element $part2 The 2nd part of the layout
      * @param int $percentage The percentage of the layout to split at
@@ -147,6 +148,7 @@ class Image_Graph_Layout_Horizontal extends Image_Graph_Layout
 
     /**
      * Splits the layout between the parts, by the specified percentage
+     *
      * @access private
      */
     function _split()
@@ -166,6 +168,7 @@ class Image_Graph_Layout_Horizontal extends Image_Graph_Layout
 
     /**
      * Output the layout to the canvas
+     *
      * @access private
      */
     function _done()

@@ -51,6 +51,7 @@ class Image_Graph_Figure_Rectangle extends Image_Graph_Element
 
     /**
      * Rectangle [Construcor]
+     *
      * @param int $x The leftmost pixel of the box on the canvas 
      * @param int $y The topmost pixel of the box on the canvas 
      * @param int $width The width in pixels of the box on the canvas 
@@ -64,6 +65,7 @@ class Image_Graph_Figure_Rectangle extends Image_Graph_Element
 
     /**
      * Output the box
+     *
      * @access private
      */
     function _done()

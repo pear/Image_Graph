@@ -51,6 +51,7 @@ class Image_Graph_Font_Vertical extends Image_Graph_Font
 
     /**
      * Get the font 'array'
+     *
      * @return array The font 'summary' to pass to the driver 
      * @access private 
      */

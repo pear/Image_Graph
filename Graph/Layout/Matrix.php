@@ -72,6 +72,7 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
     
     /**
      * Image_Graph_Layout_Matrix [Constructor]
+     *
      * @param int $rows The number of rows
      * @param int $cols The number of cols
      * @param bool $autoCreate Specifies whether the matrix should automatically
@@ -101,6 +102,7 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
     
     /**
      * Pushes the edges on the specified position in the matrix
+     *
      * @param int $row The row
      * @param int $col The column
      * @access private
@@ -127,6 +129,7 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
     
     /**
      * Get the area on the specified position in the matrix
+     *
      * @param int $row The row
      * @param int $col The column
      * @return Image_Graph_Layout The element of position ($row, $col) in the
@@ -143,6 +146,7 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
 
     /**
      * Get the area on the specified position in the matrix
+     *
      * @param int $row The row
      * @param int $col The column
      * @param Image_Graph_Layout $element The element to set in the position
@@ -156,6 +160,7 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
 
     /**
      * Update coordinates
+     *
      * @access private
      */
     function _updateCoords()
@@ -171,6 +176,7 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
 
     /**
      * Output the layout to the canvas
+     *
      * @access private
      */
     function _done()

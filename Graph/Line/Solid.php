@@ -67,6 +67,7 @@ class Image_Graph_Line_Solid extends Image_Graph_Common
 
     /**
      * Image_Graph_SolidLine [Constructor]
+     *
      * @param mixed $color The color of the line 
      */
     function &Image_Graph_Line_Solid($color)
@@ -77,6 +78,7 @@ class Image_Graph_Line_Solid extends Image_Graph_Common
 
     /**
      * Set the thickness of the linestyle
+     *
      * @param int $thickness The line width in pixels 
      */
     function setThickness($thickness)
@@ -86,6 +88,7 @@ class Image_Graph_Line_Solid extends Image_Graph_Common
 
     /**
      * Gets the line style of the element	 
+     *
      * @return int A GD linestyle representing the line style 
      * @see Image_Graph_Line
      * @access private

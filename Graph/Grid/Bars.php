@@ -53,6 +53,7 @@ class Image_Graph_Grid_Bars extends Image_Graph_Grid
 
     /**
      * Output the grid
+     *
      * @access private      
      */
     function _done()

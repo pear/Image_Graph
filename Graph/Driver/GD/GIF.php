@@ -54,6 +54,7 @@ class Image_Graph_Driver_GD_GIF extends Image_Graph_Driver_GD
 
     /**
      * Create the PNG driver
+     *
      * @param array $param Parameter array
      */
     function &Image_Graph_Driver_GD_GIF($param)
@@ -83,6 +84,7 @@ class Image_Graph_Driver_GD_GIF extends Image_Graph_Driver_GD
         
     /**
      * Output the result of the driver
+     *
      * @param array $param Parameter array
      * @abstract
      */

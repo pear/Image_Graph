@@ -65,6 +65,7 @@ class Image_Graph_Driver_PDF extends Image_Graph_Driver
 
     /**
      * Create a driver
+     *
      * @param array $param Parameter array
      */
     function &Image_Graph_Driver_PDF($param)
@@ -78,6 +79,7 @@ class Image_Graph_Driver_PDF extends Image_Graph_Driver
 
     /**
      * Get the color index for the RGB color
+     *
      * @param int $color The color
      * @return int The GD image index of the color
      * @access private
@@ -97,8 +99,9 @@ class Image_Graph_Driver_PDF extends Image_Graph_Driver
 
     /**
      * Get the GD applicable linestyle
+     *
      * @param mixed $lineStyle The line style to return, false if the one
-     * explicitly set
+     *   explicitly set
      * @return mixed A GD compatible linestyle
      * @access private
      */
@@ -120,8 +123,9 @@ class Image_Graph_Driver_PDF extends Image_Graph_Driver
 
     /**
      * Get the PDF fill style
+     *
      * @param mixed $fillStyle The fillstyle to return, false if the one
-     * explicitly set
+     *   explicitly set
      * @return bool True if set (so that a line should be drawn)
      * @access private
      */
@@ -142,12 +146,14 @@ class Image_Graph_Driver_PDF extends Image_Graph_Driver
     
     /**
      * Sets the font options.
+     *
      * The $font array may have the following entries:
      * 'type' = 'ttf' (TrueType) or omitted for default<br>
      * If 'type' = 'ttf' then the following can be specified<br>
      * 'size' = size in pixels<br>
      * 'angle' = the angle with which to write the text
      * 'file' = the .ttf file (either the basename, filename or full path)
+     *
      * @param array $font The font options.
      */
     function setFont($fontOptions)
@@ -166,6 +172,7 @@ class Image_Graph_Driver_PDF extends Image_Graph_Driver
     
     /**
      * Get the width of the canvas
+     *
      * @return int The width
      */
     function getWidth()
@@ -174,6 +181,7 @@ class Image_Graph_Driver_PDF extends Image_Graph_Driver
 
     /**
      * Get the height of the canvas
+     *
      * @return int The height
      */
     function getHeight()
@@ -182,6 +190,7 @@ class Image_Graph_Driver_PDF extends Image_Graph_Driver
 
     /**
      * Sets an image that should be used for filling
+     *
      * @param string $filename The filename of the image to fill with
      */
     function setFillImage($filename)
@@ -190,7 +199,9 @@ class Image_Graph_Driver_PDF extends Image_Graph_Driver
 
     /**
      * Resets the driver.
-     * Include fillstyle, linestyle, thickness and polygon
+     *
+     * Includes fillstyle, linestyle, thickness and polygon
+     *
      * @access private
      */
     function _reset()
@@ -201,6 +212,7 @@ class Image_Graph_Driver_PDF extends Image_Graph_Driver
     
     /**
      * Draw a line
+     *
      * @param int $x0 X start point 
      * @param int $y0 X start point 
      * @param int $x1 X end point 
@@ -217,8 +229,9 @@ class Image_Graph_Driver_PDF extends Image_Graph_Driver
 
     /**
      * Draws a polygon
+     *
      * @param bool $connectEnds Specifies wether the start point should be
-     * conencted to the endpoint (closed polygon) or not (connected line)
+     *   connected to the endpoint (closed polygon) or not (connected line)
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
      */
@@ -255,8 +268,9 @@ class Image_Graph_Driver_PDF extends Image_Graph_Driver
 
     /**
      * Draws a polygon
+     *
      * @param bool $connectEnds Specifies wether the start point should be
-     * conencted to the endpoint (closed polygon) or not (connected line)
+     *   conencted to the endpoint (closed polygon) or not (connected line)
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
      */
@@ -268,6 +282,7 @@ class Image_Graph_Driver_PDF extends Image_Graph_Driver
 
     /**
      * Draw a rectangle
+     *
      * @param int $x0 X start point 
      * @param int $y0 X start point 
      * @param int $x1 X end point 
@@ -294,6 +309,7 @@ class Image_Graph_Driver_PDF extends Image_Graph_Driver
 
     /**
      * Draw an ellipse
+     *
      * @param int $x Center point x-value 
      * @param int $y Center point y-value
      * @param int $rx X-radius of ellipse 
@@ -320,6 +336,7 @@ class Image_Graph_Driver_PDF extends Image_Graph_Driver
 
     /**
      * Get the width of a text,
+     *
      * @param string $text The text to get the width of
      * @return int The width of the text
      */ 
@@ -330,6 +347,7 @@ class Image_Graph_Driver_PDF extends Image_Graph_Driver
 
     /**
      * Get the height of a text,
+     *
      * @param string $text The text to get the height of
      * @return int The height of the text
      */ 
@@ -344,6 +362,7 @@ class Image_Graph_Driver_PDF extends Image_Graph_Driver
     
     /**
      * Writes text
+     *
      * @param int $x X-point of text 
      * @param int $y Y-point of text
      * @param string $text The text to write
@@ -359,12 +378,13 @@ class Image_Graph_Driver_PDF extends Image_Graph_Driver
     
     /**
      * Overlay image
+     *
      * @param int $x X-point of overlayed image 
      * @param int $y Y-point of overlayed image
      * @param string $filename The filename of the image to overlay  
      * @param int $width The width of the overlayed image (resizing if possible)
      * @param int $height The height of the overlayed image (resizing if
-     * possible)
+     *   possible)
      */
     function overlayImage($x, $y, $filename, $width = false, $height = false)
     {
@@ -373,6 +393,7 @@ class Image_Graph_Driver_PDF extends Image_Graph_Driver
     
     /**
      * Output the result of the driver
+     *
      * @param array $param Parameter array
      * @abstract
      */

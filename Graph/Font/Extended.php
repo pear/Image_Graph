@@ -66,7 +66,9 @@ class Image_Graph_Font_Extended extends Image_Graph_Font
 
     /**
      * Set the angle slope of the output font.
+     *
      * 0 = normal, 90 = bottom and up, 180 = upside down, 270 = top and down
+     *
      * @param int $angle The angle in degrees to slope the text 
      */
     function setAngle($angle)
@@ -76,6 +78,7 @@ class Image_Graph_Font_Extended extends Image_Graph_Font
 
     /**
      * Set the size of the font
+     *
      * @param int $size The size in pixels of the font 
      */
     function setSize($size)
