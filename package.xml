@@ -20,7 +20,7 @@
   </maintainers>
   <release>
     <version>0.2-csv</version>
-    <date>2003-11-20</date>
+    <date>2004-01-26</date>
     <license>PHP License</license>
     <state>alpha</state>
     <notes>
@@ -39,15 +39,15 @@
         <dir name="Graph" role="php">
           <file>Elements.php</file>
           <dir name="Data" role="php">
-            <file>bar.php</file>
-            <file>common.php</file>
-            <file>line.php</file>
+            <file>Bar.php</file>
+            <file>Common.php</file>
+            <file>Line.php</file>
           </dir> 
           <dir name="DataMarker" role="php">
-            <file>common.php</file>
-            <file>diamond.php</file>
-            <file>square.php</file>
-            <file>triangle.php</file>
+            <file>Common.php</file>
+            <file>Diamond.php</file>
+            <file>Square.php</file>
+            <file>Triangle.php</file>
           </dir> 
         </dir> 
         <dir name="docs" role="doc">

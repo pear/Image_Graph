@@ -8,7 +8,7 @@
 * @access   private
 */
 
-require_once("Image/Graph/DataMarker/common.php");
+require_once("Image/Graph/DataMarker/Common.php");
 
 class Image_Graph_DataMarker_Triangle extends Image_Graph_DataMarker_Common
 {

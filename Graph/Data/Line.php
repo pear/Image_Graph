@@ -8,7 +8,7 @@
 * @access   private
 */
 
-require_once("Image/Graph/Data/common.php");
+require_once("Image/Graph/Data/Common.php");
 
 class Image_Graph_Data_Line extends Image_Graph_Data_Common
 {

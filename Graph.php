@@ -278,7 +278,7 @@ class Image_Graph
     function &addData($data, $representation = "line", $attributes = array())
     {
         $representation = strtolower($representation);
-        $dataElementFile  = "Image/Graph/Data/".strtolower($representation).".php";
+        $dataElementFile  = "Image/Graph/Data/".ucfirst($representation).".php";
         $dataElementClass = "Image_Graph_Data_".ucfirst($representation);
 
         if (!isset($attributes["color"])) {
