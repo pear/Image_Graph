@@ -725,7 +725,6 @@ class Image_Graph
                         $currLabel = null;
                     }
                     if (!empty($currLabel)) {
-                        // @todo: remove this dirty little hack :-) we shouldn't access the lines directly, should we?
                         if (is_string($currLabel)) {
                             $tempText->set('text', $currLabel);
                         } else {
@@ -758,7 +757,6 @@ class Image_Graph
                     require_once 'Image/Text.php';
                     $maxWidth = 0;
                     foreach ($this->{$currAxis}->_ticksMajorEffective as $currTick) {
-                        // @todo: remove this dirty little hack :-) we shouldn't access the lines directly, should we?
                         $tempText = new Image_Text(sprintf($this->{$currAxis}->_numberformat, $currTick), $this->{$currAxis}->_fontOptions);
                         $tempText->init();
                         $tempText->measurize();
@@ -813,7 +811,7 @@ class Image_Graph
             // draw title text
             if (!empty($this->diagramTitle->_text)) {
                 require_once 'Image/Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
-                $textY = $this->_pos[1] + $this->_borderspace;
+                $textY = $this->_pos[1] + $this->_borderspace + $this->diagramTitle->_spacer['top'];
                 $textX = 0;
                 $options = array_merge($this->diagramTitle->_fontOptions, array('x' => $textX, 'y' => $textY));
                 
@@ -833,9 +831,7 @@ class Image_Graph
                                            "g" => $this->diagramTitle->_color[1],
                                            "b" => $this->diagramTitle->_color[2]));
                 $tempText->measurize();
-                // var_dump($tempText);
                 $tempText->render();
-                //var_dump($tempText);
             }
 
             // draw x-axis text
@@ -858,12 +854,10 @@ class Image_Graph
                 $tempText->set('canvas', $img);
                 $tempText->init();
                 $tempText->measurize();
+                $tempText->setColor(array ("r" => $this->axisX->title->_color[0],
+                                           "g" => $this->axisX->title->_color[1],
+                                           "b" => $this->axisX->title->_color[2]));
                 
-                // var_dump($tempText);
-
-                $tempText->setColor(array ("r" => $this->axisX->_color[0],
-                                           "g" => $this->axisX->_color[1],
-                                           "b" => $this->axisX->_color[2]));
                 $tempText->render();
             }
 
@@ -885,10 +879,6 @@ class Image_Graph
                         $textX = $this->_pos[0] + $this->_size[0] - $this->_borderspace - $this->{$currAxis}->title->_spacer['right'];
                     }
                     $textY = $this->_drawingareaPos[1] + ($this->_drawingareaSize[1]/2) + ($textSize['width']/2);
-
-                    // BEGIN: workaround for current Image_Text v0.2
-                    // $textY -= ($textSize['height'] + ($this->{$currAxis}->title->_fontOptions['fontSize'] / 4));
-                    // END: workaround for current Image_Text v0.2
 
                     if (is_null($this->{$currAxis}->title->_color)) {
                         $this->{$currAxis}->title->_color = $this->{$currAxis}->_color;
@@ -959,7 +949,6 @@ class Image_Graph
                     $currLabel = null;
                 }
                 if (!empty($currLabel)) {
-                    // @todo: remove this dirty little hack :-) we shouldn't access the lines directly, should we?
                     if (is_string($currLabel)) {
                         $tempText->set('text', $currLabel);
                     } else {
@@ -969,7 +958,6 @@ class Image_Graph
                     $tempText->set('align', IMAGE_TEXT_ALIGN_CENTER);
                     $tempText->init();
                     $tempText->measurize();
-                    // var_dump($tempText);
                     $textSize = $tempText->_realTextSize;
                     $textX = $this->axisX->valueToPixelAbsolute($labelCount);
 
@@ -984,7 +972,6 @@ class Image_Graph
                     $tempText->set($opts);
                     $tempText->init();
                     $tempText->measurize();
-                    // var_dump($tempText);
                     $tempText->render();
                 }
             }
@@ -994,18 +981,18 @@ class Image_Graph
         $axesXpositions = array ($this->_drawingareaPos[0],
                                  $this->_drawingareaPos[0]+$this->_drawingareaSize[0]-1);
 
-        $axesXfactors   = array (1, -1);
-
         for ($axisCount=0; $axisCount<=1; $axisCount++) {
             $currAxis = "axisY".$axisCount;
             if ($this->{$currAxis}->_containsData) {
                 imageline    ($img, $axesXpositions[$axisCount], $this->_drawingareaPos[1]+$this->_drawingareaSize[1]-1,
                                     $axesXpositions[$axisCount], $this->_drawingareaPos[1], $drawColor);
 
+                $tickSize = $this->{$currAxis}->_tickSize;
+                $this->{$currAxis}->_internalTempValues['tickSize'] = $tickSize;
+
                 foreach ($this->{$currAxis}->_ticksMajorEffective as $currTick) {
                     $relativeYPosition = $this->{$currAxis}->valueToPixelRelative($currTick);
 
-                    $tickSize = $this->{$currAxis}->_tickSize * $axesXfactors[$axisCount];
                     switch ($this->{$currAxis}->_tickStyle) {
                         case IMAGE_GRAPH_TICKS_INSIDE:
                               imageline ($img, $axesXpositions[$axisCount]          , $this->_drawingareaPos[1]+$relativeYPosition,
@@ -1025,9 +1012,10 @@ class Image_Graph
                     }
                 }
 
+                $tickSize = ceil($this->{$currAxis}->_tickSize/2);
                 foreach ($this->{$currAxis}->_ticksMinorEffective as $currTick) {
                     $relativeYPosition = $this->{$currAxis}->valueToPixelRelative($currTick);
-                    $tickSize = ceil($this->{$currAxis}->_tickSize/2) * $axesXfactors[$axisCount];
+
                     switch ($this->{$currAxis}->_tickStyle) {
                         case IMAGE_GRAPH_TICKS_INSIDE:
                               imageline ($img, $axesXpositions[$axisCount]          , $this->_drawingareaPos[1]+$relativeYPosition,
@@ -1060,13 +1048,21 @@ class Image_Graph
                     $tempText = new Image_Text("", $textoptions);
 
                     if ($axisCount == 0) { // axis 0 (left axis)
-                        $textX = $this->_pos[0] + $this->_borderspace + $this->{$currAxis}->_internalTempValues['totalTitleWidth'];
+                        $textX = $this->_drawingareaPos[0]
+                                 - $this->{$currAxis}->_internalTempValues['maxNumWidth'];
+                        if (($this->{$currAxis}->_tickStyle == IMAGE_GRAPH_TICKS_OUTSIDE) || 
+                            ($this->{$currAxis}->_tickStyle == IMAGE_GRAPH_TICKS_BOTH)) {
+                            $textX -= $this->{$currAxis}->_internalTempValues['tickSize'];
+                        }
                     } else { // axis 1 (right axis)
-                        $textX = $this->_pos[0] + $this->_size[0] - $this->_borderspace - $this->{$currAxis}->_internalTempValues['maxNumWidth'] - $this->{$currAxis}->_internalTempValues['totalTitleWidth'];
+                        $textX = $this->_drawingareaPos[0] + $this->_drawingareaSize[0];
+                        if (($this->{$currAxis}->_tickStyle == IMAGE_GRAPH_TICKS_OUTSIDE) || 
+                            ($this->{$currAxis}->_tickStyle == IMAGE_GRAPH_TICKS_BOTH)) {
+                            $textX += $this->{$currAxis}->_internalTempValues['tickSize'];
+                        }
                     }
 
                     foreach ($this->{$currAxis}->_ticksMajorEffective as $currTick) {
-                        // @todo: remove this dirty little hack :-) we shouldn't access the lines directly, should we?
                         $tempText->set('text', sprintf($this->{$currAxis}->_numberformat, $currTick));
                         $tempText->set('align', IMAGE_TEXT_ALIGN_LEFT);
                         $tempText->set('canvas', $img);
@@ -1075,9 +1071,6 @@ class Image_Graph
                         $textSize = $tempText->_realTextSize;
                         $relativeYPosition = $this->{$currAxis}->valueToPixelRelative($currTick);
                         $textY = $this->_drawingareaPos[1]+$relativeYPosition - ($textSize['height']/2);
-                        // BEGIN: workaround for current Image_Text v0.2
-                        // $textY -= ($this->{$currAxis}->_fontOptions['fontSize'] / 4);
-                        // END: workaround for current Image_Text v0.2
 
                         if (is_null($this->{$currAxis}->_numbercolor)) {
                             $this->{$currAxis}->_numbercolor = $this->{$currAxis}->_color;

@@ -10,14 +10,15 @@
     require_once("Image/Graph.php");
 
     $graph = new Image_Graph (400, 200);
-    $graph->setBackgroundColor (array(0x59, 0x59, 0x59));
-    $graph->setSpaceFromBorder (5); // 5 pixels from each border
-    $graph->setDefaultFontOptions (array("fontType" => "ttf",
-                                         "fontPath" => "",
-                                         "fontFile" => "arial",
-                                         "antiAliasing" => true,
-                                         "fontSize" => 10,
-                                         "color" => array(0,0,0) ));
+    $graph->setBackgroundColor(array(0x59, 0x59, 0x59));
+    $graph->setSpaceFromBorder(5); // 5 pixels from each border
+    $graph->setDefaultFontOptions(array("font_type"     => "ttf",
+                                        "font_path"     => "/usr/share/fonts/truetype/",
+                                        "font_file"     => "arial.ttf",
+                                        "anti_aliasing" => true,
+                                        "font_size"     => 10,
+                                        "color"         => array(0,0,0)
+                                 ));
 
     $graph->diagramTitle->setColor (array(0xBF,0xBF,0xBF));
     $graph->diagramTitle->setSpacer (array("bottom" => 10));
@@ -37,8 +38,8 @@
     $graph->axisY0->title->setColor (array(0xCC,0x29,0x29));
     $graph->axisY1->title->setColor (array(0x29,0xCC,0x29));
 
-    $graph->axisY0->title->setFontOptions (array("fontSize" => 8));
-    $graph->axisY1->title->setFontOptions (array("fontSize" => 8));
+    $graph->axisY0->title->setFontOptions (array("font_size" => 8));
+    $graph->axisY1->title->setFontOptions (array("font_size" => 8));
 
     $graph->gridY0->setFillType(IMAGE_GRAPH_GRID_MINOR);
 

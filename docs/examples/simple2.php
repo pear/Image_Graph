@@ -11,12 +11,13 @@
 
     $graph = new Image_Graph (400, 200);
     $graph->setBackgroundColor(array(200, 200, 200));
-    $graph->setDefaultFontOptions(array("fontType" => "ttf",
-                                        "fontPath" => "",
-                                        "fontFile" => "arial",
-                                        "antiAliasing" => true,
-                                        "fontSize" => 10,
-                                        "color" => array(0,0,0) ));
+    $graph->setDefaultFontOptions(array("font_type"     => "ttf",
+                                        "font_path"     => "/usr/share/fonts/truetype/",
+                                        "font_file"     => "arial.ttf",
+                                        "anti_aliasing" => true,
+                                        "font_size"     => 10,
+                                        "color"         => array(0,0,0)
+                                 ));
 
     $graph->diagramTitle->setText("Downloads June 2003");
 

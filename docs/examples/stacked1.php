@@ -12,12 +12,13 @@
     $graph = new Image_Graph (400, 200);
     $graph->setBackgroundColor (array(0x59, 0x59, 0x59));
     $graph->setSpaceFromBorder (5); // 5 pixels from each border
-    $graph->setDefaultFontOptions (array("fontType" => "ttf",
-                                         "fontPath" => "",
-                                         "fontFile" => "arial",
-                                         "antiAliasing" => true,
-                                         "fontSize" => 10,
-                                         "color" => array(0,0,0) ));
+    $graph->setDefaultFontOptions(array("font_type"     => "ttf",
+                                        "font_path"     => "/usr/share/fonts/truetype/",
+                                        "font_file"     => "arial.ttf",
+                                        "anti_aliasing" => true,
+                                        "font_size"     => 10,
+                                        "color"         => array(0,0,0)
+                                 ));
 
     $graph->diagramTitle->setColor (array(0xBF,0xBF,0xBF));
     $graph->diagramTitle->setSpacer (array("bottom" => 10));
