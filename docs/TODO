@@ -1,0 +1,30 @@
+// $Id$
+
+                            I M A G E _ G R A P H
+
+brought to you by the help of SpeedPartner.de
+
+PEAR homepage: http://pear.php.net/package/Image_Graph
+additional information: http://pear.speedpartner.de
+
+maintainer: Stefan Neufeind <pear.neufeind at speedpartner.de>
+
+
+What will be next?
+------------------
+Well, there are already many plans for the next time. These include:
+
+ - image-maps
+ - extensive support for bitmaps (for usage as backgrounds, fill-elements etc.)
+ - implement new fill-elements (maybe radial fill, bitmap-fill, ...)
+ - 3D-bars, shadows etc.
+ - curves (as a "smooth" alternative to the current data-element "line")
+ - a legend
+ - support for PHP-internal bitmap-fonts (so that users are not forced
+   to have the FreeType-library available; however this is strongly recommended)
+ - numerical x-axis and logarithmic y-axis
+ - integration of SVG- and PIMP-output functions
+ 
+
+If you would like to help working on any of these ideas or have more good ideas to
+add to our list, simply leave me a message.
