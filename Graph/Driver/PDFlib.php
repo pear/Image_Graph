@@ -884,17 +884,17 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
             $x -= $outputWidth / 2;
         }
 
-        if ($alignment & IMAGE_GRAPH_ALIGN_TOP) {
+        if (($alignment & IMAGE_GRAPH_ALIGN_TOP) || ($alignment === false)) {
             $y += $outputHeight;
         } elseif ($alignment & IMAGE_GRAPH_ALIGN_CENTER_Y) {
-            $y -= $outputHeight / 2;
+            $y += $outputHeight / 2;
         }
 
         if (($width === false) && ($height === false)) {
             $scale = 1;
         } else {
             $scale = max(($height/$height_), ($width/$width_));
-        }
+        }   
 
         pdf_place_image($this->_pdf, $image, $this->_getX($x), $this->_getY($y), $scale);
         pdf_close_image($this->_pdf, $image);

@@ -1,6 +1,11 @@
 *************************
  Image_Graph - Changelog
 *************************
+Version 0.3.0-dev3 [2005-xxx-xx] - Jesper Veggerby <pear.nosey@veggerby.dk>
+    * Added possibility to invert axis direction, fx. minimum at top or bottom
+    * Fixed axis so that forceMinimum() works with axis intersection
+    * Fixed PDF (PDFlib) driver to display images correctly
+
 Version 0.3.0-dev2 [2005-Jan-13] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Added functionality for multi-level labels (ticks, text, etc.) to support for minor and major labels (and more if needed)
     * Added fontmapping in GD drivers useful for mapping mnemonic fontnames, i.e. Times New Roman to font file names (either partial or full)

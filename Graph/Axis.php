@@ -188,6 +188,15 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      * @access private
      */
     var $_titleFont = false;
+    
+    /**
+     * Invert the axis (i.e. if an y-axis normally displays minimum values at
+     * the bottom, they are not displayed at the top
+     * @var bool
+     * @access private
+     * @since 0.3.0dev3
+     */
+    var $_invert = false;
 
     /**
      * Image_Graph_Axis [Constructor].
@@ -330,7 +339,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      * @param bool $userEnforce This value should not be set, used internally
      */
     function forceMinimum($minimum, $userEnforce = true)
-    {
+    {        
         if (($userEnforce) || (!$this->_minimumSet)) {
             $this->_minimum = $minimum;
             $this->_minimumSet = $userEnforce;
@@ -505,9 +514,17 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     function _point($value)
     {
         if ($this->_type == IMAGE_GRAPH_AXIS_X) {
-            return $this->_left + $this->_delta() * $this->_value($value);
+            if ($this->_invert) {                
+                return $this->_right - $this->_delta() * $this->_value($value);
+            } else {
+                return $this->_left + $this->_delta() * $this->_value($value);
+            }                
         } else {
-            return $this->_bottom - $this->_delta() * $this->_value($value);
+            if ($this->_invert) {                
+                return $this->_top + $this->_delta() * $this->_value($value);
+            } else {
+                return $this->_bottom - $this->_delta() * $this->_value($value);
+            }
         }
     }
 
@@ -525,26 +542,20 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     function _intersectPoint($value)
     {
 
-        if ($value === 'min') {
+        if (($value === 'min') || ($value < $this->_getMinimum())) {
             if ($this->_type == IMAGE_GRAPH_AXIS_X) {
                 return $this->_left;
             } else {
                 return $this->_bottom;
             }
-            //$value = $this->_getMinimum();
-        } elseif ($value === 'max') {
+        } elseif (($value === 'max') || ($value > $this->_getMaximum())) {
             if ($this->_type == IMAGE_GRAPH_AXIS_X) {
                 return $this->_right;
             } else {
                 return $this->_top;
             }
-            //$value = $this->_getMaximum();
-        } elseif ($value < $this->_getMinimum()) {
-            $this->_setMinimum($value);
-        } elseif ($value > $this->_getMaximum()) {
-            $this->_setMaximum($value);
-        }
-
+        } 
+        
         return $this->_point($value);
     }
     
@@ -809,6 +820,20 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
             'start' => $start,
             'end' => $end
         );
+    }
+    
+    /**
+     * Invert the axis direction
+     * 
+     * If the minimum values are normally displayed fx. at the bottom setting
+     * axis inversion to true, will cause the minimum values to be displayed at
+     * the top and maximum at the bottom.
+     * 
+     * @param bool $invert True if the axis is to be inverted, false if not
+     * @since 0.3.0dev3
+     */
+    function setInverted($invert) {
+        $this->_invert = $invert;
     }
 
     /**
