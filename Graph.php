@@ -773,7 +773,7 @@ class Image_Graph
     /**
     * Draw titles for diagram
     *
-    * @param  GD-resource image to draw to
+    * @param  resource        GD-resource; image to draw to
     * @access private
     */
     function _drawGDtitles(&$img)
@@ -845,7 +845,7 @@ class Image_Graph
     /**
     * Draw axes for diagram
     *
-    * @param  GD-resource image to draw to
+    * @param  resource        GD-resource; image to draw to
     * @access private
     */
     function _drawGDAxes(&$img)
@@ -1035,8 +1035,8 @@ class Image_Graph
     * will then be used for drawing. Please note that (at the moment) no solid standard
     * background-fill will be done.
     *
-    * @param  gd-resource   if supplied an existing gd-resource will be used for drawing
-    * @return gd-resource   truecolor GD-resource containing image of graph
+    * @param  resource        if supplied an existing gd-resource will be used for drawing
+    * @return resource        truecolor gd-resource containing image of graph
     * @access public
     */
     function getGDImage($gdResource = null)

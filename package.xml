@@ -3,12 +3,14 @@
   <name>Image_Graph</name>
   <summary>Drawing graphs out of numerical data (traffic, money, ...)</summary>
   <description>Features:
-- drawing graphs in various formats (line, bar, points marked by squares/rhombs/triangles/...)
+- drawing graphs in various formats (line, bar, points marked by squares/diamonds/triangles/...)
 - multiple graphs in one diagram
 - up to 2 Y-axes
 - flexible Y-value-output-customisation
 - variable ticks for the Y-axes
-- color-support
+- flexible fill-elements
+- grid-support
+- alpha-channel-support
 - ...</description>
   <maintainers>
     <maintainer>
@@ -19,15 +21,16 @@
     </maintainer>
   </maintainers>
   <release>
-    <version>0.2cvs</version>
-    <date>2004-01-26</date>
+    <version>0.2.0RC1</version>
+    <date>2004-02-14</date>
     <license>PHP License</license>
     <state>alpha</state>
     <notes>
 - splitted package into smaller classes to get a more intuitive API
+- improved API a lot now that it's possible to be more flexible due to improved OO
 - renamed marker "rhomb" to "diamond"
-- added workarounds for better results with current Image_Text v0.2
 - applied new directory-structure for package (as defined by the core-group)
+- added workarounds for better results with current Image_Text v0.2
     </notes>
     <deps>
       <dep type="ext" rel="has" version="2">gd</dep>
@@ -58,9 +61,17 @@
           </dir> 
         </dir> 
         <dir name="docs" role="doc">
+          <file>README</file>
+          <file>TODO</file>
           <dir name="examples" role="doc">
             <file>complex1.php</file>
+            <file>complex1b.php</file>
             <file>simple1.php</file>
+            <file>simple2.php</file>
+            <file>stacked1.php</file>
+            <dir name="images" role="php">
+              <file>simple2.png</file>
+            </dir> 
           </dir>
         </dir>
       </dir>

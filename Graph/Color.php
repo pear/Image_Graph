@@ -48,7 +48,7 @@ class Image_Graph_Color extends Image_Color
     * Userdefined color specifications get translated into 
     * an array of rgb values.
     *
-    * @param    gd-resource     Image handle
+    * @param    resource        GD-resource
     * @param    mixed           any color representation supported by color2RGB()
     * @return   resource        Image color handle
     * @see      color2RGB()

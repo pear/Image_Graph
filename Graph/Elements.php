@@ -266,7 +266,7 @@ class Image_Graph_Axis extends Image_Graph_Base
     * The variable is defined/used here as a "virtual" variable.
     * It will receive it's initial values in the derived classes for x-/y-axes
     *
-    * @var    const           use constants IMAGE_GRAPH_AXISTYPE_* to evaluate/set this variable
+    * @var    mixed           use constants IMAGE_GRAPH_AXISTYPE_* to evaluate/set this variable
     * @access private
     */
     var $_axistype = IMAGE_GRAPH_AXISTYPE_LINEAR;
@@ -341,7 +341,7 @@ class Image_Graph_Axis extends Image_Graph_Base
     /**
     * Set tick-style for ticks on a axis
     *
-    * @param  const           use constants IMAGE_GRAPH_TICKS_INSIDE, IMAGE_GRAPH_TICKS_OUTSIDE or IMAGE_GRAPH_TICKS_BOTH
+    * @param  mixed           use constants IMAGE_GRAPH_TICKS_INSIDE, IMAGE_GRAPH_TICKS_OUTSIDE or IMAGE_GRAPH_TICKS_BOTH
     * @access public
     */
     function setTickStyle($style)
@@ -423,7 +423,7 @@ class Image_Graph_Axis_X extends Image_Graph_Axis
     /**
     * Type of the axis
     *
-    * @var    const           use constants IMAGE_GRAPH_AXISTYPE_*; currently only IMAGE_GRAPH_AXISTYPE_TEXT allowed
+    * @var    mixed           use constants IMAGE_GRAPH_AXISTYPE_*; currently only IMAGE_GRAPH_AXISTYPE_TEXT allowed
     * @access private
     */
     var $_axistype = IMAGE_GRAPH_AXISTYPE_TEXT;
@@ -451,7 +451,7 @@ class Image_Graph_Axis_X extends Image_Graph_Axis
     /**
     * Set type of axis
     *
-    * @param  const           only IMAGE_GRAPH_AXISTYPE_TEXT allowed
+    * @param  mixed           only IMAGE_GRAPH_AXISTYPE_TEXT allowed
     * @access public
     * @see    $_axistype
     */
@@ -807,7 +807,7 @@ class Image_Graph_Grid extends Image_Graph_Base
     /**
     * Type of grid-lines
     *
-    * @var    const           use constants IMAGE_GRAPH_GRID_NONE, IMAGE_GRAPH_GRID_MAJOR, IMAGE_GRAPH_GRID_MINOR
+    * @var    mixed           use constants IMAGE_GRAPH_GRID_NONE, IMAGE_GRAPH_GRID_MAJOR, IMAGE_GRAPH_GRID_MINOR
     * @access private
     */
     var $_lineType = IMAGE_GRAPH_GRID_NONE;
@@ -815,7 +815,7 @@ class Image_Graph_Grid extends Image_Graph_Base
     /**
     * Type of grid-fill
     *
-    * @var    const           use constants IMAGE_GRAPH_GRID_NONE, IMAGE_GRAPH_GRID_MAJOR, IMAGE_GRAPH_GRID_MINOR
+    * @var    mixed           use constants IMAGE_GRAPH_GRID_NONE, IMAGE_GRAPH_GRID_MAJOR, IMAGE_GRAPH_GRID_MINOR
     * @access private
     */
     var $_fillType = IMAGE_GRAPH_GRID_NONE;
@@ -851,7 +851,7 @@ class Image_Graph_Grid extends Image_Graph_Base
     /**
     * Set type of grid-lines
     *
-    * @param  const           use constants IMAGE_GRAPH_GRID_NONE, IMAGE_GRAPH_GRID_MAJOR, IMAGE_GRAPH_GRID_MINOR
+    * @param  mixed           use constants IMAGE_GRAPH_GRID_NONE, IMAGE_GRAPH_GRID_MAJOR, IMAGE_GRAPH_GRID_MINOR
     * @access public
     */
     function setLineType($type)
@@ -862,7 +862,7 @@ class Image_Graph_Grid extends Image_Graph_Base
     /**
     * Set type of grid-fill
     *
-    * @param  const           use constants IMAGE_GRAPH_GRID_NONE, IMAGE_GRAPH_GRID_MAJOR, IMAGE_GRAPH_GRID_MINOR
+    * @param  mixed           use constants IMAGE_GRAPH_GRID_NONE, IMAGE_GRAPH_GRID_MAJOR, IMAGE_GRAPH_GRID_MINOR
     * @access public
     */
     function setFillType($type)
@@ -927,8 +927,8 @@ class Image_Graph_Grid extends Image_Graph_Base
     /**
     * Draws diagram element
     *
-    * @param  gd-resource     image-resource to draw to
-    * @param  const           choose what to draw; use constants IMAGE_GRAPH_DRAW_FILLANDBORDER, IMAGE_GRAPH_DRAW_JUSTFILL or IMAGE_GRAPH_DRAW_JUSTBORDER; BORDER means "grid-line" in this context
+    * @param  resource        GD-resource to draw to
+    * @param  mixed           choose what to draw; use constants IMAGE_GRAPH_DRAW_FILLANDBORDER, IMAGE_GRAPH_DRAW_JUSTFILL or IMAGE_GRAPH_DRAW_JUSTBORDER; BORDER means "grid-line" in this context
     * @access private
     */
     function drawGD(&$img, $drawWhat=IMAGE_GRAPH_DRAW_FILLANDBORDER)

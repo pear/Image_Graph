@@ -95,7 +95,7 @@ class Image_Graph_Fill_Common
     /**
     * Draws fill element, shape: box
     *
-    * @param  gd-resource              image-resource to draw to
+    * @param  resource                 image-resource to draw to
     * @param  array of array of int    absolute position for upper left and lower right edge
     * @access public
     */
@@ -107,7 +107,7 @@ class Image_Graph_Fill_Common
     /**
     * Draws fill element, shape: polygon
     *
-    * @param  gd-resource              image-resource to draw to
+    * @param  resource                 image-resource to draw to
     * @param  array of array of int    absolute positions of polygon-coordinates
     * @access public
     */

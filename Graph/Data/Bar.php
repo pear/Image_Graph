@@ -104,7 +104,7 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
     /**
     * Draws diagram element
     *
-    * @param gd-resource  image-resource to draw to
+    * @param resource     GD-resource to draw to
     * @param int          choose what to draw; use constants IMAGE_GRAPH_DRAW_FILLANDBORDER, IMAGE_GRAPH_DRAW_JUSTFILL or IMAGE_GRAPH_DRAW_JUSTBORDER
     * @access public
     */

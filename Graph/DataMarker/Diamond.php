@@ -75,7 +75,7 @@ class Image_Graph_DataMarker_Diamond extends Image_Graph_DataMarker_Common
     /**
     * Draws diagram element 
     *
-    * @param gd-resource      GD-resource to draw to
+    * @param resource         GD-resource to draw to
     * @param array            (array of int) absolute position (x/y), where to draw the marker
     * @access public
     */

@@ -202,7 +202,7 @@ class Image_Graph_Data_Common
     /**
     * Draws the data marker (if set)
     *
-    * @param gd-resource image-resource to draw to
+    * @param resource         GD-resource to draw to
     * @access private
     */
     function _drawDataMarkerGD(&$img)
@@ -296,7 +296,7 @@ class Image_Graph_Data_Common
     /**
     * Draw all diagram elements in this stacking-group
     *
-    * @param array    references to dataElements (objects of this type)
+    * @param  array           references to dataElements (objects of this type)
     * @access public
     * @static
     */
@@ -310,8 +310,8 @@ class Image_Graph_Data_Common
     /**
     * Draws diagram element
     *
-    * @param gd-resource  image-resource to draw to
-    * @param int          choose what to draw; use constants IMAGE_GRAPH_DRAW_FILLANDBORDER, IMAGE_GRAPH_DRAW_JUSTFILL or IMAGE_GRAPH_DRAW_JUSTBORDER
+    * @param resource         GD-resource to draw to
+    * @param int              choose what to draw; use constants IMAGE_GRAPH_DRAW_FILLANDBORDER, IMAGE_GRAPH_DRAW_JUSTFILL or IMAGE_GRAPH_DRAW_JUSTBORDER
     * @access public
     */
     function drawGD(&$img, $drawWhat=IMAGE_GRAPH_DRAW_FILLANDBORDER)
