@@ -1,4 +1,4 @@
-<?
+<?php
 // $Id$
 /**
 * Solid fill-element for a Image_Graph diagram
@@ -59,4 +59,4 @@ class Image_Graph_Fill_Solid extends Image_Graph_Fill_Common
         imagefilledpolygon ($img, $points, count($pos), $drawColor);
     }
 }
-?>
+php?>

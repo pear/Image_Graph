@@ -1,4 +1,4 @@
-<?
+<?php
 // $Id$
 
 require_once("Image/Graph/DataMarker/Common.php");
@@ -67,4 +67,4 @@ class Image_Graph_DataMarker_Square extends Image_Graph_DataMarker_Common
                               $drawColor);
     }
 }
-?>
+php?>

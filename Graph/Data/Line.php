@@ -1,4 +1,4 @@
-<?
+<?php
 // $Id$
 /**
 * Line data-element for a Image_Graph diagram
@@ -162,4 +162,4 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
         }
     }
 }
-?>
+php?>

@@ -1,4 +1,4 @@
-<?
+<?php
 // $Id$
 /**
 * Example for using the Image_Graph-class
@@ -77,4 +77,4 @@
 
     Header ("Content-Type: image/png");
     imagepng($image);
-?>
+php?>

@@ -1,4 +1,4 @@
-<?
+<?php
 // $Id$
 /**
 * Bar data-element for a Image_Graph diagram
@@ -137,4 +137,4 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
         }
     }
 }
-?>
+php?>

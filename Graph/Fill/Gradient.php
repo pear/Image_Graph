@@ -1,4 +1,4 @@
-<?
+<?php
 // $Id$
 /**
 * Gradient fill-element for a Image_Graph diagram
@@ -168,4 +168,4 @@ class Image_Graph_Fill_Gradient extends Image_Graph_Fill_Common
         }
     }
 }
-?>
+php?>

@@ -1,4 +1,4 @@
-<?
+<?php
 // $Id$
 
 require_once("Image/Graph/Color.php"); // extended version of package: PEAR::Image_Color
@@ -66,4 +66,4 @@ class Image_Graph_DataMarker_Common
         // implementation of this function in the derived datamarker-element-classes
     }
 }
-?>
+php?>

@@ -984,3 +984,4 @@ class Image_Graph
         return $img;
     }
 }
+php?>
