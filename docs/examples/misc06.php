@@ -2,8 +2,11 @@
 /**
  * Usage example for Image_Graph.
  * 
- * This example demonstrates basic functionality of creating the plot, datasets
- * and setting the appearances.
+ * Main purpose: 
+ * "Semi-real" plot
+ * 
+ * Other: 
+ * Gradient filling, Icon markers (and marker array), Datapreprocessor
  * 
  * $Id$
  * 

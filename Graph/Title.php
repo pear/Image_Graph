@@ -63,6 +63,13 @@ class Image_Graph_Title extends Image_Graph_Layout
     var $_font;
 
     /**
+     * The alignment of the title
+     * @var int
+     * @access private
+     */
+    var $_alignment = IMAGE_GRAPH_ALIGN_CENTER_X;
+
+    /**
      * Create the title.
      *
      * Pass a Image_Graph_Font object - preferably by-ref (&amp;) as second
@@ -121,6 +128,16 @@ class Image_Graph_Title extends Image_Graph_Layout
     }
 
     /**
+     * Set the alignment of the legend
+     *
+     * @param int $alignment The alignment
+     */
+    function setAlignment($alignment)
+    {
+        $this->_alignment = $alignment & 0x7;
+    }
+    
+    /**
      * Output the text
      *
      * @return bool Was the output 'good' (true) or 'bad' (false).
@@ -153,15 +170,21 @@ class Image_Graph_Title extends Image_Graph_Layout
         if (parent::_done() === false) {
             return false;
         }
-
-        $x = ($this->_left + $this->_right) / 2;
+            
+        if ($this->_alignment == IMAGE_GRAPH_ALIGN_CENTER_X) {
+            $x = ($this->_left + $this->_right) / 2;
+        } elseif ($this->_alignment == IMAGE_GRAPH_ALIGN_LEFT) {
+            $x = $this->_left;
+        } else {
+            $x = $this->_right;
+        }
         $y = ($this->_top + $this->_bottom) / 2;
 
         $this->write(
             $x,
             $y,
             $this->_text,
-            IMAGE_GRAPH_ALIGN_CENTER_X + IMAGE_GRAPH_ALIGN_CENTER_Y
+            $this->_alignment + IMAGE_GRAPH_ALIGN_CENTER_Y
         );
         return true;
     }

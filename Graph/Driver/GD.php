@@ -93,6 +93,16 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
     var $_gd2 = true;
 
     /**
+     * Antialiasing?
+     * 
+     * Possible values 'off', 'driver' and 'native'
+     * 
+     * @var string
+     * @access private
+     */
+    var $_antialias = 'off';
+    
+    /**
      * Font map
      * @var array
      * @access private
@@ -105,13 +115,6 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
      *
      * Parameters available:
      * 
-     * 'antialias' Set to true if line antialiasing should be enabled, this is
-     * the built in GD antialiasing, which causes lines with a linestyle to
-     * disappear and lines with a thickness > 1 to display as = 1. This does
-     * also not look good when displaying "short" lines as fx. done with a
-     * smooth line/area chart. Use it for best results with a line chart having
-     * few datapoints.
-     *
      * 'width' The width of the graph on the canvas
      *
      * 'height' The height of the graph on the canvas
@@ -119,6 +122,24 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
      * 'left' The left offset of the graph on the canvas
      *
      * 'top' The top offset of the graph on the canvas
+     * 
+     * 'antialias' = 'native' enables native GD antialiasing - this
+     * method has no severe impact on performance (approx +5%). Requires PHP
+     * 4.3.2 (with bundled GD2)
+     * 
+     * 'antialias' = {true|'driver'} Image_Graph implemented method. This method
+     * has a severe impact on performance, drawing an antialiased line this
+     * way is about XX times slower, with an overall performance impact of
+     * about +40%. The justification for this method is that if native support
+     * is not available this can be used, it is also a future feature that this
+     * method for antialiasing will support line styles.
+     * 
+     * Use antialiased for best results with a line/area chart having just a few
+     * datapoints. Native antialiasing does not provide a good appearance with
+     * short lines, as for example with smoothed charts. Antialiasing does not
+     * (currently) work with linestyles, neither native nor driver method!
+     * 
+     * 'noalpha' = true If alpha blending is to be disabled
      *
      * 'filename' An image to open, on which the graph is created on
      *
@@ -154,13 +175,23 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
                     $this->_width,
                     $this->_height
                 );
-                ImageAlphaBlending($this->_canvas, true);               
+                if ((!isset($param['noalpha'])) || ($param['noalpha'] !== true)) {
+                    ImageAlphaBlending($this->_canvas, true);
+                }               
             } else {
                 $this->_canvas = ImageCreate($this->_width, $this->_height);
             }            
         }
         
-        if (($this->_gd2) && (isset($param['antialias'])) && ($param['antialias'])) {
+        if (isset($param['antialias'])) {
+            $this->_antialias = $param['antialias'];
+        }
+        
+        if ($this->_antialias === true) {
+            $this->_antialias = 'driver';
+        }
+        
+        if (($this->_gd2) && ($this->_antialias === 'native')) {
             ImageAntialias($this->_canvas, true);
         }
 
@@ -621,6 +652,138 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
             $this->_font['angle'] = 0;
         }
     }
+    
+    /**
+     * Calculate pixels on a line
+     *
+     * @param int $x0 X start point
+     * @param int $y0 X start point
+     * @param int $x1 X end point
+     * @param int $y1 Y end point
+     * @return array An associated array of x,y points with all pixels on the
+     * line	
+     * @access private
+     */
+    function &_linePixels($x0, $y0, $x1, $y1)
+    {
+        $pixels = array();
+        if (abs($x0 - $x1) > abs($y0 - $y1)) {
+            if ($x1 != $x0) {
+                $m = ($y1 - $y0) / ($x1 - $x0);
+            } else {
+                $m = 0;
+            }  
+            $b = $y0 - $m * $x0;
+            $strx = min($x0, $x1);
+            $endx = max($x0, $x1);
+            for ($x = $strx; $x <= $endx; $x++) {
+                $pixels[] = array('X' => $x, 'Y' => ($m * $x + $b));                
+            }
+        } else {
+            if ($y1 != $y0) {
+                $m = ($x1 - $x0) / ($y1 - $y0);
+            } else {
+                $m = 0;
+            }
+            $b = $x0 - $m * $y0;
+            $stry = min($y0, $y1);
+            $endy = max($y0, $y1);
+            for ($y = $stry; $y <= $endy; $y++) {
+                $pixels[] = array('X' => ($m * $y + $b), 'Y' => $y);                
+            }
+        }
+        return $pixels;
+    }
+
+    /**
+     * Draws an antialiased line
+     *
+     * @param int $x0 X start point
+     * @param int $y0 X start point
+     * @param int $x1 X end point
+     * @param int $y1 Y end point
+     * @param mixed $color The line color, can be omitted
+     * @access private
+     */
+    function _antialiasedLine($x0, $y0, $x1, $y1, $color = false)
+    {
+        if (($line = $this->_getLineStyle($color)) !== false) {
+            if ($line >= 0) {
+                $line = ImageColorsForIndex($this->_canvas, $line);
+                $pixels = &$this->_linePixels($x0, $y0, $x1, $y1);
+                foreach ($pixels as $point) {
+                    $this->_antialiasedPixel($point['X'], $point['Y'], $line);
+                }
+                unset($pixels);
+            }
+        }
+    }
+
+
+    /**
+     * Draws an antialiased pixel
+     *
+     * @param int $x X point
+     * @param int $y Y point
+     * @param mixed $color The pixel color
+     * @access private
+     */
+    function _antialiasedPixel($x, $y, $color)
+    {
+        $fx = floor($x);
+        $fy = floor($y);
+        $cx = ceil($x);
+        $cy = ceil($y);
+        $xa = $x - $fx;
+        $xb = $cx - $x;
+        $ya = $y - $fy;
+        $yb = $cy - $y;
+        if (($cx == $fx) && ($cy == $fy)) {
+            $this->_antialisedSubPixel($fx, $fy, 0.0, 1.0, $color);
+        } else {
+            $this->_antialisedSubPixel($fx, $fy, $xa + $ya, $xb + $yb, $color);
+            if ($cy != $fy) {
+                $this->_antialisedSubPixel($fx, $cy, $xa + $yb, $xb + $ya, $color);
+            }
+            if ($cx != $fx) {
+                $this->_antialisedSubPixel($cx, $fy, $xb + $ya, $xa + $yb, $color);
+                if ($cy != $fy) {
+                    $this->_antialisedSubPixel($cx, $cy, $xb + $yb, $xa + $ya, $color);
+                }
+            }
+        }
+    }
+
+    /**
+     * Antialias'es the pixel around x,y with weights a,b
+     *
+     * @param int $x X point
+     * @param int $y Y point
+     * @param int $a The weight of the current color
+     * @param int $b The weight of the applied/wanted color
+     * @param mixed $color The pixel color
+     * @access private
+     */
+    function _antialisedSubPixel($x, $y, $a, $b, $color)
+    {
+        $x = $this->_getX($x);
+        $y = $this->_getX($y);
+        if (($x >=0 ) && ($y >= 0) && ($x < $this->getWidth()) && ($y < $this->getHeight())) {
+            $tempColor = ImageColorsForIndex($this->_canvas, ImageColorAt($this->_canvas, $x, $y));                
+            
+            $newColor[0] = min(255, round($tempColor['red'] * $a + $color['red'] * $b));        
+            $newColor[1] = min(255, round($tempColor['green'] * $a + $color['green'] * $b));        
+            $newColor[2] = min(255, round($tempColor['blue'] * $a + $color['blue'] * $b));
+            //$newColor[3] = 0;
+            $color = '#';
+            foreach ($newColor as $acolor) {
+                $color .= sprintf('%02s', dechex($acolor));
+            }
+            $newColor = $this->_color($color);//,'rgb(' . $newColor[0] . ',' . $newColor[1] . ','  . $newColor[2] .')';        
+    
+            ImageSetPixel($this->_canvas, $x, $y, $newColor);
+        }
+    }    
 
     /**
      * Draw a line
@@ -637,7 +800,9 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
         $y0 = $this->_getY($y0);
         $x1 = $this->_getX($x1);
         $y1 = $this->_getY($y1);
-        if (($line = $this->_getLineStyle($color)) !== false) {
+        if (($this->_antialias === 'driver') && ($x0 != $x1) && ($y0 != $y1)) {
+            $this->_antialiasedLine($x0, $y0, $x1, $y1, $color);
+        } elseif (($line = $this->_getLineStyle($color)) !== false) {            
             ImageLine($this->_canvas, $x0, $y0, $x1, $y1, $line);
         }
         parent::line($x0, $y0, $x1, $y1, $color);
@@ -683,13 +848,33 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
                 if (($fill = $this->_getFillStyle($fillColor, $low['X'], $low['Y'], $high['X'], $high['Y'])) !== false) {
                     ImageFilledPolygon($this->_canvas, $polygon, count($this->_polygon), $fill);
                 }
-                if (($line = $this->_getLineStyle($lineColor)) !== false) {
+                if ($this->_antialias === 'driver') {
+                    $pfirst = $p0 = false; 
+                    foreach ($this->_polygon as $p1) {
+                        if ($p0 !== false) {
+                            $this->_antialiasedLine($p0['X'], $p0['Y'], $p1['X'], $p1['Y'], $lineColor);
+                        }
+                        if ($pfirst === false) {
+                            $pfirst = $p1;
+                        }
+                        $p0 = $p1;
+                    }
+                    $this->_antialiasedLine($p0['X'], $p0['Y'], $pfirst['X'], $pfirst['Y'], $lineColor);
+                } elseif (($line = $this->_getLineStyle($lineColor)) !== false) {
                     ImagePolygon($this->_canvas, $polygon, count($this->_polygon), $line);
                 }
             }
         } else {
             $prev_point = false;
-            if (($line = $this->_getLineStyle($lineColor)) !== false) {
+            if ($this->_antialias === 'driver') {
+                $p0 = false; 
+                foreach ($this->_polygon as $p1) {
+                    if ($p0 !== false) {
+                        $this->_antialiasedLine($p0['X'], $p0['Y'], $p1['X'], $p1['Y'], $lineColor);
+                    }
+                    $p0 = $p1;
+                }
+            } elseif (($line = $this->_getLineStyle($lineColor)) !== false) {
                 foreach ($this->_polygon as $point) {
                     if ($prev_point) {
                         ImageLine(
@@ -736,47 +921,52 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
                 $dx = abs($point['X'] - $lastPoint['X']);
                 $dy = abs($point['Y'] - $lastPoint['Y']);
                 $d = sqrt($dx * $dx + $dy * $dy);
+                $lx = $ly = false;
                 if ($d > 0) {
                     $interval = 1 / $d;
                     for ($t = 0; $t <= 1; $t = $t + $interval) {
-                        $x = Image_Graph_Tool::bezier(
+                        $x = round(Image_Graph_Tool::bezier(
                             $t,
                             $lastPoint['X'],
                             $lastPoint['P1X'],
                             $lastPoint['P2X'],
                             $point['X']
-                        );
+                        ));
     
-                        $y = Image_Graph_Tool::bezier(
+                        $y = round(Image_Graph_Tool::bezier(
                             $t,
                             $lastPoint['Y'],
                             $lastPoint['P1Y'],
                             $lastPoint['P2Y'],
                             $point['Y']
-                        );
-    
-                        if (!isset($low['X'])) {
-                            $low['X'] = $x;
-                        } else {
-                            $low['X'] = min($x, $low['X']);
+                        ));
+                        
+                        if (($lx !== $x) || ($ly !== $y)) {    
+                            if (!isset($low['X'])) {
+                                $low['X'] = $x;
+                            } else {
+                                $low['X'] = min($x, $low['X']);
+                            }
+                            if (!isset($high['X'])) {
+                                $high['X'] = $x;
+                            } else {
+                                $high['X'] = max($x, $high['X']);
+                            }
+                            if (!isset($low['Y'])) {
+                                $low['Y'] = $y;
+                            } else {
+                                $low['Y'] = min($y, $low['Y']);
+                            }
+                            if (!isset($high['Y'])) {
+                                $high['Y'] = $y;
+                            } else {
+                                $high['Y'] = max($y, $high['Y']);
+                            }
+                            $polygon[] = $x;
+                            $polygon[] = $y;
                         }
-                        if (!isset($high['X'])) {
-                            $high['X'] = $x;
-                        } else {
-                            $high['X'] = max($x, $high['X']);
-                        }
-                        if (!isset($low['Y'])) {
-                            $low['Y'] = $y;
-                        } else {
-                            $low['Y'] = min($y, $low['Y']);
-                        }
-                        if (!isset($high['Y'])) {
-                            $high['Y'] = $y;
-                        } else {
-                            $high['Y'] = max($y, $high['Y']);
-                        }
-                        $polygon[] = $x;
-                        $polygon[] = $y;
+                        $lx = $x;
+                        $ly = $y;
                     }
                     if (($t - $interval) < 1) {
                         $x = Image_Graph_Tool::bezier(

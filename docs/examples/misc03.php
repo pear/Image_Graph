@@ -1,4 +1,19 @@
 <?php
+/**
+ * Usage example for Image_Graph.
+ * 
+ * Main purpose: 
+ * Demonstrate radial gradient fillings
+ * 
+ * Other: 
+ * None specific
+ * 
+ * $Id$
+ * 
+ * @package Image_Graph
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ */
+
 include 'Image/Graph.php';
 
 // create the graph
@@ -38,7 +53,7 @@ $Plot =& $Plotarea->addNew('pie', &$Dataset1);
 $Plotarea->hideAxis();
 
 // create a Y data value marker
-$Marker =& $Plot->addNew('value_marker', IMAGE_GRAPH_PCT_Y_TOTAL);
+$Marker =& $Plot->addNew('Image_Graph_Marker_Value', IMAGE_GRAPH_PCT_Y_TOTAL);
 // create a pin-point marker type
 $PointingMarker =& $Plot->addNew('Image_Graph_Marker_Pointing_Angular', array(20, &$Marker));
 // and use the marker on the 1st plot

@@ -2,9 +2,11 @@
 /**
  * Usage example for Image_Graph.
  * 
- * This is a basic example of how to create a simple plot.
+ * Main purpose: 
+ * Demonstrate a plot
  * 
- * The example also demonstrates how to use some DataPreprocessors
+ * Other: 
+ * None specific
  * 
  * $Id$
  * 

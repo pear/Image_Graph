@@ -48,6 +48,8 @@ require_once 'Image/Graph/Plotarea/Element.php';
  class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 {
     
+    // TODO Implement axis as having an angle instead of hardcoded Y = 90, X = 0 degrees
+
     /**
      * The type of the axis, possible values are:
      * <ul>
@@ -613,20 +615,23 @@ require_once 'Image/Graph/Plotarea/Element.php';
      */
     function _point($value)    
     {
+        // TODO Values aren't properly cropped when "above" maximum or "below" minimum (i.e. graph should be cropped to plotarea!)     
+        
         if ($this->_type == IMAGE_GRAPH_AXIS_X) {
-            if ($this->_invert) {                
-                return $this->_right - $this->_axisPadding['high'] - $this->_delta * $this->_value($value);
+            if ($this->_invert) {
+                return max($this->_left, $this->_right - $this->_axisPadding['high'] - $this->_delta * $this->_value($value));
             } else {
-                return $this->_left + $this->_axisPadding['low'] + $this->_delta * $this->_value($value);
+                return min($this->_right, $this->_left + $this->_axisPadding['low'] + $this->_delta * $this->_value($value));
             }                
         } else {
             if ($this->_invert) {                
-                return $this->_top + $this->_axisPadding['high'] + $this->_delta * $this->_value($value);
+                return min($this->_botto, $this->_top + $this->_axisPadding['high'] + $this->_delta * $this->_value($value));
             } else {
-                return $this->_bottom - $this->_axisPadding['low'] - $this->_delta * $this->_value($value);
+                return max($this->_top, $this->_bottom - $this->_axisPadding['low'] - $this->_delta * $this->_value($value));
             }
         }
     }
+
 
     /**
      * Get the axis intersection pixel position
