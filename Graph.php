@@ -327,8 +327,8 @@ class Image_Graph
             $options['anti_aliasing'] = false;
         }
         $options['max_lines'] = 100;
-        $options['width'] = $this->_size[0];
-        $options['height'] = $this->_size[1];
+        $options['width'] = $this->_size[1];
+        $options['height'] = $this->_size[0];
         $this->_defaultFontOptions = $options;
     }
 
@@ -643,10 +643,8 @@ class Image_Graph
                 $text = (is_array($this->diagramTitle->_text)) ? implode('\n', $this->diagramTitle->_text) : $this->diagramTitle->_text;
                 $tempText = new Image_Text($text, $this->diagramTitle->_fontOptions);
                 $tempText->init();
-                var_dump($tempText);
                 $tempText->measurize();
                 $textSize = $tempText->_realTextSize;
-                var_dump($textSize);
                 $borderspaceSum['top'] += $textSize['height'];
                 $borderspaceSum['top'] += $this->diagramTitle->_spacer['top'];
                 $borderspaceSum['top'] += $this->diagramTitle->_spacer['bottom'];
@@ -799,8 +797,8 @@ class Image_Graph
             if (!empty($this->diagramTitle->_text)) {
                 require_once 'Image/Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
                 $textX = $this->_pos[0] + ($this->_size[0] / 2);
-                $textY = $this->_pos[1] + $this->_borderspace;
-                $options = array_merge($this->diagramTitle->_fontOptions, array('x' => $textX, 'y' => $textY));
+                $textY = $this->_pos[1] + $this->_borderspace + 30;
+                $options = array_merge($this->diagramTitle->_fontOptions, array('cx' => $textX, 'cy' => $textY));
                 
                 /***********************************************************
                 
@@ -812,11 +810,16 @@ class Image_Graph
                 $tempText->set('halign', IMAGE_TEXT_ALIGN_CENTER);
                 $tempText->set('canvas', $img);
                 $tempText->init();
-                
+                                
                 $tempText->setColor(array ("r" => $this->diagramTitle->_color[0],
                                            "g" => $this->diagramTitle->_color[1],
                                            "b" => $this->diagramTitle->_color[2]));
-                $tempText->render();
+                $tempText->measurize();
+                $tempText->set(array('width' => $tempText->_realTextSize['width'], 'height' => $tempText->_realTextSize['height']));
+                $tempText->init();
+                $tempText->measurize();
+                $tempText->render(true);
+                var_dump($tempText);
             }
 
             // draw x-axis text
