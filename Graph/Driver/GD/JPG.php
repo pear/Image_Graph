@@ -99,8 +99,10 @@ class Image_Graph_Driver_GD_JPG extends Image_Graph_Driver_GD
             header('Content-type: image/jpg');
             header('Content-Disposition: inline; filename = \"'. basename($_SERVER['PHP_SELF'], '.php') . '.jpg\"');
             ImageJPEG($this->_canvas, '', $this->_quality);
+            ImageDestroy($this->_canvas);
         } elseif (isset($param['filename'])) {
             ImageJPEG($this->_canvas, $param['filename'], $this->_quality);
+            ImageDestroy($this->_canvas);
         }
     }
 

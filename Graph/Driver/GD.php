@@ -1427,6 +1427,10 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
         if ($this->_gd2) {
             ImageSetThickness($this->_canvas, 1);
         }
+        if ($this->_tileImage != null) {
+            ImageDestroy($this->_tileImage);
+            $this->_tileImage = null;
+        }
         parent::_reset();
         $this->_font = array('font' => 1, 'color' => 'black');
     }

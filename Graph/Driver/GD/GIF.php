@@ -93,8 +93,10 @@ class Image_Graph_Driver_GD_GIF extends Image_Graph_Driver_GD
             header('Content-type: image/gif');
             header('Content-Disposition: inline; filename = \"'. basename($_SERVER['PHP_SELF'], '.php') . '.gif\"');
             ImageGIF($this->_canvas);
+            ImageDestroy($this->_canvas);
         } elseif (isset($param['filename'])) {
             ImageGIF($this->_canvas, $param['filename']);
+            ImageDestroy($this->_canvas);
         }
     }
 

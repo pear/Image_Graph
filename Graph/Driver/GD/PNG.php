@@ -102,10 +102,12 @@ class Image_Graph_Driver_GD_PNG extends Image_Graph_Driver_GD
         parent::done($param);
         if (($param === false) || (!isset($param['filename']))) {
             header('Content-type: image/png');
-            header('Content-Disposition: inline; filename = \"'. basename($_SERVER['PHP_SELF'], '.php') . '.png\"');
+            header('Content-Disposition: inline; filename = \"'. basename($_SERVER['PHP_SELF'], '.php') . '.png\"');            
             ImagePNG($this->_canvas);
+            ImageDestroy($this->_canvas);
         } elseif (isset($param['filename'])) {
             ImagePNG($this->_canvas, $param['filename']);
+            ImageDestroy($this->_canvas);
         }
     }
 
