@@ -83,7 +83,7 @@ class Image_Graph_Data_Common
     function &setDataMarker($representation = "line", $attributes = array())
     {
         $representation = strtolower($representation);
-        $dataElementFile  = "Image/Graph/DataMarker/".strtolower($representation).".php";
+        $dataElementFile  = "Image/Graph/DataMarker/".ucfirst($representation).".php";
         $dataElementClass = "Image_Graph_DataMarker_".ucfirst($representation);
 
         if (!isset($attributes["color"])) {
