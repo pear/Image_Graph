@@ -1,0 +1,81 @@
+<?php
+// +--------------------------------------------------------------------------+
+// | Image_Graph                                                              |
+// +--------------------------------------------------------------------------+
+// | Copyright (C) 2003, 2004 Jesper Veggerby                                 |
+// | Email         pear.nosey@veggerby.dk                                     |
+// | Web           http://pear.veggerby.dk                                    |
+// | PEAR          http://pear.php.net/package/Image_Graph                    |
+// +--------------------------------------------------------------------------+
+// | This library is free software; you can redistribute it and/or            |
+// | modify it under the terms of the GNU Lesser General Public               |
+// | License as published by the Free Software Foundation; either             |
+// | version 2.1 of the License, or (at your option) any later version.       |
+// |                                                                          |
+// | This library is distributed in the hope that it will be useful,          |
+// | but WITHOUT ANY WARRANTY; without even the implied warranty of           |
+// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU        |
+// | Lesser General Public License for more details.                          |
+// |                                                                          |
+// | You should have received a copy of the GNU Lesser General Public         |
+// | License along with this library; if not, write to the Free Software      |
+// | Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA |
+// +--------------------------------------------------------------------------+
+
+/**
+ * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * @package Image_Graph 
+ * @category images
+ * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @version $Id$
+ */ 
+
+/**
+ * Include file Element.php
+ */
+require_once 'Element.php';
+
+/**
+ * Representation of a element on a plotarea.
+ * @abstract
+ */
+class Image_Graph_Plotarea_Element extends Image_Graph_Element 
+{
+
+    /**
+     * Get the X pixel position represented by a value
+     * @param double $point the value to get the pixel-point for  
+     * @return double The pixel position along the axis
+     * @access private
+     */
+    function _pointX($point)
+    {
+        return $this->_parent->_pointX($point);
+    }
+
+    /**
+     * Get the Y pixel position represented by a value
+     * @param double $point the value to get the pixel-point for  
+     * @return double The pixel position along the axis
+     * @access private
+     */
+    function _pointY($point)
+    {
+        return $this->_parent->_pointY($point);
+    }
+
+    /**
+     * Get the X and Y pixel position represented by a value
+     * @param array $point the values to get the pixel-point for  
+     * @return array The (x, y) pixel position along the axis
+     * @access private
+     */
+    function _pointXY($point)
+    {
+        return array ('X' => $this->_pointX($point), 'Y' => $this->_pointY($point));
+    }
+
+}
+?>
