@@ -17,66 +17,31 @@
       <email>pear.neufeind@speedpartner.de</email>
       <role>lead</role>
     </maintainer>
+    <maintainer>
+      <user>toby</user>
+      <name>Tobias Schlitt</name>
+      <email>toby@php.net</email>
+      <role>lead</role>
+    </maintainer>
   </maintainers>
   <release>
-    <version>0.3.0dev2</version>
-    <date>2004-12-16</date>
+    <version>0.3.0dev3</version>
+    <date>2005-01-27</date>
     <license>LGPL</license>
     <state>devel</state>
-    <notes>Version 0.3.0dev2 (pre-release #3) [2004-Dec-08] - Jesper Veggerby &lt;pear.nosey@veggerby.dk&gt;
-* Added drivers for GD subtypes GIF and WBMP
-* Added drivers for SWF (MING) and PDF (PDFlib) - initial stage
-* Added support for setting width on the bars in a bar chart
-* Added setFontColor(), setFontSize(), setFontAngle() to elements for easy change of properties of propagating fonts, without needing to create a new object
-* Fonts now propagate through the structure, meaning if you set a font on the Graph all other elements inherit this font (but can be overridden)
-    - This does *not* break BC
-* Changed Image_Graph_Title constructor slightly (second parameter, see Docs. for details)
-* Changed Image_Graph_Axis::setTitle() slightly to accomodate propagating fonts (no BC break)
-* Removed GLOBAL font variables 
-    - This is a minor BC break!
-* Fixed problem with bar-, area-, step- and impulse-charts when using forceMinimum(), causing bars to display 'below' x-axis
-
-Version 0.3.0dev2 (pre-release #2) [2004-Nov-30] - Jesper Veggerby &lt;pear.nosey@veggerby.dk&gt;
-* Added support for adding an array to Image_Graph_Dataset_Trivial for easy point addition
-* Re-implemented support for line styles
-* API Change with minor impact on BC: Image_Graph_Fill now inherits from Image_Graph_Common (instead of Image_Graph_Element)
-* Changed GD driver
-    - Image_Graph_Driver_GD is now abstract
-    - GD formats JPEG and PNG are now separate classes, Image_Graph_Driver_GD_JPG and Image_Graph_Driver_GD_PNG
-    - Driver types are now 'png' and 'jpg', specifying 'gd' will default to 'png'
-* Fixed Image_Graph_Axis::force(Minimum|Maximum)
-* Repost: Included some more aliases for the Image_Graph::factory() method
-
-Version 0.3.0dev2 (pre-release) [2004-Nov-25] - Jesper Veggerby &lt;pear.nosey@veggerby.dk&gt;
-* Added new setTitle() method to axis to allow for easier displaying of axis titles
-* Added Image_Graph_Plot_CandleStick to display financial charts for the stock market
-* Added Image_Graph_Plot_Band
-* Added major tick customizability to axis
-* Added possibility to use user-defined values as axis-labels
-* Implemented drivers to support different output formats
-    - Currently full GD and SVG (own) support
-    - Drivers planned SVG (XML_SVG), PDF (File_PDF + PDFlib) and SWF (MING + libswf)
-    - No BC breaking API changes
-    - Currently no support for animations, i.e. SVG and SWF
-* Modified Image_Graph_Axis_Radar to be a category axis
-* Modified Image_Graph_Dataset to allow for y-value to be an array of values (to support candlestick diagrams)
-* Changed pie chart legends, so they show all data values as legend except just one for complete chart
-* Changed logging behaviour (added Image_Graph::setLog() method)
-* Updated how bar charts calculate width
-* Legends now scale properly    
-* Legends now show differently depending on plot type
-* API Changes with minor impact on BC
-    - Removed caching
-    - Removed Image_Graph::saveAs(), functionality moved to Image_Graph_Driver::done() method
-    - Removed Image_Graph::thumbnail()
-    - Removed Image_Graph_Axis_Multidimensional, mainly for perfomance reasons
-* Added some error/insanity checks
-* Fixed problems with Image_Graph_Axis_Radar showing values in wrong order
-* Fixed bug causing negative bars to display incorrecly (why o' why is 0 == 'some string'?)
-* Fixed bug causing setLineStyle() to fail
-* Fixed Bug #2684 &quot;Source typo breaking data selectors&quot;
-* Fixed Bug #2685 &quot;Plots do not honor ID tags for fills&quot;
-* Fixed bug #2791 &quot;wrong x-axis label position when using ttf font&quot;</notes>
+    <notes>* Added possibility to invert axis direction, fx. minimum at top or bottom
+* Added methods to handle axis label customization (Image_Graph_Axis::setLabelOption() and Image_Graph_Axis::setLabelOptions())
+* Minor change to the way GD driver(s) calculate height (so that fx. x-axis labels appear printed on the same baseline)
+* Fixed axis so that forceMinimum() works with axis intersection
+* Fixed PDF (PDFlib) driver to display images correctly
+* Fixed factory method class name alias 'vector', tried to create Image_Graph_Dataset_Vector instead of Image_Graph_Dataset_VectorFunction
+* Fixed a minor problem in category axis when adding more that one point with the same value, i.e. ('A', 10), ('A', 20)
+* Fixed problem with grids on category axis
+* Added possiblitity to add simple colors to Image_Graph_Line_Array
+* Added id tags for line styles
+* Performance optimization/tuning (axis, elements)
+* Removed XML_SVG driver which was included by mistake (SWF driver remains, but has several unimplemented features)
+* Added more tests</notes>
     <deps>
       <dep type="ext" rel="has" optional="no">gd</dep>
       <dep type="pkg" rel="ge" version="1.3.1" optional="no">PEAR</dep>
@@ -93,9 +58,13 @@ Version 0.3.0dev2 (pre-release) [2004-Nov-25] - Jesper Veggerby &lt;pear.nosey@v
     <provides type="function" name="Image_Graph_Axis::showArrow" />
     <provides type="function" name="Image_Graph_Axis::hideArrow" />
     <provides type="function" name="Image_Graph_Axis::setLabelInterval" />
+    <provides type="function" name="Image_Graph_Axis::setLabelOption" />
+    <provides type="function" name="Image_Graph_Axis::setLabelOptions" />
     <provides type="function" name="Image_Graph_Axis::setTitle" />
     <provides type="function" name="Image_Graph_Axis::addMark" />
     <provides type="function" name="Image_Graph_Axis::setTickOptions" />
+    <provides type="function" name="Image_Graph_Axis::setInverted" />
+    <provides type="function" name="Image_Graph_Axis::setAxisIntersection" />
     <provides type="class" name="Image_Graph_Color" extends="Image_Color" />
     <provides type="function" name="Image_Graph_Color::allocateColor" />
     <provides type="function" name="Image_Graph_Color::color2RGB" />
@@ -114,6 +83,8 @@ Version 0.3.0dev2 (pre-release) [2004-Nov-25] - Jesper Veggerby &lt;pear.nosey@v
     <provides type="function" name="Image_Graph_Dataset::maximumX" />
     <provides type="function" name="Image_Graph_Dataset::minimumY" />
     <provides type="function" name="Image_Graph_Dataset::maximumY" />
+    <provides type="function" name="Image_Graph_Dataset::first" />
+    <provides type="function" name="Image_Graph_Dataset::last" />
     <provides type="class" name="Image_Graph_Driver" />
     <provides type="function" name="Image_Graph_Driver::getWidth" />
     <provides type="function" name="Image_Graph_Driver::getHeight" />
@@ -124,6 +95,7 @@ Version 0.3.0dev2 (pre-release) [2004-Nov-25] - Jesper Veggerby &lt;pear.nosey@v
     <provides type="function" name="Image_Graph_Driver::setFillImage" />
     <provides type="function" name="Image_Graph_Driver::setGradientFill" />
     <provides type="function" name="Image_Graph_Driver::setFont" />
+    <provides type="function" name="Image_Graph_Driver::setDefaultFont" />
     <provides type="function" name="Image_Graph_Driver::line" />
     <provides type="function" name="Image_Graph_Driver::polygonAdd" />
     <provides type="function" name="Image_Graph_Driver::splineAdd" />
@@ -183,6 +155,11 @@ Version 0.3.0dev2 (pre-release) [2004-Nov-25] - Jesper Veggerby &lt;pear.nosey@v
     <provides type="function" name="Image_Graph_Simple::factory" />
     <provides type="class" name="Image_Graph_Title" extends="Image_Graph_Layout" />
     <provides type="function" name="Image_Graph_Title::setText" />
+    <provides type="class" name="Image_Graph_Tool" />
+    <provides type="function" name="Image_Graph_Tool::mid" />
+    <provides type="function" name="Image_Graph_Tool::mirror" />
+    <provides type="function" name="Image_Graph_Tool::controlPoint" />
+    <provides type="function" name="Image_Graph_Tool::bezier" />
     <provides type="class" name="Image_Graph_Axis_Category" extends="Image_Graph_Axis" />
     <provides type="function" name="Image_Graph_Axis_Category::forceMinimum" />
     <provides type="function" name="Image_Graph_Axis_Category::forceMaximum" />
@@ -215,6 +192,8 @@ Version 0.3.0dev2 (pre-release) [2004-Nov-25] - Jesper Veggerby &lt;pear.nosey@v
     <provides type="function" name="Image_Graph_Dataset_Sequential::maximumX" />
     <provides type="class" name="Image_Graph_Dataset_Trivial" extends="Image_Graph_Dataset" />
     <provides type="function" name="Image_Graph_Dataset_Trivial::addPoint" />
+    <provides type="function" name="Image_Graph_Dataset_Trivial::first" />
+    <provides type="function" name="Image_Graph_Dataset_Trivial::last" />
     <provides type="function" name="Image_Graph_Dataset_Trivial::count" />
     <provides type="class" name="Image_Graph_Dataset_VectorFunction" extends="Image_Graph_Dataset" />
     <provides type="function" name="Image_Graph_Dataset_VectorFunction::addPoint" />
@@ -275,14 +254,6 @@ Version 0.3.0dev2 (pre-release) [2004-Nov-25] - Jesper Veggerby &lt;pear.nosey@v
     <provides type="function" name="Image_Graph_Driver_SWF::write" />
     <provides type="function" name="Image_Graph_Driver_SWF::overlayImage" />
     <provides type="function" name="Image_Graph_Driver_SWF::done" />
-    <provides type="class" name="Image_Graph_Driver_XMLSVG" extends="Image_Graph_Driver" />
-    <provides type="function" name="Image_Graph_Driver_XMLSVG::getWidth" />
-    <provides type="function" name="Image_Graph_Driver_XMLSVG::getHeight" />
-    <provides type="function" name="Image_Graph_Driver_XMLSVG::setFillImage" />
-    <provides type="function" name="Image_Graph_Driver_XMLSVG::line" />
-    <provides type="function" name="Image_Graph_Driver_XMLSVG::rectangle" />
-    <provides type="function" name="Image_Graph_Driver_XMLSVG::ellipse" />
-    <provides type="function" name="Image_Graph_Driver_XMLSVG::done" />
     <provides type="class" name="Image_Graph_Driver_GD_GIF" extends="Image_Graph_Driver_GD" />
     <provides type="function" name="Image_Graph_Driver_GD_GIF::done" />
     <provides type="class" name="Image_Graph_Driver_GD_JPG" extends="Image_Graph_Driver_GD" />
@@ -323,6 +294,7 @@ Version 0.3.0dev2 (pre-release) [2004-Nov-25] - Jesper Veggerby &lt;pear.nosey@v
     <provides type="class" name="Image_Graph_Layout_Vertical" extends="Image_Graph_Layout_Horizontal" />
     <provides type="class" name="Image_Graph_Line_Array" extends="Image_Graph_Common" />
     <provides type="function" name="Image_Graph_Line_Array::add" />
+    <provides type="function" name="Image_Graph_Line_Array::addColor" />
     <provides type="class" name="Image_Graph_Line_Dashed" extends="Image_Graph_Line_Formatted" />
     <provides type="class" name="Image_Graph_Line_Dotted" extends="Image_Graph_Line_Formatted" />
     <provides type="class" name="Image_Graph_Line_Formatted" extends="Image_Graph_Line_Solid" />
@@ -376,7 +348,6 @@ Version 0.3.0dev2 (pre-release) [2004-Nov-25] - Jesper Veggerby &lt;pear.nosey@v
     <provides type="class" name="Image_Graph_Plotarea_Radar" extends="Image_Graph_Plotarea" />
     <provides type="class" name="Image_Graph" extends="Image_Graph_Element" />
     <provides type="function" name="Image_Graph::setDriver" />
-    <provides type="function" name="Image_Graph::hideLogo" />
     <provides type="function" name="Image_Graph::width" />
     <provides type="function" name="Image_Graph::height" />
     <provides type="function" name="Image_Graph::displayErrors" />
@@ -384,12 +355,14 @@ Version 0.3.0dev2 (pre-release) [2004-Nov-25] - Jesper Veggerby &lt;pear.nosey@v
     <provides type="function" name="Image_Graph::factory" />
     <provides type="function" name="Image_Graph::layoutFactory" />
     <filelist>
-      <file role="doc" baseinstalldir="Image" md5sum="ae797830e21a3fb50703e3502d93e476" name="docs/ChangeLog"/>
+      <file role="doc" baseinstalldir="Image" md5sum="85a9a89dfc75d101d257dc6257ddd6ac" name="docs/ChangeLog"/>
       <file role="doc" baseinstalldir="Image" md5sum="67235d254852f317d16b145f0043bdc1" name="docs/colors.txt"/>
       <file role="doc" baseinstalldir="Image" md5sum="8590cb799ab63f05f8a0e258909d24db" name="docs/Drivers.txt"/>
       <file role="doc" baseinstalldir="Image" md5sum="e6bb8d9b76fc20599242154f24fa1a87" name="docs/LICENSE"/>
-      <file role="doc" baseinstalldir="Image" md5sum="d74df780f332457601902acb06609874" name="docs/README"/>
+      <file role="doc" baseinstalldir="Image" md5sum="a7c26b06e500bb5d9927c75370485b49" name="docs/README"/>
       <file role="doc" baseinstalldir="Image" md5sum="df4b52fb759fb12a1bbdfab4bc38bbfd" name="docs/examples/barchart1.php"/>
+      <file role="doc" baseinstalldir="Image" md5sum="50a588b1decfe54e9996e72e44a6182f" name="docs/examples/drivers1.php"/>
+      <file role="doc" baseinstalldir="Image" md5sum="80be1b39294431abc0cef17ce48fa6f4" name="docs/examples/drivers2.php"/>
       <file role="doc" baseinstalldir="Image" md5sum="e8fff13ce7fb8ba6080484cc70a58ddc" name="docs/examples/linechart1.php"/>
       <file role="doc" baseinstalldir="Image" md5sum="5560a1ccdb75e224f070f80536162f72" name="docs/examples/piechart1.php"/>
       <file role="doc" baseinstalldir="Image" md5sum="e1b3f42b2c22abe14dca43dda0248c0c" name="docs/examples/images/audi.png"/>
@@ -397,71 +370,71 @@ Version 0.3.0dev2 (pre-release) [2004-Nov-25] - Jesper Veggerby &lt;pear.nosey@v
       <file role="doc" baseinstalldir="Image" md5sum="01f7391175af53a93106e724a7e839db" name="docs/examples/images/coins.png"/>
       <file role="doc" baseinstalldir="Image" md5sum="93c1270058815661e92b1c57116ed92c" name="docs/examples/images/mercedes.png"/>
       <file role="doc" baseinstalldir="Image" md5sum="9dfaa3ced9e14587e36b035a1d4968fa" name="docs/examples/images/porsche.png"/>
-      <file role="php" baseinstalldir="Image" md5sum="5c194fd2dcae40bac40b685891fb9c05" name="Graph/Axis.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="192ea70b8ec6836779956a636dc7ae13" name="Graph/Color.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="6a4c18bd24677b2d269c3a00286f69bf" name="Graph/Common.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="55c818dde4c802c0d59b6339f9f8a971" name="Graph/Config.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="44785a140d9b880bbcb250911e39b2bd" name="Graph/Constants.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="1dcab173d7b71081643f5a670117d660" name="Graph/DataPreprocessor.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="e83572465ebdcdc387b41c95a28dfa90" name="Graph/DataSelector.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="fd9e17bb46d9003d4321e616c08c94f3" name="Graph/Dataset.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="7c2100bd69b43d338596eaf11c4fe8e2" name="Graph/Driver.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="19ea2776716ddbe654c624093eda8ef4" name="Graph/Element.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="9c12c80fbf90e5fd03ec6f9df5829ac3" name="Graph/Fill.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="a3abec02f4cc6ba1abd5efbb612f49c2" name="Graph/Font.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="3c23ab99768c173aefc03f91bf00c6ac" name="Graph/Grid.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="27eda8ce75223353db47500e7175ced5" name="Graph/Layout.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="14b6595e909d1fd5c78dcc16c29e8152" name="Graph/Legend.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="be9dd03b281ff257ff56fc43b76d62ac" name="Graph/Logo.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="fd15d02dfa44a85314b08a889a25bc04" name="Graph/Marker.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="71623fd4028e447738eedb80b6017021" name="Graph/Plot.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="9bce7b1caacdfa7f4f431b04b14e1792" name="Graph/Plotarea.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="062c626bdf2ec6a3c009ad5760d9f3c2" name="Graph/Simple.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="271766f919c2a24baa0617996e480382" name="Graph/Title.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="79d8c33d07b3cec415b911e412d72b25" name="Graph/Axis/Category.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="50374cb14ed67aff51d24354b285be0e" name="Graph/Axis/Logarithmic.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="6f8b0b59a035aed513a56f5f1d621b36" name="Graph/Axis/Radar.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="6543b582cc7c2f20c1ae3de5070b7982" name="Graph/Axis/Marker/Area.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="6cfa6f79ce68e4384cd07ef12305e861" name="Graph/Axis/Marker/Line.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="292972dff1c882c0864ab8c04944f06d" name="Graph/DataPreprocessor/Array.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="83524fe6bea0615b0b8bf1723a44e07a" name="Graph/DataPreprocessor/Currency.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="0e4fb15f79ffbf16efa081aaa3d2451f" name="Graph/DataPreprocessor/Date.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="e57a976459bd0982ca14fc7d580b8cee" name="Graph/DataPreprocessor/Formatted.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="f0c359480d41501ceb0b56864df2ade5" name="Graph/DataPreprocessor/Function.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="e285365b236f1b12cf9c4cc9ff59e20c" name="Graph/DataPreprocessor/NumberText.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="60ace8c0fcd02fa6a0bb140b5f6cdb04" name="Graph/DataPreprocessor/RomanNumerals.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="10e5c6b7fe45d4708c11d90be2c94aed" name="Graph/DataPreprocessor/Sequential.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="06cf3f139610018f4ced9db1b1a65336" name="Graph/DataSelector/EveryNthPoint.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="bf4fae6e091819988317961ce91921d4" name="Graph/DataSelector/NoZeros.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="792d4111ec001d4a386658554d143a07" name="Graph/Dataset/Function.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="acc06283b965a481eab64f3385137595" name="Graph/Dataset/Random.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="209575da9cbc58df16ce23919cde295e" name="Graph/Dataset/Sequential.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="856c1227300b3e7c34902dcd8589839d" name="Graph/Dataset/Trivial.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="78f341b571afc03b7fb81ed48bc01720" name="Graph/Dataset/VectorFunction.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="acf842572a4f9a694d1db3a2a93c3301" name="Graph/Driver/GD.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="244e6782d7b433e0b215e808c40c8b73" name="Graph/Driver/PDFlib.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="a8b7fb55d14bed4da5bc44b224eca070" name="Graph/Driver/SVG.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="c1b0b05dd2e893bf99ad50a2098f01ad" name="Graph/Driver/SWF.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="439f9e14d51a64c94b15cab4e139070d" name="Graph/Driver/XMLSVG.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="0eed8157518dc48d553436a3ee0e9371" name="Graph/Driver/GD/GIF.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="6ce601b03c8bf15daca5aa6eb0f5ff96" name="Graph/Driver/GD/JPG.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="c36b2835292f65c14e3a343d587cf0a8" name="Graph/Driver/GD/PNG.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="4e8f643a4f4200bbe7d32870199a01d5" name="Graph/Driver/GD/WBMP.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="2986103343c604447ab8ea7e48f932c0" name="Graph/Figure/Circle.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="48d7614abc2f920aabec8da7d57eedfa" name="Graph/Figure/Ellipse.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="7fc81901fec053c942d3e383990d9697" name="Graph/Figure/Polygon.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="1338cab5718fce3bcc493b34eaa70503" name="Graph/Figure/Rectangle.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="dadeb55cf55f38f32be343aa310ae426" name="Graph/Fill/Array.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="087db4c2226e2d52566ba450a41ba186" name="Graph/Fill/Gradient.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="a98f1ac3512fde2652193eff3fdcea61" name="Graph/Fill/Image.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="b6a431bce07319a67d5c78962face2d3" name="Graph/Font/Extended.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="5a8f768569bdad5f678fd89572ac7459" name="Graph/Font/TTF.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="4fc5b081b18c2cfb1fe19c451dc58d2c" name="Graph/Font/Vertical.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="b650c18c89ad1edcffa0954f64c58b97" name="Graph/Axis.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="46274098ee04226d08b63728e3aee3e1" name="Graph/Color.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="b54ef3a1d4a57076abb08b5d5a087bda" name="Graph/Common.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="c99faf740ccaa190a088404a1e090e6a" name="Graph/Config.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="6351f8c91c20b9630fd396d094f87aa2" name="Graph/Constants.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="ca40d1f5ad926c39289b9e4e12e28b3f" name="Graph/DataPreprocessor.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="2208da95c8acf780d1e347dee317dfe1" name="Graph/DataSelector.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="a90910c6b71219e479a5a09b42536151" name="Graph/Dataset.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="729f6597350d37fc3128d72ab2d6c304" name="Graph/Driver.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="a4f98b66668fbe69d66c80a15d717b41" name="Graph/Element.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="3b44edaa3c21734a285de004f6a433fb" name="Graph/Fill.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="3c9a021429bfabee5c5e08a85f19578c" name="Graph/Font.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="c872ee2e7749bc07e5393b56098c4dee" name="Graph/Grid.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="222d7307ad3a9db97915dbed9bf329c4" name="Graph/Layout.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="c1100476adf488934ef82a49127c7d5f" name="Graph/Legend.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="4840ebf45d352951b72ef8a8c6c54256" name="Graph/Logo.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="b2742338b54e94ac6825440ae19eb2cd" name="Graph/Marker.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="13b34c56c9968cc5f4b463c7739bc70a" name="Graph/Plot.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="e677907f484e461bc31a7746e5cd4be5" name="Graph/Plotarea.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="d47f17eef28da461f3204a75b61bb138" name="Graph/Simple.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="b5495f11fdff8d9b52528aa3ce892a64" name="Graph/Title.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="136b59a683194980639c069f6b569224" name="Graph/Tool.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="a49bd71937e4dceb8acd789a73f373b5" name="Graph/Axis/Category.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="dd0b9b12ddd8bc1239e731adc99f26c7" name="Graph/Axis/Logarithmic.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="ead6d13beafc911acbd0b5545be74bed" name="Graph/Axis/Radar.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="fe8541d50000c450e47a0ed8dc14ec60" name="Graph/Axis/Marker/Area.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="2600b27792d174f78cf6142ca72f162b" name="Graph/Axis/Marker/Line.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="90e62074cae273b8ff4cde6dfc669167" name="Graph/DataPreprocessor/Array.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="e5327499bc72b158e0bb2c69c3d48e01" name="Graph/DataPreprocessor/Currency.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="8700ee7ba7cc4d9784ffaa23ba60efd4" name="Graph/DataPreprocessor/Date.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="29220d7f60689c8d0057f6880b4bdd0b" name="Graph/DataPreprocessor/Formatted.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="b4242ec3773fbbd964083435398e9e5a" name="Graph/DataPreprocessor/Function.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="fe87b23286892afe36518f6a85ba5452" name="Graph/DataPreprocessor/NumberText.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="668e796f265d0bed8d22a808e8632cfc" name="Graph/DataPreprocessor/RomanNumerals.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="32934a143c481e47765c69ac76e9b8f2" name="Graph/DataPreprocessor/Sequential.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="8e3648b22a51736091de19cbac85967a" name="Graph/DataSelector/EveryNthPoint.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="9508f215a11bf9c4a7f6e054a5dba209" name="Graph/DataSelector/NoZeros.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="34501dd0cd0292d64d2102c1784d931c" name="Graph/Dataset/Function.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="1584c436cd0073e6a63bd26209ae9d8d" name="Graph/Dataset/Random.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="c8610cf78091f4acc2ba2cf047be8f49" name="Graph/Dataset/Sequential.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="cac013d2a73d79a71da2acd7b3363122" name="Graph/Dataset/Trivial.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="2bc7ae2dd05ba5b123fff4f0e0a9a23a" name="Graph/Dataset/VectorFunction.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="3a3017cfd80df408c30d06f56d46e44e" name="Graph/Driver/GD.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="7cfaa480ba04ef2e72a08e881ae4ac6b" name="Graph/Driver/PDFlib.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="b44e9d77e66946da033ba6552af2b6be" name="Graph/Driver/SVG.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="782fb5301d73166cc08c9cfa08615c02" name="Graph/Driver/SWF.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="c6f3b53b92742df96b96063a3bb56b82" name="Graph/Driver/GD/GIF.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="b62397a029346c19c1aceed791351ecb" name="Graph/Driver/GD/JPG.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="8e933bc8e400c41c03eaf85d1ddd49f0" name="Graph/Driver/GD/PNG.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="2636c04706b97636ba52c7ca42640b0d" name="Graph/Driver/GD/WBMP.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="e85159e859fbf63f420304fe779543f7" name="Graph/Figure/Circle.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="19a62688afe85b51b1ae7038e7d0d258" name="Graph/Figure/Ellipse.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="86c14adea416b75652991e3e820dcb25" name="Graph/Figure/Polygon.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="a44269906df2212a977dc7d52d92f973" name="Graph/Figure/Rectangle.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="6dc4a0ddf2599da9963c5ec2f0a1b6cf" name="Graph/Fill/Array.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="0236547a98129fc5e39e873a0e0f52fb" name="Graph/Fill/Gradient.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="9456c84f35b2cb94ed137f40f310fd86" name="Graph/Fill/Image.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="0ab0906d04adbade109c2334936c78a9" name="Graph/Font/Extended.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="744fcd28d8ae4d3dea3fa990258ca5b5" name="Graph/Font/TTF.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="27726a519e47ba150b8f32691efd1fe1" name="Graph/Font/Vertical.php"/>
       <file role="php" baseinstalldir="Image" md5sum="2e8c485b2c7b15cd3275981e491f24c4" name="Graph/Fonts/fontmap.txt"/>
       <file role="php" baseinstalldir="Image" md5sum="4dfbb91953e995c0fa63d4ac48d26e32" name="Graph/Fonts/README"/>
-      <file role="php" baseinstalldir="Image" md5sum="3d51774248cc3fbc06f4712215132e89" name="Graph/Grid/Bars.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="84bf975fa65e791dde1d2b4c800fd291" name="Graph/Grid/Lines.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="df7fa44a604921e03c75af115221be0a" name="Graph/Grid/Polar.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="b94116b867d9e521710b3730a6cf9715" name="Graph/Grid/Bars.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="a4c28bffea335655e1f31a051c16896f" name="Graph/Grid/Lines.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="b3e2bb772ffac3403b9ab30c8f62f259" name="Graph/Grid/Polar.php"/>
       <file role="php" baseinstalldir="Image" md5sum="882557e131e3637f941574cd95c2e01d" name="Graph/Images/logo.png"/>
       <file role="php" baseinstalldir="Image" md5sum="e4cd113f446ef8ae0a8ec5f70209807b" name="Graph/Images/Icons/pinpoint.png"/>
       <file role="php" baseinstalldir="Image" md5sum="a1ef12fbcf5b9f0ddd06296422eef942" name="Graph/Images/Icons/pinpointr.png"/>
@@ -471,53 +444,74 @@ Version 0.3.0dev2 (pre-release) [2004-Nov-25] - Jesper Veggerby &lt;pear.nosey@v
       <file role="php" baseinstalldir="Image" md5sum="20a4df57e12ca055d0e68f3630f17b5d" name="Graph/Images/Shadows/br.png"/>
       <file role="php" baseinstalldir="Image" md5sum="51452c3f06ffe01bd7f9a592e3bd91f1" name="Graph/Images/Shadows/r.png"/>
       <file role="php" baseinstalldir="Image" md5sum="e9e8328ba4f563cfaa9673e5f508748e" name="Graph/Images/Shadows/tr.png"/>
-      <file role="php" baseinstalldir="Image" md5sum="cd1aae1f87d7b9112e5f9fb91023deed" name="Graph/Layout/Horizontal.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="b67fb9cb559aaa5e9bc75cce5803e4d4" name="Graph/Layout/Matrix.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="e89c97c7f33e68d402ba701e5343e2d7" name="Graph/Layout/Plotarea.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="24a59765f3248017d407ed68aefd8467" name="Graph/Layout/Vertical.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="ed41f2af68b0600915942bda613edc24" name="Graph/Line/Array.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="9da084be5d0f65a2aa833734705c8417" name="Graph/Line/Dashed.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="ef9aa9056b1c06cc46f4a961a4fef379" name="Graph/Line/Dotted.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="9e36f09f88e534090936f3477d6242b6" name="Graph/Line/Formatted.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="391df48224bc7581723bfe35323fdc0d" name="Graph/Line/Solid.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="d8bfb6f97dcab03caf5f69e6db01f65d" name="Graph/Marker/Array.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="092fb6b23f6ef80b5d8a793d47891a13" name="Graph/Marker/Asterisk.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="8869a0035784379269a0a52dbda8942d" name="Graph/Marker/Average.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="487165d91533e4cc7da29f58b0160e99" name="Graph/Marker/Box.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="93b37d9319110b8fcd957bec1148c5fb" name="Graph/Marker/Bubble.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="66482f41de0e13e7b758b29e7cd84ea4" name="Graph/Marker/Circle.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="28f3f1fc2f3bc99502137c8779918eec" name="Graph/Marker/Cross.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="1df4e3d74547c173a860c531310a2dbb" name="Graph/Marker/Diamond.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="3482b6027adc668d4d13a082b67d36db" name="Graph/Marker/Icon.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="5c9475326737f6393f2a6c94d164b9aa" name="Graph/Marker/Pinpoint.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="acf3d8a57ad05409de467a9661d73c31" name="Graph/Marker/Plus.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="00cc9c35d173c7fd4dff91eb9432fde2" name="Graph/Marker/Pointing.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="6d2f73e8338e2c8f39ed91a8313192ee" name="Graph/Marker/ReversePinpoint.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="2d296e060c03357d1c3853e5f068f9f4" name="Graph/Marker/Triangle.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="faa3c699851c59c4b44fdfb9c13fe273" name="Graph/Marker/Value.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="63bcafe46f731336adb1e4c5fdc22ab0" name="Graph/Marker/Pointing/Angular.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="7bd82b9e222f707687e551d9129adefc" name="Graph/Marker/Pointing/Radial.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="b071629579b57dd930fed562384d7897" name="Graph/Plot/Area.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="9b79ef924170f2c9fca1f318c283b162" name="Graph/Plot/Band.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="e9138e7187c20de1121b29cc9d746053" name="Graph/Plot/Bar.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="cb161490c9cc49cfd2ef0b6ef3ffd703" name="Graph/Plot/BoxWhisker.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="873368d51c6bb0b56e51e2caade637f9" name="Graph/Plot/CandleStick.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="651c0bc8262ad936b2cfd57c02ac188a" name="Graph/Plot/Dot.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="9479b2b6e2123373c8dd457cdc4cafc4" name="Graph/Plot/Impulse.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="451cc6153a33638f0f4056b8100020c0" name="Graph/Plot/Line.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="53ab4ccb49920b38bab65aca8aa78db9" name="Graph/Plot/Pie.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="46e031c399d50148c36e9e537473a429" name="Graph/Plot/Radar.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="161d65dc11f500b9f67a203db75d1c52" name="Graph/Plot/Step.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="0866a142b525411b3d4d7aba87ebfd91" name="Graph/Plot/Smoothed/Area.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="ed23f65beb5d04bfc013f26ad79705cd" name="Graph/Plot/Smoothed/Bezier.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="aa3eed57cd829cab3bf1e93573901215" name="Graph/Plot/Smoothed/Line.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="4e4ef4b5c08943d193937e65da539969" name="Graph/Plot/Smoothed/Radar.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="eab0f53e3605767f42ab5a4aee0422e9" name="Graph/Plotarea/Element.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="a75c4a12c6285ff98427b93a61387209" name="Graph/Plotarea/Map.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="81a64e765d6243b3b308837c39ef9428" name="Graph/Plotarea/Radar.php"/>
-      <file role="data" baseinstalldir="Image" md5sum="5dd9aff794a7a468a21451a2c1a9eb6f" name="gendocHTML.sh"/>
-      <file role="data" baseinstalldir="Image" md5sum="160896ccb5f46a87a7ead88544f3b1d7" name="gendocPeardoc2.sh"/>
-      <file role="php" baseinstalldir="Image" md5sum="241591be29e349a950a1a3218f629f31" name="Graph.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="ff74ebdf451f408394fd73cad7ce3ad7" name="Graph/Layout/Horizontal.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="cd6f6a8149dbeb3e72d9bf7a334995c2" name="Graph/Layout/Matrix.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="401db26e7d0eff95e73a40e8a195d210" name="Graph/Layout/Plotarea.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="5445d515bf86b84c0d2f2c75a9788bf9" name="Graph/Layout/Vertical.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="bf6f5e7a38b3d67edfee1ab8d9173509" name="Graph/Line/Array.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="8cd3bf95e6d52814a6f255c36b5e2ac3" name="Graph/Line/Dashed.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="cea1a940f306a7e0a448c097c26d3c16" name="Graph/Line/Dotted.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="de43984721ee2f3592feaa982014d572" name="Graph/Line/Formatted.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="5c7b9ef30d998eab3f866e8f2bcaf400" name="Graph/Line/Solid.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="4cfcbc28d602cf02d4403a8bd3315673" name="Graph/Marker/Array.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="b3831da6a7d01c059a745e06f45b9528" name="Graph/Marker/Asterisk.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="b10eac407f004020e7c3969c3eebcc7f" name="Graph/Marker/Average.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="9426095a81585ba7e7c8f0e71ba2ab50" name="Graph/Marker/Box.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="b7eeaf7fbd2225e826f1a0fb5d2ad09b" name="Graph/Marker/Bubble.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="a06bd9cf3774d4e51b193a97fd447735" name="Graph/Marker/Circle.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="faebefb514fa4a55e4f40b9438c5a202" name="Graph/Marker/Cross.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="7bf8b31036a5d2c602587ced2f461702" name="Graph/Marker/Diamond.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="8ec9cd738984a7d1eafaada97506f4fb" name="Graph/Marker/Icon.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="de742f96e276ffa13dade83f9b67cc7a" name="Graph/Marker/Pinpoint.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="f852b539302f32c1c483b5afdf717a98" name="Graph/Marker/Plus.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="d5016604b0648263b1e2bf7f5e005b75" name="Graph/Marker/Pointing.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="3da9d8af6732dc62e4094964e611f993" name="Graph/Marker/ReversePinpoint.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="7585f19c380b0c4110531f8a8d90b8cd" name="Graph/Marker/Triangle.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="9b39ac3b71c1d0143b4bfe5641032904" name="Graph/Marker/Value.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="c17ab4e87af2466b00e6367428ce9bc9" name="Graph/Marker/Pointing/Angular.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="145494cdb37ff473938db1967729d2e9" name="Graph/Marker/Pointing/Radial.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="b686519aca2f951e1d3c4870f13a345f" name="Graph/Plot/Area.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="524be7660b87a51ab80ca5d58f559428" name="Graph/Plot/Band.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="69fd1bf5eb233fee6e04f752c1c2fbd7" name="Graph/Plot/Bar.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="48add1a5e271d12fec87e2ddcf60884a" name="Graph/Plot/BoxWhisker.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="4bb3ab1c69691fb3be350ea3a7a04e0d" name="Graph/Plot/CandleStick.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="e778964c08172fc659e11cf275dcac62" name="Graph/Plot/Dot.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="7dc1086ea9ff2e0e7520a73781d05cbd" name="Graph/Plot/Impulse.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="5229034f39456a91dbbcef0296a8d188" name="Graph/Plot/Line.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="8f8e6c69208358acb670608c6f7cf05c" name="Graph/Plot/Pie.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="df31bfbbf2651ff70b2f5400ab5e0308" name="Graph/Plot/Radar.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="661fadfa78acf5e63c811e20a7291676" name="Graph/Plot/Step.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="f049bc7fa9ea6f165c908bf2e49eb3df" name="Graph/Plot/Smoothed/Area.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="8a28f857f6dc73665518adaaf0a4cae2" name="Graph/Plot/Smoothed/Bezier.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="b0f0c08f8be3d17ba3094e69f69e5752" name="Graph/Plot/Smoothed/Line.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="71bafa51349580ee6384fcd5aca9fa4c" name="Graph/Plot/Smoothed/Radar.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="5b1715ece9a11370aa7b5ad4b6d3eb5d" name="Graph/Plotarea/Element.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="ad709f7114b511e827144a849e3af014" name="Graph/Plotarea/Map.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="317a0cc2259b965d77ffadea8b3dbc76" name="Graph/Plotarea/Radar.php"/>
+      <file role="test" baseinstalldir="Image" md5sum="30e083dafa417f48ba511e8cdea3c0e6" name="tests/freetype.php"/>
+      <file role="test" baseinstalldir="Image" md5sum="70b10f5fcaad7fef077a9ed75d864752" name="tests/gd.php"/>
+      <file role="test" baseinstalldir="Image" md5sum="cbde26cd4dd483e77b953812b7d38880" name="tests/README"/>
+      <file role="test" baseinstalldir="Image" md5sum="03a7960af726169860d70ad4fb477cac" name="tests/axis/category.php"/>
+      <file role="test" baseinstalldir="Image" md5sum="ee7f781fec5e257770f9d808d84f586d" name="tests/axis/intersection.php"/>
+      <file role="test" baseinstalldir="Image" md5sum="157c78a4a4d2ace4dbd5e367ba441aa9" name="tests/axis/intersection_secondary_axis.php"/>
+      <file role="test" baseinstalldir="Image" md5sum="1c32e9da1e3400dc24510f98c3485d91" name="tests/axis/inversion.php"/>
+      <file role="test" baseinstalldir="Image" md5sum="d74696b3856aa6291ab96977c5a40359" name="tests/axis/labelinterval.php"/>
+      <file role="test" baseinstalldir="Image" md5sum="1867bac89dba6be79ff813c8dd0a4a35" name="tests/axis/logarithmic.php"/>
+      <file role="test" baseinstalldir="Image" md5sum="e3cca6efa12b7ea870f7b2977aad49d4" name="tests/driver/driver_body.php"/>
+      <file role="test" baseinstalldir="Image" md5sum="e349cef0f810e9f4028c974342c96aba" name="tests/driver/gif.php"/>
+      <file role="test" baseinstalldir="Image" md5sum="5aeb2ddbc8c7184c02e81988a182334d" name="tests/driver/gradients.php"/>
+      <file role="test" baseinstalldir="Image" md5sum="bc76642f3dbc17f153a941eb644b9bc1" name="tests/driver/jpg.php"/>
+      <file role="test" baseinstalldir="Image" md5sum="fa5c8de54f615176ce77221188aef76b" name="tests/driver/pear-icon.png"/>
+      <file role="test" baseinstalldir="Image" md5sum="cd3c1124861b64c81d36ffc7698e3325" name="tests/driver/png.php"/>
+      <file role="test" baseinstalldir="Image" md5sum="abcea1b6452a72e25b46228284e659c0" name="tests/driver/svg.php"/>
+      <file role="test" baseinstalldir="Image" md5sum="5abc8eac9ca83b4d4ab22dba394350a4" name="tests/driver/text.php"/>
+      <file role="test" baseinstalldir="Image" md5sum="599c78b341092a24b1639a96ca9c5082" name="tests/driver/wbmp.php"/>
+      <file role="test" baseinstalldir="Image" md5sum="f17261f49e7509dc593eff83a5a7af0e" name="tests/plot/area.php"/>
+      <file role="test" baseinstalldir="Image" md5sum="344175878449677ccb5dcc67ef13aae7" name="tests/plot/bar.php"/>
+      <file role="test" baseinstalldir="Image" md5sum="857051ce0604dd801f3d1d263d3ee982" name="tests/plot/impulse.php"/>
+      <file role="test" baseinstalldir="Image" md5sum="614097a9706dd03c5868de4ed76cd3b1" name="tests/plot/line.php"/>
+      <file role="test" baseinstalldir="Image" md5sum="c1784e77f126420575b0c4f82cefd5c9" name="tests/plot/step.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="9292ffcddc0e2554ddb508fa863e4df0" name="Graph.php"/>
     </filelist>
   </release>
   <changelog>
@@ -530,63 +524,88 @@ Version 0.3.0dev2 (pre-release) [2004-Nov-25] - Jesper Veggerby &lt;pear.nosey@v
     </release>
     <release>
       <version>0.3.0dev2</version>
-      <date>2004-12-16</date>
+      <date>2005-01-13</date>
       <license>LGPL</license>
       <state>devel</state>
-      <notes>Version 0.3.0dev2 (pre-release #3) [2004-Dec-08] - Jesper Veggerby &lt;pear.nosey@veggerby.dk&gt;
-* Added drivers for GD subtypes GIF and WBMP
-* Added drivers for SWF (MING) and PDF (PDFlib) - initial stage
+      <notes>* Added functionality for multi-level labels (ticks, text, etc.) to support for minor and major labels (and more if needed)
+* Added fontmapping in GD drivers useful for mapping mnemonic fontnames, i.e. Times New Roman to font file names (either partial or full)
+* Added configuration option in Config.php (IMAGE_GRAPH_SYSTEM_FONT_PATH) enabling to specify default search path for system fonts
+    - On Windows systems this defaults to %SYSTEMROOT%\Fonts\
+* Added 'auto' split on layouts - calculated automatically based on actual sizes of the parts (supported only with titles)
+* Added visual tests - not PHPUnit, test cases:
+    - Basic testing if requirements are met (GD + Freetype)
+    - Testcases for testing drivers
+    - Plot tests
+    - Axis tests
 * Added support for setting width on the bars in a bar chart
 * Added setFontColor(), setFontSize(), setFontAngle() to elements for easy change of properties of propagating fonts, without needing to create a new object
-* Fonts now propagate through the structure, meaning if you set a font on the Graph all other elements inherit this font (but can be overridden)
-    - This does *not* break BC
-* Changed Image_Graph_Title constructor slightly (second parameter, see Docs. for details)
-* Changed Image_Graph_Axis::setTitle() slightly to accomodate propagating fonts (no BC break)
-* Removed GLOBAL font variables 
-    - This is a minor BC break!
-* Fixed problem with bar-, area-, step- and impulse-charts when using forceMinimum(), causing bars to display 'below' x-axis
-
-Version 0.3.0dev2 (pre-release #2) [2004-Nov-30] - Jesper Veggerby &lt;pear.nosey@veggerby.dk&gt;
-* Added support for adding an array to Image_Graph_Dataset_Trivial for easy point addition
-* Re-implemented support for line styles
-* API Change with minor impact on BC: Image_Graph_Fill now inherits from Image_Graph_Common (instead of Image_Graph_Element)
-* Changed GD driver
-    - Image_Graph_Driver_GD is now abstract
-    - GD formats JPEG and PNG are now separate classes, Image_Graph_Driver_GD_JPG and Image_Graph_Driver_GD_PNG
-    - Driver types are now 'png' and 'jpg', specifying 'gd' will default to 'png'
-* Fixed Image_Graph_Axis::force(Minimum|Maximum)
-* Repost: Included some more aliases for the Image_Graph::factory() method
-
-Version 0.3.0dev2 (pre-release) [2004-Nov-25] - Jesper Veggerby &lt;pear.nosey@veggerby.dk&gt;
 * Added new setTitle() method to axis to allow for easier displaying of axis titles
 * Added Image_Graph_Plot_CandleStick to display financial charts for the stock market
 * Added Image_Graph_Plot_Band
 * Added major tick customizability to axis
 * Added possibility to use user-defined values as axis-labels
+* Added support for adding an array to Image_Graph_Dataset_Trivial for easy point addition
+* Added some error/insanity checks
+* Added Image_Graph_Tool class with static function for bezier curve-smoothing for drivers without native support (fx. GD)
+* Added Image_Graph_Axis::setAxisIntersection() to specify a value for which the axis intersects another axis (i.e. Y-axis intersects X-axis in x=1 instead of x=0)
 * Implemented drivers to support different output formats
-    - Currently full GD and SVG (own) support
-    - Drivers planned SVG (XML_SVG), PDF (File_PDF + PDFlib) and SWF (MING + libswf)
+    - Currently full GD (JPEG/PNG/GIF/WBMP), SVG and PDF (PDFlib) support
+    - Semi-supported drivers SWF (Ming)
+    - Drivers planned SVG (XML_SVG), PDF (File_PDF) and SWF (libswf)
     - No BC breaking API changes
     - Currently no support for animations, i.e. SVG and SWF
+* Re-implemented support for line styles
+* Fonts now propagate through the structure, meaning if you set a font on the Graph all other elements inherit this font (but can be overridden)
+    - This does *not* break BC
 * Modified Image_Graph_Axis_Radar to be a category axis
 * Modified Image_Graph_Dataset to allow for y-value to be an array of values (to support candlestick diagrams)
 * Changed pie chart legends, so they show all data values as legend except just one for complete chart
 * Changed logging behaviour (added Image_Graph::setLog() method)
+* Changed while-list-each to foreach for performance reasons (minor)
+* Changed Image_Graph_Title constructor slightly (second parameter, see Docs. for details)
+* Changed Image_Graph_Axis::setTitle() slightly to accomodate propagating fonts (no BC break)
+* Included some more aliases for the Image_Graph::factory() method
 * Updated how bar charts calculate width
-* Legends now scale properly    
+* Legends now scale properly
 * Legends now show differently depending on plot type
 * API Changes with minor impact on BC
     - Removed caching
     - Removed Image_Graph::saveAs(), functionality moved to Image_Graph_Driver::done() method
     - Removed Image_Graph::thumbnail()
     - Removed Image_Graph_Axis_Multidimensional, mainly for perfomance reasons
-* Added some error/insanity checks
+    - Image_Graph_Fill now inherits from Image_Graph_Common (instead of Image_Graph_Element)
+    - Removed GLOBAL font variables
 * Fixed problems with Image_Graph_Axis_Radar showing values in wrong order
 * Fixed bug causing negative bars to display incorrecly (why o' why is 0 == 'some string'?)
 * Fixed bug causing setLineStyle() to fail
 * Fixed Bug #2684 &quot;Source typo breaking data selectors&quot;
 * Fixed Bug #2685 &quot;Plots do not honor ID tags for fills&quot;
-* Fixed bug #2791 &quot;wrong x-axis label position when using ttf font&quot;</notes>
+* Fixed bug #2791 &quot;wrong x-axis label position when using ttf font&quot;
+* Fixed bug causing displayErrors() to generate WARNING and FATAL ERROR
+* Fixed problems with gradient fills (did not display propery using GD drivers)
+* Fixed problem with bar-, area-, step- and impulse-charts when using forceMinimum(), causing bars to display 'below' x-axis
+* Fixed Image_Graph_Axis::force(Minimum|Maximum)
+* Removed default Image_Graph logo
+* Removed _graphWidth() and _graphHeight(), they are now handled by the driver</notes>
+    </release>
+    <release>
+      <version>0.3.0dev3</version>
+      <date>2005-01-27</date>
+      <license>LGPL</license>
+      <state>devel</state>
+      <notes>* Added possibility to invert axis direction, fx. minimum at top or bottom
+* Added methods to handle axis label customization (Image_Graph_Axis::setLabelOption() and Image_Graph_Axis::setLabelOptions())
+* Minor change to the way GD driver(s) calculate height (so that fx. x-axis labels appear printed on the same baseline)
+* Fixed axis so that forceMinimum() works with axis intersection
+* Fixed PDF (PDFlib) driver to display images correctly
+* Fixed factory method class name alias 'vector', tried to create Image_Graph_Dataset_Vector instead of Image_Graph_Dataset_VectorFunction
+* Fixed a minor problem in category axis when adding more that one point with the same value, i.e. ('A', 10), ('A', 20)
+* Fixed problem with grids on category axis
+* Added possiblitity to add simple colors to Image_Graph_Line_Array
+* Added id tags for line styles
+* Performance optimization/tuning (axis, elements)
+* Removed XML_SVG driver which was included by mistake (SWF driver remains, but has several unimplemented features)
+* Added more tests</notes>
     </release>
   </changelog>
 </package>
