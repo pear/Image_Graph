@@ -29,7 +29,7 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
     */
     function Image_Graph_Data_Line(&$parent, $data, $attributes)
     {
-        parent::Image_Graph_Data_Common(&$parent, $data, $attributes);
+        parent::Image_Graph_Data_Common($parent, $data, $attributes);
     }
 
     /**

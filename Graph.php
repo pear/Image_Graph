@@ -429,7 +429,7 @@ class Image_Graph
         if (!class_exists($dataElementClass)) {
             require_once($dataElementFile);
         }
-        $myNew = new $dataElementClass(&$this, $data, $attributes);
+        $myNew = new $dataElementClass($this, $data, $attributes);
         $this->_dataElements[] = $myNew;
     }
 

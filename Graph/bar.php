@@ -32,7 +32,7 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
         if (!isset($attributes['width'])) {
             $attributes['width'] = 0.5;
         }
-        parent::Image_Graph_Data_Common(&$parent, $data, $attributes);
+        parent::Image_Graph_Data_Common($parent, $data, $attributes);
         $parent->_addExtraSpace = 1;
     }
 

@@ -32,7 +32,7 @@ class Image_Graph_Data_Triangle extends Image_Graph_Data_Common
         if (!isset($attributes['size'])) {
             $attributes['size'] = 10;
         }
-        parent::Image_Graph_Data_Common(&$parent, $data, $attributes);
+        parent::Image_Graph_Data_Common($parent, $data, $attributes);
     }
 
     /**
