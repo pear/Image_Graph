@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<package version="1.0">
+  <name>Image_Graph</name>
+  <summary>Drawing graphs out of numerical data (traffic, money, ...)</summary>
+  <description>Features:
+- drawing graphs in various formats (line, bar, points marked by squares/rhombs/triangles/...)
+- multiple graphs in one diagram
+- up to 2 Y-axes
+- flexible Y-value-output-customisation
+- variable ticks for the Y-axes
+- color-support
+- ...</description>
+  <maintainers>
+    <maintainer>
+      <user>neufeind</user>
+      <name>Stefan Neufeind</name>
+      <email>pear.neufeind@speedpartner.de</email>
+      <role>lead</role>
+    </maintainer>
+  </maintainers>
+  <release>
+    <version>0.1</version>
+    <date>2003-11-01</date>
+    <license>PHP License</license>
+    <state>alpha</state>
+    <notes>
+      Initial release
+    </notes>
+    <deps>
+      <dep type="ext" rel="has" version="2">gd</dep>
+      <dep type="pkg" rel="ge" version="0.1" optional="yes">Image_Text</dep>
+    </deps> 
+    <filelist>
+      <dir name="/" baseinstalldir="Image">
+        <file role="php">Graph.php</file>
+        <dir name="Graph" role="php">
+          <file>bar.php</file>
+          <file>common.php</file>
+          <file>line.php</file>
+          <file>rhomb.php</file>
+          <file>square.php</file>
+          <file>triangle.php</file>
+        </dir> 
+        <dir name="docs" role="doc">
+          <file>sample_complex1.php</file>
+          <file>sample_simple1.php</file>
+        </dir> 
+      </dir>
+    </filelist>
+  </release>
+  <changelog>
+  </changelog>
+</package>
