@@ -1,7 +1,7 @@
 <?
 // $Id$
 /**
-* Linear gradient fill-element for a Image_Graph diagram
+* Gradient fill-element for a Image_Graph diagram
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
@@ -9,19 +9,37 @@
 */
 
 require_once("Image/Graph/Fill/Common.php");
-require_once("Image/Color.php"); // package: PEAR::Image_Color
 
-class Image_Graph_Fill_Linear extends Image_Graph_Fill_Common
+class Image_Graph_Fill_Gradient extends Image_Graph_Fill_Common
 {
     /**
     * Constructor for the class
     *
-    * @param  array   attributes like color (to be extended to also include shading etc.)
+    * @param  array   attributes like color
     * @access public
     */
-    function Image_Graph_Fill_Linear($attributes)
+    function Image_Graph_Fill_Gradient($attributes)
     {
+        if (!isset($attributes['type']) ||
+            ($attributes['type'] != IMAGE_GRAPH_FILL_LINEAR)) {
+            $attributes['type'] = IMAGE_GRAPH_FILL_LINEAR;
+        }
         parent::Image_Graph_Fill_Common($attributes);
+    }
+
+    /**
+    * Set color
+    *
+    * @param  array   array 2 colors (one color each; RGBA-represntation)
+    * @access public
+    */
+    function setColor($color)
+    {
+        $tempColors = array();
+        foreach ($color as $currColor) {
+            $tempColors[] = Image_Graph_Color::color2RGB($currColor);
+        }
+        $this->_color = $tempColors;
     }
 
     /**
@@ -33,22 +51,21 @@ class Image_Graph_Fill_Linear extends Image_Graph_Fill_Common
     */
     function drawGDBox(&$img, $pos)
     {
-        // only horizontal gradient implemented yet
+        // only horizontal linear gradient implemented yet
         // gradient runs from top to bottom
 
-        $numSteps = $pos[1][1]-$pos[0][1];
-        $colorObj = &new Image_Color();
-        $tempCol1 = Image_Color::rgb2hex($this->_attributes["color"][0]);
-        $tempCol2 = Image_Color::rgb2hex($this->_attributes["color"][1]);
-        $colorObj->setColors($tempCol1, $tempCol2);
-        $colors   = $colorObj->getRange($numSteps);
-        foreach($colors as $key => $value) {
-            $colors[$key] = Image_Color::hex2rgb($colors[$key]);
+        if ($this->_attributes['type'] != IMAGE_GRAPH_FILL_LINEAR) {
+            return false;
         }
+
+        $numSteps = $pos[1][1]-$pos[0][1];
+        $colorObj = &new Image_Graph_Color();
+        $colorObj->setColors($this->_color[0], $this->_color[1]);
+        $colors   = $colorObj->getRange($numSteps);
         unset($colorObj); // save memory
         for ($step=0;$step<$numSteps;$step++)
         {
-          $drawColor = imagecolorallocate($img, $colors[$step][0], $colors[$step][1], $colors[$step][2]);
+          $drawColor = Image_Graph_Color::allocateColor($img, $colors[$step]);
           imageline ($img, $pos[0][0], $pos[0][1]+$step, $pos[1][0], $pos[0][1]+$step, $drawColor);
         }
     }
@@ -62,8 +79,12 @@ class Image_Graph_Fill_Linear extends Image_Graph_Fill_Common
     */
     function drawGDPolygon(&$img, $pos)
     {
-        // only horizontal gradient implemented yet
+        // only horizontal linear gradient implemented yet
         // gradient runs from top to bottom
+
+        if ($this->_attributes['type'] != IMAGE_GRAPH_FILL_LINEAR) {
+            return false;
+        }
 
         // we need at least 3 points to fill a polygon
         if (count($pos)<3) {
@@ -83,27 +104,34 @@ class Image_Graph_Fill_Linear extends Image_Graph_Fill_Common
             $maxY = max($maxY, $currPos[1]);
         }
         $numSteps = $maxY-$minY;
-        $colorObj = &new Image_Color();
-        $tempCol1 = Image_Color::rgb2hex($this->_attributes["color"][0]);
-        $tempCol2 = Image_Color::rgb2hex($this->_attributes["color"][1]);
-        $colorObj->setColors($tempCol1, $tempCol2);
-        $colors   = $colorObj->getRange($numSteps);
+        $numColors = count($this->_color);
+        $colorObj = &new Image_Graph_Color();
+        $colors = array();
+        for ($counter=0;$counter<($numColors-1);$counter++) {
+            $colorObj->setColors($this->_color[$counter], $this->_color[$counter+1]);
+            $colors = array_merge($colors, $colorObj->getRange($numSteps/($numColors-1)));
+        }
         $colorsAllocated = array();
         foreach($colors as $currColor) {
-            $tempColor = Image_Color::hex2rgb($currColor);
-            $colorsAllocated[] = imagecolorallocate($img, $tempColor[0], $tempColor[1], $tempColor[2]);
+            $colorsAllocated[] = Image_Graph_Color::allocateColor($img, $currColor);
         }
         unset($colorObj); // save memory
         unset($colors); // save memory
 
         // use an algo that's optimized to the way our polygons are constructed
         $numPoints = count($pos);
-        for ($counter=0;$counter<($numPoints/2);$counter++)
+        for ($counter=0;$counter<(($numPoints/2)-1);$counter++)
         {
             $upperRight = $pos[$numPoints-$counter-1];
             $upperLeft  = $pos[$numPoints-$counter-2];
             $lowerRight = $pos[$counter];
             $lowerLeft  = $pos[$counter+1];
+
+            if ($counter>0)
+            {
+              $upperRight[0]--;
+              $lowerRight[0]--;
+            }
 
             $tempMaxY   = max($lowerRight[1], $lowerLeft[1]);
             $tempMinY   = min($upperRight[1], $upperLeft[1]);

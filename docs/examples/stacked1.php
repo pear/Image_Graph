@@ -54,7 +54,7 @@
                     );
 
     $dataObj = &$graph->addData($data, "bar",  array("axeId" => 1, "color" => array(0x30,0xBF,0xBF)));
-    $dataObj->setFill("linear", array("color" => array(array(0xF4, 0x80, 0x80), array(0xCC, 0x29, 0x29))));
+    $dataObj->setFill("gradient", array("color" => array(array(0xF4, 0x80, 0x80), array(0xCC, 0x29, 0x29))));
     
     $dataObj = &$graph->addData($data, "line", array("axeId" => 1, "color" => array(0x29,0xCC,0x29)));
     $dataObj->setFill("solid", array("color" => array(0,0,0xBF)));
@@ -69,8 +69,7 @@
                     );
 
     $dataObj = &$graph->addData($data, "line",  array("axeId" => 1, "color" => array(0x30,0xBF,0xBF)));
-//    $dataObj->setFill("solid", array("color" => array(0,0,0xBF)));
-    $dataObj->setFill("linear", array("color" => array(array(0xF4, 0x80, 0x80), array(0xCC, 0x29, 0x29))));
+    $dataObj->setFill("gradient", array("color" => array(array(0xF4, 0x80, 0x80), array(0xCC, 0x29, 0x29))));
     
     $graph->axeX->setLabels(array("Month 1", "Month 2", "Month 3", "Month 4", "Month 5"));
 

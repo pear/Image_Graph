@@ -1,5 +1,8 @@
 <?
 // $Id$
+
+require_once("Image/Graph/Color.php"); // extended version of package: PEAR::Image_Color
+
 /**
 * Class template for a Image_Graph diagram data marker (e.g. a "square" or a "rhomb")
 *
@@ -10,12 +13,20 @@
 class Image_Graph_DataMarker_Common
 {
     /**
-    * Attributes for drawing the data element (color, shading, ...)
+    * Color for element
     *
-    * @var array  initially contains only a color-definition of black
+    * @var array (4 ints for R,G,B,A); initially black
     * @access private
     */
-    var $_attributes = array("color" => array(0, 0, 0));
+    var $_color = array(0, 0, 0, 255);
+
+    /**
+    * Attributes for drawing the data element (shading, ...)
+    *
+    * @var array
+    * @access private
+    */
+    var $_attributes = array();
 
     /**
     * Constructor for the class
@@ -25,9 +36,24 @@ class Image_Graph_DataMarker_Common
     */
     function Image_Graph_DataMarker_Common($attributes)
     {
+        if (isset($attributes['color'])) {
+            $this->setColor($attributes['color']);
+            unset($attributes['color']);
+        }
         $this->_attributes = $attributes;
     }
     
+    /**
+    * Set color
+    *
+    * @param  array (3 ints for R,G,B)
+    * @access public
+    */
+    function setColor($color)
+    {
+        $this->_color = Image_Graph_Color::color2RGB($color);
+    }
+
     /**
     * Draws data marker
     *

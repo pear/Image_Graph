@@ -1,5 +1,11 @@
 <?
 // $Id$
+
+require_once("Image/Graph/Color.php"); // extended version of package: PEAR::Image_Color
+
+define('IMAGE_GRAPH_FILL_LINEAR',  1);
+define('IMAGE_GRAPH_FILL_RADIAL',  2); // not yet implemented
+
 /**
 * Class template for a Image_Graph diagram fill element (e.g. a "solid" fill or a "gradient" fill)
 *
@@ -7,13 +13,20 @@
 * @package  Image_Graph
 * @access   private
 */
-
 class Image_Graph_Fill_Common
 {
     /**
-    * Attributes for drawing the data element (color, shading, ...)
+    * Color for element
     *
-    * @var array  initially contains only a color-definition of black
+    * @var array (4 ints for R,G,B,A); initially black
+    * @access private
+    */
+    var $_color = array(0, 0, 0, 255);
+
+    /**
+    * Attributes for drawing the data element (shading, ...)
+    *
+    * @var array
     * @access private
     */
     var $_attributes = array("color" => array(0, 0, 0));
@@ -21,12 +34,27 @@ class Image_Graph_Fill_Common
     /**
     * Constructor for the class
     *
-    * @param  array   attributes like color (to be extended to also include shading etc.)
+    * @param  array   attributes like color
     * @access public
     */
     function Image_Graph_Fill_Common($attributes)
     {
+        if (isset($attributes['color'])) {
+            $this->setColor($attributes['color']);
+            unset($attributes['color']);
+        }
         $this->_attributes = $attributes;
+    }
+
+    /**
+    * Set color
+    *
+    * @param  array (3 ints for R,G,B)
+    * @access public
+    */
+    function setColor($color)
+    {
+        $this->_color = Image_Graph_Color::color2RGB($color);
     }
 
     /**
@@ -49,19 +77,6 @@ class Image_Graph_Fill_Common
     * @access private
     */
     function drawGDPolygon(&$img, $pos)
-    {
-        // implementation of this function in the derived fill-element-classes
-    }
-
-    /**
-    * Draws fill element, shape: columns of pixels (
-    *
-    * @param  gd-resource              image-resource to draw to
-    * @param  int                      left y-coord of pixelcolumn to fill
-    * @param  array of array of int    top and bottom x-coords for each column to fill
-    * @access private
-    */
-    function drawGDPixelcolumns(&$img, $yLeft, $xTopBottom)
     {
         // implementation of this function in the derived fill-element-classes
     }

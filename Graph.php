@@ -940,17 +940,22 @@ class Image_Graph
     /**
     * Create a GD-image-resource for the graph
     *
-    * @return gd-resource true color GD-resource containing image of graph
+    * @param  gd-resource   if supplied this existing gd-resource will for drawing
+    * @return gd-resource   true color GD-resource containing image of graph
     * @access public
     */
-    function getGDImage()
+    function getGDImage($gdResource = null)
     {
         $this->_prepareInternalVariables();
 
         // GD-specific part
-        $img = imagecreatetruecolor($this->_size[0], $this->_size[1]);
-        $bgcolor = imagecolorallocate($img, $this->_bgcolor[0], $this->_bgcolor[1], $this->_bgcolor[2]);
-        imagefill($img, 0, 0, $bgcolor);
+        if (!is_resource($gdResource)) {
+            $img = imagecreatetruecolor($this->_size[0], $this->_size[1]);
+            $bgcolor = imagecolorallocate($img, $this->_bgcolor[0], $this->_bgcolor[1], $this->_bgcolor[2]);
+            imagefill($img, 0, 0, $bgcolor);
+        } else {
+            $img = &$gdResource;
+        }
 
         // elements to draw before the data
         $this->_drawGDtitles($img);

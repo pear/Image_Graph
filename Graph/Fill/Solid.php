@@ -16,7 +16,7 @@ class Image_Graph_Fill_Solid extends Image_Graph_Fill_Common
     /**
     * Constructor for the class
     *
-    * @param  array   attributes like color (to be extended to also include shading etc.)
+    * @param  array   attributes like color
     * @access public
     */
     function Image_Graph_Fill_Solid($attributes)
@@ -33,7 +33,7 @@ class Image_Graph_Fill_Solid extends Image_Graph_Fill_Common
     */
     function drawGDBox(&$img, $pos)
     {
-        $drawColor = imagecolorallocate($img, $this->_attributes["color"][0], $this->_attributes["color"][1], $this->_attributes["color"][2]);
+        $drawColor = Image_Graph_Color::allocateColor($img, $this->_color);
 
         imagefilledrectangle ($img, $pos[0][0], $pos[0][1], $pos[1][0], $pos[1][1], $drawColor);
     }
@@ -49,7 +49,7 @@ class Image_Graph_Fill_Solid extends Image_Graph_Fill_Common
     {
         // TO DO: check if there is a number of maximum points imagefilledpolygon supports
 
-        $drawColor = imagecolorallocate($img, $this->_attributes["color"][0], $this->_attributes["color"][1], $this->_attributes["color"][2]);
+        $drawColor = Image_Graph_Color::allocateColor($img, $this->_color);
 
         $points=array();
         foreach($pos as $currPos) {

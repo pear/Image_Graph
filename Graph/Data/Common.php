@@ -1,5 +1,12 @@
 <?
 // $Id$
+
+require_once("Image/Graph/Color.php"); // extended version of package: PEAR::Image_Color
+
+define('IMAGE_GRAPH_DRAW_FILLANDBORDER',  1);
+define('IMAGE_GRAPH_DRAW_JUSTFILL',       2);
+define('IMAGE_GRAPH_DRAW_JUSTBORDER',     3);
+
 /**
 * Class template for a Image_Graph diagram data element (e.g. a "line")
 *
@@ -7,11 +14,6 @@
 * @package  Image_Graph
 * @access   private
 */
-
-define('IMAGE_GRAPH_DRAW_FILLANDBORDER',  1);
-define('IMAGE_GRAPH_DRAW_JUSTFILL', 2);
-define('IMAGE_GRAPH_DRAW_JUSTBORDER',    3);
-
 class Image_Graph_Data_Common
 {
     /**
@@ -23,12 +25,20 @@ class Image_Graph_Data_Common
     var $_data = array();
 
     /**
-    * Attributes for drawing the data element (color, shading, ...)
+    * Color for element
     *
-    * @var array  initially contains only a color-definition of black
+    * @var array (3 ints for R,G,B); initially null
     * @access private
     */
-    var $_attributes = array("color" => array(0, 0, 0), "axeId" => 0);
+    var $_color = array(0, 0, 0);
+
+    /**
+    * Attributes for drawing the data element
+    *
+    * @var array
+    * @access private
+    */
+    var $_attributes = array("axeId" => 0);
 
     /**
     * graph object (of type Image_Graph)
@@ -65,7 +75,22 @@ class Image_Graph_Data_Common
     {
         $this->_graph       =& $graph;
         $this->_data        = $data;
+        if (isset($attributes['color'])) {
+            $this->setColor($attributes['color']);
+            unset($attributes['color']);
+        }
         $this->_attributes  = $attributes;
+    }
+
+    /**
+    * Set color
+    *
+    * @param  array (3 ints for R,G,B)
+    * @access public
+    */
+    function setColor($color)
+    {
+        $this->_color = Image_Graph_Color::color2RGB($color);
     }
 
     /**
@@ -224,10 +249,11 @@ class Image_Graph_Data_Common
     }
 
     /**
-    * !static function! Draw all diagram elements in this stacking-group
+    * Draw all diagram elements in this stacking-group
     *
     * @param array    references to dataElements (objects of this type)
     * @access private
+    * @static
     */
     function stackingDrawGD(&$dataElements, &$img)
     {

@@ -546,6 +546,12 @@ class Image_Graph_Axe_Y extends Image_Graph_Axe
     function valueToPixelRelative($value)
     {
         // currently only implemented for linear scale
+
+        // restrict values to the display range
+        $value = min($this->_boundsEffective['max'], $value);
+        $value = max($this->_boundsEffective['min'], $value);
+
+        // calculate pixel value
         return ($this->_graph->_drawingareaSize[1] - 1 -
                 floor(
                       (float) ($this->_graph->_drawingareaSize[1]-1) /

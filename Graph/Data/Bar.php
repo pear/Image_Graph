@@ -27,15 +27,16 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
         parent::Image_Graph_Data_Common($parent, $data, $attributes);
 
         // a bar is filled by default
-        $this->setFill("solid", array("color" => $attributes["color"]));
+        $this->setFill("solid", array("color" => $this->_color));
         $parent->_addExtraSpace = 1;
     }
 
     /**
-    * !static function! Prepare given dataElements of this type for stacking
+    * Prepare given dataElements of this type for stacking
     *
     * @param array    references to dataElements (objects of this type)
     * @access private
+    * @static
     */
     function stackingPrepare(&$dataElements)
     {
@@ -84,7 +85,7 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
         $graph = &$this->_graph;
         $xAxe  = &$graph->axeX;
         $yAxe  = &$graph->{"axeY".$this->_attributes['axeId']};
-        $drawColor = imagecolorallocate($img, $this->_attributes["color"][0], $this->_attributes["color"][1], $this->_attributes["color"][2]);
+        $drawColor = Image_Graph_Color::allocateColor($img, $this->_color);
         $numData = count($this->_data);
 
         if ($numData < 2) {
@@ -124,7 +125,7 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
                     ($drawWhat == IMAGE_GRAPH_DRAW_JUSTBORDER)) {
                     if (!is_null($this->_fill) &&
                         (strtolower(get_class($this->_fill)) == "image_graph_fill_solid") &&
-                        ($this->_arraysEqual($this->_attributes["color"], $this->_fill->_attributes["color"]))
+                        ($this->_arraysEqual($this->_color, $this->_fill->_attributes["color"]))
                        ) {
                         // simply do nothing in this case since drawing a border for the bar in the same color will
                         // look the same if a solid fill is used as if we simply not draw the border at all :-))

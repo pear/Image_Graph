@@ -25,10 +25,11 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
     }
 
     /**
-    * !static function! Prepare given dataElements of this type for stacking
+    * Prepare given dataElements of this type for stacking
     *
     * @param array    references to dataElements (objects of this type)
     * @access private
+    * @static
     */
     function stackingPrepare(&$dataElements)
     {
@@ -47,10 +48,11 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
     }
 
     /**
-    * !static function! Draw all diagram elements in this stacking-group
+    * Draw all diagram elements in this stacking-group
     *
     * @param array    references to dataElements (objects of this type)
     * @access private
+    * @static
     */
     function stackingDrawGD(&$dataElements, &$img)
     {
@@ -76,7 +78,7 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
         $graph = &$this->_graph;
         $xAxe  = &$graph->axeX;
         $yAxe  = &$graph->{"axeY".$this->_attributes['axeId']};
-        $drawColor = imagecolorallocate($img, $this->_attributes["color"][0], $this->_attributes["color"][1], $this->_attributes["color"][2]);
+        $drawColor = Image_Graph_Color::allocateColor($img, $this->_color);
         $numData = count($this->_data);
 
         if ((($drawWhat == IMAGE_GRAPH_DRAW_FILLANDBORDER) ||
@@ -89,28 +91,21 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
                     $datapoint = &$this->_data[$counter];
                     if (is_null($datapoint)) {
                         if (!empty($polygon)) {
-                            $lastPoint = end($polygon);
-                            // basepoint for polygon on the x-axis
-                            $temppoint = array($xAxe->valueToPixelAbsolute($counter-1), $yAxe->valueToPixelAbsolute(0));
-                            $polygon[] = $temppoint;
                             // fill polygon
                             $this->_fill->drawGDPolygon($img, $polygon);
                             // empty point-array so we can start with the next polygon
                             $polygon=array();
                         }
                     } else {
-                        if (empty($polygon)) {
-                            // basepoint for polygon on the x-axis
-                            $temppoint = array($xAxe->valueToPixelAbsolute($counter), $yAxe->valueToPixelAbsolute(0));
-                            $polygon[] = $temppoint;
-                        }
-                        $temppoint = array($xAxe->valueToPixelAbsolute($counter), $yAxe->valueToPixelAbsolute($datapoint));
+                        $xValue = $xAxe->valueToPixelAbsolute($counter);
+                        // prepend lower point to array
+                        $temppoint = array($xValue, $yAxe->valueToPixelAbsolute(0));
+//                        var_dump ($temppoint);exit();
+                        array_unshift($polygon, $temppoint);
+                        // append higher point to array
+                        $temppoint = array($xValue, $yAxe->valueToPixelAbsolute($datapoint));
                         $polygon[] = $temppoint;
                     }
-                }
-                if (!is_null($datapoint)) {
-                            $temppoint = array($xAxe->valueToPixelAbsolute($counter-1), $yAxe->valueToPixelAbsolute(0));
-                            $polygon[] = $temppoint;
                 }
             } else {
                 // if we do use data-stacking

@@ -1,5 +1,8 @@
 <?
 // $Id$
+
+require_once("Image/Graph/DataMarker/Common.php");
+
 /**
 * Diamond datamarker-element for a Image_Graph diagram
 *
@@ -7,9 +10,6 @@
 * @package  Image_Graph
 * @access   private
 */
-
-require_once("Image/Graph/DataMarker/Common.php");
-
 class Image_Graph_DataMarker_Diamond extends Image_Graph_DataMarker_Common
 {
     /**
@@ -54,7 +54,7 @@ class Image_Graph_DataMarker_Diamond extends Image_Graph_DataMarker_Common
 
     function drawGD(&$img, $pos)
     {
-        $drawColor = imagecolorallocate($img, $this->_attributes["color"][0], $this->_attributes["color"][1], $this->_attributes["color"][2]);
+        $drawColor = Image_Graph_Color::allocateColor($img, $this->_color);
         
         // compute side-length using Pythagoras so that square and diamond look equal-size
         $sideLength = sqrt(2*$this->_size*$this->_size);

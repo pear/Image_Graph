@@ -39,6 +39,7 @@
         <file role="php">Graph.php</file>
         <dir name="Graph" role="php">
           <file>Elements.php</file>
+          <file>Color.php</file>
           <dir name="Data" role="php">
             <file>Bar.php</file>
             <file>Common.php</file>
@@ -52,7 +53,7 @@
           </dir> 
           <dir name="Fill" role="php">
             <file>Common.php</file>
-            <file>Linear.php</file>
+            <file>Gradient.php</file>
             <file>Solid.php</file>
           </dir> 
         </dir> 
