@@ -146,7 +146,7 @@ class Image_Graph_Base
     * supported by Image_Text this will default to those internal fonts
     * instead. !!
     *
-    * @var    array           stores information like font_type, font_path, font_file, font_size, antialiasing etc.
+    * @param  array           stores information like font_type, font_path, font_file, font_size, antialiasing etc.
     * @access public
     */
     function setFontOptions($options = array())
@@ -902,6 +902,23 @@ class Image_Graph_Axis_Y extends Image_Graph_Axis
     }
 }
 
+/**
+* Class for handling textual and numerical values on the axes
+*
+* This class provied methods and attributes for customization of an
+* axis. You can use it to set the options like the font, it's size or
+* the color in which values (both numerical and textual, depending on
+* the axis) will be drawn.
+* For a numerical axis this class also offers you functionality to
+* set the format in which numbers will be drawn. You can use this to
+* set the number of decimal digits, prepend or append text etc.
+* For a textual axis (actually: for the x-axis) this class allows you
+* to set the text-labels which will be drawn.
+*
+* @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
+* @package  Image_Graph
+* @access   public
+*/
 class Image_Graph_Axis_Values extends Image_Graph_Title
 {
     /**
@@ -946,8 +963,9 @@ class Image_Graph_Axis_Values extends Image_Graph_Title
     /**
     * Set text-labels on axis
     *
-    * These text.labels will be used (shown) when the axis-type is
-    * IMAGE_GRAPH_AXISTYPE_TEXT.
+    * These text-labels will be used (shown) when the axis-type is
+    * IMAGE_GRAPH_AXISTYPE_TEXT. The array contains one string per
+    * data-column.
     * Multiple lines are possible by using "\n" as separator.
     *
     * @param  array           (array of string) Text-labels
