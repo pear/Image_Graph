@@ -527,9 +527,19 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     {
 
         if ($value === 'min') {
-            $value = $this->_getMinimum();
+            if ($this->_type == IMAGE_GRAPH_AXIS_X) {
+                return $this->_left;
+            } else {
+                return $this->_bottom;
+            }
+            //$value = $this->_getMinimum();
         } elseif ($value === 'max') {
-            $value = $this->_getMaximum();
+            if ($this->_type == IMAGE_GRAPH_AXIS_X) {
+                return $this->_right;
+            } else {
+                return $this->_top;
+            }
+            //$value = $this->_getMaximum();
         } elseif ($value < $this->_getMinimum()) {
             $this->_setMinimum($value);
         } elseif ($value > $this->_getMaximum()) {
