@@ -19,16 +19,18 @@
     </maintainer>
   </maintainers>
   <release>
-    <version>0.1</version>
-    <date>2003-11-01</date>
+    <version>0.1.1</version>
+    <date>2003-11-13</date>
     <license>PHP License</license>
     <state>alpha</state>
     <notes>
-      Initial release
+- fixed filenames for the current Image_Text-package
+- did some minor bugfixes that came up when running with full
+error_reporting
     </notes>
     <deps>
       <dep type="ext" rel="has" version="2">gd</dep>
-      <dep type="pkg" rel="ge" version="0.1" optional="yes">Image_Text</dep>
+      <dep type="pkg" rel="ge" version="0.2" optional="yes">Image_Text</dep>
     </deps> 
     <filelist>
       <dir name="/" baseinstalldir="Image">
@@ -49,5 +51,14 @@
     </filelist>
   </release>
   <changelog>
+    <release>
+      <version>0.1</version>
+      <date>2003-11-01</date>
+      <license>PHP License</license>
+      <state>alpha</state>
+      <notes>
+        Initial release
+      </notes>
+    </release>
   </changelog>
 </package>
