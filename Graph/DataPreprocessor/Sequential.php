@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage DataPreprocessor     
+ * @subpackage DataPreprocessor
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/DataPreprocessor/Array.php
@@ -42,19 +42,19 @@ require_once 'Image/Graph/DataPreprocessor/Array.php';
 /**
  * Formatting values using a sequential data label array, ie. returning the
  * 'next label' when asked for any label.
- *     
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage DataPreprocessor
  */
-class Image_Graph_DataPreprocessor_Sequential extends Image_Graph_DataPreprocessor_Array 
+class Image_Graph_DataPreprocessor_Sequential extends Image_Graph_DataPreprocessor_Array
 {
 
     /**
      * Process the value
      *
      * @param var $value The value to process/format
-     * @return string The processed value     
+     * @return string The processed value
      * @access private
      */
     function _process($value)

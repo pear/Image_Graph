@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage DataSelector     
+ * @subpackage DataSelector
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/DataSelector.php
@@ -41,14 +41,14 @@ require_once 'Image/Graph/DataSelector.php';
 
 /**
  * Filter out all zero's.
- * 
+ *
  * Display all Y-values as markers, except those with Y = 0
- *      
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage DataSelector
  */
-class Image_Graph_DataSelector_NoZeros extends Image_Graph_DataSelector 
+class Image_Graph_DataSelector_NoZeros extends Image_Graph_DataSelector
 {
 
     /**

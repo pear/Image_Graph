@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Figure     
+ * @subpackage Figure
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Element.php
@@ -41,21 +41,21 @@ require_once 'Image/Graph/Element.php';
 
 /**
  * Rectangle to draw on the canvas
- *        
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Figure
  */
-class Image_Graph_Figure_Rectangle extends Image_Graph_Element 
+class Image_Graph_Figure_Rectangle extends Image_Graph_Element
 {
 
     /**
      * Rectangle [Construcor]
      *
-     * @param int $x The leftmost pixel of the box on the canvas 
-     * @param int $y The topmost pixel of the box on the canvas 
-     * @param int $width The width in pixels of the box on the canvas 
-     * @param int $height The height in pixels of the box on the canvas 
+     * @param int $x The leftmost pixel of the box on the canvas
+     * @param int $y The topmost pixel of the box on the canvas
+     * @param int $width The width in pixels of the box on the canvas
+     * @param int $height The height in pixels of the box on the canvas
      */
     function &Image_Graph_Figure_Rectangle($x, $y, $width, $height)
     {
@@ -77,9 +77,9 @@ class Image_Graph_Figure_Rectangle extends Image_Graph_Element
         $this->_getFillStyle();
         $this->_getLineStyle();
         $this->_driver->rectangle(
-            $this->_left, 
-            $this->_top, 
-            $this->_right, 
+            $this->_left,
+            $this->_top,
+            $this->_right,
             $this->_bottom
         );
     }

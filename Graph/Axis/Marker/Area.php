@@ -25,13 +25,13 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  * @package Image_Graph
- * @subpackage Grid     
+ * @subpackage Grid
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Grid.php
@@ -40,30 +40,30 @@ require_once 'Image/Graph/Grid.php';
 
 /**
  * Display a grid
- * 
+ *
  * {@link Image_Graph_Grid}
- *             
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
- * @subpackage Grid 
+ * @subpackage Grid
  */
-class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid 
+class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid
 {
-    
+
     /**
      * The lower bound
      * @var double
      * @access private
      */
     var $_lower = false;
-    
+
     /**
      * The upper bound
      * @var double
      * @access private
      */
     var $_upper = false;
-    
+
     /**
      * [Constructor]
      */
@@ -71,7 +71,7 @@ class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid
         parent::Image_Graph_Grid();
         $this->_lineStyle = false;
     }
-    
+
     /**
      * Sets the lower bound of the area (value on the axis)
      *
@@ -95,7 +95,7 @@ class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid
     /**
      * Output the grid
      *
-     * @access private      
+     * @access private
      */
     function _done()
     {
@@ -108,7 +108,7 @@ class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid
         }
 
         $i = 0;
-        
+
         $this->_lower = max($this->_primaryAxis->_getMinimum(), $this->_lower);
         $this->_upper = min($this->_primaryAxis->_getMaximum(), $this->_upper);
 
@@ -117,7 +117,7 @@ class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid
         reset($secondaryPoints);
         list ($id, $previousSecondaryValue) = each($secondaryPoints);
         while (list ($id, $secondaryValue) = each($secondaryPoints)) {
-            if ($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_X) {                
+            if ($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_X) {
                 $p1 = array ('Y' => $secondaryValue, 'X' => $this->_lower);
                 $p2 = array ('Y' => $previousSecondaryValue, 'X' => $this->_lower);
                 $p3 = array ('Y' => $previousSecondaryValue, 'X' => $this->_upper);
@@ -135,7 +135,7 @@ class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid
             $this->_driver->polygonAdd($this->_pointX($p4), $this->_pointY($p4));
 
             $previousSecondaryValue = $secondaryValue;
-            
+
             $this->_getLineStyle();
             $this->_getFillStyle();
             $this->_driver->polygonEnd();

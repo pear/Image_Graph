@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Fill     
+ * @subpackage Fill
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Element.php
@@ -40,8 +40,8 @@
 require_once 'Image/Graph/Element.php';
 
 /**
- * Style used for filling elements. 
- *  
+ * Style used for filling elements.
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Fill
@@ -53,7 +53,7 @@ class Image_Graph_Fill extends Image_Graph_Common
     /**
      * Resets the fillstyle
      *
-     * @access private 
+     * @access private
      */
     function _reset()
     {

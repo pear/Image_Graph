@@ -46,8 +46,8 @@ class Image_Graph_Color extends Image_Color
 {
     /**
     * Allocates a color in the given image.
-    * 
-    * Userdefined color specifications get translated into 
+    *
+    * Userdefined color specifications get translated into
     * an array of rgb values.
     *
     * @param    resource        GD-resource
@@ -56,7 +56,7 @@ class Image_Graph_Color extends Image_Color
     * @see      color2RGB()
     * @access   public
     * @static
-    */  
+    */
     function allocateColor(&$img, $color)
     {
         $color = Image_Graph_Color::color2RGB($color);
@@ -66,19 +66,19 @@ class Image_Graph_Color extends Image_Color
         } else {
             return imagecolorallocatealpha($img, $color[0], $color[1], $color[2], 127-round(($color[3]*127)/255));
         }
-    }                 
+    }
 
     /**
     * Convert any color-representation into an array of 4 ints (RGBA).
-    * 
-    * Userdefined color specifications get translated into 
+    *
+    * Userdefined color specifications get translated into
     * an array of rgb values.
     *
     * @param    mixed         any color representation supported by Image_Graph_Color::color2RGB()
     * @return   array         Array of 4 ints (RGBA-representation)
     * @access   public
     * @static
-    */  
+    */
     function color2RGB($color)
     {
         if (is_array($color)) {
@@ -86,7 +86,7 @@ class Image_Graph_Color extends Image_Color
                 return null; // error
             }
             if (count($color) == 3) { // assume RGB-color
-              
+
                 // 255 = alpha-value; full opaque
                 return array((int) $color[0],
                              (int) $color[1],
@@ -94,7 +94,7 @@ class Image_Graph_Color extends Image_Color
                              255);
             }
             if (count($color) == 4) { // assume RGBA-color
-              
+
                 // 255 = alpha-value; full opaque
                 return array((int) $color[0],
                              (int) $color[1],
@@ -162,10 +162,10 @@ class Image_Graph_Color extends Image_Color
                                          ) / $steps
                                                   );
         }
-          
+
         return $tempColors;
     }
-    
+
     /**
     * Internal method to correctly set the colors.
     *

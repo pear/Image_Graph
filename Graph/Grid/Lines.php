@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Grid     
+ * @subpackage Grid
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Grid.php
@@ -41,16 +41,16 @@ require_once 'Image/Graph/Grid.php';
 
 /**
  * Display a line grid on the plotarea.
- * 
+ *
  * {@link Image_Graph_Grid}
- *           
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
- * @subpackage Grid 
+ * @subpackage Grid
  */
-class Image_Graph_Grid_Lines extends Image_Graph_Grid 
+class Image_Graph_Grid_Lines extends Image_Graph_Grid
 {
-    
+
     /**
      * GridLines [Constructor]
      */
@@ -78,7 +78,7 @@ class Image_Graph_Grid_Lines extends Image_Graph_Grid
         $value = $this->_primaryAxis->_getNextLabel();
 
         $secondaryPoints = $this->_getSecondaryAxisPoints();
-        
+
         while (($value <= $this->_primaryAxis->_getMaximum()) && ($value !== false)) {
             if ($value > $this->_primaryAxis->_getMinimum()) {
                 reset($secondaryPoints);

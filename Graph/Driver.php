@@ -24,7 +24,7 @@
 
 /**
  * Class for handling different output formats
- * 
+ *
  * @package Image_Graph
  * @subpackage Driver
  * @category images
@@ -34,19 +34,19 @@
  * @version $Id$
  * @since 0.3.0dev2
  */
- 
+
 /**
  * Driver class.
- * 
+ *
  * Handles different output formats.
- * 
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Driver
  * @abstract
  * @since 0.3.0dev2
  */
-class Image_Graph_Driver 
+class Image_Graph_Driver
 {
 
     /**
@@ -76,7 +76,7 @@ class Image_Graph_Driver
      * @access private
      */
     var $_height = 0;
-    
+
     /**
      * Polygon vertex placeholder
      * @var array
@@ -114,17 +114,17 @@ class Image_Graph_Driver
 
     /**
      * Create the PDF driver.
-     * 
+     *
      * Parameters available:
-     * 
+     *
      * 'width' The width of the graph on the canvas
-     * 
+     *
      * 'height' The height of the graph on the canvas
-     * 
+     *
      * 'left' The left offset of the graph on the canvas
-     * 
+     *
      * 'top' The top offset of the graph on the canvas
-     * 
+     *
      * @param array $param Parameter array
      * @abstract
      */
@@ -133,10 +133,10 @@ class Image_Graph_Driver
         if (isset($param['left'])) {
             $this->_left = $param['left'];
         }
-        
+
         if (isset($param['top'])) {
             $this->_top = $param['top'];
-        }            
+        }
 
         if (isset($param['width'])) {
             $this->_width = $param['width'];
@@ -150,7 +150,7 @@ class Image_Graph_Driver
     /**
      * Get the x-point from the relative to absolute coordinates
      *
-     * @param float $x The relative x-coordinate (in percentage of total width) 
+     * @param float $x The relative x-coordinate (in percentage of total width)
      * @return float The x-coordinate as applied to the driver
      * @access private
      */
@@ -162,7 +162,7 @@ class Image_Graph_Driver
     /**
      * Get the y-point from the relative to absolute coordinates
      *
-     * @param float $y The relative y-coordinate (in percentage of total width) 
+     * @param float $y The relative y-coordinate (in percentage of total width)
      * @return float The y-coordinate as applied to the driver
      * @access private
      */
@@ -170,7 +170,7 @@ class Image_Graph_Driver
     {
         return floor($this->_top + $y);
     }
-        
+
     /**
      * Get the width of the canvas
      *
@@ -190,7 +190,7 @@ class Image_Graph_Driver
     {
         return $this->_height;
     }
-    
+
     /**
      * Sets the thickness of the line(s) to be drawn
      *
@@ -200,7 +200,7 @@ class Image_Graph_Driver
     {
         $this->_thickness = $thickness;
     }
-    
+
     /**
      * Sets the color of the line(s) to be drawn
      *
@@ -229,7 +229,7 @@ class Image_Graph_Driver
             $this->setFillColor($fill);
         }
     }
-    
+
     /**
      * Sets the color of the filling of drawn objects
      *
@@ -258,17 +258,17 @@ class Image_Graph_Driver
     {
         $this->_fillStyle = $gradient;
     }
-    
+
     /**
      * Sets the font options.
-     * 
+     *
      * The $font array may have the following entries:
-     * 
+     *
      * 'ttf' = the .ttf file (either the basename, filename or full path)
      * If 'ttf' is specified, then the following can be specified
-     * 
+     *
      * 'size' = size in pixels
-     * 
+     *
      * 'angle' = the angle with which to write the text
      *
      * @param array $font The font options.
@@ -277,7 +277,7 @@ class Image_Graph_Driver
     {
         $this->_font = $fontOptions;
     }
-    
+
     /**
      * Resets the driver.
      *
@@ -293,33 +293,33 @@ class Image_Graph_Driver
         $this->_polygon = array();
         //$this->_font = array('font' => 1, 'color' => 'black');
     }
-        
-    
+
+
     /**
      * Draw a line
      *
-     * @param int $x0 X start point 
-     * @param int $y0 X start point 
-     * @param int $x1 X end point 
+     * @param int $x0 X start point
+     * @param int $y0 X start point
+     * @param int $x1 X end point
      * @param int $y1 Y end point
      * @param mixed $color The line color, can be omitted
      */
     function line($x0, $y0, $x1, $y1, $color = false)
     {
         $this->_reset();
-    }    
+    }
 
     /**
      * Adds vertex to a polygon
      *
-     * @param int $x X point 
-     * @param int $y Y point 
+     * @param int $x X point
+     * @param int $y Y point
      */
     function polygonAdd($x, $y)
-    {        
-        $this->_polygon[] = 
+    {
+        $this->_polygon[] =
             array(
-                'X' => $this->_getX($x), 
+                'X' => $this->_getX($x),
                 'Y' => $this->_getY($y)
             );
     }
@@ -327,18 +327,18 @@ class Image_Graph_Driver
     /**
      * Adds vertex to a polygon
      *
-     * @param int $x X point 
-     * @param int $y Y point 
+     * @param int $x X point
+     * @param int $y Y point
      */
     function splineAdd($x, $y, $p1x, $p1y, $p2x, $p2y)
-    {               
-        $this->_polygon[] = 
+    {
+        $this->_polygon[] =
             array(
-                'X' => $this->_getX($x), 
-                'Y' => $this->_getY($y), 
-                'P1X' => $this->_getX($p1x), 
-                'P1Y' => $this->_getY($p1y), 
-                'P2X' => $this->_getX($p2x), 
+                'X' => $this->_getX($x),
+                'Y' => $this->_getY($y),
+                'P1X' => $this->_getX($p1x),
+                'P1Y' => $this->_getY($p1y),
+                'P2X' => $this->_getX($p2x),
                 'P2Y' => $this->_getY($p2y)
             );
     }
@@ -346,35 +346,35 @@ class Image_Graph_Driver
     /**
      * Draws a polygon
      *
-     * @param bool $connectEnds Specifies wether the start point should be
-     *   conencted to the endpoint (closed polygon) or not (connected line)
+     * @param bool $connectEnds Specifies whether the start point should be
+     *   connected to the endpoint (closed polygon) or not (connected line)
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
      */
     function polygonEnd($connectEnds = true, $fillColor = false, $lineColor = false)
     {
-        $this->_reset();                
+        $this->_reset();
     }
 
     /**
      * Draws a polygon
      *
-     * @param bool $connectEnds Specifies wether the start point should be
-     *   conencted to the endpoint (closed polygon) or not (connected line)
+     * @param bool $connectEnds Specifies whether the start point should be
+     *   connected to the endpoint (closed polygon) or not (connected line)
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
      */
     function splineEnd($connectEnds = true, $fillColor = false, $lineColor = false)
     {
-        $this->_reset();                
+        $this->_reset();
     }
 
     /**
      * Draw a rectangle
      *
-     * @param int $x0 X start point 
-     * @param int $y0 X start point 
-     * @param int $x1 X end point 
+     * @param int $x0 X start point
+     * @param int $y0 X start point
+     * @param int $x1 X end point
      * @param int $y1 Y end point
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
@@ -387,9 +387,9 @@ class Image_Graph_Driver
     /**
      * Draw an ellipse
      *
-     * @param int $x Center point x-value 
+     * @param int $x Center point x-value
      * @param int $y Center point y-value
-     * @param int $rx X-radius of ellipse 
+     * @param int $rx X-radius of ellipse
      * @param int $ry Y-radius of ellipse
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
@@ -402,9 +402,9 @@ class Image_Graph_Driver
     /**
      * Draw a pie slice
      *
-     * @param int $x Center point x-value 
+     * @param int $x Center point x-value
      * @param int $y Center point y-value
-     * @param int $rx X-radius of pie slice 
+     * @param int $rx X-radius of pie slice
      * @param int $ry Y-radius of pie slice
      * @param int $v1 The starting angle
      * @param int $v2 The end angle
@@ -417,13 +417,13 @@ class Image_Graph_Driver
     {
         $this->_reset();
     }
-    
+
     /**
      * Get the width of a text,
      *
      * @param string $text The text to get the width of
      * @return int The width of the text
-     */ 
+     */
     function textWidth($text)
     {
     }
@@ -433,15 +433,15 @@ class Image_Graph_Driver
      *
      * @param string $text The text to get the height of
      * @return int The height of the text
-     */ 
+     */
     function textHeight($text)
     {
     }
-    
+
     /**
      * Writes text
      *
-     * @param int $x X-point of text 
+     * @param int $x X-point of text
      * @param int $y Y-point of text
      * @param string $text The text to write
      * @param int $alignment The alignment of the text
@@ -451,13 +451,13 @@ class Image_Graph_Driver
     {
         $this->_reset();
     }
-    
+
     /**
      * Overlay image
      *
-     * @param int $x X-point of overlayed image 
+     * @param int $x X-point of overlayed image
      * @param int $y Y-point of overlayed image
-     * @param string $filename The filename of the image to overlay  
+     * @param string $filename The filename of the image to overlay
      * @param int $width The width of the overlayed image (resizing if possible)
      * @param int $height The height of the overlayed image (resizing if
      *   possible)
@@ -465,7 +465,7 @@ class Image_Graph_Driver
     function overlayImage($x, $y, $filename, $width = false, $height = false)
     {
     }
-    
+
     /**
      * Output the result of the driver
      *
@@ -481,33 +481,33 @@ class Image_Graph_Driver
             header('Pragma: no-cache');
         }
     }
-    
+
     /**
      * Driver factory method.
-     * 
+     *
      * Supported drivers are:
-     * 
+     *
      * 'png': output in PNG format (using GD)
-     * 
+     *
      * 'jpg': output in JPEG format (using GD)
-     * 
+     *
      * 'svg': Scalable Vector Graphics
-     * 
+     *
      * 'xmlsvg': Scalable Vector Graphics, requires PEAR::XML_SVG (not
      * implemented)
-     * 
+     *
      * 'pdf': PDF Output, requires PEAR::File_PDF (not implemented)
-     * 
+     *
      * 'pdflib': PDF Output, requires PDFlib (not implemented)
-     * 
+     *
      * 'swf': SWF Output, requires MING (not implemented)
-     * 
+     *
      * 'libswf': SWF Output, requires libswf (not implemented)
-     * 
+     *
      * @param string $driver The driver
      * @param array $param The parameters for the driver constructor
      * @return Image_Graph_Driver The newly created driver
-     */ 
+     */
     function &factory($driver, $param)
     {
         $driver = strtoupper($driver);
@@ -523,12 +523,12 @@ class Image_Graph_Driver
         if ($driver == 'LIBSWF') {
             $driver = 'LibSWF';
         }
-        
+
         include_once 'Image/Graph/Driver/'. str_replace('_', '/', $driver) . '.php';
         $class = 'Image_Graph_Driver_'. $driver;
         return new $class($param);
     }
-    
+
 }
 
 ?>

@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Text     
+ * @subpackage Text
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Layout.php
@@ -41,12 +41,12 @@ require_once 'Image/Graph/Layout.php';
 
 /**
  * Title
- *   
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Text
  */
-class Image_Graph_Title extends Image_Graph_Layout 
+class Image_Graph_Title extends Image_Graph_Layout
 {
 
     /**
@@ -65,17 +65,17 @@ class Image_Graph_Title extends Image_Graph_Layout
 
     /**
      * Create the title.
-     * 
+     *
      * Pass a Image_Graph_Font object - preferably by-ref (&amp;) as second
      * parameter, the font size in pixels or an associated array with some or
      * all of the followin keys:
-     * 
+     *
      * 'size' The size of the title
-     * 
+     *
      * 'angle' The angle at which to write the title (in degrees or 'vertical')
-     * 
+     *
      * 'color' The font-face color
-     * 
+     *
      * @param sting $text The text to represent the title
      * @param mixed $fontOptions The font to use in the title
      */
@@ -105,9 +105,9 @@ class Image_Graph_Title extends Image_Graph_Layout
     }
 
     /**
-     * Returns the calculated "auto" size   
+     * Returns the calculated "auto" size
      *
-     * @return int The calculated auto size 
+     * @return int The calculated auto size
      * @access private
      */
     function _getAutoSize()
@@ -117,14 +117,14 @@ class Image_Graph_Title extends Image_Graph_Layout
     }
 
     /**
-     * Output the text 
+     * Output the text
      *
      * @access private
      */
     function _done()
     {
         $this->_driver->setFont($this->_getFont());
-        
+
         if (!is_a($this->_parent, 'Image_Graph_Layout')) {
             $this->_setCoords(
                 $this->_parent->_fillLeft(),
@@ -132,8 +132,8 @@ class Image_Graph_Title extends Image_Graph_Layout
                 $this->_parent->_fillRight(),
                 $this->_parent->_fillTop() + $this->_driver->textHeight($this->_text)
             );
-        }               
-        
+        }
+
         if (parent::_done() === false) {
             return false;
         }
@@ -143,11 +143,11 @@ class Image_Graph_Title extends Image_Graph_Layout
 
 /*        $this->_getFillStyle();
         $this->_getLineStyle();
-        $this->_driver->rectangle($this->_left, $this->_top, $this->_right, $this->_bottom);*/ 
+        $this->_driver->rectangle($this->_left, $this->_top, $this->_right, $this->_bottom);*/
 
         $this->write(
             $x,
-            $y, 
+            $y,
             $this->_text,
             IMAGE_GRAPH_ALIGN_CENTER_X + IMAGE_GRAPH_ALIGN_CENTER_Y
         );

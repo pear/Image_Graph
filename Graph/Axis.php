@@ -24,15 +24,15 @@
 
 /**
  * Class for axis handling.
- * 
+ *
  * @package Image_Graph
- * @subpackage Axis     
+ * @subpackage Axis
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Plotarea/Element.php
@@ -41,15 +41,15 @@ require_once 'Image/Graph/Plotarea/Element.php';
 
 /**
  * Diplays a normal linear axis (either X- or Y-axis).
- *  
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Axis
  */
-class Image_Graph_Axis extends Image_Graph_Plotarea_Element 
+class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 {
 
-    /** 
+    /**
      * The type of the axis, possible values are:
      * <ul>
      * <li>IMAGE_GRAPH_AXIS_X / IMAGE_GRAPH_AXIS_HORIZONTAL
@@ -60,56 +60,56 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      */
     var $_type;
 
-    /** 
+    /**
      * The minimum value the axis displays
      * @var int
      * @access private
      */
     var $_minimum = false;
 
-    /** 
+    /**
      * The minimum value the axis has been explicitly set by the user
      * @var bool
      * @access private
      */
     var $_minimumSet = false;
 
-    /** 
+    /**
      * The maximum value the axis displays
      * @var int
      * @access private
      */
     var $_maximum = false;
 
-    /** 
+    /**
      * The maximum value the axis has been explicitly set by the user
      * @var bool
      * @access private
      */
     var $_maximumSet = false;
 
-    /** 
+    /**
      * Specify if the axis should label the minimum value
      * @var bool
      * @access private
      */
     var $_showLabelMinimum = true;
 
-    /** 
+    /**
      * Specify if the axis should label 0 (zero)
      * @var bool
      * @access private
      */
     var $_showLabelZero = false;
 
-    /** 
+    /**
      * Specify if the axis should label the maximum value
      * @var bool
      * @access private
      */
     var $_showLabelMaximum = true;
 
-    /** 
+    /**
      * Show arrow heads at the 'end' of the axis, default: false
      * @var bool
      * @access private
@@ -117,15 +117,15 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     var $_showArrow = false;
 
     // TODO Make labelOptions propagate to sub-classes where required
-    /** 
+    /**
      * The label options
-     * 
+     *
      * Should text be shows, preferences for ticks. The indexes start at level
      * 1, which is chosen for readability
      * @var array
      * @access private
      */
-    var $_labelOptions = array( 
+    var $_labelOptions = array(
         1 => array(
             'interval' => 1,
             'type' => 'auto',
@@ -133,26 +133,26 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
             'showtext' => true,
             'showoffset' => false,
             'font' => array(),
-            'offset' => 0           
+            'offset' => 0
         )/*,
         2 => array(
             'interval' => 0.5,
             'type' => 'manual',
             'tick' => array('start' => -1, 'end' => 1),
             'showtext' => false,
-            'showoffset' => true           
+            'showoffset' => true
         )*/
     );
 
-    /** 
+    /**
      * The labels that are shown.
-     * 
+     *
      * This is used to make values show only once...
      * @access private
      */
-    var $_labelText = array(); 
+    var $_labelText = array();
 
-    /** 
+    /**
      * A data preprocessor for formatting labels, fx showing dates as a standard
      * date instead of Unix time stamp
      * @var Image_Graph_DatePreProcessor
@@ -161,28 +161,28 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      */
     var $_dataPreProcessor = null;
 
-    /** 
+    /**
      * Point marked in the axis
      * @var array
      * @access private
      */
     var $_marks = array();
 
-    /** 
+    /**
      * Specifies whether the values should be 'pushed' by 0.5
      * @var bool
      * @access private
      */
     var $_pushValues = false;
 
-    /** 
+    /**
      * The title of this axis
      * @var string
      * @access private
      */
     var $_title = '';
 
-    /** 
+    /**
      * The font used for the title of this axis
      * @var Image_Graph_Font
      * @access private
@@ -202,10 +202,10 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     function &Image_Graph_Axis($type = IMAGE_GRAPH_AXIS_X)
     {
         parent::Image_Graph_Element();
-        $this->_type = $type;        
+        $this->_type = $type;
     }
 
-    /** 
+    /**
      * Push the values by 0.5 (for bar and step chart)
      *
      * @access private
@@ -217,16 +217,16 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
     /**
      * Gets the font of the title.
-     * 
+     *
      * If not font has been set, the parent font is propagated through it's
      * children.
-     * 
+     *
      * @return array An associated array used for driver
      * @access private
      */
-    function _getTitleFont()    
+    function _getTitleFont()
     {
-        if ($this->_titleFont === false) {                               
+        if ($this->_titleFont === false) {
             return $this->_getFont();
         } else {
             if (is_object($this->_titleFont)) {
@@ -239,14 +239,14 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
         }
         return array();
     }
-    
+
     /**
      * Shows a label for the the specified values.
      *
      * Allowed values are  combinations of:
      * <ul>
      * <li>IMAGE_GRAPH_LABEL_MINIMUM
-     * <li>IMAGE_GRAPH_LABEL_ZERO     
+     * <li>IMAGE_GRAPH_LABEL_ZERO
      * <li>IMAGE_GRAPH_LABEL_MAXIMUM
      * </ul>
      * By default none of these are shows on the axis
@@ -333,8 +333,8 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     {
         if (($userEnforce) || (!$this->_minimumSet)) {
             $this->_minimum = $minimum;
-            $this->_minimumSet = $userEnforce;            
-        }                
+            $this->_minimumSet = $userEnforce;
+        }
         $this->_calcLabelInterval();
     }
 
@@ -348,7 +348,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     {
         if (($userEnforce) || (!$this->_maximumSet)) {
             $this->_maximum = $maximum;
-            $this->_maximumSet = $userEnforce;            
+            $this->_maximumSet = $userEnforce;
         }
         $this->_calcLabelInterval();
     }
@@ -369,10 +369,10 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
         $this->_showArrow = false;
     }
 
-    /** 
+    /**
      * Return the label distance.
      *
-     * @param int $level The label level to return the distance of 
+     * @param int $level The label level to return the distance of
      * @return int The distance between 2 adjacent labels
      * @access private
      */
@@ -382,8 +382,8 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
         $l1 = $this->_getNextLabel(false, $level);
         $l2 = $this->_getNextLabel($l1, $level);
         return abs($this->_point($l2) - $this->_point($l1));
-    }        
-        
+    }
+
     /**
      * Sets an interval for when labels are shown on the axis.
      *
@@ -392,26 +392,26 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      * values for labels.
      *
      * @param mixed $labelInterval The interval with which labels are shown
-     * @param int $level The label level to set the interval on 
+     * @param int $level The label level to set the interval on
      */
     function setLabelInterval($labelInterval = 'auto', $level = 1)
     {
         if (!isset($this->_labelOptions[$level])) {
             $this->_labelOptions[$level] = array();
         }
-        
+
         if ($labelInterval === 'auto') {
-            $this->_labelOptions[$level]['type'] = 'auto'; 
-            $this->_calcLabelInterval();            
-        } else {              
-            $this->_labelOptions[$level]['type'] = 'manual'; 
+            $this->_labelOptions[$level]['type'] = 'auto';
+            $this->_calcLabelInterval();
+        } else {
+            $this->_labelOptions[$level]['type'] = 'manual';
             $this->_labelOptions[$level]['interval'] = $labelInterval;
         }
-    }    
+    }
 
     /**
      * Sets the title of this axis.
-     * 
+     *
      * This is used as an alternative (maybe better) method, that using layout's
      * for axis-title generation.
      *
@@ -423,10 +423,10 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     {
         $this->_title = $title;
         $this->_titleFont =& $font;
-    }    
+    }
 
     /**
-     * Axis value span     
+     * Axis value span
      *
      * @return double The span of the axis (i.e. Max-Min)
      * @access private
@@ -437,7 +437,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     }
 
     /**
-     * Axis span     
+     * Axis span
      *
      * @return double The span of the axis (i.e. Max-Min)
      * @access private
@@ -446,9 +446,9 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     {
         return abs($this->_getMaximum() - $this->_getMinimum());
     }
-    
+
     /**
-     * Get the step each pixel on the canvas will represent on the axis.     
+     * Get the step each pixel on the canvas will represent on the axis.
      *
      * @return double The step a pixel represents
      * @access private
@@ -494,16 +494,16 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
             $this->_setMaximum($dataset->maximumY());
         }
     }
-    
+
     /**
      * Get the pixel position represented by a value on the canvas
      *
-     * @param double $value the value to get the pixel-point for 
+     * @param double $value the value to get the pixel-point for
      * @return double The pixel position along the axis
      * @access private
      */
     function _point($value)
-    {        
+    {
         if ($this->_type == IMAGE_GRAPH_AXIS_X) {
             return $this->_left + $this->_delta() * $this->_value($value);
         } else {
@@ -522,15 +522,15 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     function _calcLabelInterval()
     {
         $min = $this->_getMinimum();
-        $max = $this->_getMaximum();      
+        $max = $this->_getMaximum();
         if ((!empty($min)) && (!empty($max)) && ($min > $max)) {
             $this->_labelOptions[1]['interval'] = 1;
             return true;
         }
-                
+
         foreach($this->_labelOptions as $level => $labelOptions) {
             if ($labelOptions['type'] !== 'auto') {
-                $span = false;                  
+                $span = false;
             } elseif ($level == 1) {
                 $span = $this->_axisValueSpan();
             } else {
@@ -543,13 +543,13 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
                 }
             }
 
-            if ($span !== false) {                
+            if ($span !== false) {
                 $interval = pow(10, floor(log10($span)));
-        
+
                 if ($interval == 0) {
                     $interval = 1;
                 }
-        
+
                 if ((($span) / $interval) < 3) {
                     $interval = $interval / 4;
                 } elseif ((($span) / $interval) < 5) {
@@ -557,21 +557,21 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
                 } elseif ((($span) / $interval) > 10) {
                     $interval = $interval * 2;
                 }
-        
+
                 if (($interval -floor($interval) == 0.5) && ($interval != 0.5)) {
                     $interval = floor($interval);
                 }
-        
+
                 // just to be 100% sure that an interval of 0 is not returned some
                 // additional checks are performed
                 if ($interval == 0) {
                     $interval = ($span) / 5;
                 }
-        
+
                 if ($interval == 0) {
                     $interval = 1;
                 }
-                
+
                 $this->_labelOptions[$level]['interval'] = $interval;
             }
         }
@@ -582,7 +582,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      *
      * @param doubt $currentLabel The current label, if omitted or false, the
      *   first is returned
-     * @param int $level The label level to get the next label from 
+     * @param int $level The label level to get the next label from
      * @return double The next label point
      * @access private
      */
@@ -591,46 +591,46 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
         if (!isset($this->_labelOptions[$level])) {
             return false;
         }
-        
+
         if (is_array($this->_labelOptions[$level]['interval'])) {
             if ($currentLabel === false) {
                 reset($this->_labelOptions[$level]['interval']);
             }
-            
+
             if (list(, $label) = each($this->_labelOptions[$level]['interval'])) {
                 return $label;
             } else {
                 return false;
             }
         } else {
-            $li = $this->_labelInterval($level);  
-            if (($this->_axisSpan() == 0) || ($this->_axisValueSpan() == 0) || 
+            $li = $this->_labelInterval($level);
+            if (($this->_axisSpan() == 0) || ($this->_axisValueSpan() == 0) ||
                 ($li == 0)
             ) {
                 return false;
             }
-                                    
+
             $labelInterval = $this->_axisSpan() / ($this->_axisValueSpan() / $li);
-            
+
             if ($labelInterval == 0) {
                 return false;
             }
-            
-            if ($currentLabel === false) {            
-                return((int) ($this->_getMinimum() / $labelInterval)) * 
+
+            if ($currentLabel === false) {
+                return((int) ($this->_getMinimum() / $labelInterval)) *
                     $labelInterval - $labelInterval;
             } else {
                 return $currentLabel + $labelInterval;
             }
         }
-    }        
-    
+    }
+
     /**
      * Get the interval with which labels are shown on the axis.
      *
      * If explicitly defined this will be calucated to an approximate best.
      *
-     * @param int $level The label level to get the label interval for 
+     * @param int $level The label level to get the label interval for
      * @return double The label interval
      * @access private
      */
@@ -641,30 +641,30 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
         ) {
             return 1;
         }
-        
-        return (is_array($this->_labelOptions[$level]['interval']) 
-            ? 1 
+
+        return (is_array($this->_labelOptions[$level]['interval'])
+            ? 1
             : $this->_labelOptions[$level]['interval']
         );
     }
 
-    /** 
+    /**
      * Get the size in pixels of the axis.
      *
      * For an x-axis this is the width of the axis including labels, and for an
      * y-axis it is the corrresponding height
      *
      * @return int The size of the axis
-     * @access private 
+     * @access private
      */
     function _size()
     {
         krsort($this->_labelOptions);
-        
+
         $totalMaxSize = 0;
-        
+
         $this->_driver->setFont($this->_getFont());
-        
+
         foreach ($this->_labelOptions as $level => $labelOptions) {
             if ((isset($labelOptions['showoffset'])) && ($labelOptions['showoffset'] === true)) {
                 $this->_labelOptions[$level]['offset'] = $totalMaxSize;
@@ -679,11 +679,11 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
                     $font = false;
                 }
                 $this->_driver->setFont($this->_getFont($font));
-                    
+
                 $value = $this->_getNextLabel(false, $level);
-                $maxSize = 0;                    
+                $maxSize = 0;
                 while (($value <= $this->_getMaximum()) && ($value !== false)) {
-                    if ((abs($value) > 0.0001) && ($value > $this->_getMinimum()) && 
+                    if ((abs($value) > 0.0001) && ($value > $this->_getMinimum()) &&
                         ($value < $this->_getMaximum()))
                     {
                         if (is_object($this->_dataPreProcessor)) {
@@ -691,14 +691,14 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
                         } else {
                             $labelText = $value;
                         }
-                                                           
+
                         if ($this->_type == IMAGE_GRAPH_AXIS_X) {
                             $maxSize = max($maxSize, $this->_driver->textHeight($labelText));
                         } else {
                             $maxSize = max($maxSize, $this->_driver->textWidth($labelText));
                         }
                     }
-        
+
                     $value = $this->_getNextLabel($value, $level);
                 }
                 if ((isset($labelOptions['showoffset'])) && ($labelOptions['showoffset'] === true)) {
@@ -708,10 +708,10 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
                 }
             }
         }
-        
+
         if ($this->_title) {
             $this->_driver->setFont($this->_getTitleFont());
-            
+
             if ($this->_type == IMAGE_GRAPH_AXIS_X) {
                 $totalMaxSize += $this->_driver->textHeight($this->_title);
             } else {
@@ -719,25 +719,25 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
             }
             $totalMaxSize += 10;
         }
-            
+
         return $totalMaxSize + 3;
     }
-    
+
     /**
      * Adds a mark to the axis at the specified value
      *
      * @param double $value The value
-     * @param double $value2 The second value (for a ranged mark) 
+     * @param double $value2 The second value (for a ranged mark)
      */
     function addMark($value, $value2 = false, $text = false)
-    {    
+    {
         if ($value2 === false) {
             $this->_marks[] = $value;
         } else {
             $this->_marks[] = array($value, $value2);
         }
     }
-    
+
     /**
      * Is the axis numeric or not?
      *
@@ -748,7 +748,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     {
         return true;
     }
-    
+
     /**
      * Set the major tick appearance.
      *
@@ -759,7 +759,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      *
      * @param int $start The start position relative to the axis
      * @param int $end The end position relative to the axis
-     * @param int $level The label level to set the tick options for 
+     * @param int $level The label level to set the tick options for
      * @since 0.3.0dev2
      */
     function setTickOptions($start, $end, $level = 1)
@@ -767,7 +767,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
         if (!isset($this->_labelOptions[$level])) {
             $this->_labelOptions[$level] = array();
         }
-        
+
         $this->_labelOptions[$level]['tick'] = array(
             'start' => $start,
             'end' => $end
@@ -778,7 +778,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      * Output an axis tick mark.
      *
      * @param int $value The value to output
-     * @param int $level The label level to draw the tick for 
+     * @param int $level The label level to draw the tick for
      * @access private
      */
     function _drawTick($value, $level = 1)
@@ -792,90 +792,90 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
             } else {
                 $offset = 0;
             }
-            
+
             if ((isset($labelOptions['showtext'])) && ($labelOptions['showtext'] === true)) {
                 if (is_object($this->_dataPreProcessor)) {
                     $labelText = $this->_dataPreProcessor->_process($value);
                 } else {
                     $labelText = $value;
                 }
-                
+
                 if (!in_array($labelText, $this->_labelText)) {
                     $this->_labelText[] = $labelText;
-                                    
+
                     if (isset($labelOptions['font'])) {
                         $font = $labelOptions['font'];
                     } else {
                         $font = false;
                     }
-                    
+
                     $font = $this->_getFont($font);
-                    
+
                     if ($this->_type == IMAGE_GRAPH_AXIS_Y) {
                         $this->write(
-                            $this->_right - 3 - $offset, 
-                            $labelPosition, 
-                            $labelText, 
+                            $this->_right - 3 - $offset,
+                            $labelPosition,
+                            $labelText,
                             IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_RIGHT,
                             $font
-                        );                   
+                        );
                     } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY) {
                         $this->write(
-                            $this->_left + 3 + $offset, 
-                            $labelPosition, 
-                            $labelText, 
+                            $this->_left + 3 + $offset,
+                            $labelPosition,
+                            $labelText,
                             IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_LEFT,
                             $font
-                        );                   
+                        );
                     } else {
                         $this->write(
-                            $labelPosition, 
-                            $this->_top + 3 + $offset, 
-                            $labelText,  
+                            $labelPosition,
+                            $this->_top + 3 + $offset,
+                            $labelText,
                             IMAGE_GRAPH_ALIGN_CENTER_X | IMAGE_GRAPH_ALIGN_TOP,
                             $font
-                        );                   
+                        );
                     }
                 }
             }
-            
+
             if (isset($this->_labelOptions[$level]['tick'])) {
                 $tickStart = $this->_labelOptions[$level]['tick']['start'];
                 $tickEnd = $this->_labelOptions[$level]['tick']['end'];
             } else {
                 $tickStart = -2;
                 $tickEnd = 2;
-            }                        
-            
+            }
+
             $this->_getLineStyle();
-            if ($this->_type == IMAGE_GRAPH_AXIS_Y) {    
+            if ($this->_type == IMAGE_GRAPH_AXIS_Y) {
                 if ($tickStart === 'auto') {
                     $tickStart = -$offset;
-                }            
+                }
                 $this->_driver->line(
-                    $this->_right + $tickStart, 
-                    $labelPosition, 
+                    $this->_right + $tickStart,
+                    $labelPosition,
                     $this->_right + $tickEnd,
-                    $labelPosition 
+                    $labelPosition
                 );
             } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY) {
                 if ($tickStart === 'auto') {
                     $tickStart = $offset;
-                }            
+                }
                 $this->_driver->line(
                     $this->_left - $tickStart,
-                    $labelPosition, 
-                    $this->_left - $tickEnd, 
+                    $labelPosition,
+                    $this->_left - $tickEnd,
                     $labelPosition
                 );
             } else {
                 if ($tickStart === 'auto') {
                     $tickStart = $offset;
-                }            
+                }
                 $this->_driver->line(
-                    $labelPosition, 
+                    $labelPosition,
                     $this->_top - $tickStart,
-                    $labelPosition, 
+                    $labelPosition,
                     $this->_top - $tickEnd
                 );
             }
@@ -892,18 +892,18 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
         if ($this->_type == IMAGE_GRAPH_AXIS_X) {
             $this->_getLineStyle();
             $this->_driver->line(
-                $this->_left, 
-                $this->_top, 
-                $this->_right, 
+                $this->_left,
+                $this->_top,
+                $this->_right,
                 $this->_top
             );
-            
-            if ($this->_title) {                
+
+            if ($this->_title) {
                 $y = $this->_bottom;
                 $x = $this->_left + $this->width() / 2;
                 $this->write($x, $y, $this->_title, IMAGE_GRAPH_ALIGN_CENTER_X + IMAGE_GRAPH_ALIGN_BOTTOM, $this->_getTitleFont());
             }
-                        
+
             if ($this->_showArrow) {
                 $this->_getFillStyle();
                 $this->_getLineStyle();
@@ -915,19 +915,19 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
         } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY) {
             $this->_getLineStyle();
             $this->_driver->line(
-                $this->_left, 
-                $this->_top, 
-                $this->_left, 
+                $this->_left,
+                $this->_top,
+                $this->_left,
                 $this->_bottom
             );
 
             if ($this->_title) {
-                $this->_driver->setFont($this->_getTitleFont());                
+                $this->_driver->setFont($this->_getTitleFont());
                 $y = $this->_top + $this->height() / 2;
                 $x = $this->_right;
                 $this->write($x, $y, $this->_title, IMAGE_GRAPH_ALIGN_RIGHT + IMAGE_GRAPH_ALIGN_CENTER_Y, $this->_getTitleFont());
             }
-            
+
             if ($this->_showArrow) {
                 $this->_getFillStyle();
                 $this->_getLineStyle();
@@ -939,19 +939,19 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
         } else {
             $this->_getLineStyle();
             $this->_driver->line(
-                $this->_right, 
-                $this->_top, 
-                $this->_right, 
+                $this->_right,
+                $this->_top,
+                $this->_right,
                 $this->_bottom
             );
 
             if ($this->_title) {
-                $this->_driver->setFont($this->_getTitleFont());                
+                $this->_driver->setFont($this->_getTitleFont());
                 $y = $this->_top + $this->height() / 2;
                 $x = $this->_left;
                 $this->write($x, $y, $this->_title, IMAGE_GRAPH_ALIGN_LEFT + IMAGE_GRAPH_ALIGN_CENTER_Y, $this->_getTitleFont());
             }
-            
+
             if ($this->_showArrow) {
                 $this->_getFillStyle();
                 $this->_getLineStyle();
@@ -975,22 +975,22 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
         }
 
         $this->_drawAxisLines();
-        
+
         ksort($this->_labelOptions);
         foreach ($this->_labelOptions as $level => $labelOption) {
-            $value = $this->_getNextLabel(false, $level);        
+            $value = $this->_getNextLabel(false, $level);
             while (($value <= $this->_getMaximum()) && ($value !== false)) {
-                if ((((abs($value) > 0.0001) || ($this->_showLabelZero)) && 
-                    (($value > $this->_getMinimum()) || ($this->_showLabelMinimum)) && 
-                    (($value < $this->_getMaximum()) || ($this->_showLabelMaximum))) && 
+                if ((((abs($value) > 0.0001) || ($this->_showLabelZero)) &&
+                    (($value > $this->_getMinimum()) || ($this->_showLabelMinimum)) &&
+                    (($value < $this->_getMaximum()) || ($this->_showLabelMaximum))) &&
                     ($value >= $this->_getMinimum()) && ($value <= $this->_getMaximum())
                 ) {
                     $this->_drawTick($value, $level);
                 }
                 $value = $this->_getNextLabel($value, $level);
-            }                    
-        }                      
-    
+            }
+        }
+
         $tickStart = -3;
         $tickEnd = 2;
 
@@ -1015,21 +1015,21 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
                 $this->_getFillStyle();
                 $this->_getLineStyle();
                 $this->_driver->rectangle($x0, $y0, $x1, $y1);
-            } else {                      
+            } else {
                 $this->_getFillStyle();
                 $this->_getLineStyle();
                 if ($this->_type == IMAGE_GRAPH_AXIS_X) {
-                    $x = $this->_point($mark);                             
+                    $x = $this->_point($mark);
                     $this->_driver->polygonAdd($x, $this->_top);
                     $this->_driver->polygonAdd($x - 5, $this->_top + 5);
                     $this->_driver->polygonAdd($x + 5, $this->_top + 5);
                 } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y) {
-                    $y = $this->_point($mark);                             
+                    $y = $this->_point($mark);
                     $this->_driver->polygonAdd($this->_right, $y);
                     $this->_driver->polygonAdd($this->_right - 5, $y - 5);
                     $this->_driver->polygonAdd($this->_right - 5, $y + 5);
                 } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY) {
-                    $y = $this->_point($mark);                             
+                    $y = $this->_point($mark);
                     $this->_driver->polygonAdd($this->_left, $y);
                     $this->_driver->polygonAdd($this->_left + 5, $y - 5);
                     $this->_driver->polygonAdd($this->_left + 5, $y + 5);

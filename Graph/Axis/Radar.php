@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Axis     
+ * @subpackage Axis
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Axis/Category.php
@@ -41,19 +41,19 @@ require_once 'Image/Graph/Axis/Category.php';
 
 /**
  * Displays an 'X'-axis in a radar plot chart.
- * 
+ *
  * This axis maps the number of elements in the dataset to a angle (from 0-
  * 360 degrees). Displaying the axis consist of drawing a number of lines from
  * center to the edge of the 'circle' than encloses the radar plot. The labels
  * are drawn on the 'ends' of these radial lines.
- *    
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Axis
  */
 class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
 {
-    
+
     /**
      * Specifies the number of pixels, the labels is offsetted from the end of
      * the axis
@@ -88,9 +88,9 @@ class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
     {
         return count($this->_labels);
     }
-    
+
     /**
-     * Get the step each pixel on the canvas will represent on the axis.     
+     * Get the step each pixel on the canvas will represent on the axis.
      *
      * @return double The step a pixel represents
      * @access private
@@ -107,22 +107,22 @@ class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
     /**
      * Get the pixel position represented by a value on the canvas
      *
-     * @param double $value the value to get the pixel-point for 
+     * @param double $value the value to get the pixel-point for
      * @return double The pixel position along the axis
      * @access private
      */
     function _point($value)
-    {        
+    {
         return (90 + (int) ($this->_value($value) * $this->_delta())) % 360;
     }
 
-    /** 
+    /**
      * Get the size in pixels of the axis.
      *
      * For a radar plot this is always 0
      *
      * @return int The size of the axis
-     * @access private 
+     * @access private
      */
     function _size()
     {
@@ -133,7 +133,7 @@ class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
      * Sets the distance from the end of the category lines to the label.
      *
      * @param int $distance The distance in pixels
-     */    
+     */
     function setDistanceFromEnd($distance = 5)
     {
         $this->_distanceFromEnd = $distance;
@@ -164,7 +164,7 @@ class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
         $endPoint = array ('X' => $value, 'Y' => '#max#');
         $dX = $this->_pointX($endPoint);
         $dY = $this->_pointY($endPoint);
-        
+
         $offX = ($dX - $centerX);
         $offY = ($dY - $centerY);
 
@@ -174,7 +174,7 @@ class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
         } else {
             $scale = 1;
         }
-        
+
         $adX = $dX + $offX * $scale;
         $adY = $dY + $offY * $scale;
 

@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Text     
+ * @subpackage Text
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Font.php
@@ -41,19 +41,19 @@ require_once 'Image/Graph/Font.php';
 
 /**
  * A vertical font
- *          
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Text
  */
-class Image_Graph_Font_Vertical extends Image_Graph_Font 
+class Image_Graph_Font_Vertical extends Image_Graph_Font
 {
 
     /**
      * Get the font 'array'
      *
-     * @return array The font 'summary' to pass to the driver 
-     * @access private 
+     * @return array The font 'summary' to pass to the driver
+     * @access private
      */
     function _getFont($options = false)
     {
@@ -61,7 +61,7 @@ class Image_Graph_Font_Vertical extends Image_Graph_Font
         $options['vertical'] = true;
         $options['angle'] = 90;
         return $options;
-    }    
+    }
 
 
 }

@@ -24,7 +24,7 @@
 
 /**
  * Class for handling output in WBMP format.
- * 
+ *
  * @package Image_Graph
  * @subpackage Driver
  * @category images
@@ -38,19 +38,19 @@
 /**
  * Include file Image/Graph/Driver/GD.php
  */
-require_once 'Image/Graph/Driver/GD.php'; 
+require_once 'Image/Graph/Driver/GD.php';
 
 /**
  * GD Driver class.
- * 
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Driver
  * @since 0.3.0dev2
  * @abstract
  */
-class Image_Graph_Driver_GD_WBMP extends Image_Graph_Driver_GD 
-{   
+class Image_Graph_Driver_GD_WBMP extends Image_Graph_Driver_GD
+{
 
     /**
      * Output the result of the driver
@@ -61,15 +61,15 @@ class Image_Graph_Driver_GD_WBMP extends Image_Graph_Driver_GD
     function done($param = false)
     {
         parent::done($param);
-        if (($param === false) || (!isset($param['filename']))) {            
+        if (($param === false) || (!isset($param['filename']))) {
             header('Content-type: image/vnd.wap.wbmp');
             header('Content-Disposition: inline; filename = \"'. basename($_SERVER['PHP_SELF'], '.php') . '.wbmp\"');
             ImageWBMP($this->_canvas);
         } elseif (isset($param['filename'])) {
             ImageWBMP($this->_canvas, $param['filename']);
         }
-    }     
-    
+    }
+
 }
 
 ?>

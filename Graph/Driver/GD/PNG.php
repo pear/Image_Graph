@@ -24,7 +24,7 @@
 
 /**
  * Class for handling output in PNG format.
- * 
+ *
  * @package Image_Graph
  * @subpackage Driver
  * @category images
@@ -38,19 +38,19 @@
 /**
  * Include file Image/Graph/Driver/GD.php
  */
-require_once 'Image/Graph/Driver/GD.php'; 
+require_once 'Image/Graph/Driver/GD.php';
 
 /**
  * GD Driver class.
- * 
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Driver
  * @since 0.3.0dev2
  * @abstract
  */
-class Image_Graph_Driver_GD_PNG extends Image_Graph_Driver_GD 
-{   
+class Image_Graph_Driver_GD_PNG extends Image_Graph_Driver_GD
+{
 
     /**
      * Create the PNG driver
@@ -60,7 +60,7 @@ class Image_Graph_Driver_GD_PNG extends Image_Graph_Driver_GD
     function &Image_Graph_Driver_GD_PNG($param)
     {
         parent::Image_Graph_Driver_GD($param);
-                                              
+
         if ((isset($param['transparent'])) && ($param['transparent']) &&
             ($this->_gd2)
         ) {
@@ -70,28 +70,28 @@ class Image_Graph_Driver_GD_PNG extends Image_Graph_Driver_GD
                 $transparent = $param['transparent'];
             }
             $color = $this->_color($transparent);
-            $trans = ImageColorTransparent($this->_canvas, $color);            
+            $trans = ImageColorTransparent($this->_canvas, $color);
 
             $this->rectangle(
-                $this->_left, 
-                $this->_top, 
-                $this->_left + $this->_width - 1, 
-                $this->_top + $this->_height - 1, 
-                'opague', 
+                $this->_left,
+                $this->_top,
+                $this->_left + $this->_width - 1,
+                $this->_top + $this->_height - 1,
+                'opague',
                 'transparent'
             );
         } else {
             $this->rectangle(
-                $this->_left, 
-                $this->_top, 
-                $this->_left + $this->_width - 1, 
-                $this->_top + $this->_height - 1, 
-                'white', 
+                $this->_left,
+                $this->_top,
+                $this->_left + $this->_width - 1,
+                $this->_top + $this->_height - 1,
+                'white',
                 'transparent'
             );
         }
     }
-        
+
     /**
      * Output the result of the driver
      *
@@ -101,15 +101,15 @@ class Image_Graph_Driver_GD_PNG extends Image_Graph_Driver_GD
     function done($param = false)
     {
         parent::done($param);
-        if (($param === false) || (!isset($param['filename']))) {            
+        if (($param === false) || (!isset($param['filename']))) {
             header('Content-type: image/png');
             header('Content-Disposition: inline; filename = \"'. basename($_SERVER['PHP_SELF'], '.php') . '.png\"');
             ImagePNG($this->_canvas);
         } elseif (isset($param['filename'])) {
             ImagePNG($this->_canvas, $param['filename']);
         }
-    }     
-    
+    }
+
 }
 
 ?>

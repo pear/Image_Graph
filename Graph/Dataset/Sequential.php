@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Dataset     
+ * @subpackage Dataset
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Dataset/Trivial.php
@@ -41,17 +41,17 @@ require_once 'Image/Graph/Dataset/Trivial.php';
 
 /**
  * Sequential data set, simply add points (y) 1 by 1.
- * 
+ *
  * This is a single point dataset, all points are of the type (0, y1), (1, y2),
  * (2,  y3)... Where the X-value is implicitly incremented. This is useful for
  * example for barcharts, where you could fx. use an {@link
  * Image_Graph_Dataset_Array} datapreprocessor to make sence of the x-values.
- *       
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Dataset
  */
-class Image_Graph_Dataset_Sequential extends Image_Graph_Dataset_Trivial 
+class Image_Graph_Dataset_Sequential extends Image_Graph_Dataset_Trivial
 {
 
     /**

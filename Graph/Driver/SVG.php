@@ -24,7 +24,7 @@
 
 /**
  * Class for handling output in SVG format.
- * 
+ *
  * Outputs the graph in SVG format (Scalable Vector Graphics).
  * @package Image_Graph
  * @subpackage Driver
@@ -35,7 +35,7 @@
  * @version $Id$
  * @since 0.3.0dev2
  */
- 
+
 /**
  * Include file Image/Graph/Driver.php
  */
@@ -58,8 +58,8 @@ require_once 'Image/Graph/Color.php';
  * @subpackage Driver
  * @since 0.3.0dev2
  */
-class Image_Graph_Driver_SVG extends Image_Graph_Driver 
-{   
+class Image_Graph_Driver_SVG extends Image_Graph_Driver
+{
 
     /**
      * The SVG elements
@@ -73,17 +73,17 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
      * @var string
      * @access private
      */
-    var $_defs = '';       
+    var $_defs = '';
 
     /**
      * Create the SVG driver.
-     * 
+     *
      * Parameters available:
-     * 
+     *
      * 'width' The width of the graph
-     * 
+     *
      * 'height' The height of the graph
-     * 
+     *
      * @param array $param Parameter array
      */
     function &Image_Graph_Driver_SVG($param)
@@ -143,7 +143,7 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
         if ($lineStyle === false) {
             $lineStyle = $this->_lineStyle;
         }
-                
+
         if (($lineStyle != 'transparent') && ($lineStyle !== false)) {
             $result = 'stroke-width:' . $this->_thickness . ';';
             $result .= 'stroke:' .$this->_color($lineStyle) . ';';
@@ -168,10 +168,10 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
         if ($fillStyle === false) {
             $fillStyle = $this->_fillStyle;
         }
-        
+
         if (is_array($fillStyle)) {
             if ($fillStyle['type'] == 'gradient') {
-                $id = 'gradient_' . rand(0, 10000);                
+                $id = 'gradient_' . rand(0, 10000);
                 $startColor = $this->_color($fillStyle['start']);
                 $endColor = $this->_color($fillStyle['end']);
                 $startOpacity = $this->_opacity($fillStyle['start']);
@@ -185,7 +185,7 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
                     $x2 = '100%';
                     $y2 = '0%';
                     break;
-    
+
                 case IMAGE_GRAPH_GRAD_VERTICAL:
                 case IMAGE_GRAPH_GRAD_VERTICAL_MIRRORED:
                     $x1 = '0%';
@@ -193,21 +193,21 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
                     $x2 = '0%';
                     $y2 = '100%';
                     break;
-    
+
                 case IMAGE_GRAPH_GRAD_DIAGONALLY_TL_BR:
                     $x1 = '0%';
                     $y1 = '0%';
                     $x2 = '100%';
                     $y2 = '100%';
                     break;
-                    
+
                 case IMAGE_GRAPH_GRAD_DIAGONALLY_BL_TR:
                     $x1 = '100%';
                     $y1 = '0%';
                     $x2 = '0%';
                     $y2 = '100%';
                     break;
-    
+
                 case IMAGE_GRAPH_GRAD_RADIAL:
                     $cx = '50%';
                     $cy = '50%';
@@ -215,54 +215,54 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
                     $fx = '50%';
                     $fy = '50%';
                     break;
-                    
+
                 }
 
                 if ($fillStyle['direction'] == IMAGE_GRAPH_GRAD_RADIAL) {
                     $this->_defs .=
-                        "\t" . '<radialGradient id="' . $id . '" cx="' . 
-                            $cx .'" cy="' . $cy .'" r="' . $r .'" fx="' . 
+                        "\t" . '<radialGradient id="' . $id . '" cx="' .
+                            $cx .'" cy="' . $cy .'" r="' . $r .'" fx="' .
                             $fx .'" fy="' . $fy .'">' . "\n" .
-                        "\t\t" . '<stop offset="0%" style="stop-color:' . 
-                            $startColor. ';' . ($startOpacity ? 'stop-opacity:' . 
+                        "\t\t" . '<stop offset="0%" style="stop-color:' .
+                            $startColor. ';' . ($startOpacity ? 'stop-opacity:' .
                             $startOpacity . ';' : ''). '"/>' . "\n" .
-                        "\t\t" . '<stop offset="100%" style="stop-color:' . 
-                            $endColor. ';' . ($endOpacity ? 'stop-opacity:' . 
+                        "\t\t" . '<stop offset="100%" style="stop-color:' .
+                            $endColor. ';' . ($endOpacity ? 'stop-opacity:' .
                             $endOpacity . ';' : ''). '"/>' . "\n" .
                         "\t" . '</radialGradient>' . "\n";
-                } elseif (($fillStyle['direction'] == IMAGE_GRAPH_GRAD_VERTICAL_MIRRORED) || 
-                    ($fillStyle['direction'] == IMAGE_GRAPH_GRAD_HORIZONTAL_MIRRORED)) 
-                {                
+                } elseif (($fillStyle['direction'] == IMAGE_GRAPH_GRAD_VERTICAL_MIRRORED) ||
+                    ($fillStyle['direction'] == IMAGE_GRAPH_GRAD_HORIZONTAL_MIRRORED))
+                {
                     $this->_defs .=
-                        "\t" . '<linearGradient id="' . $id . '" x1="' . 
-                            $x1 .'" y1="' . $y1 .'" x2="' . $x2 .'" y2="' . 
+                        "\t" . '<linearGradient id="' . $id . '" x1="' .
+                            $x1 .'" y1="' . $y1 .'" x2="' . $x2 .'" y2="' .
                             $y2 .'">' . "\n" .
-                        "\t\t" . '<stop offset="0%" style="stop-color:' . 
-                            $startColor. ';' . ($startOpacity ? 'stop-opacity:' . 
+                        "\t\t" . '<stop offset="0%" style="stop-color:' .
+                            $startColor. ';' . ($startOpacity ? 'stop-opacity:' .
                             $startOpacity . ';' : ''). '"/>' . "\n" .
-                        "\t\t" . '<stop offset="50%" style="stop-color:' . 
-                            $endColor. ';' . ($endOpacity ? 'stop-opacity:' . 
+                        "\t\t" . '<stop offset="50%" style="stop-color:' .
+                            $endColor. ';' . ($endOpacity ? 'stop-opacity:' .
                             $endOpacity . ';' : ''). '"/>' . "\n" .
-                        "\t\t" . '<stop offset="100%" style="stop-color:' . 
-                            $startColor. ';' . ($startOpacity ? 'stop-opacity:' . 
+                        "\t\t" . '<stop offset="100%" style="stop-color:' .
+                            $startColor. ';' . ($startOpacity ? 'stop-opacity:' .
                             $startOpacity . ';' : ''). '"/>' . "\n" .
                         "\t" . '</linearGradient>' . "\n";
-                } else {                
+                } else {
                     $this->_defs .=
-                        "\t" . '<linearGradient id="' . $id . '" x1="' . 
-                            $x1 .'" y1="' . $y1 .'" x2="' . $x2 .'" y2="' . 
+                        "\t" . '<linearGradient id="' . $id . '" x1="' .
+                            $x1 .'" y1="' . $y1 .'" x2="' . $x2 .'" y2="' .
                             $y2 .'">' . "\n" .
-                        "\t\t" . '<stop offset="0%" style="stop-color:' . 
-                            $startColor. ';' . ($startOpacity ? 'stop-opacity:' . 
+                        "\t\t" . '<stop offset="0%" style="stop-color:' .
+                            $startColor. ';' . ($startOpacity ? 'stop-opacity:' .
                             $startOpacity . ';' : ''). '"/>' . "\n" .
-                        "\t\t" . '<stop offset="100%" style="stop-color:' . 
-                            $endColor. ';' . ($endOpacity ? 'stop-opacity:' . 
+                        "\t\t" . '<stop offset="100%" style="stop-color:' .
+                            $endColor. ';' . ($endOpacity ? 'stop-opacity:' .
                             $endOpacity . ';' : ''). '"/>' . "\n" .
                         "\t" . '</linearGradient>' . "\n";
                 }
 
                 return 'fill:url(#' . $id . ');';
-            }                
+            }
         } elseif (($fillStyle != 'transparent') && ($fillStyle !== false)) {
             $result = 'fill:' . $this->_color($fillStyle) . ';';
             if ($opacity = $this->_opacity($fillStyle)) {
@@ -273,7 +273,7 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
             return 'fill:none;';
         }
     }
-    
+
     /**
      * Sets an image that should be used for filling
      *
@@ -293,7 +293,7 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
         $this->_fillStyle = $gradient;
         $this->_fillStyle['type'] = 'gradient';
     }
-    
+
     /**
      * Sets the font options.
      *
@@ -311,15 +311,15 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
         parent::setFont($fontOptions);
         if (!isset($this->_font['size'])) {
             $this->_font['size'] = 10;
-        }        
+        }
     }
-    
+
     /**
      * Draw a line
      *
-     * @param int $x0 X start point 
-     * @param int $y0 X start point 
-     * @param int $x1 X end point 
+     * @param int $x0 X start point
+     * @param int $y0 X start point
+     * @param int $x1 X end point
      * @param int $y1 Y end point
      * @param mixed $color The line color, can be omitted
      */
@@ -342,7 +342,7 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
     /**
      * Draws a polygon
      *
-     * @param bool $connectEnds Specifies wether the start point should be
+     * @param bool $connectEnds Specifies whether the start point should be
      *   connected to the endpoint (closed polygon) or not (connected line)
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
@@ -352,8 +352,8 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
 		if (!$connectEnds) {
             $fillColor = 'transparent';
         }
-        $style = $this->_getLineStyle($lineColor) . $this->_getFillStyle($fillColor);        
-        foreach ($this->_polygon as $point) {            
+        $style = $this->_getLineStyle($lineColor) . $this->_getFillStyle($fillColor);
+        foreach ($this->_polygon as $point) {
             if (isset($points)) {
                 $points .= ' L';
             } else {
@@ -376,7 +376,7 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
     /**
      * Ends a spline
      *
-     * @param bool $connectEnds Specifies wether the start point should be
+     * @param bool $connectEnds Specifies whether the start point should be
      *   connected to the endpoint (closed polygon) or not (connected line)
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
@@ -389,8 +389,8 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
         $style = $this->_getLineStyle($lineColor) . $this->_getFillStyle($fillColor);
 
         $first = true;
-        $spline = false;        
-        foreach($this->_polygon as $point) {            
+        $spline = false;
+        foreach($this->_polygon as $point) {
             if ($first) {
                 $points = 'M';
             } elseif (!$spline) {
@@ -399,18 +399,18 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
 
             $points .= ' ' . round($point['X']) . ',' . round($point['Y']);
 
-            if ((isset($point['P1X'])) && (isset($point['P1Y'])) && 
-                (isset($point['P2X'])) && (isset($point['P2Y']))) 
+            if ((isset($point['P1X'])) && (isset($point['P1Y'])) &&
+                (isset($point['P2X'])) && (isset($point['P2Y'])))
             {
                 if (($first) || (!$spline)) {
                     $points .= ' C';
                 }
                 $points .= ' ' .round($point['P1X']) . ',' . round($point['P1Y']) . ' ' .
                            round($point['P2X']) . ',' . round($point['P2Y']);
-                $spline = true;                
+                $spline = true;
             } else {
                 $spline = false;
-            }         
+            }
             $first = false;
         }
         if ($connectEnds) {
@@ -424,13 +424,13 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
 
         parent::splineEnd($connectEnds);
     }
-    
+
     /**
      * Draw a rectangle
      *
-     * @param int $x0 X start point 
-     * @param int $y0 X start point 
-     * @param int $x1 X end point 
+     * @param int $x0 X start point
+     * @param int $y0 X start point
+     * @param int $x1 X end point
      * @param int $y1 Y end point
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
@@ -454,9 +454,9 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
     /**
      * Draw an ellipse
      *
-     * @param int $x Center point x-value 
+     * @param int $x Center point x-value
      * @param int $y Center point y-value
-     * @param int $rx X-radius of ellipse 
+     * @param int $rx X-radius of ellipse
      * @param int $ry Y-radius of ellipse
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
@@ -480,9 +480,9 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
     /**
      * Draw a pie slice
      *
-     * @param int $x Center point x-value 
+     * @param int $x Center point x-value
      * @param int $y Center point y-value
-     * @param int $rx X-radius of ellipse 
+     * @param int $rx X-radius of ellipse
      * @param int $ry Y-radius of ellipse
      * @param int $v1 The starting angle
      * @param int $v2 The end angle
@@ -497,24 +497,24 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
             $y1 = ($y + $ry * sin(deg2rad(min($v1, $v2) % 360)));
             $x2 = ($x + $rx * cos(deg2rad(max($v1, $v2) % 360)));
             $y2 = ($y + $ry * sin(deg2rad(max($v1, $v2) % 360)));
-            $this->_elements .= 
+            $this->_elements .=
                 '<path d="' .
                     'M' . round($x) . ',' . round($y) . ' ' .
                     'L' . round($x1) . ',' . round($y1) . ' ' .
-                    'A' . round($rx) . ',' . round($ry) . ' 0 0,1 ' . 
+                    'A' . round($rx) . ',' . round($ry) . ' 0 0,1 ' .
                         round($x2) . ',' . round($y2) . ' ' .
                     'z" ' .
                     'style="' . $style . '"' .
                 '/>' . "\n";
         }
     }
-                     
+
     /**
      * Get the width of a text,
      *
      * @param string $text The text to get the width of
      * @return int The width of the text
-     */ 
+     */
     function textWidth($text)
     {
         if ((isset($this->_font['vertical'])) && ($this->_font['vertical'])) {
@@ -529,7 +529,7 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
      *
      * @param string $text The text to get the height of
      * @return int The height of the text
-     */ 
+     */
     function textHeight($text)
     {
         if ((isset($this->_font['vertical'])) && ($this->_font['vertical'])) {
@@ -538,11 +538,11 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
             return $this->_font['size'];
         }
     }
-    
+
     /**
      * Writes text
      *
-     * @param int $x X-point of text 
+     * @param int $x X-point of text
      * @param int $y Y-point of text
      * @param string $text The text to write
      * @param int $alignment The alignment of the text
@@ -550,11 +550,11 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
      */
     function write($x, $y, $text, $alignment, $color = false)
     {
-        // TODO Consider using text path all together for this 
+        // TODO Consider using text path all together for this
         $textHeight = $this->textHeight($text);
 
         $align = '';
-        
+
         if ((isset($this->_font['vertical'])) && ($this->_font['vertical'])) {
             $align .= 'writing-mode: tb-rl;';
 
@@ -565,24 +565,24 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
                 //$y = $y + ($textHeight / 2);
                 $align .= 'text-anchor:middle;';
             }
-        } else { 
+        } else {
             if ($alignment & IMAGE_GRAPH_ALIGN_RIGHT) {
                 $align .= 'text-anchor:end;';
             } elseif ($alignment & IMAGE_GRAPH_ALIGN_CENTER_X) {
                 $align .= 'text-anchor:middle;';
             }
-    
+
             if ($alignment & IMAGE_GRAPH_ALIGN_TOP) {
                 $y = $y + $textHeight;
             } elseif ($alignment & IMAGE_GRAPH_ALIGN_CENTER_Y) {
                 $y = $y + ($textHeight / 2);
             }
         }
-        
+
         if (($color === false) && (isset($this->_font['color']))) {
             $color = $this->_font['color'];
         }
-        
+
         $textColor = $this->_color($color);
         $textOpacity = $this->_opacity($color);
 
@@ -590,29 +590,29 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
             '<text ' .
                 'x="' . round($x) . '" ' .
                 'y="' . round($y) . '" ' .
-                (isset($this->_font['angle']) && ($this->_font['angle'] > 0) ? 
-                    'rotate="' . $this->_font['angle'] . '" ' : 
+                (isset($this->_font['angle']) && ($this->_font['angle'] > 0) ?
+                    'rotate="' . $this->_font['angle'] . '" ' :
                     ''
-                ) .               
-                'style="' . 
-                (isset($this->_font['file']) ? 
-                    'font-family:' . $this->_font['file'] . ';' : '') . 
-                        'font-size:' . $this->_font['size'] . 'px;fill=' . 
-                        $textColor . ($textOpacity ? ';fill-opacity:' . 
-                        $textOpacity : 
+                ) .
+                'style="' .
+                (isset($this->_font['file']) ?
+                    'font-family:' . $this->_font['file'] . ';' : '') .
+                        'font-size:' . $this->_font['size'] . 'px;fill=' .
+                        $textColor . ($textOpacity ? ';fill-opacity:' .
+                        $textOpacity :
                     ''
-                ) . ';' . $align . '">' . 
+                ) . ';' . $align . '">' .
                 str_replace('&', '&amp;', $text) .
             '</text>' . "\n";
         parent::write($x, $y, $text, $alignment);
     }
-    
+
     /**
      * Overlay image
      *
-     * @param int $x X-point of overlayed image 
+     * @param int $x X-point of overlayed image
      * @param int $y Y-point of overlayed image
-     * @param string $filename The filename of the image to overlay  
+     * @param string $filename The filename of the image to overlay
      * @param int $width The width of the overlayed image (resizing if possible)
      * @param int $height The height of the overlayed image (resizing if
      *   possible)
@@ -620,15 +620,15 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
     function overlayImage($x, $y, $filename, $width = false, $height = false)
     {
         // TODO Make images work in SVG
-        $filename = 'file:///' . str_replace('\\', '/', $filename); 
+        $filename = 'file:///' . str_replace('\\', '/', $filename);
         $this->_elements .=
-            '<image xlink:href="' . $filename . '" x="' . $x . '" y="' . $y . 
-                ($width ? '" width="' . $width : '') . 
-                ($height ? '" height="' . $height : '') . 
-            '"/>';     
+            '<image xlink:href="' . $filename . '" x="' . $x . '" y="' . $y .
+                ($width ? '" width="' . $width : '') .
+                ($height ? '" height="' . $height : '') .
+            '"/>';
         parent::overlayImage($x, $y, $filename, $width, $height);
     }
-        
+
     /**
      * Output the result of the driver
      *
@@ -640,8 +640,8 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
         parent::done($param);
         $output = '<?xml version="1.0" encoding="iso-8859-1"?>' . "\n" .
             '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN"' . "\n\t" .
-            ' "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">' . "\n" . 
-            '<svg width="' . $this->_width . '" height="' . $this->_height . 
+            ' "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">' . "\n" .
+            '<svg width="' . $this->_width . '" height="' . $this->_height .
                 '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' . "\n" .
             ($this->_defs ?
                 '<defs>' . "\n" .
@@ -661,7 +661,7 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
             fclose($file);
         }
     }
-    
+
 }
 
 ?>

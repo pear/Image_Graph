@@ -24,7 +24,7 @@
 
 /**
  * Class for handling output in GIF format.
- * 
+ *
  * @package Image_Graph
  * @subpackage Driver
  * @category images
@@ -38,19 +38,19 @@
 /**
  * Include file Image/Graph/Driver/GD.php
  */
-require_once 'Image/Graph/Driver/GD.php'; 
+require_once 'Image/Graph/Driver/GD.php';
 
 /**
  * GD Driver class.
- * 
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Driver
  * @since 0.3.0dev2
  * @abstract
  */
-class Image_Graph_Driver_GD_GIF extends Image_Graph_Driver_GD 
-{   
+class Image_Graph_Driver_GD_GIF extends Image_Graph_Driver_GD
+{
 
     /**
      * Create the PNG driver
@@ -60,28 +60,28 @@ class Image_Graph_Driver_GD_GIF extends Image_Graph_Driver_GD
     function &Image_Graph_Driver_GD_GIF($param)
     {
         parent::Image_Graph_Driver_GD($param);
-        
+
         if (isset($param['transparent'])) {
             $this->rectangle(
-                $this->_left, 
-                $this->_top, 
-                $this->_left + $this->_width - 1, 
-                $this->_top + $this->_height - 1, 
-                'transparent', 
+                $this->_left,
+                $this->_top,
+                $this->_left + $this->_width - 1,
+                $this->_top + $this->_height - 1,
+                'transparent',
                 'transparent'
             );
         } else {
             $this->rectangle(
-                $this->_left, 
-                $this->_top, 
-                $this->_left + $this->_width - 1, 
-                $this->_top + $this->_height - 1, 
-                'white', 
+                $this->_left,
+                $this->_top,
+                $this->_left + $this->_width - 1,
+                $this->_top + $this->_height - 1,
+                'white',
                 'transparent'
             );
         }
     }
-        
+
     /**
      * Output the result of the driver
      *
@@ -91,15 +91,15 @@ class Image_Graph_Driver_GD_GIF extends Image_Graph_Driver_GD
     function done($param = false)
     {
         parent::done($param);
-        if (($param === false) || (!isset($param['filename']))) {            
+        if (($param === false) || (!isset($param['filename']))) {
             header('Content-type: image/gif');
             header('Content-Disposition: inline; filename = \"'. basename($_SERVER['PHP_SELF'], '.php') . '.gif\"');
             ImageGIF($this->_canvas);
         } elseif (isset($param['filename'])) {
             ImageGIF($this->_canvas, $param['filename']);
         }
-    }     
-    
+    }
+
 }
 
 ?>

@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Axis     
+ * @subpackage Axis
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Axis.php
@@ -44,14 +44,14 @@ require_once 'Image/Graph/Axis.php';
  * This is basically a normal axis where the range is
  * the number of labels defined, that is the range is explicitly defined
  * when constructing the axis.
- *   
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
- * @subpackage Axis 
+ * @subpackage Axis
  */
-class Image_Graph_Axis_Category extends Image_Graph_Axis 
+class Image_Graph_Axis_Category extends Image_Graph_Axis
 {
-    
+
     /**
      * The labels shown on the axis
      * @var array
@@ -121,7 +121,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
     function _setMaximum($maximum)
     {
     }
-    
+
     /**
      * Forces the minimum value of the axis
      *
@@ -152,13 +152,13 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      *
      * @param double $labelInterval The interval with which labels are shown
      */
-    function setLabelInterval($labelInterval = 'auto')    
+    function setLabelInterval($labelInterval = 'auto')
     {
         if ($labelInterval == 'auto') {
             parent::setLabelInterval(1);
         } else {
             parent::setLabelInterval(round($labelInterval));
-        }        
+        }
     }
 
     /**
@@ -191,22 +191,22 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
     {
         return false;
     }
-    
-    /** 
+
+    /**
      * Get the size in pixels of the axis.
      *
      * For an x-axis this is the width of the axis including labels, and for an
      * y-axis it is the corrresponding height
      *
      * @return int The size of the axis
-     * @access private 
+     * @access private
      */
      function _size()
-     {               
+     {
         $this->_driver->setFont($this->_getFont());
-        
+
         $maxSize = 0;
-        foreach($this->_labels as $label) {        
+        foreach($this->_labels as $label) {
             $labelPosition = $this->_point($label);
 
             if (is_object($this->_dataPreProcessor)) {
@@ -224,7 +224,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
 
         if ($this->_title) {
             $this->_driver->setFont($this->_getTitleFont());
-            
+
             if ($this->_type == IMAGE_GRAPH_AXIS_X) {
                 $maxSize += $this->_driver->textHeight($this->_title);
             } else {
@@ -234,7 +234,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
         }
         return $maxSize +3;
     }
-    
+
     /**
      * Apply the dataset to the axis.
      *
@@ -258,7 +258,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
     function _applyDataset(&$dataset)
     {
         $newLabels = array();
-        
+
         $dataset->_reset();
         while ($point = $dataset->_next()) {
             if ($this->_type == IMAGE_GRAPH_AXIS_X) {
@@ -269,8 +269,8 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
             if (!in_array($data, $this->_labels)) {
                 $newLabels[] = $data;
                 //$this->_labels[] = $data;
-            }     
-            $allLabels[] = $data;           
+            }
+            $allLabels[] = $data;
         }
         if (count($this->_labels) == 0) {
             $this->_labels = $newLabels;
@@ -288,8 +288,8 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
                 $this_value = false;
                 // intersect indexes are the same as in allLabels!
                 $first = true;
-                while ((list($id, $value) = each($intersect)) && 
-                    ($this_value === false)) 
+                while ((list($id, $value) = each($intersect)) &&
+                    ($this_value === false))
                 {
                     if (($first) && ($id > $key)) {
                         $this_value = $value;
@@ -297,9 +297,9 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
                         $this_value = $value;
                     }
                     $first = false;
-                }                 
+                }
                 if ($this_value === false) {
-                    // the new label was not found before anything in the 
+                    // the new label was not found before anything in the
                     // intersection -> append it
                     $this->_labels[] = $newLabel;
                 } else {
@@ -317,7 +317,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
         }
     }
 
-    /** 
+    /**
      * Return the label distance.
      *
      * @return int The distance between 2 adjacent labels
@@ -326,11 +326,11 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
     function _labelDistance()
     {
         reset($this->_labels);
-        list(, $l1) = each($this->_labels); 
-        list(, $l2) = each($this->_labels); 
+        list(, $l1) = each($this->_labels);
+        list(, $l2) = each($this->_labels);
         return abs($this->_point($l2) - $this->_point($l1));
     }
-    
+
     /**
      * Get next label point
      *
@@ -340,7 +340,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      * @access private
      */
     function _getNextLabel($currentLabel = false)
-    {               
+    {
         if ($currentLabel === false) {
             reset($this->_labels);
         }
@@ -349,14 +349,14 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
         while ($count < $this->_labelInterval()) {
            $result = (list(, $label) = each($this->_labels));
            $count++;
-        }        
+        }
         if ($result) {
             return $label;
         } else  {
             return false;
-        }            
+        }
     }
-         
+
     /**
      * Is the axis numeric or not?
      *
@@ -367,7 +367,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
     {
         return false;
     }
-    
+
     /**
      * Output the axis
      *

@@ -24,16 +24,16 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Grid     
+ * @subpackage Grid
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
  * @since 0.3.0dev2
- */ 
+ */
 
 /**
  * Include file Image/Graph/Grid.php
@@ -42,17 +42,17 @@ require_once 'Image/Graph/Grid.php';
 
 /**
  * Display a line grid on the plotarea.
- * 
+ *
  * {@link Image_Graph_Grid}
- *           
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Grid
  * @since 0.3.0dev2
  */
-class Image_Graph_Grid_Polar extends Image_Graph_Grid 
+class Image_Graph_Grid_Polar extends Image_Graph_Grid
 {
-    
+
     /**
      * GridLines [Constructor]
      */
@@ -77,24 +77,24 @@ class Image_Graph_Grid_Polar extends Image_Graph_Grid
             return false;
         }
 
-        $value = $this->_primaryAxis->_getNextLabel();        
+        $value = $this->_primaryAxis->_getNextLabel();
 
-        $p0 = array ('X' => '#min#', 'Y' => '#min#');                    
+        $p0 = array ('X' => '#min#', 'Y' => '#min#');
         if ($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y) {
             $p1 = array ('X' => '#min#', 'Y' => '#max#');
             $r0 = abs($this->_pointY($p1) - $this->_pointY($p0));
         } else {
             $p1 = array ('X' => '#max#', 'Y' => '#min#');
             $r0 = abs($this->_pointX($p1) - $this->_pointX($p0));
-        }        
+        }
 
         $cx = $this->_pointX($p0);
         $cy = $this->_pointY($p0);
-        
+
         $span = $this->_primaryAxis->_axisSpan();
-        
+
         while (($value <= $this->_primaryAxis->_getMaximum()) && ($value !== false)) {
-            if ($value > $this->_primaryAxis->_getMinimum()) {              
+            if ($value > $this->_primaryAxis->_getMinimum()) {
                 $r = $r0 * ($value - $this->_primaryAxis->_getMinimum()) / $span;
 
                 $this->_getLineStyle();

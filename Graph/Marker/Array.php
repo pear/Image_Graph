@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Marker     
+ * @subpackage Marker
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Marker.php
@@ -41,18 +41,18 @@ require_once 'Image/Graph/Marker.php';
 
 /**
  * A sequential array of markers.
- * 
+ *
  * This is used for displaying different markers for datapoints on a chart.
  * This is done by adding multiple markers to a MarkerArrray structure.
  * The marker array will then when requested return the 'next' marker in
  * sequential order. It is possible to specify ID tags to each marker, which is
  * used to make sure some data uses a specific marker.
- *              
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Marker
  */
-class Image_Graph_Marker_Array extends Image_Graph_Marker 
+class Image_Graph_Marker_Array extends Image_Graph_Marker
 {
 
     /**
@@ -73,7 +73,7 @@ class Image_Graph_Marker_Array extends Image_Graph_Marker
             parent::add($marker);
         }
         $this->_markers[] = & $marker;
-        reset($this->_markers);        
+        reset($this->_markers);
     }
 
     /**

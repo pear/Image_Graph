@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Pl7ot     
+ * @subpackage Pl7ot
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Plot.php
@@ -41,16 +41,16 @@ require_once 'Image/Graph/Plot.php';
 
 /**
  * Dot chart (only marker).
- * 
+ *
  * This plot type only displays a {@link Image_Graph_Marker} for the datapoints.
  * The marker must explicitly be defined using {@link Image_Graph_Plot::
  * setMarker()}.
- *               
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Plot
  */
-class Image_Graph_Plot_Dot extends Image_Graph_Plot 
+class Image_Graph_Plot_Dot extends Image_Graph_Plot
 {
 
     /**
@@ -65,7 +65,7 @@ class Image_Graph_Plot_Dot extends Image_Graph_Plot
     function _drawLegendSample($x0, $y0, $x1, $y1)
     {
     }
-    
+
     /**
      * Output the plot
      *

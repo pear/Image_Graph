@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Marker     
+ * @subpackage Marker
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Plotarea/Element.php
@@ -41,16 +41,16 @@ require_once 'Image/Graph/Plotarea/Element.php';
 
 /**
  * Data point marker.
- * 
- * The data point marker is used for marking the datapoints on a graph with some 
+ *
+ * The data point marker is used for marking the datapoints on a graph with some
  * visual label, fx. a cross, a text box with the value or an icon.
- *   
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Marker
  * @abstract
  */
-class Image_Graph_Marker extends Image_Graph_Plotarea_Element 
+class Image_Graph_Marker extends Image_Graph_Plotarea_Element
 {
 
     /**
@@ -78,11 +78,11 @@ class Image_Graph_Marker extends Image_Graph_Plotarea_Element
     {
         $this->_size = $size;
     }
-    
+
     /**
      * Set the secondary marker
      *
-     * @param Marker $secondaryMarker The secondary marker 
+     * @param Marker $secondaryMarker The secondary marker
      */
     function setSecondaryMarker(& $secondaryMarker)
     {
@@ -94,7 +94,7 @@ class Image_Graph_Marker extends Image_Graph_Plotarea_Element
      * Draw the marker on the canvas
      *
      * @param int $x The X (horizontal) position (in pixels) of the marker on
-     *   the canvas 
+     *   the canvas
      * @param int $y The Y (vertical) position (in pixels) of the marker on the
      *   canvas
      * @param array $values The values representing the data the marker 'points'

@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Legend     
+ * @subpackage Legend
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Layout.php
@@ -41,18 +41,18 @@ require_once 'Image/Graph/Layout.php';
 
 /**
  * Displays a legend for a plotarea.
- * 
+ *
  * A legend can be displayed in two ways:
- * 
+ *
  * 1 As an overlayed box within the plotarea
- * 
+ *
  * 2 Layout'ed on the canvas smewhere next to the plotarea.
- *  
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Legend
  */
-class Image_Graph_Legend extends Image_Graph_Layout 
+class Image_Graph_Legend extends Image_Graph_Layout
 {
 
     /**
@@ -84,9 +84,9 @@ class Image_Graph_Legend extends Image_Graph_Layout
         parent::Image_Graph_Layout();
         $this->_padding = 5;
     }
-    
+
     /**
-     * The number of actual plots in the plot area 
+     * The number of actual plots in the plot area
      *
      * @return int The number of plotes
      * @access private
@@ -111,7 +111,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
     }
 
     /**
-     * The height of the element on the canvas 
+     * The height of the element on the canvas
      *
      * @return int Number of pixels representing the height of the element
      * @access private
@@ -131,7 +131,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
     }
 
     /**
-     * The width of the element on the canvas 
+     * The width of the element on the canvas
      *
      * @return int Number of pixels representing the width of the element
      * @access private
@@ -208,7 +208,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
     /**
      * Sets Plotarea
      *
-     * @param Image_Graph_Plotarea $plotarea The plotarea 
+     * @param Image_Graph_Plotarea $plotarea The plotarea
      */
     function setPlotarea(& $plotarea)
     {
@@ -219,7 +219,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
      * Sets the parent. The parent chain should ultimately be a GraPHP object
      *
      * @see Image_Graph
-     * @param Image_Graph_Common $parent The parent 
+     * @param Image_Graph_Common $parent The parent
      * @access private
      */
     function _setParent(& $parent)
@@ -229,7 +229,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
             $this->_plotarea = & $parent;
         }
     }
-    
+
     /**
      * Set if this legends should show markers
      *
@@ -239,7 +239,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
     {
         $this->_showMarker = $showMarker;
     }
-     
+
 
     /**
      * Output the plot
@@ -248,14 +248,14 @@ class Image_Graph_Legend extends Image_Graph_Layout
      */
     function _done()
     {
-        
+
         $shadow = $this->_shadow;
         $this->_shadow = false;
-        
+
         if (Image_Graph_Element::_done() === false) {
             return false;
         }
-        
+
         $param['left'] = $this->_left + $this->_padding;
         $param['top'] = $this->_top + $this->_padding;
         $param['right'] = $this->_right - $this->_padding;
@@ -274,25 +274,25 @@ class Image_Graph_Legend extends Image_Graph_Layout
             if (is_array($elements)) {
                 $param['font'] = $this->_getFont();
 
-                $parent = (is_object($this->_parent) ? 
-                    get_class($this->_parent) : 
+                $parent = (is_object($this->_parent) ?
+                    get_class($this->_parent) :
                     $this->_parent
                 );
 
                 if (strtolower($parent) == 'image_graph_plotarea') {
                     $this->_setCoords(
-                        $this->_right - $this->_width(), 
-                        $this->_top, 
-                        $this->_right, 
+                        $this->_right - $this->_width(),
+                        $this->_top,
+                        $this->_right,
                         $this->_top + $this->_height()
                     );
-                    
+
                     $this->_getFillStyle();
                     $this->_getLineStyle();
                     $this->_driver->rectangle(
-                        $this->_left, 
-                        $this->_top, 
-                        $this->_right, 
+                        $this->_left,
+                        $this->_top,
+                        $this->_right,
                         $this->_bottom
                     );
 
@@ -307,12 +307,12 @@ class Image_Graph_Legend extends Image_Graph_Layout
                     unset($keys);
                 } else {
                     $param0 = $param;
-                    $param0['simulate'] = true;                   
+                    $param0['simulate'] = true;
                     $keys = array_keys($elements);
                     foreach($keys as $key) {
                         $element =& $elements[$key];
                         if (is_a($element, 'Image_Graph_Plot')) {
-                            $element->_legendSample($param0);                            
+                            $element->_legendSample($param0);
                         }
                     }
                     unset($keys);
@@ -325,7 +325,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
                             $param['x'] = $param['x'] + ($this->_width() - ($param0['x'] - $param['x']))/2;
                         }
                     }
-                    
+
                     if ($plotCount = $this->_plotCount()) {
                         $legendWidth = $this->_width() / $plotCount;
                     }
@@ -333,8 +333,8 @@ class Image_Graph_Legend extends Image_Graph_Layout
                     foreach ($keys as $key) {
                         $element =& $elements[$key];
                         if (is_a($element, 'Image_Graph_Plot')) {
-                            $element->_legendSample($param);                            
-                        }                       
+                            $element->_legendSample($param);
+                        }
                     }
                     unset($keys);
                 }

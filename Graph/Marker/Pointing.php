@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Marker     
+ * @subpackage Marker
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Marker.php
@@ -41,14 +41,14 @@ require_once 'Image/Graph/Marker.php';
 
 /**
  * Data marker as a 'pointing marker'.
- * 
+ *
  * Points to the data using another marker (as start and/or end)
- *              
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Marker
  */
-class Image_Graph_Marker_Pointing extends Image_Graph_Marker 
+class Image_Graph_Marker_Pointing extends Image_Graph_Marker
 {
 
     /**
@@ -130,8 +130,8 @@ class Image_Graph_Marker_Pointing extends Image_Graph_Marker
         $this->_driver->line($x, $y, $x + $this->_deltaX, $y + $this->_deltaY);
         $this->_markerEnd->_setParent($this);
         $this->_markerEnd->_drawMarker(
-            $x + $this->_deltaX, 
-            $y + $this->_deltaY, 
+            $x + $this->_deltaX,
+            $y + $this->_deltaY,
             $values
         );
     }

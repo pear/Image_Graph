@@ -24,14 +24,14 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
- * @package Image_Graph 
+ *
+ * @package Image_Graph
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Element.php
@@ -40,18 +40,18 @@ require_once 'Image/Graph/Element.php';
 
 /**
  * Representation of a element on a plotarea.
- *               
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @abstract
  */
-class Image_Graph_Plotarea_Element extends Image_Graph_Element 
+class Image_Graph_Plotarea_Element extends Image_Graph_Element
 {
 
     /**
      * Get the X pixel position represented by a value
      *
-     * @param double $point the value to get the pixel-point for  
+     * @param double $point the value to get the pixel-point for
      * @return double The pixel position along the axis
      * @access private
      */
@@ -63,7 +63,7 @@ class Image_Graph_Plotarea_Element extends Image_Graph_Element
     /**
      * Get the Y pixel position represented by a value
      *
-     * @param double $point the value to get the pixel-point for  
+     * @param double $point the value to get the pixel-point for
      * @return double The pixel position along the axis
      * @access private
      */
@@ -75,7 +75,7 @@ class Image_Graph_Plotarea_Element extends Image_Graph_Element
     /**
      * Get the X and Y pixel position represented by a value
      *
-     * @param array $point the values to get the pixel-point for  
+     * @param array $point the values to get the pixel-point for
      * @return array The (x, y) pixel position along the axis
      * @access private
      */

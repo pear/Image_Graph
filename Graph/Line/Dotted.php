@@ -24,7 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
  * @subpackage Line
  * @category images
@@ -32,7 +32,7 @@
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Line/Formatted.php
@@ -41,22 +41,22 @@ require_once 'Image/Graph/Line/Formatted.php';
 
 /**
  * Dotted line style.
- * 
- * This style displays as a short line with a shorter space afterwards, i.e 
+ *
+ * This style displays as a short line with a shorter space afterwards, i.e
  * 1px color1, 1px color2, 1px color1, etc.
- *             
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
- * @subpackage Line 
+ * @subpackage Line
  */
-class Image_Graph_Line_Dotted extends Image_Graph_Line_Formatted 
+class Image_Graph_Line_Dotted extends Image_Graph_Line_Formatted
 {
 
     /**
      * DottedLine [Constructor]
      *
-     * @param mixed $color1 The color representing the dots 
-     * @param mixed $color2 The color representing the spaces 
+     * @param mixed $color1 The color representing the dots
+     * @param mixed $color2 The color representing the spaces
      */
     function &Image_Graph_Line_Dotted($color1, $color2)
     {

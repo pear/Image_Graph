@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Figure     
+ * @subpackage Figure
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Element.php
@@ -41,21 +41,21 @@ require_once 'Image/Graph/Element.php';
 
 /**
  * Ellipse to draw on the canvas
- *        
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Figure
  */
-class Image_Graph_Figure_Ellipse extends Image_Graph_Element 
+class Image_Graph_Figure_Ellipse extends Image_Graph_Element
 {
 
     /**
      * Ellipse [Constructor]
      *
-     * @param int $x The center pixel of the ellipse on the canvas 
-     * @param int $y The center pixel of the ellipse on the canvas 
-     * @param int $radiusX The width in pixels of the box on the canvas 
-     * @param int $radiusY The height in pixels of the box on the canvas 
+     * @param int $x The center pixel of the ellipse on the canvas
+     * @param int $y The center pixel of the ellipse on the canvas
+     * @param int $radiusX The width in pixels of the box on the canvas
+     * @param int $radiusY The height in pixels of the box on the canvas
      */
     function &Image_Graph_Figure_Ellipse($x, $y, $radiusX, $radiusY)
     {
@@ -67,19 +67,19 @@ class Image_Graph_Figure_Ellipse extends Image_Graph_Element
      * Output the ellipse
      *
      * @access private
-     */     
+     */
     function _done()
     {
         if (parent::_done() === false) {
             return false;
         }
-        
+
         $this->_getFillStyle();
         $this->_getLineStyle();
         $this->_driver->ellipse(
-            ($this->_left + $this->_right) / 2, 
-            ($this->_top + $this->_bottom) / 2, 
-            $this->width(), 
+            ($this->_left + $this->_right) / 2,
+            ($this->_top + $this->_bottom) / 2,
+            $this->width(),
             $this->height()
         );
     }

@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Dataset     
+ * @subpackage Dataset
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Dataset.php
@@ -40,13 +40,13 @@
 require_once 'Image/Graph/Dataset.php';
 
 /**
- * Trivial data set, simply add points (x, y) 1 by 1 
- *       
+ * Trivial data set, simply add points (x, y) 1 by 1
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Dataset
  */
-class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset 
+class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
 {
 
     /**
@@ -58,13 +58,13 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
 
     /**
      * Image_Graph_Dataset_Trivial [Constructor]
-     * 
+     *
      * Pass an assictaed array ($data[$x] = $y) to the constructor for easy data
      * addition.
-     * 
+     *
      * NB! If passing an array at this point, the x-values will also be used for
      * ID tags, i.e. when using {@link Image_Graph_Fill_Array}.
-     * 
+     *
      * @param array $dataArray An associated array with values to the dataset
      */
     function &Image_Graph_Dataset_Trivial($dataArray = false)

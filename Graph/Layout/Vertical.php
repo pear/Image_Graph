@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Layout     
+ * @subpackage Layout
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Layout/Horizontal.php
@@ -41,45 +41,45 @@ require_once 'Image/Graph/Layout/Horizontal.php';
 
 /**
  * Layout for displaying two elements on top of each other.
- * 
- * This splits the area contained by this element in two on top of each other 
- * by a specified percentage (relative to the top). A layout can be nested. 
+ *
+ * This splits the area contained by this element in two on top of each other
+ * by a specified percentage (relative to the top). A layout can be nested.
  * Fx. a {@link Image_Graph_Layout_Horizontal} can layout two VerticalLayout's to
  * make a 2 by 2 matrix of 'element-areas'.
- *            
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Layout
  */
-class Image_Graph_Layout_Vertical extends Image_Graph_Layout_Horizontal 
+class Image_Graph_Layout_Vertical extends Image_Graph_Layout_Horizontal
 {
 
     /**
      * (Add description here)
-     * 
+     *
      * @since 0.3.0dev2
      *
      * @access private
-     */    
+     */
     function _getAbsolute(&$part)
-    {        
+    {
         $part1Size = $this->_part1->_getAutoSize();
         $part2Size = $this->_part2->_getAutoSize();
-        $this->_percentage = false;             
+        $this->_percentage = false;
         if (($part1Size !== false) and ($part2Size !== false)) {
             $height = $this->_fillHeight() * $part1Size / ($part1Size + $part2Size);
         } elseif ($part1Size !== false) {
             $height = $part1Size;
-        } elseif ($part2Size !== false) { 
+        } elseif ($part2Size !== false) {
             $height = -$part2Size;
         } else {
-            $height = $this->_fillHeight() / 2; 
+            $height = $this->_fillHeight() / 2;
         }
-        
+
         if ($part == 'auto_part2') {
-//            $height = $this->_fillHeight() - $height;            
+//            $height = $this->_fillHeight() - $height;
         }
-                
+
         return $height;
     }
 

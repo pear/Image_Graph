@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Layout     
+ * @subpackage Layout
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Layout.php
@@ -41,17 +41,17 @@ require_once 'Image/Graph/Layout.php';
 
 /**
  * A default/standard plotarea layout.
- * 
+ *
  * Image_Graph_PlotareaLayout creates a Image_Graph_Plotarea with assoiated
  * layout's for a title, an X-axis title and a Y-axis title.
- *            
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Layout
  */
-class Image_Graph_Layout_Plotarea extends Image_Graph_Layout 
+class Image_Graph_Layout_Plotarea extends Image_Graph_Layout
 {
-    
+
     /**
      * The plotarea
      * @var Image_Graph_Plotarea
@@ -104,32 +104,32 @@ class Image_Graph_Layout_Plotarea extends Image_Graph_Layout
         include_once 'Image/Graph/Layout/Vertical.php';
         include_once 'Image/Graph/Plotarea.php';
         include_once 'Image/Graph/Title.php';
-        
+
         $font =& Image_Graph::factory('Image_Graph_Font');
         $fontV =& Image_Graph::factory('Image_Graph_Font_Vertical');
-        
+
         $this->_plotarea = & Image_Graph::factory('plotarea');
         $this->_title =& Image_Graph::factory(
-            'title', 
+            'title',
             array($title, array('size_rel' => 4))
         );
 
         $this->_titleAxisX =& Image_Graph::factory(
-            'title', 
+            'title',
             array($axisXTitle, array('size_rel' => 2))
         );
 
         $this->_titleAxisY =& Image_Graph::factory(
-            'title', 
+            'title',
             array($axisYTitle, array('size_rel' => 2, 'angle' => 90))
         );
-        
+
         $this->_legend =& Image_Graph::factory('legend');
         $this->_legend->setPlotarea($this->_plotarea);
 
         $this->add(
             Image_Graph::vertical(
-                $this->_title,        
+                $this->_title,
                 Image_Graph::vertical(
                 	Image_Graph::horizontal(
                         $this->_titleAxisY,
@@ -147,15 +147,15 @@ class Image_Graph_Layout_Plotarea extends Image_Graph_Layout
             )
         );
     }
-    
+
     /**
      * Get the plotarea
      *
-     * @return Image_Graph_Plotarea The plotarea 
+     * @return Image_Graph_Plotarea The plotarea
      */
     function &getPlotarea()
     {
-        return $this->_plotarea;     
+        return $this->_plotarea;
     }
 
     /**
@@ -165,7 +165,7 @@ class Image_Graph_Layout_Plotarea extends Image_Graph_Layout
      */
     function &getTitle()
     {
-        return $this->_title;     
+        return $this->_title;
     }
 
     /**
@@ -175,7 +175,7 @@ class Image_Graph_Layout_Plotarea extends Image_Graph_Layout
      */
     function &getTitleAxisX()
     {
-        return $this->_titleAxisX;     
+        return $this->_titleAxisX;
     }
 
     /**
@@ -185,14 +185,14 @@ class Image_Graph_Layout_Plotarea extends Image_Graph_Layout
      */
     function &getTitleAxisY()
     {
-        return $this->_titleAxisY;     
+        return $this->_titleAxisY;
     }
 
-    
+
     /**
      * Get the legend
      *
-     * @return Image_Graph_Legend The legend 
+     * @return Image_Graph_Legend The legend
      */
     function &getLegend()
     {

@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Plotarea     
+ * @subpackage Plotarea
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Plotarea.php
@@ -41,12 +41,12 @@ require_once 'Image/Graph/Plotarea.php';
 
 /**
  * Plot area used for radar plots.
- *              
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Plotarea
  */
-class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea 
+class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
 {
 
     /**
@@ -64,9 +64,9 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
     }
 
     /**
-     * Get the width of the 'real' plotarea	 
+     * Get the width of the 'real' plotarea
      *
-     * @return int The width of the 'real' plotarea, ie not including space occupied by padding and axis 
+     * @return int The width of the 'real' plotarea, ie not including space occupied by padding and axis
      * @access private
      */
     function _plotWidth()
@@ -75,9 +75,9 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
     }
 
     /**
-     * Get the height of the 'real' plotarea	 
+     * Get the height of the 'real' plotarea
      *
-     * @return int The height of the 'real' plotarea, ie not including space occupied by padding and axis 
+     * @return int The height of the 'real' plotarea, ie not including space occupied by padding and axis
      * @access private
      */
     function _plotHeight()
@@ -86,7 +86,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
     }
 
     /**
-     * Left boundary of the background fill area 
+     * Left boundary of the background fill area
      *
      * @return int Leftmost position on the canvas
      * @access private
@@ -97,7 +97,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
     }
 
     /**
-     * Top boundary of the background fill area 
+     * Top boundary of the background fill area
      *
      * @return int Topmost position on the canvas
      * @access private
@@ -108,7 +108,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
     }
 
     /**
-     * Right boundary of the background fill area 
+     * Right boundary of the background fill area
      *
      * @return int Rightmost position on the canvas
      * @access private
@@ -119,7 +119,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
     }
 
     /**
-     * Bottom boundary of the background fill area 
+     * Bottom boundary of the background fill area
      *
      * @return int Bottommost position on the canvas
      * @access private
@@ -132,7 +132,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
     /**
      * Get the X pixel position represented by a value
      *
-     * @param double $value The value to get the pixel-point for	 
+     * @param double $value The value to get the pixel-point for
      * @return double The pixel position along the axis
      * @access private
      */
@@ -143,12 +143,12 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
                 $radius = 0;
             } elseif (($value['Y'] == '#max#') || ($value['Y'] === false)) {
                 $radius = 1;
-            } else {                        
-                $radius = ($value['Y'] - $this->_axisY->_getMinimum()) / 
+            } else {
+                $radius = ($value['Y'] - $this->_axisY->_getMinimum()) /
                     ($this->_axisY->_getMaximum() - $this->_axisY->_getMinimum());
             }
-            $x = ($this->_left + $this->_right) / 2 - 
-                $radius * ($this->_plotWidth() / 2) * 
+            $x = ($this->_left + $this->_right) / 2 -
+                $radius * ($this->_plotWidth() / 2) *
                 cos(deg2rad($this->_axisX->_point($value['X'])));
         }
         return max($this->_plotLeft, min($this->_plotRight, $x));
@@ -157,7 +157,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
     /**
      * Get the Y pixel position represented by a value
      *
-     * @param double $value The value to get the pixel-point for	 
+     * @param double $value The value to get the pixel-point for
      * @return double The pixel position along the axis
      * @access private
      */
@@ -168,13 +168,13 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
                 $radius = 0;
             } elseif (($value['Y'] == '#max#') || ($value['Y'] === false)) {
                 $radius = 1;
-            } else {                        
-                $radius = ($value['Y'] - $this->_axisY->_getMinimum()) / 
+            } else {
+                $radius = ($value['Y'] - $this->_axisY->_getMinimum()) /
                     ($this->_axisY->_getMaximum() - $this->_axisY->_getMinimum());
             }
-            
-            $y = ($this->_top + $this->_bottom) / 2 - 
-                $radius * ($this->_plotHeight() / 2) * 
+
+            $y = ($this->_top + $this->_bottom) / 2 -
+                $radius * ($this->_plotHeight() / 2) *
                 sin(deg2rad($this->_axisX->_point($value['X'])));
         }
         return max($this->_plotTop, min($this->_plotBottom, $y));
@@ -196,7 +196,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
                 }
             }
             unset($keys);
-        }        
+        }
 
         $this->_calcEdges();
 
@@ -206,18 +206,18 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
 
         if (is_object($this->_axisX)) {
             $this->_axisX->_setCoords(
-                $centerX - $radius, 
-                $centerY - $radius, 
-                $centerX + $radius, 
+                $centerX - $radius,
+                $centerY - $radius,
+                $centerX + $radius,
                 $centerY + $radius
             );
         }
 
         if (is_object($this->_axisY)) {
             $this->_axisY->_setCoords(
-                $centerX, 
-                $centerY, 
-                $centerX - $radius, 
+                $centerX,
+                $centerY,
+                $centerX - $radius,
                 $centerY - $radius
             );
         }

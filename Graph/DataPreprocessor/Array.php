@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage DataPreprocessor     
+ * @subpackage DataPreprocessor
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/DataPreprocessor.php
@@ -41,7 +41,7 @@ require_once 'Image/Graph/DataPreprocessor.php';
 
 /**
  * Format data as looked up in an array.
- * 
+ *
  * ArrayData is useful when a numercal value is to be translated to
  * something thats cannot directly be calculated from this value, this could for
  * example be a dataset meant to plot population of various countries. Since x-
@@ -57,12 +57,12 @@ require_once 'Image/Graph/DataPreprocessor.php';
  * and then map this (smaller domain) value to a date. That is we for example
  * instead of using the unix-timestamp we use value 0 to represent the 1st date,
  * 1 to represent the next date, etc.
- *    
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage DataPreprocessor
  */
-class Image_Graph_DataPreprocessor_Array extends Image_Graph_DataPreprocessor 
+class Image_Graph_DataPreprocessor_Array extends Image_Graph_DataPreprocessor
 {
 
     /**

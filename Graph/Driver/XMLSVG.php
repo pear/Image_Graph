@@ -24,11 +24,11 @@
 
 /**
  * Class for handling output in SVG format.
- * 
+ *
  * Outputs the graph in SVG format (Scalable Vector Graphics).
- * 
+ *
  * Based on the PEAR::XML_SVG package.
- * 
+ *
  * This driver is experimental, XML_SVG lacks some required functionality. Until
  * it provides this functionality use the Image_Graph_Driver_SVG driver.
  * @package Image_Graph
@@ -40,7 +40,7 @@
  * @version $Id$
  * @since 0.3.0dev2
  */
- 
+
 /**
  * Include file Image/Graph/Driver.php
  */
@@ -68,15 +68,15 @@ require_once 'Image/Graph/Color.php';
  * @subpackage Driver
  * @since 0.3.0dev2
  */
-class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver 
-{   
+class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
+{
 
     /**
      * The SVG document
      * @var XML_SVG_Document
      * @access private
      */
-    var $_svg = '';       
+    var $_svg = '';
 
     /**
      * The width of the SVG document
@@ -100,14 +100,14 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
     function &Image_Graph_Driver_XMLSVG($param)
     {
         parent::Image_Graph_Driver($param);
-        
+
         if (isset($param['width'])) {
             $this->_width = $param['width'];
         }
         if (isset($param['height'])) {
             $this->_height = $param['height'];
         }
-        
+
         $this->_svg =& new XML_SVG_Document(
             array(
                 'width' => $this->_width,
@@ -167,7 +167,7 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
         if ($lineStyle === false) {
             $lineStyle = $this->_lineStyle;
         }
-                
+
         if ($lineStyle != 'transparent') {
             $result = 'stroke-width:' . $this->_thickness . ';';
             $result .= 'stroke:' .$this->_color($lineStyle) . ';';
@@ -175,7 +175,7 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
                 $result .= 'stroke-opacity:' . $opacity . ';';
             }
         }
-        return $result;    
+        return $result;
     }
 
     /**
@@ -191,16 +191,16 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
         if ($fillStyle === false) {
             $fillStyle = $this->_fillStyle;
         }
-        
+
         if (is_array($fillStyle)) {
             if ($fillStyle['type'] == 'gradient') {
-                // TODO Gradient fill's does not seem to be supported by XML_SVG, investigate                
+                // TODO Gradient fill's does not seem to be supported by XML_SVG, investigate
                 $opacity = $this->_opacity($fillStyle['start']);
                 $result = 'fill:' . $this->_color($fillStyle['start']) . ';';
                 if ($opacity = $this->_opacity($fillStyle)) {
                     $result .= 'fill-opacity:' . $opacity . ';';
                 }
-            }                
+            }
         } elseif ($fillStyle != 'transparent') {
             $result = 'fill:' . $this->_color($fillStyle) . ';';
             if ($opacity = $this->_opacity($fillStyle)) {
@@ -211,7 +211,7 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
             return '';;
         }
     }
-        
+
     /**
      * Get the width of the canvas
      *
@@ -231,7 +231,7 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
     {
         return $this->_height;
     }
-    
+
     /**
      * Sets an image that should be used for filling
      *
@@ -240,13 +240,13 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
     function setFillImage($filename)
     {
     }
-    
+
     /**
      * Draw a line
      *
-     * @param int $x0 X start point 
-     * @param int $y0 X start point 
-     * @param int $x1 X end point 
+     * @param int $x0 X start point
+     * @param int $y0 X start point
+     * @param int $x1 X end point
      * @param int $y1 Y end point
      * @param mixed $color The line color, can be omitted
      */
@@ -268,9 +268,9 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
     /**
      * Draw a rectangle
      *
-     * @param int $x0 X start point 
-     * @param int $y0 X start point 
-     * @param int $x1 X end point 
+     * @param int $x0 X start point
+     * @param int $y0 X start point
+     * @param int $x1 X end point
      * @param int $y1 Y end point
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
@@ -293,9 +293,9 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
     /**
      * Draw an ellipse
      *
-     * @param int $x Center point x-value 
+     * @param int $x Center point x-value
      * @param int $y Center point y-value
-     * @param int $rx X-radius of ellipse 
+     * @param int $rx X-radius of ellipse
      * @param int $ry Y-radius of ellipse
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
@@ -314,7 +314,7 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
             )
         );
     }
-    
+
     /**
      * Output the result of the driver
      *
@@ -325,7 +325,7 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
     {
         $this->_svg->printElement();
     }
-    
+
 }
 
 ?>

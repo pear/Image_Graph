@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Marker     
+ * @subpackage Marker
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Marker.php
@@ -41,12 +41,12 @@ require_once 'Image/Graph/Marker.php';
 
 /**
  * A marker showing the data value.
- *              
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Marker
  */
-class Image_Graph_Marker_Value extends Image_Graph_Marker 
+class Image_Graph_Marker_Value extends Image_Graph_Marker
 {
 
     /**
@@ -80,9 +80,9 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
     }
 
     /**
-     * Sets the background fill style of the element	 
+     * Sets the background fill style of the element
      *
-     * @param Image_Graph_Fill $background The background 
+     * @param Image_Graph_Fill $background The background
      * @see Image_Graph_Fill
      */
     function setBackground(& $background)
@@ -91,7 +91,7 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
     }
 
     /**
-     * Sets the background color of the element    
+     * Sets the background color of the element
      *
      * @param mixed $color The color
      */
@@ -179,23 +179,23 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
         if ($this->_dataPreprocessor) {
             $value = $this->_dataPreprocessor->_process($value);
         }
-        
+
         $this->_driver->setFont($this->_getFont());
-        
+
         $width = $this->_driver->textWidth($value);
         $height = $this->_driver->textHeight($value);
         $offsetX = $width/2 + $this->_padding;
         $offsetY = $height/2 + $this->_padding;
-        
+
         $this->_getFillStyle();
         $this->_getBorderStyle();
         $this->_driver->rectangle(
-            $x - $offsetX, 
-            $y - $offsetY, 
-            $x + $offsetX, 
+            $x - $offsetX,
+            $y - $offsetY,
+            $x + $offsetX,
             $y + $offsetY
         );
-        
+
         $this->write($x, $y, $value, IMAGE_GRAPH_ALIGN_CENTER);
     }
 

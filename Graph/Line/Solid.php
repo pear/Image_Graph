@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Line     
+ * @subpackage Line
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Common.php
@@ -41,14 +41,14 @@ require_once 'Image/Graph/Common.php';
 
 /**
  * Simple colored line style.
- * 
+ *
  * Use a color for line style.
- *             
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
- * @subpackage Line 
+ * @subpackage Line
  */
-class Image_Graph_Line_Solid extends Image_Graph_Common 
+class Image_Graph_Line_Solid extends Image_Graph_Common
 {
 
     /**
@@ -68,7 +68,7 @@ class Image_Graph_Line_Solid extends Image_Graph_Common
     /**
      * Image_Graph_SolidLine [Constructor]
      *
-     * @param mixed $color The color of the line 
+     * @param mixed $color The color of the line
      */
     function &Image_Graph_Line_Solid($color)
     {
@@ -79,7 +79,7 @@ class Image_Graph_Line_Solid extends Image_Graph_Common
     /**
      * Set the thickness of the linestyle
      *
-     * @param int $thickness The line width in pixels 
+     * @param int $thickness The line width in pixels
      */
     function setThickness($thickness)
     {
@@ -87,16 +87,16 @@ class Image_Graph_Line_Solid extends Image_Graph_Common
     }
 
     /**
-     * Gets the line style of the element	 
+     * Gets the line style of the element
      *
-     * @return int A GD linestyle representing the line style 
+     * @return int A GD linestyle representing the line style
      * @see Image_Graph_Line
      * @access private
      */
     function _getLineStyle()
     {
         return array(
-            'color' => $this->_color, 
+            'color' => $this->_color,
             'thickness' => $this->_thickness
         );
     }

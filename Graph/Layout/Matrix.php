@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Layout     
+ * @subpackage Layout
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Layout.php
@@ -41,12 +41,12 @@ require_once 'Image/Graph/Layout.php';
 
 /**
  * Layout for displaying elements in a matix.
- *            
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
- * @subpackage Layout 
+ * @subpackage Layout
  */
-class Image_Graph_Layout_Matrix extends Image_Graph_Layout 
+class Image_Graph_Layout_Matrix extends Image_Graph_Layout
 {
 
     /**
@@ -55,21 +55,21 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
      * @access private
      */
     var $_matrix = false;
-    
+
     /**
      * The number of rows
      * @var int
      * @access private
      */
     var $_rows = false;
-    
+
     /**
      * The number of columns
      * @var int
      * @access private
      */
     var $_cols = false;
-    
+
     /**
      * Image_Graph_Layout_Matrix [Constructor]
      *
@@ -82,10 +82,10 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
     function &Image_Graph_Layout_Matrix($rows, $cols, $autoCreate = true)
     {
         parent::Image_Graph_Layout();
-        
+
         $this->_rows = $rows;
         $this->_cols = $cols;
-        if (($this->_rows > 0) && ($this->_cols > 0)) {                   
+        if (($this->_rows > 0) && ($this->_cols > 0)) {
             $this->_matrix = array(array());
             for ($i = 0; $i < $this->_rows; $i++) {
                 for ($j = 0; $j < $this->_cols; $j++) {
@@ -97,9 +97,9 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
                     }
                 }
             }
-        }        
+        }
     }
-    
+
     /**
      * Pushes the edges on the specified position in the matrix
      *
@@ -112,21 +112,21 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
         if ((isset($this->_matrix[$row])) && (isset($this->_matrix[$row][$col]))) {
             $height = 100/$this->_rows;
             $width = 100/$this->_cols;
-            if ($col > 0) {                
+            if ($col > 0) {
                 $this->_matrix[$row][$col]->_push('left', round($col*$width) . '%');
             }
-            if ($col+1 < $this->_cols) {                       
+            if ($col+1 < $this->_cols) {
                 $this->_matrix[$row][$col]->_push('right', round(100-($col+1)*$width) . '%');
             }
-            if ($row > 0) {                       
+            if ($row > 0) {
                 $this->_matrix[$row][$col]->_push('top', round($row*$height) . '%');
             }
-            if ($row+1 < $this->_rows) {                       
+            if ($row+1 < $this->_rows) {
                 $this->_matrix[$row][$col]->_push('bottom', round(100-($row+1)*$height) . '%');
             }
         }
     }
-    
+
     /**
      * Get the area on the specified position in the matrix
      *
@@ -170,7 +170,7 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
                 $element =& $this->getEntry($i, $j);
                 $this->add($element);
             }
-        }        
+        }
         parent::_updateCoords();
     }
 

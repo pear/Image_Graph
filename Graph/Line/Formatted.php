@@ -24,7 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
  * @subpackage Line
  * @category images
@@ -32,7 +32,7 @@
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Line/Solid.php
@@ -41,15 +41,15 @@ require_once 'Image/Graph/Line/Solid.php';
 
 /**
  * Formatted user defined line style.
- * 
+ *
  * Use this to create a user defined line style. Specify an array of colors that are to
- * be used for displaying the line. 
- *             
+ * be used for displaying the line.
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
- * @subpackage Line   
+ * @subpackage Line
  */
-class Image_Graph_Line_Formatted extends Image_Graph_Line_Solid 
+class Image_Graph_Line_Formatted extends Image_Graph_Line_Solid
 {
 
     /**
@@ -63,7 +63,7 @@ class Image_Graph_Line_Formatted extends Image_Graph_Line_Solid
     /**
      * Image_Graph_FormattedLine [Constructor]
      *
-     * @param array $style The style of the line 
+     * @param array $style The style of the line
      */
     function &Image_Graph_Line_Formatted($style)
     {
@@ -72,16 +72,16 @@ class Image_Graph_Line_Formatted extends Image_Graph_Line_Solid
     }
 
     /**
-     * Gets the line style of the element	 
+     * Gets the line style of the element
      *
-     * @return int A GD linestyle representing the line style 
+     * @return int A GD linestyle representing the line style
      * @see Image_Graph_Line
      * @access private
      */
     function _getLineStyle()
     {
         return array(
-            'color' => $this->_style, 
+            'color' => $this->_style,
             'thickness' => $this->_thickness
         );
     }

@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage DataPreprocessor     
+ * @subpackage DataPreprocessor
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/DataPreprocessor.php
@@ -41,12 +41,12 @@ require_once 'Image/Graph/DataPreprocessor.php';
 
 /**
  * Formats Unix timestamp as a date using specified format.
- *     
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage DataPreprocessor
  */
-class Image_Graph_DataPreprocessor_Date extends Image_Graph_DataPreprocessor 
+class Image_Graph_DataPreprocessor_Date extends Image_Graph_DataPreprocessor
 {
 
     /**
@@ -61,7 +61,7 @@ class Image_Graph_DataPreprocessor_Date extends Image_Graph_DataPreprocessor
     /**
      * Create a DateData preprocessor [Constructor]
      *
-     * @param string $format See  {@link http://www.php.net/manual/en/function.date.php 
+     * @param string $format See  {@link http://www.php.net/manual/en/function.date.php
      *   PHP Manual} for a description
      */
     function &Image_Graph_DataPreprocessor_Date($format)
@@ -74,7 +74,7 @@ class Image_Graph_DataPreprocessor_Date extends Image_Graph_DataPreprocessor
      * Process the value
      *
      * @param var $value The value to process/format
-     * @return string The processed value   
+     * @return string The processed value
      * @access private
      */
     function _process($value)

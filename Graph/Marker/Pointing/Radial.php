@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Marker     
+ * @subpackage Marker
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Marker/Pointing.php
@@ -41,12 +41,12 @@ require_once 'Image/Graph/Marker/Pointing.php';
 
 /**
  * A pointing marker in a random angle from the data
- *              
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Marker
  */
-class Image_Graph_Marker_Pointing_Radial extends Image_Graph_Marker_Pointing 
+class Image_Graph_Marker_Pointing_Radial extends Image_Graph_Marker_Pointing
 {
 
     /**
@@ -59,7 +59,7 @@ class Image_Graph_Marker_Pointing_Radial extends Image_Graph_Marker_Pointing
     /**
      * Create an radial pointing marker, ie a marker on a defined distance from
      * the data
-     * @param int $radius The 'length' of the pointer 
+     * @param int $radius The 'length' of the pointer
      * @param Marker $markerEnd The ending marker that represents 'the head of
      * the pin'
      */

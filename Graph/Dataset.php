@@ -24,25 +24,25 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Dataset     
+ * @subpackage Dataset
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Data set used to represent a data collection to plot in a chart
- * 
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Dataset
  * @abstract
  */
-class Image_Graph_Dataset 
+class Image_Graph_Dataset
 {
 
     /**
@@ -127,7 +127,7 @@ class Image_Graph_Dataset
             $maxY = $y;
             $minY = $y;
         }
-                         
+
         if ($this->_count) {
             $this->_minimumX = min($x, $this->_minimumX);
             $this->_maximumX = max($x, $this->_maximumX);
@@ -135,18 +135,18 @@ class Image_Graph_Dataset
             $this->_maximumY = max($maxY, $this->_maximumY);
         } else {
             $this->_minimumX = $x;
-            $this->_maximumX = $x;            
+            $this->_maximumX = $x;
             $this->_minimumY = $minY;
             $this->_maximumY = $maxY;
-        }                
-        
+        }
+
         $this->_count++;
     }
 
     /**
      * The number of values in the dataset
      *
-     * @return int The number of values in the dataset     
+     * @return int The number of values in the dataset
      */
     function count()
     {
@@ -372,7 +372,7 @@ class Image_Graph_Dataset
         } else {
             return false;
         }
-    }      
+    }
 
     /**
      * Get the median of the array passed Y points
@@ -386,7 +386,7 @@ class Image_Graph_Dataset
     {
         sort($data);
         $point = (count($data) - 1) / 2;
-        
+
         if ($quartile == 'first') {
             $lowPoint = 0;
             $highPoint = floor($point);
@@ -401,7 +401,7 @@ class Image_Graph_Dataset
         $point = ($lowPoint + $highPoint) / 2;
 
         if (floor($point) != $point) {
-            $point = floor($point);           
+            $point = floor($point);
             return ($data[$point] + $data[($point + 1)]) / 2;
         } else {
             return $data[$point];
@@ -416,15 +416,15 @@ class Image_Graph_Dataset
      * @access private
      */
     function _medianY($quartile = 'second')
-    {               
-        $pointsY = array();        
+    {
+        $pointsY = array();
         $posX = $this->_minimumX;
         while ($posX <= $this->_maximumX) {
             $pointsY[] = $this->_getPointY($posX);
             $posX += $this->_stepX();
         }
-        return $this->_median($pointsY, $quartile);                
-    }        
+        return $this->_median($pointsY, $quartile);
+    }
 
 }
 ?>

@@ -24,7 +24,7 @@
 
 /**
  * Class for handling output in SWF format.
- * 
+ *
  * Outputs the graph in SWF format (ShockWave Flash). Requires libswf.
  * @package Image_Graph
  * @subpackage Driver
@@ -35,7 +35,7 @@
  * @version $Id$
  * @since 0.3.0dev2
  */
- 
+
 /**
  * Include file Image/Graph/Driver.php
  */
@@ -48,8 +48,8 @@ require_once 'Image/Graph/Driver.php';
  * @subpackage Driver
  * @since 0.3.0dev2
  */
-class Image_Graph_Driver_LibSWF extends Image_Graph_Driver 
-{   
+class Image_Graph_Driver_LibSWF extends Image_Graph_Driver
+{
     // TODO Create LibSWF support
 
 }

@@ -24,7 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
@@ -58,9 +58,9 @@ if (!function_exists('is_a')) {
 
 /**
  * The ultimate ancestor of all Image_Graph classes.
- * 
+ *
  * This class contains common functionality needed by all Image_Graph classes.
- * 
+ *
  * @author  Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @abstract
@@ -68,9 +68,9 @@ if (!function_exists('is_a')) {
 class Image_Graph_Common
 {
 
-    /** 
+    /**
      * The parent container of the current Image_Graph object
-     * 
+     *
      * @var Image_Graph_Common
      * @access private
      */
@@ -78,46 +78,46 @@ class Image_Graph_Common
 
     /**
      * The sub-elements of the current Image_Graph container object
-     * 
+     *
      * @var array
      * @access private
      */
     var $_elements;
 
-    /** 
+    /**
      * The driver for output.
-     * 
+     *
      * Enables support for multiple output formats.
-     * 
+     *
      * @var Image_Graph_Driver
      * @access private
      */
     var $_driver = null;
-    
+
     /**
      * Constructor [Image_Graph_Common]
      */
     function &Image_Graph_Common()
-    {        
-    }    
+    {
+    }
 
     /**
      * Resets the elements
-     * 
+     *
      * @access private
      */
-    function _reset()    
+    function _reset()
     {
         if (is_array($this->_elements)) {
             $keys = array_keys($this->_elements);
             foreach ($keys as $key) {
                 $this->_elements[$key]->_setParent($this);
-                $this->_elements[$key]->_reset();                
+                $this->_elements[$key]->_reset();
             }
             unset($keys);
         }
-    }        
-        
+    }
+
     /**
      * Sets the parent. The parent chain should ultimately be a GraPHP object
      *
@@ -127,7 +127,7 @@ class Image_Graph_Common
      */
     function _setParent(& $parent)
     {
-        $this->_parent =& $parent;        
+        $this->_parent =& $parent;
         $this->_driver =& $this->_parent->_getDriver();
 
         if (is_array($this->_elements)) {
@@ -163,7 +163,7 @@ class Image_Graph_Common
      * @return Image_Graph_Common The new Image_Graph_element
      */
     function &add(& $element)
-    {        
+    {
         if (!is_a($element, 'Image_Graph_Font')) {
             $this->_elements[] = &$element;
         }
@@ -185,8 +185,8 @@ class Image_Graph_Common
      * @param string $class The class for the object
      * @param mixed $params The paramaters to pass to the constructor
      * @return Image_Graph_Common The new Image_Graph_element
-     */    
-    function &addNew($class, $params = null, $additional = false) 
+     */
+    function &addNew($class, $params = null, $additional = false)
     {
         require_once 'Image/Graph.php';
         $element =& Image_Graph::factory($class, $params);
@@ -194,9 +194,9 @@ class Image_Graph_Common
             return $this->add($element);
         } else {
             return $this->add($element, $additional);
-        }            
+        }
     }
-    
+
     /**
      * Get the error handling stack
      *
@@ -207,14 +207,14 @@ class Image_Graph_Common
     {
         $stack =& PEAR_ErrorStack::singleton('Image_Graph');
         return $stack;
-    }        
+    }
 
     /**
      * Shows an error message box on the canvas
      *
      * @param string $text The error text
      * @param array $params An array containing error specific details
-     * @param int $error_code Error code   
+     * @param int $error_code Error code
      * @access private
      */
     function _error($text, $params = false, $error_code = IMAGE_GRAPH_ERROR_GENERIC)
@@ -226,7 +226,7 @@ class Image_Graph_Common
             $params['driver'] =& $this->_driver;
             $params['object'] =& $this;
         }
-        $stack->push($error_code, 'error', $params, $text);        
+        $stack->push($error_code, 'error', $params, $text);
     }
 
     /**
@@ -270,7 +270,7 @@ class Image_Graph_Common
      * @access private
      */
     function _updateCoords()
-    {        
+    {
         if (is_array($this->_elements)) {
             $keys = array_keys($this->_elements);
             foreach ($keys as $key) {
@@ -294,7 +294,7 @@ class Image_Graph_Common
         if (($this->_driver == null) || (!is_a($this->_driver, 'Image_Graph_Driver'))) {
             return false;
         }
-        
+
         if (is_array($this->_elements)) {
             $keys = array_keys($this->_elements);
             foreach ($keys as $key) {

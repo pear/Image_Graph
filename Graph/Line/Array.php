@@ -24,7 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
  * @subpackage Line
  * @category images
@@ -32,7 +32,7 @@
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Common.php
@@ -41,7 +41,7 @@ require_once 'Image/Graph/Common.php';
 
 /**
  * A sequential array of linestyles.
- * 
+ *
  * This is used for multiple objects within the same element with different line
  * styles. This is done by adding multiple line styles to a LineArrray
  * structure. The linearray will then when requested return the 'next' linestyle
@@ -50,12 +50,12 @@ require_once 'Image/Graph/Common.php';
  * multiple-/stackedbarchart you name the {@link Image_Graph_Dataset}s and uses
  * this name as ID tag when adding the dataset's associated linestyle to the
  * linearray.
- *            
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Line
  */
-class Image_Graph_Line_Array extends Image_Graph_Common 
+class Image_Graph_Line_Array extends Image_Graph_Common
 {
 
     /**
@@ -74,7 +74,7 @@ class Image_Graph_Line_Array extends Image_Graph_Common
     {
         if (is_a($style, 'Image_Graph_Element')) {
             parent::add($style);
-        } 
+        }
         $this->_lineStyles[] = & $style;
         reset($this->_lineStyles);
 
@@ -83,7 +83,7 @@ class Image_Graph_Line_Array extends Image_Graph_Common
     /**
      * Return the linestyle
      *
-     * @return int A GD Linestyle 
+     * @return int A GD Linestyle
      * @access private
      */
     function _getLineStyle($ID = false)

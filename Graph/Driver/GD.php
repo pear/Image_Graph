@@ -26,7 +26,7 @@
  * Class for handling output in GD compatible format.
  * Supported formats are PNG and JPEG.
  * Requires PHP extension GD
- * 
+ *
  * @package Image_Graph
  * @subpackage Driver
  * @category images
@@ -40,12 +40,12 @@
 /**
  * Include file Image/Graph/Config.php
  */
-require_once 'Image/Graph/Config.php'; 
+require_once 'Image/Graph/Config.php';
 
 /**
  * Include file Image/Graph/Driver.php
  */
-require_once 'Image/Graph/Driver.php'; 
+require_once 'Image/Graph/Driver.php';
 
 /**
  * Include file Image/Graph/Constants.php
@@ -59,15 +59,15 @@ require_once 'Image/Graph/Color.php';
 
 /**
  * GD Driver class.
- * 
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Driver
  * @since 0.3.0dev2
  * @abstract
  */
-class Image_Graph_Driver_GD extends Image_Graph_Driver 
-{   
+class Image_Graph_Driver_GD extends Image_Graph_Driver
+{
 
     /**
      * The canvas of the graph
@@ -97,40 +97,40 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
      */
     var $_fontMap = array(
     );
-    
+
     /**
      * Create the GD driver.
-     * 
+     *
      * Parameters available:
-     * 
+     *
      * 'width' The width of the graph on the canvas
-     * 
+     *
      * 'height' The height of the graph on the canvas
-     * 
+     *
      * 'left' The left offset of the graph on the canvas
-     * 
+     *
      * 'top' The top offset of the graph on the canvas
-     * 
+     *
      * 'filename' An image to open, on which the graph is created on
-     * 
+     *
      * 'gd' A GD resource to add the image to, use this option to continue
      * working on an already existing GD resource. Make sure this is passed 'by-
      * reference' (using &amp;)
      *
      * 'gd' and 'filename' are mutually exclusive with 'gd' as preference
-     * 
+     *
      * 'width' and 'height' are required unless 'filename' or 'gd' are
      * specified, in which case the width and height are taken as the actual
      * image width/height. If the latter is the case and 'left' and/or 'top' was
      * also specified, the actual 'width'/'height' are altered so that the graph
      * fits inside the canvas (i.e 'height' = actual height - top, etc.)
-     *  
+     *
      * @param array $param Parameter array
      */
     function &Image_Graph_Driver_GD($param)
     {
         include_once 'Image/Graph/Color.php';
-        
+
         parent::Image_Graph_Driver($param);
         $this->_gd2 = ($this->_version() == 2);
         $this->_font = array('font' => 1, 'color' => 'black');
@@ -139,18 +139,18 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
             $this->_canvas =& $param['gd'];
         } elseif (isset($param['filename'])) {
             $this->_canvas =& $this->_getGD($param['filename']);
-        } else {            
+        } else {
             if ($this->_gd2) {
                 $this->_canvas = ImageCreateTrueColor(
-                    $this->_width, 
+                    $this->_width,
                     $this->_height
                 );
-                ImageAlphaBlending($this->_canvas, true);                
+                ImageAlphaBlending($this->_canvas, true);
             } else {
                 $this->_canvas = ImageCreate($this->_width, $this->_height);
             }
         }
-        
+
         if (file_exists($fontmap = (dirname(__FILE__) . '/../Fonts/fontmap.txt'))) {
             $file = file($fontmap);
             foreach($file as $fontmapping) {
@@ -159,8 +159,8 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
                 $fontname = trim($fontname);
                 $this->_fontMap[$fontname] = $filename;
             }
-        }               
-        
+        }
+
         if (!$this->_width) {
             $this->_width = ImageSX($this->_canvas) - $this->_left;
         }
@@ -168,23 +168,23 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
             $this->_height = ImageSY($this->_canvas) - $this->_top;
         }
     }
-    
+
     /**
      * Maps a font name to an actual font file (i.e. a .ttf file)
-     * 
+     *
      * Used to translate names (i.e. 'Courier New' to 'cour.ttf' or
      * '/Windows/Fonts/Cour.ttf')
-     * 
+     *
      * Font names are translated using the tab-separated file
-     * Image/Graph/Fonts/fontmap.txt. 
-     * 
+     * Image/Graph/Fonts/fontmap.txt.
+     *
      * The translated font-name (or the original if no translation) exists is
      * then returned if it is an existing file, otherwise the file is searched
      * first in the path specified by IMAGE_GRAPH_SYSTEM_FONT_PATH defined in
      * Image/Graph/Config.php, then in the Image/Graph/Fonts folder. If a font
      * is still not found and the name is not beginning with a '/' the search is
      * left to the library, otherwise the font is deemed non-existing.
-     * 
+     *
      * @param string $name The name of the font
      * @return string The filename of the font
      * @access private
@@ -197,11 +197,11 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
         } else {
             $filename = $name;
         }
-        
+
         if (strtolower(substr($filename, -4)) !== '.ttf') {
             $filename .= '.ttf';
         }
-        
+
         if (file_exists($filename)) {
             return $filename;
         } elseif (file_exists($file = (IMAGE_GRAPH_SYSTEM_FONT_PATH . $filename))) {
@@ -210,8 +210,8 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
             return $file;
         } elseif (substr($name, 0, 1) !== '/') {
             // leave it to the library to find the font
-            return $name;          
-        } else {            
+            return $name;
+        } else {
             return false;
         }
     }
@@ -229,17 +229,17 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
      * @param double P4 Point to use for calculating control points
      * @return double The bezier value of the point t between P2 and P3 using P1
      *   and P4 to calculate control points
-     * @access private 
+     * @access private
      */
     function _bezier($t, $p1, $p2, $p3, $p4)
     {
-        return pow(1 - $t, 3) * $p1 + 
-            3 * pow(1 - $t, 2) * $t * $p2 + 
+        return pow(1 - $t, 3) * $p1 +
+            3 * pow(1 - $t, 2) * $t * $p2 +
             3 * (1 - $t) * pow($t, 2) * $p3 +
             pow($t, 3) * $p4;
     }
-        
-    /** 
+
+    /**
      * Get an GD image resource from a file
      *
      * @param string $filename
@@ -264,13 +264,13 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
      */
     function _color($color = false)
     {
-        if (($color === false) || ($color === 'opague')) {            
+        if (($color === false) || ($color === 'opague')) {
             return ImageColorTransparent($this->_canvas);
         } else {
             return Image_Graph_Color::allocateColor($this->_canvas, $color);
         }
     }
-    
+
     /**
      * Get the GD applicable linestyle
      *
@@ -280,11 +280,11 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
      * @access private
      */
     function _getLineStyle($lineStyle = false)
-    {   
+    {
         if ($this->_gd2) {
             ImageSetThickness($this->_canvas, $this->_thickness);
         }
-        
+
         if ($lineStyle == 'transparent') {
             return false;
         } elseif ($lineStyle === false) {
@@ -315,7 +315,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
      * @access private
      */
     function _getFillStyle($fillStyle = false, $x0 = 0, $y0 = 0, $x1 = 0, $y1 = 0)
-    {        
+    {
         if ($this->_tileImage != null) {
             ImageDestroy($this->_tileImage);
             $this->_tileImage = null;
@@ -330,103 +330,103 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
                 $h = abs($y1 - $y0) + 1;
                 if ($this->_gd2) {
                     $this->_tileImage = ImageCreateTrueColor(
-                        $this->getWidth(), 
+                        $this->getWidth(),
                         $this->getHeight()
                     );
-                    
+
                     ImageCopyResampled(
-                        $this->_tileImage, 
-                        $this->_fillStyle, 
-                        $x, 
-                        $y, 
-                        0, 
-                        0, 
-                        $w, 
-                        $h, 
-                        ImageSX($this->_fillStyle), 
+                        $this->_tileImage,
+                        $this->_fillStyle,
+                        $x,
+                        $y,
+                        0,
+                        0,
+                        $w,
+                        $h,
+                        ImageSX($this->_fillStyle),
                         ImageSY($this->_fillStyle)
                     );
                 } else {
                     $this->_tileImage = ImageCreate(
-                        $this->getWidth(), 
+                        $this->getWidth(),
                         $this->getHeight()
                     );
-                    
+
                     ImageCopyResized(
-                        $this->_tileImage, 
-                        $this->_fillStyle, 
-                        $x, 
-                        $y, 
-                        0, 
-                        0, 
-                        $w, 
-                        $h, 
-                        ImageSX($this->_fillStyle), 
+                        $this->_tileImage,
+                        $this->_fillStyle,
+                        $x,
+                        $y,
+                        0,
+                        0,
+                        $w,
+                        $h,
+                        ImageSX($this->_fillStyle),
                         ImageSY($this->_fillStyle)
                     );
                 }
                 ImageSetTile($this->_canvas, $this->_tileImage);
-                return IMG_COLOR_TILED;            
+                return IMG_COLOR_TILED;
             } elseif (is_array($this->_fillStyle)) {
                 $width = abs($x1 - $x0) + 1;
                 $height = abs($y1 - $y0) + 1;
-                
+
                 switch ($this->_fillStyle['direction']) {
                 case IMAGE_GRAPH_GRAD_HORIZONTAL:
                     $count = $width;
                     break;
-    
+
                 case IMAGE_GRAPH_GRAD_VERTICAL:
                     $count = $height;
                     break;
-    
+
                 case IMAGE_GRAPH_GRAD_HORIZONTAL_MIRRORED:
                     $count = $width / 2;
                     break;
-    
+
                 case IMAGE_GRAPH_GRAD_VERTICAL_MIRRORED:
                     $count = $height / 2;
                     break;
-    
+
                 case IMAGE_GRAPH_GRAD_DIAGONALLY_TL_BR:
                 case IMAGE_GRAPH_GRAD_DIAGONALLY_BL_TR:
                     $count = sqrt($width * $width + $height * $height);
                     break;
-    
-                case IMAGE_GRAPH_GRAD_RADIAL:                    
+
+                case IMAGE_GRAPH_GRAD_RADIAL:
                     $count = max($width, $height, sqrt($width * $width + $height * $height)) + 1;
                     break;
-                    
+
                 }
-                
+
                 $count = round($count);
-                        
+
                 if ($this->_gd2) {
                     $this->_tileImage = ImageCreateTrueColor(
-                        $this->getWidth(), 
+                        $this->getWidth(),
                         $this->getHeight()
                     );
                 } else {
                     $this->_tileImage = ImageCreate(
-                        $this->getWidth(), 
+                        $this->getWidth(),
                         $this->getHeight()
                     );
                 }
-                
-                
+
+
                 $startColor = Image_Graph_Color::color2RGB(
-                    ($this->_fillStyle['direction'] == IMAGE_GRAPH_GRAD_RADIAL ? 
-                        $this->_fillStyle['end'] : 
+                    ($this->_fillStyle['direction'] == IMAGE_GRAPH_GRAD_RADIAL ?
+                        $this->_fillStyle['end'] :
                         $this->_fillStyle['start']
                     )
-                );  
+                );
                 $endColor = Image_Graph_Color::color2RGB(
-                    ($this->_fillStyle['direction'] == IMAGE_GRAPH_GRAD_RADIAL ? 
-                        $this->_fillStyle['start'] : 
+                    ($this->_fillStyle['direction'] == IMAGE_GRAPH_GRAD_RADIAL ?
+                        $this->_fillStyle['start'] :
                         $this->_fillStyle['end']
                     )
-                );    
-        
+                );
+
                 $redIncrement = ($endColor[0] - $startColor[0]) / $count;
                 $greenIncrement = ($endColor[1] - $startColor[1]) / $count;
                 $blueIncrement = ($endColor[2] - $startColor[2]) / $count;
@@ -435,144 +435,144 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
                     unset($color);
                     if ($i == 0) {
                         $color = $startColor;
-                        unset($color[3]);  
+                        unset($color[3]);
                     } else {
-                        $color[0] = round(($redIncrement * $i) + 
+                        $color[0] = round(($redIncrement * $i) +
                             $redIncrement + $startColor[0]);
-                        $color[1] = round(($greenIncrement * $i) + 
+                        $color[1] = round(($greenIncrement * $i) +
                             $greenIncrement + $startColor[1]);
-                        $color[2] = round(($blueIncrement * $i) + 
+                        $color[2] = round(($blueIncrement * $i) +
                             $blueIncrement + $startColor[2]);
                     }
                     $color = Image_Graph_Color::allocateColor(
-                        $this->_tileImage, 
+                        $this->_tileImage,
                         $color
                     );
-                    
+
                     switch ($this->_fillStyle['direction']) {
                     case IMAGE_GRAPH_GRAD_HORIZONTAL:
-                        ImageLine($this->_tileImage, 
-                            $x0 + $i, 
-                            $y0, 
-                            $x0 + $i, 
+                        ImageLine($this->_tileImage,
+                            $x0 + $i,
+                            $y0,
+                            $x0 + $i,
                             $y1, $color);
                         break;
-    
+
                     case IMAGE_GRAPH_GRAD_VERTICAL:
-                        ImageLine($this->_tileImage, 
-                            $x0, 
-                            $y1 - $i, 
-                            $x1, 
+                        ImageLine($this->_tileImage,
+                            $x0,
+                            $y1 - $i,
+                            $x1,
                             $y1 - $i, $color);
                         break;
-    
+
                     case IMAGE_GRAPH_GRAD_HORIZONTAL_MIRRORED:
                         if (($x0 + $i) <= ($x1 - $i)) {
-                            ImageLine($this->_tileImage, 
-                                $x0 + $i, 
-                                $y0, 
-                                $x0 + $i, 
+                            ImageLine($this->_tileImage,
+                                $x0 + $i,
+                                $y0,
+                                $x0 + $i,
                                 $y1, $color);
 
-                            ImageLine($this->_tileImage, 
-                                $x1 - $i, 
-                                $y0, 
-                                $x1 - $i, 
+                            ImageLine($this->_tileImage,
+                                $x1 - $i,
+                                $y0,
+                                $x1 - $i,
                                 $y1, $color);
                         }
                         break;
-    
+
                     case IMAGE_GRAPH_GRAD_VERTICAL_MIRRORED:
                         if (($y0 + $i) <= ($y1 - $i)) {
-                            ImageLine($this->_tileImage, 
-                                $x0, 
-                                $y0 + $i, 
-                                $x1, 
+                            ImageLine($this->_tileImage,
+                                $x0,
+                                $y0 + $i,
+                                $x1,
                                 $y0 + $i, $color);
-                            ImageLine($this->_tileImage, 
-                                $x0, 
-                                $y1 - $i, 
-                                $x1, 
+                            ImageLine($this->_tileImage,
+                                $x0,
+                                $y1 - $i,
+                                $x1,
                                 $y1 - $i, $color);
                         }
                         break;
-    
+
                     case IMAGE_GRAPH_GRAD_DIAGONALLY_TL_BR:
                         if (($i > $width) && ($i > $height)) {
                             $polygon = array (
-                                $x1, $y0 + $i - $width - 1, 
-                                $x1, $y1, 
+                                $x1, $y0 + $i - $width - 1,
+                                $x1, $y1,
                                 $x0 + $i - $height - 1, $y1);
                         } elseif ($i > $width) {
                             $polygon = array (
-                                $x0, $y0 + $i, 
-                                $x0, $y1, 
-                                $x1, $y1, 
+                                $x0, $y0 + $i,
+                                $x0, $y1,
+                                $x1, $y1,
                                 $x1, $y0 + $i - $width - 1);
                         } elseif ($i > $height) {
                             $polygon = array (
-                                $x0 + $i - $height - 1, $y1, 
-                                $x1, $y1, 
-                                $x1, $y0, 
+                                $x0 + $i - $height - 1, $y1,
+                                $x1, $y1,
+                                $x1, $y0,
                                 $x0 + $i, $y0);
                         } else {
                             $polygon = array (
-                                $x0, $y0 + $i, 
-                                $x0, $y1, 
-                                $x1, $y1, 
-                                $x1, $y0, 
+                                $x0, $y0 + $i,
+                                $x0, $y1,
+                                $x1, $y1,
+                                $x1, $y0,
                                 $x0 + $i, $y0);
                         }
                         ImageFilledPolygon(
-                            $this->_tileImage, 
-                            $polygon, 
-                            count($polygon) / 2, 
+                            $this->_tileImage,
+                            $polygon,
+                            count($polygon) / 2,
                             $color
                         );
                         break;
-    
+
                     case IMAGE_GRAPH_GRAD_DIAGONALLY_BL_TR:
                         if (($i > $width) && ($i > $height)) {
                             $polygon = array (
-                                $x1, $y1 - $i + $width - 1, 
-                                $x1, $y0, 
+                                $x1, $y1 - $i + $width - 1,
+                                $x1, $y0,
                                 $x0 + $i - $height - 1, $y0);
                         } elseif ($i > $width) {
                             $polygon = array (
-                                $x0, $y1 - $i, 
-                                $x0, $y0, 
-                                $x1, $y0, 
+                                $x0, $y1 - $i,
+                                $x0, $y0,
+                                $x1, $y0,
                                 $x1, $y1 - $i + $width - 1);
                         } elseif ($i > $height) {
                             $polygon = array (
-                                $x0 + $i - $height - 1, $y0, 
-                                $x1, $y0, 
-                                $x1, $y1, 
+                                $x0 + $i - $height - 1, $y0,
+                                $x1, $y0,
+                                $x1, $y1,
                                 $x0 + $i, $y1);
                         } else {
                             $polygon = array (
-                                $x0, $y1 - $i, 
-                                $x0, $y0, 
-                                $x1, $y0, 
-                                $x1, $y1, 
+                                $x0, $y1 - $i,
+                                $x0, $y0,
+                                $x1, $y0,
+                                $x1, $y1,
                                 $x0 + $i, $y1);
                         }
                         ImageFilledPolygon(
-                            $this->_tileImage, 
-                            $polygon, 
-                            count($polygon) / 2, 
+                            $this->_tileImage,
+                            $polygon,
+                            count($polygon) / 2,
                             $color
                         );
                         break;
-    
+
                     case IMAGE_GRAPH_GRAD_RADIAL:
                         if (($this->_gd2) && ($i < $count)) {
                             ImageFilledEllipse(
-                                $this->_tileImage, 
-                                $x0 + $width / 2, 
-                                $y0 + $height / 2, 
-                                $count - $i, 
-                                $count - $i, 
+                                $this->_tileImage,
+                                $x0 + $width / 2,
+                                $y0 + $height / 2,
+                                $count - $i,
+                                $count - $i,
                                 $color
                             );
                         }
@@ -584,11 +584,11 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
             } else {
                 return $this->_color($this->_fillStyle);
             }
-        } else {            
+        } else {
             return $this->_color($fillStyle);
         }
     }
-        
+
     /**
      * Sets an image that should be used for filling
      *
@@ -596,19 +596,19 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
      */
     function setFillImage($filename)
     {
-        $this->_fillStyle =& $this->_getGD($filename);        
+        $this->_fillStyle =& $this->_getGD($filename);
     }
-            
+
     /**
      * Sets the font options.
-     * 
+     *
      * The $font array may have the following entries:
-     * 
+     *
      * 'ttf' = the .ttf file (either the basename, filename or full path)
      * If 'ttf' is specified, then the following can be specified
-     * 
+     *
      * 'size' = size in pixels
-     * 
+     *
      * 'angle' = the angle with which to write the text
      *
      * @param array $font The font options.
@@ -616,28 +616,28 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
     function setFont($fontOptions)
     {
         parent::setFont($fontOptions);
-        
+
         if (isset($this->_font['ttf'])) {
             $this->_font['ttf_file'] = str_replace('\\', '/', $this->_mapFont($this->_font['ttf']));
         } elseif (!isset($this->_font['font'])) {
             $this->_font['font'] = 1;
         }
-        
+
         if (!isset($this->_font['color'])) {
             $this->_font['color'] = 'black';
         }
-        
+
         if ((isset($this->_font['angle'])) && ($this->_font['angle'] === false)) {
             $this->_font['angle'] = 0;
-        }        
+        }
     }
-        
+
     /**
      * Draw a line
      *
-     * @param int $x0 X start point 
-     * @param int $y0 X start point 
-     * @param int $x1 X end point 
+     * @param int $x0 X start point
+     * @param int $y0 X start point
+     * @param int $x1 X end point
      * @param int $y1 Y end point
      * @param mixed $color The line color, can be omitted
      */
@@ -650,13 +650,13 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
         if (($line = $this->_getLineStyle($color)) !== false) {
             ImageLine($this->_canvas, $x0, $y0, $x1, $y1, $line);
         }
-        parent::line($x0, $y0, $x1, $y1, $color);        
+        parent::line($x0, $y0, $x1, $y1, $color);
     }
 
     /**
      * Draws a polygon
      *
-     * @param bool $connectEnds Specifies wether the start point should be
+     * @param bool $connectEnds Specifies whether the start point should be
      *   connected to the endpoint (closed polygon) or not (connected line)
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
@@ -688,31 +688,31 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
                 } else {
                     $high['Y'] = max($point['Y'], $high['Y']);
                 }
-            }            
+            }
             if ((isset($polygon)) && (is_array($polygon))) {
                 if (($fill = $this->_getFillStyle($fillColor, $low['X'], $low['Y'], $high['X'], $high['Y'])) !== false) {
                     ImageFilledPolygon($this->_canvas, $polygon, count($this->_polygon), $fill);
                 }
                 if (($line = $this->_getLineStyle($lineColor)) !== false) {
                     ImagePolygon($this->_canvas, $polygon, count($this->_polygon), $line);
-                }                
+                }
             }
         } else {
             $prev_point = false;
-            if (($line = $this->_getLineStyle($lineColor)) !== false) {                           
+            if (($line = $this->_getLineStyle($lineColor)) !== false) {
                 foreach ($this->_polygon as $point) {
                     if ($prev_point) {
                         ImageLine(
-                            $this->_canvas, 
-                            $prev_point['X'], 
-                            $prev_point['Y'], 
-                            $point['X'], 
-                            $point['Y'], 
+                            $this->_canvas,
+                            $prev_point['X'],
+                            $prev_point['Y'],
+                            $point['X'],
+                            $point['Y'],
                             $line
                         );
                     }
                     $prev_point = $point;
-                } 
+                }
             }
         }
         $this->_polygon = array();
@@ -722,7 +722,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
     /**
      * Ends a spline
      *
-     * @param bool $connectEnds Specifies wether the start point should be
+     * @param bool $connectEnds Specifies whether the start point should be
      *   connected to the endpoint (closed polygon) or not (connected line)
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
@@ -734,30 +734,30 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
         }
         $style = $this->_getLineStyle($lineColor) . $this->_getFillStyle($fillColor);
 
-        $lastPoint = false;        
+        $lastPoint = false;
         foreach ($this->_polygon as $point) {
-            if (($lastPoint) && (isset($lastPoint['P1X'])) && 
-                (isset($lastPoint['P1Y'])) && (isset($lastPoint['P2X'])) && 
-                (isset($lastPoint['P2Y']))) 
+            if (($lastPoint) && (isset($lastPoint['P1X'])) &&
+                (isset($lastPoint['P1Y'])) && (isset($lastPoint['P2X'])) &&
+                (isset($lastPoint['P2Y'])))
             {
                 $dx = abs($point['X'] - $lastPoint['X']);
                 $dy = abs($point['Y'] - $lastPoint['Y']);
                 $d = sqrt($dx * $dx + $dy * $dy);
-                $interval = 1 / $d;                               
+                $interval = 1 / $d;
                 for ($t = 0; $t <= 1; $t = $t + $interval) {
                     $x = $this->_bezier(
-                        $t, 
-                        $lastPoint['X'], 
-                        $lastPoint['P1X'], 
-                        $lastPoint['P2X'], 
+                        $t,
+                        $lastPoint['X'],
+                        $lastPoint['P1X'],
+                        $lastPoint['P2X'],
                         $point['X']
                     );
-                    
+
                     $y = $this->_bezier(
-                        $t, 
-                        $lastPoint['Y'], 
-                        $lastPoint['P1Y'], 
-                        $lastPoint['P2Y'], 
+                        $t,
+                        $lastPoint['Y'],
+                        $lastPoint['P1Y'],
+                        $lastPoint['P2Y'],
                         $point['Y']
                     );
 
@@ -780,31 +780,31 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
                         $high['Y'] = $y;
                     } else {
                         $high['Y'] = max($y, $high['Y']);
-                    }     
+                    }
                     $polygon[] = $x;
                     $polygon[] = $y;
                 }
-                if (($t - $interval) < 1) { 
+                if (($t - $interval) < 1) {
                     $x = $this->_bezier(
-                        1, 
-                        $lastPoint['X'], 
-                        $lastPoint['P1X'], 
-                        $lastPoint['P2X'], 
+                        1,
+                        $lastPoint['X'],
+                        $lastPoint['P1X'],
+                        $lastPoint['P2X'],
                         $point['X']
                     );
-                    
+
                     $y = $this->_bezier(
-                        1, 
-                        $lastPoint['Y'], 
-                        $lastPoint['P1Y'], 
-                        $lastPoint['P2Y'], 
+                        1,
+                        $lastPoint['Y'],
+                        $lastPoint['P1Y'],
+                        $lastPoint['P2Y'],
                         $point['Y']
                     );
-                    
+
                     $polygon[] = $x;
                     $polygon[] = $y;
                 }
-            } else {              
+            } else {
                 if (!isset($low['X'])) {
                     $low['X'] = $point['X'];
                 } else {
@@ -829,7 +829,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
                 $polygon[] = $point['X'];
                 $polygon[] = $point['Y'];
             }
-            $lastPoint = $point;                           
+            $lastPoint = $point;
         }
 
         if ((isset($polygon)) && (is_array($polygon))) {
@@ -843,21 +843,21 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
             } else {
                 $prev_point = false;
                 if (($line = $this->_getLineStyle($lineColor)) !== false) {
-                    reset($polygon);            
+                    reset($polygon);
                     while (list(, $x) = each($polygon)) {
                         list(, $y) = each($polygon);
                         if ($prev_point) {
                             ImageLine(
-                                $this->_canvas, 
-                                $prev_point['X'], 
-                                $prev_point['Y'], 
-                                $x, 
-                                $y, 
+                                $this->_canvas,
+                                $prev_point['X'],
+                                $prev_point['Y'],
+                                $x,
+                                $y,
                                 $line
                             );
                         }
                         $prev_point = array('X' => $x, 'Y' => $y);;
-                    } 
+                    }
                 }
             }
         }
@@ -868,15 +868,15 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
     /**
      * Draw a rectangle
      *
-     * @param int $x0 X start point 
-     * @param int $y0 X start point 
-     * @param int $x1 X end point 
+     * @param int $x0 X start point
+     * @param int $y0 X start point
+     * @param int $x1 X end point
      * @param int $y1 Y end point
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
      */
     function rectangle($x0, $y0, $x1, $y1, $fillColor = false, $lineColor = false)
-    {        
+    {
         $x0 = $this->_getX($x0);
         $y0 = $this->_getY($y0);
         $x1 = $this->_getX($x1);
@@ -884,20 +884,20 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
         if (($fill = $this->_getFillStyle($fillColor, $x0, $y0, $x1, $y1)) !== false) {
             ImageFilledRectangle($this->_canvas, $x0, $y0, $x1, $y1, $fill);
         }
-                
+
         if (($line = $this->_getLineStyle($lineColor)) !== false) {
             ImageRectangle($this->_canvas, $x0, $y0, $x1, $y1, $line);
         }
-        
+
         parent::rectangle($x0, $y0, $x1, $y1, $fillColor, $lineColor);
     }
 
     /**
      * Draw an ellipse
      *
-     * @param int $x Center point x-value 
+     * @param int $x Center point x-value
      * @param int $y Center point y-value
-     * @param int $rx X-radius of ellipse 
+     * @param int $rx X-radius of ellipse
      * @param int $ry Y-radius of ellipse
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
@@ -911,20 +911,20 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
 
         if (($fill = $this->_getFillStyle($fillColor, $x - $rx, $y - $ry, $x + $rx, $y + $ry)) !== false) {
             ImageFilledEllipse($this->_canvas, $x, $y, $rx * 2, $ry * 2, $fill);
-        }        
+        }
 
         if (($line = $this->_getLineStyle($lineColor)) !== false) {
             ImageEllipse($this->_canvas, $x, $y, $rx * 2, $ry * 2, $line);
         }
-        parent::ellipse($x, $y, $rx, $ry, $fillColor, $lineColor);        
+        parent::ellipse($x, $y, $rx, $ry, $fillColor, $lineColor);
     }
 
     /**
      * Draw a pie slice
      *
-     * @param int $x Center point x-value 
+     * @param int $x Center point x-value
      * @param int $y Center point y-value
-     * @param int $rx X-radius of pie slice 
+     * @param int $rx X-radius of pie slice
      * @param int $ry Y-radius of pie slice
      * @param int $v1 The starting angle
      * @param int $v2 The end angle
@@ -934,7 +934,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
      * @param mixed $lineColor The line color, can be omitted
      */
     function pieSlice($x, $y, $rx, $ry, $v1, $v2, $srx = false, $sry = false, $fillColor = false, $lineColor = false)
-    {        
+    {
         $dA = 0.1;
 
         if (($srx !== false) && ($sry !== false)) {
@@ -947,7 +947,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
             if (($angle + $dA) > min($v1, $v2)) {
                 $polygon[] = ($x + $srx * cos(deg2rad(min($v1, $v2) % 360)));
                 $polygon[] = ($y + $sry * sin(deg2rad(min($v1, $v2) % 360)));
-            }                
+            }
         } else {
             $polygon[] = $x;
             $polygon[] = $y;
@@ -963,44 +963,44 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
         if (($angle - $dA) < max($v1, $v2)) {
             $polygon[] = ($x + $rx * cos(deg2rad(max($v1, $v2) % 360)));
             $polygon[] = ($y + $ry * sin(deg2rad(max($v1, $v2) % 360)));
-        }                
+        }
 
         if (($fill = $this->_getFillStyle($fillColor, $x - $rx - 1, $y - $ry - 1, $x + $rx + 1, $y + $ry + 1)) !== false) {
             ImageFilledPolygon($this->_canvas, $polygon, count($polygon) / 2, $fill);
-        }        
+        }
 
         if (($line = $this->_getLineStyle($lineColor)) !== false) {
             ImagePolygon($this->_canvas, $polygon, count($polygon) / 2, $line);
         }
-        
+
         parent::pieSlice($x, $y, $rx, $ry, $v1, $v2, $fillColor, $lineColor);
     }
-    
+
     /**
      * Get the width of a text,
      *
      * @param string $text The text to get the width of
      * @return int The width of the text
-     */ 
+     */
     function textWidth($text)
     {
         if (isset($this->_font['ttf_file'])) {
             $angle = 0;
             if (isset($this->_font['angle'])) {
                 $angle = $this->_font['angle'];
-            }            
+            }
             $bounds = ImageTTFBBox(
-                $this->_font['size'], 
-                $angle, 
-                $this->_font['ttf_file'], 
+                $this->_font['size'],
+                $angle,
+                $this->_font['ttf_file'],
                 $text
             );
-            
+
             $x0 = min($bounds[0], $bounds[2], $bounds[4], $bounds[6]);
             $x1 = max($bounds[0], $bounds[2], $bounds[4], $bounds[6]);
             return abs($x0 - $x1);
         } else {
-            if ((isset($this->_font['vertical'])) && ($this->_font['vertical'])) {                
+            if ((isset($this->_font['vertical'])) && ($this->_font['vertical'])) {
                 return ImageFontHeight($this->_font['font']);
             } else {
                 return ImageFontWidth($this->_font['font']) * strlen($text);
@@ -1013,29 +1013,29 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
      *
      * @param string $text The text to get the height of
      * @return int The height of the text
-     */ 
+     */
     function textHeight($text)
     {
         if (isset($this->_font['ttf_file'])) {
             $angle = 0;
             if (isset($this->_font['angle'])) {
                 $angle = $this->_font['angle'];
-            }            
+            }
             $bounds = ImageTTFBBox(
-                $this->_font['size'], 
-                $angle, 
-                $this->_font['ttf_file'], 
+                $this->_font['size'],
+                $angle,
+                $this->_font['ttf_file'],
                 $text
             );
-            
+
             $y0 = min($bounds[1], $bounds[3], $bounds[5], $bounds[7]);
             $y1 = max($bounds[1], $bounds[3], $bounds[5], $bounds[7]);
             return abs($y0 - $y1);
         } else {
-            if ((isset($this->_font['vertical'])) && ($this->_font['vertical'])) {                
+            if ((isset($this->_font['vertical'])) && ($this->_font['vertical'])) {
                 return ImageFontWidth($this->_font['font']) * strlen($text);
-            } else {                
-                return ImageFontHeight($this->_font['font']);                
+            } else {
+                return ImageFontHeight($this->_font['font']);
             }
         }
     }
@@ -1043,7 +1043,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
     /**
      * Writes text
      *
-     * @param int $x X-point of text 
+     * @param int $x X-point of text
      * @param int $y Y-point of text
      * @param string $text The text to write
      * @param int $alignment The alignment of the text
@@ -1053,10 +1053,10 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
     {
         $x = $this->_getX($x);
         $y = $this->_getY($y);
-        
+
         $textWidth = $this->textWidth($text);
         $textHeight = $this->textHeight($text);
-        
+
         if ($alignment & IMAGE_GRAPH_ALIGN_RIGHT) {
             $x = $x - $textWidth;
         } elseif ($alignment & IMAGE_GRAPH_ALIGN_CENTER_X) {
@@ -1071,8 +1071,8 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
 
         if (($color === false) && (isset($this->_font['color']))) {
             $color = $this->_font['color'];
-        }        
-        
+        }
+
         if ($color != 'transparent') {
             if (isset($this->_font['ttf_file'])) {
                 if (($this->_font['angle'] < 180) && ($this->_font['angle'] >= 0)) {
@@ -1081,35 +1081,35 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
                 if (($this->_font['angle'] >= 90) && ($this->_font['angle'] < 270)) {
                     $x += $textWidth;
                 }
-                
+
                 ImageTTFText(
-                    $this->_canvas, 
-                    $this->_font['size'], 
-                    $this->_font['angle'], 
-                    $x, 
-                    $y, 
-                    $this->_color($color), 
-                    $this->_font['ttf_file'], 
+                    $this->_canvas,
+                    $this->_font['size'],
+                    $this->_font['angle'],
+                    $x,
+                    $y,
+                    $this->_color($color),
+                    $this->_font['ttf_file'],
                     $text
                 );
-                
+
             } else {
                 if ((isset($this->_font['vertical'])) && ($this->_font['vertical'])) {
                     ImageStringUp(
-                        $this->_canvas, 
-                        $this->_font['font'], 
-                        $x, 
-                        $y + $this->textHeight($text), 
-                        $text, 
+                        $this->_canvas,
+                        $this->_font['font'],
+                        $x,
+                        $y + $this->textHeight($text),
+                        $text,
                         $this->_color($color)
                     );
                 } else {
                     ImageString(
-                        $this->_canvas, 
-                        $this->_font['font'], 
-                        $x, 
-                        $y, 
-                        $text, 
+                        $this->_canvas,
+                        $this->_font['font'],
+                        $x,
+                        $y,
+                        $text,
                         $this->_color($color)
                     );
                 }
@@ -1117,13 +1117,13 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
         }
         parent::write($x, $y, $text, $alignment);
     }
-    
+
     /**
      * Overlay image
      *
-     * @param int $x X-point of overlayed image 
+     * @param int $x X-point of overlayed image
      * @param int $y Y-point of overlayed image
-     * @param string $filename The filename of the image to overlay  
+     * @param string $filename The filename of the image to overlay
      * @param int $width The width of the overlayed image (resizing if possible)
      * @param int $height The height of the overlayed image (resizing if
      *   possible)
@@ -1138,11 +1138,11 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
                 $image = ImageCreateFromPNG($filename);
             } else {
                 $image = ImageCreateFromJPEG($filename);
-            }                       
+            }
 
             $imgWidth = ImageSX($image);
             $imgHeight = ImageSY($image);
-            
+
             $outputWidth = ($width !== false ? $width : $imgWidth);
             $outputHeight = ($height !== false ? $height : $imgHeight);
 
@@ -1151,52 +1151,52 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
             } elseif ($alignment & IMAGE_GRAPH_ALIGN_CENTER_X) {
                 $x -= $outputWidth / 2;
             }
-    
+
             if ($alignment & IMAGE_GRAPH_ALIGN_BOTTOM) {
-                $y -= $outputHeight; 
+                $y -= $outputHeight;
             } elseif ($alignment & IMAGE_GRAPH_ALIGN_CENTER_Y) {
                 $y -= $outputHeight / 2;
             }
-            
-            if ((($width !== false) && ($width != $imgWidth)) || 
-                (($height !== false) && ($height != $imgHeight))) 
+
+            if ((($width !== false) && ($width != $imgWidth)) ||
+                (($height !== false) && ($height != $imgHeight)))
             {
-                if ($this->_gd2) {            
+                if ($this->_gd2) {
                     ImageCopyResampled(
-                        $this->_canvas, 
-                        $image, 
-                        $x, 
-                        $y, 
-                        0, 
-                        0, 
-                        $width, 
-                        $height, 
-                        $imgWidth, 
+                        $this->_canvas,
+                        $image,
+                        $x,
+                        $y,
+                        0,
+                        0,
+                        $width,
+                        $height,
+                        $imgWidth,
                         $imgHeight
                     );
                 } else {
                     ImageCopyResized(
-                        $this->_canvas, 
-                        $image, 
-                        $x, 
-                        $y, 
-                        0, 
-                        0, 
-                        $width, 
-                        $height, 
-                        $imgWidth, 
+                        $this->_canvas,
+                        $image,
+                        $x,
+                        $y,
+                        0,
+                        0,
+                        $width,
+                        $height,
+                        $imgWidth,
                         $imgHeight
                     );
                 }
-            } else {            
+            } else {
                 ImageCopy(
-                    $this->_canvas, 
-                    $image, 
-                    $x, 
-                    $y, 
-                    0, 
-                    0, 
-                    $imgWidth, 
+                    $this->_canvas,
+                    $image,
+                    $x,
+                    $y,
+                    0,
+                    0,
+                    $imgWidth,
                     $imgHeight
                 );
             }
@@ -1218,7 +1218,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
         }
         parent::_reset();
     }
-       
+
     /**
      * Check which version of GD is installed
      *
@@ -1236,14 +1236,14 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
             phpinfo(8);
             $php_info = ob_get_contents();
             ob_end_clean();
-    
-            if (ereg("<td[^>]*>GD Version *<\/td><td[^>]*>([^<]*)<\/td>", 
-                $php_info, $result)) 
+
+            if (ereg("<td[^>]*>GD Version *<\/td><td[^>]*>([^<]*)<\/td>",
+                $php_info, $result))
             {
                 $version = $result[1];
             }
         }
-        
+
         if (ereg('1\.[0-9]{1,2}', $version)) {
             return 1;
         } elseif (ereg('2\.[0-9]{1,2}', $version)) {

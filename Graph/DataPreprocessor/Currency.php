@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage DataPreprocessor     
+ * @subpackage DataPreprocessor
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/DataPreprocessor/Formatted.php
@@ -41,21 +41,21 @@ require_once 'Image/Graph/DataPreprocessor/Formatted.php';
 
 /**
  * Format data as a currency.
- * 
+ *
  * Uses the {@link Image_Graph_DataPreprocessor_Formatted} to represent the
  * values as a currency, i.e. 10 => € 10.00
- *     
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage DataPreprocessor
  */
-class Image_Graph_DataPreprocessor_Currency extends Image_Graph_DataPreprocessor_Formatted 
+class Image_Graph_DataPreprocessor_Currency extends Image_Graph_DataPreprocessor_Formatted
 {
 
     /**
-     * Image_Graph_CurrencyData [Constructor]. 
+     * Image_Graph_CurrencyData [Constructor].
      *
-     * @param string $currencySymbol The symbol representing the currency 
+     * @param string $currencySymbol The symbol representing the currency
      */
     function &Image_Graph_DataPreprocessor_Currency($currencySymbol)
     {

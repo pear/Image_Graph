@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Fill     
+ * @subpackage Fill
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Fill.php
@@ -41,12 +41,12 @@ require_once 'Image/Graph/Fill.php';
 
 /**
  * Fill using an image.
- *         
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Fill
  */
-class Image_Graph_Fill_Image extends Image_Graph_Fill 
+class Image_Graph_Fill_Image extends Image_Graph_Fill
 {
 
     /**
@@ -73,7 +73,7 @@ class Image_Graph_Fill_Image extends Image_Graph_Fill
     /**
      * Image_Graph_ImageFill [Constructor]
      *
-     * @param string $filename The filename and path of the image to use for filling 
+     * @param string $filename The filename and path of the image to use for filling
      */
     function &Image_Graph_Fill_Image($fileName)
     {
@@ -85,8 +85,8 @@ class Image_Graph_Fill_Image extends Image_Graph_Fill
      * Return the fillstyle
      *
      * @param (something) $ID (Add description)
-     * @return int A GD fillstyle 
-     * @access private 
+     * @return int A GD fillstyle
+     * @access private
      */
     function _getFillStyle($ID = false)
     {

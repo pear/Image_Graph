@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Marker     
+ * @subpackage Marker
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Marker.php
@@ -41,12 +41,12 @@ require_once 'Image/Graph/Marker.php';
 
 /**
  * Data marker as circle (require GD2)
- *              
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Marker
  */
-class Image_Graph_Marker_Circle extends Image_Graph_Marker 
+class Image_Graph_Marker_Circle extends Image_Graph_Marker
 {
 
     /**
@@ -64,7 +64,7 @@ class Image_Graph_Marker_Circle extends Image_Graph_Marker
      *   the canvas
      * @param int $y The Y (vertical) position (in pixels) of the marker on the
      *   canvas
-     * @param array $values The values representing the data the marker 'points' to 
+     * @param array $values The values representing the data the marker 'points' to
      * @access private
      */
     function _drawMarker($x, $y, $values = false)
@@ -76,17 +76,17 @@ class Image_Graph_Marker_Circle extends Image_Graph_Marker
         $angle = 0;
         while ($angle < 2*pi()) {
             $this->_driver->polygonAdd(
-                $x + $this->_size*cos($angle), 
+                $x + $this->_size*cos($angle),
                 $y - $this->_size*sin($angle)
             );
             $angle += $dA;
         }
 
         $this->_driver->polygonAdd(
-            $x + $this->_size*cos(0), 
+            $x + $this->_size*cos(0),
             $y - $this->_size*sin(0)
         );
-        
+
         $this->_driver->polygonEnd();
 
         parent::_drawMarker($x, $y, $values);

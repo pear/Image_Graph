@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Plot     
+ * @subpackage Plot
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Plot.php
@@ -41,12 +41,12 @@ require_once 'Image/Graph/Plot.php';
 
 /**
  * 2D Piechart.
- *               
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Plot
  */
-class Image_Graph_Plot_Pie extends Image_Graph_Plot 
+class Image_Graph_Plot_Pie extends Image_Graph_Plot
 {
 
     /**
@@ -74,10 +74,10 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
     {
-        $y = ($y0 + $y1) / 2;        
+        $y = ($y0 + $y1) / 2;
         $this->_driver->pieSlice($x1, $y, abs($x1 - $x0) / 2, abs($y1 - $y0) / 2, 45, 315);
     }
-    
+
     /**
      * Calculate marker point data
      *
@@ -91,8 +91,8 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
     function _getMarkerData($point, $nextPoint, $prevPoint, & $totals)
     {
         $point = parent::_getMarkerData($point, $nextPoint, $prevPoint, &$totals);
-        
-        $point['ANGLE'] = 360 * (($totals['CURRENT_Y'] + 
+
+        $point['ANGLE'] = 360 * (($totals['CURRENT_Y'] +
             ($point['Y'] / 2)) / $totals['ALL_SUM_Y']);
         $totals['CURRENT_Y'] += $point['Y'];
 
@@ -117,11 +117,11 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
             $explodeRadius = $this->_explode[$x];
         } elseif (is_numeric($this->_explode)) {
             $explodeRadius = $this->_explode;
-        }            
+        }
 
-        $point['MARKER_X'] = $totals['CENTER_X'] + 
+        $point['MARKER_X'] = $totals['CENTER_X'] +
             ($totals['RADIUS'] + $explodeRadius) * $point['ANG_X'];
-        $point['MARKER_Y'] = $totals['CENTER_Y'] + 
+        $point['MARKER_Y'] = $totals['CENTER_Y'] +
             ($totals['RADIUS'] + $explodeRadius) * $point['ANG_Y'];
 
         return $point;
@@ -135,12 +135,12 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
     function _drawMarker()
     {
 
-        if ($this->_marker) {            
+        if ($this->_marker) {
             $totals = $this->_getTotals();
 
             $totals['CENTER_X'] = (int) (($this->_left + $this->_right) / 2);
             $totals['CENTER_Y'] = (int) (($this->_top + $this->_bottom) / 2);
-            
+
             $totals['CURRENT_Y'] = 0;
             $number = 0;
             $diameter = min($this->height(), $this->width()) * 0.75;
@@ -152,14 +152,14 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
                     $totals['RADIUS0'] = false;
                     $totals['RADIUS'] = $diameter / 2;
                 } else {
-                    $dr = $diameter / (2 * count($this->_dataset));            
-                
+                    $dr = $diameter / (2 * count($this->_dataset));
+
                     $totals['RADIUS0'] = $number * $dr + ($number > 0 ? $this->_radius : 0);
                     $totals['RADIUS'] = ($number + 1) * $dr;
                 }
-                       
+
                 $totals['ALL_SUM_Y'] = 0;
-                $totals['CURRENT_Y'] = 0;                       
+                $totals['CURRENT_Y'] = 0;
                 $dataset->_reset();
                 while ($point = $dataset->_next()) {
                     $totals['ALL_SUM_Y'] += $point['Y'];
@@ -172,31 +172,31 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
                          ($this->_dataSelector->select($point))
                     ) {
                         $point = $this->_getMarkerData(
-                            $point, 
-                            false, 
-                            false, 
+                            $point,
+                            false,
+                            false,
                             $totals
                         );
                         if (is_array($point)) {
                             $this->_marker->_drawMarker(
-                                $point['MARKER_X'], 
-                                $point['MARKER_Y'], 
+                                $point['MARKER_X'],
+                                $point['MARKER_Y'],
                                 $point
                             );
                         }
                     }
                 }
-                $number++;                
+                $number++;
             }
             unset($keys);
         }
     }
-    
+
     /**
      * Explodes a piece of this pie chart
      *
      * @param int $explode Radius to explode with (or an array)
-     * @param string $x The 'x' value to explode or omitted 
+     * @param string $x The 'x' value to explode or omitted
      */
     function explode($explode, $x = false) {
         if ($x === false) {
@@ -204,7 +204,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
         } else {
             $this->_explode[$x] = $explode;
         }
-    }    
+    }
 
     /**
      * Output the plot
@@ -223,7 +223,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
         foreach ($keys as $key) {
             $dataset = & $this->_dataset[$key];
 
-            $totalY = 0;           
+            $totalY = 0;
             $dataset->_reset();
             while ($point = $dataset->_next()) {
                 $totalY += $point['Y'];
@@ -234,13 +234,13 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
             $diameter = min($this->height(), $this->width()) * 0.75;
             $currentY = 0; //rand(0, 100)*$totalY/100;
             $dataset->_reset();
-            
+
             if (count($this->_dataset) == 1) {
                 $radius0 = false;
                 $radius1 = $diameter / 2;
             } else {
-                $dr = $diameter / (2 * count($this->_dataset));            
-               
+                $dr = $diameter / (2 * count($this->_dataset));
+
                 $radius0 = $number * $dr + ($number > 0 ? $this->_radius : 0);
                 $radius1 = ($number + 1) * $dr;
             }
@@ -249,15 +249,15 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
                 $angle1 = 360 * ($currentY / $totalY);
                 $currentY += $point['Y'];
                 $angle2 = 360 * ($currentY / $totalY);
-/*                $dX = $diameter * ($this->_radius / 100) * 
+/*                $dX = $diameter * ($this->_radius / 100) *
                     cos(deg2rad(($angle1 + $angle2) / 2));
-                $dY = $diameter * ($this->_radius / 100) * 
+                $dY = $diameter * ($this->_radius / 100) *
                     sin(deg2rad(($angle1 + $angle2) / 2));
                 $dD = sqrt($dX * $dX + $dY * $dY);*/
-                
+
                 $x = $point['X'];
                 $id = $point['ID'];
-                
+
                 $dX = 0;
                 $dY = 0;
                 $explodeRadius = 0;
@@ -266,18 +266,18 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
                 } elseif (is_numeric($this->_explode)) {
                     $explodeRadius = $this->_explode;
                 }
-                
+
                 if ($explodeRadius > 0) {
-                    $dX = $explodeRadius * cos(deg2rad(($angle1 + $angle2) / 2));                     
+                    $dX = $explodeRadius * cos(deg2rad(($angle1 + $angle2) / 2));
                     $dY = $explodeRadius * sin(deg2rad(($angle1 + $angle2) / 2));
-                }                     
+                }
 
                 $ID = $point['ID'];
-                $this->_getFillStyle($ID);                
+                $this->_getFillStyle($ID);
                 $this->_getLineStyle($ID);
-                $this->_driver->pieSlice($centerX + $dX, $centerY + $dY, $radius1, $radius1, $angle1, $angle2, $radius0, $radius0);               
+                $this->_driver->pieSlice($centerX + $dX, $centerY + $dY, $radius1, $radius1, $angle1, $angle2, $radius0, $radius0);
             }
-            $number++;           
+            $number++;
         }
         unset($keys);
         $this->_drawMarker();
@@ -291,7 +291,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
      */
     function _legendSample(&$param)
     {
-       
+
         if (!is_array($this->_dataset)) {
             return false;
         }
@@ -306,12 +306,12 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
         $keys = array_keys($this->_dataset);
         foreach ($keys as $key) {
             $dataset =& $this->_dataset[$key];
-            $count++;                        
+            $count++;
 
             $dataset->_reset();
             while ($point = $dataset->_next()) {
                 $caption = $point['X'];
-                                
+
                 $this->_driver->setFont($param['font']);
                 $x2 = $param['x'] + 20 + $param['width'] + $this->_driver->textWidth($caption);
                 $y2 = $param['y'] + $param['height']+5;
@@ -325,22 +325,22 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
                     $param['y'] = $y2;
                     $x2 = $param['x'] + 20 + $param['width'] + $this->_driver->textWidth($caption);
                 }
-                 
+
                 $x = $x0 = $param['x'];
                 $y = $param['y'];
                 $y0 = $param['y'] - $param['height']/2;
                 $x1 = $param['x'] + $param['width'];
                 $y1 = $param['y'] + $param['height']/2;
 
-                if (!isset($param['simulate'])) {                
+                if (!isset($param['simulate'])) {
                     $this->_getFillStyle($point['ID']);
                     $this->_getLineStyle();
                     $this->_drawLegendSample($x0, $y0, $x1, $y1);
-        
+
                     if (($this->_marker) && ($dataset) && ($param['show_marker'])) {
                         $prevPoint = $dataset->_nearby(-2);
                         $nextPoint = $dataset->_nearby();
-                            
+
                         $p = $this->_getMarkerData($point, $nextPoint, $prevPoint, $totals);
                         if (is_array($point)) {
                             $p['MARKER_X'] = $x+$param['width']/2;
@@ -357,7 +357,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
                 } else {
                     $param['x'] = $x2;
                 }
-            }       
+            }
         }
         unset($keys);
     }

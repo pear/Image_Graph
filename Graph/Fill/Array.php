@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Fill     
+ * @subpackage Fill
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Fill.php
@@ -41,7 +41,7 @@ require_once 'Image/Graph/Fill.php';
 
 /**
  * A sequential array of fillstyles.
- * 
+ *
  * This is used for filling multiple objects within the same element with
  * different styles. This is done by adding multiple fillstyles to a FillArrray
  * structure. The fillarray will then when requested return the 'next' fillstyle
@@ -50,12 +50,12 @@ require_once 'Image/Graph/Fill.php';
  * multiple-/stackedbarchart you name the {@link Image_Graph_Dataset}s and uses
  * this name as ID tag when adding the dataset's associated fillstyle to the
  * fillarray.
- *        
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Fill
  */
-class Image_Graph_Fill_Array extends Image_Graph_Fill 
+class Image_Graph_Fill_Array extends Image_Graph_Fill
 {
 
     /**
@@ -68,11 +68,11 @@ class Image_Graph_Fill_Array extends Image_Graph_Fill
     /**
      * Resets the fillstyle
      *
-     * @access private 
+     * @access private
      */
     function _reset()
     {
-        reset($this->_fillStyles);        
+        reset($this->_fillStyles);
     }
 
     /**
@@ -82,7 +82,7 @@ class Image_Graph_Fill_Array extends Image_Graph_Fill
      * @param string $id The id or name of the style
      */
     function &add(& $style, $id = '')
-    {        
+    {
         if ($id == '') {
             $this->_fillStyles[] = & $style;
         } else {
@@ -92,13 +92,13 @@ class Image_Graph_Fill_Array extends Image_Graph_Fill
     }
 
     /**
-     * Add a color to the array    
+     * Add a color to the array
      *
      * @param int $color The color
      * @param string $id The id or name of the color
      */
     function addColor($color, $id = false)
-    {        
+    {
         if ($id !== false) {
             $this->_fillStyles[$id] = $color;
         } else {
@@ -110,11 +110,11 @@ class Image_Graph_Fill_Array extends Image_Graph_Fill
     /**
      * Return the fillstyle
      *
-     * @return int A GD fillstyle 
-     * @access private 
+     * @return int A GD fillstyle
+     * @access private
      */
     function _getFillStyle($ID = false)
-    {        
+    {
         if (($ID === false) || (!isset($this->_fillStyles[$ID]))) {
             $ID = key($this->_fillStyles);
             if (!next($this->_fillStyles)) {
@@ -131,7 +131,7 @@ class Image_Graph_Fill_Array extends Image_Graph_Fill
             return parent::_getFillStyle($ID);
         }
     }
-    
+
 }
 
 ?>

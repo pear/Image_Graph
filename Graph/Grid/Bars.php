@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Grid     
+ * @subpackage Grid
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Grid.php
@@ -41,20 +41,20 @@ require_once 'Image/Graph/Grid.php';
 
 /**
  * Display alternating bars on the plotarea.
- * 
+ *
  * {@link Image_Graph_Grid}
- *          
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Grid
  */
-class Image_Graph_Grid_Bars extends Image_Graph_Grid 
+class Image_Graph_Grid_Bars extends Image_Graph_Grid
 {
 
     /**
      * Output the grid
      *
-     * @access private      
+     * @access private
      */
     function _done()
     {
@@ -87,12 +87,12 @@ class Image_Graph_Grid_Bars extends Image_Graph_Grid
                         $p3 = array ('X' => $previousSecondaryValue, 'Y' => $previousValue);
                         $p4 = array ('X' => $secondaryValue, 'Y' => $previousValue);
                     }
-                    
+
                     $this->_driver->polygonAdd($this->_pointX($p1), $this->_pointY($p1));
                     $this->_driver->polygonAdd($this->_pointX($p2), $this->_pointY($p2));
                     $this->_driver->polygonAdd($this->_pointX($p3), $this->_pointY($p3));
                     $this->_driver->polygonAdd($this->_pointX($p4), $this->_pointY($p4));
-                    
+
                     $this->_getFillStyle();
                     $this->_driver->polygonEnd();
 

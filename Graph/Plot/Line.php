@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Plot     
+ * @subpackage Plot
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Plot.php
@@ -41,18 +41,18 @@ require_once 'Image/Graph/Plot.php';
 
 /**
  * Linechart.
- *               
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Plot
- */ 
-class Image_Graph_Plot_Line extends Image_Graph_Plot 
+ */
+class Image_Graph_Plot_Line extends Image_Graph_Plot
 {
 
     /**
-     * Gets the fill style of the element    
+     * Gets the fill style of the element
      *
-     * @return int A GD filestyle representing the fill style 
+     * @return int A GD filestyle representing the fill style
      * @see Image_Graph_Fill
      * @access private
      */
@@ -82,7 +82,7 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
         $this->_driver->polygonAdd($x1, $y - $dy);
         $this->_driver->polygonEnd(false);
     }
-    
+
     /**
      * Output the plot
      *
@@ -97,7 +97,7 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
         if (!is_array($this->_dataset)) {
             return false;
         }
-        
+
         reset($this->_dataset);
 
         if ($this->_multiType == 'stacked100pct') {
@@ -110,11 +110,11 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
         foreach ($keys as $key) {
             $dataset = & $this->_dataset[$key];
             $dataset->_reset();
-            while ($point = $dataset->_next()) {            
-                if (($this->_multiType == 'stacked') || 
-                    ($this->_multiType == 'stacked100pct')) 
+            while ($point = $dataset->_next()) {
+                if (($this->_multiType == 'stacked') ||
+                    ($this->_multiType == 'stacked100pct'))
                 {
-                    $x = $point['X'];                    
+                    $x = $point['X'];
                     if (!isset($current[$x])) {
                         $current[$x] = 0;
                     }
@@ -126,14 +126,14 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
                     $current[$x] += $point['Y'];
                     $point['Y'] = $py;
                 }
-                
+
                 $p2['X'] = $this->_pointX($point);
                 $p2['Y'] = $this->_pointY($point);
-                
+
                 $this->_driver->polygonAdd($p2['X'], $p2['Y']);
             }
             $this->_getLineStyle($key);
-            $this->_driver->polygonEnd(false);            
+            $this->_driver->polygonEnd(false);
         }
         unset($keys);
         $this->_drawMarker();

@@ -24,14 +24,14 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Common.php
@@ -40,16 +40,16 @@ require_once 'Image/Graph/Common.php';
 
 /**
  * Representation of a element.
- * 
+ *
  * The Image_Graph_Element can be drawn on the canvas, ie it has coordinates,
  * {@link Image_Graph_Line}, {@link Image_Graph_Fill}, border and background -
  * although not all of these may apply to all children.
- * 
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @abstract
  */
-class Image_Graph_Element extends Image_Graph_Common 
+class Image_Graph_Element extends Image_Graph_Common
 {
 
     /**
@@ -129,14 +129,14 @@ class Image_Graph_Element extends Image_Graph_Common
      * @access private
      */
     var $_shadow = false;
-    
+
     /**
      * The padding displayed on the element
      * @var int
      * @access private
      */
     var $_padding = 0;
-    
+
     /**
      * Resets the elements
      *
@@ -146,18 +146,18 @@ class Image_Graph_Element extends Image_Graph_Common
     {
         parent::_reset();
     }
-               
+
     /**
-     * Sets the background fill style of the element     
+     * Sets the background fill style of the element
      *
-     * @param Image_Graph_Fill $background The background 
+     * @param Image_Graph_Fill $background The background
      * @see Image_Graph_Fill
      */
     function setBackground(& $background)
     {
         if (!is_a($background, 'Image_Graph_Fill')) {
             $this->_error(
-                'Could not set background for ' . get_class($this) . ': ' . 
+                'Could not set background for ' . get_class($this) . ': ' .
                 get_class($background), array('background' => &$background)
             );
         } else {
@@ -167,7 +167,7 @@ class Image_Graph_Element extends Image_Graph_Common
     }
 
     /**
-     * Shows shadow on the element     
+     * Shows shadow on the element
      */
     function showShadow()
     {
@@ -176,20 +176,20 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Sets the background color of the element.
-     * 
+     *
      * See colors.txt in the docs/ folder for a list of available named colors.
-     *     
+     *
      * @param mixed $color The color
      */
     function setBackgroundColor($color)
     {
         $this->_background = $color;
     }
-    
+
      /**
-     * Gets the background fill style of the element     
+     * Gets the background fill style of the element
      *
-     * @return int A GD fillstyle representing the background style 
+     * @return int A GD fillstyle representing the background style
      * @see Image_Graph_Fill
      * @access private
      */
@@ -206,16 +206,16 @@ class Image_Graph_Element extends Image_Graph_Common
     }
 
     /**
-     * Sets the border line style of the element	 
+     * Sets the border line style of the element
      *
-     * @param Image_Graph_Line $borderStyle The line style of the border 
+     * @param Image_Graph_Line $borderStyle The line style of the border
      * @see Image_Graph_Line
      */
     function setBorderStyle(& $borderStyle)
     {
         if (!is_a($borderStyle, 'Image_Graph_Line')) {
             $this->_error(
-                'Could not set border style for ' . get_class($this) . ': ' . 
+                'Could not set border style for ' . get_class($this) . ': ' .
                 get_class($borderStyle), array('borderstyle' => &$borderStyle)
             );
         } else {
@@ -236,9 +236,9 @@ class Image_Graph_Element extends Image_Graph_Common
     }
 
     /**
-     * Gets the border line style of the element	 
+     * Gets the border line style of the element
      *
-     * @return int A GD linestyle representing the borders line style 
+     * @return int A GD linestyle representing the borders line style
      * @see Image_Graph_Line
      * @access private
      */
@@ -258,16 +258,16 @@ class Image_Graph_Element extends Image_Graph_Common
     }
 
     /**
-     * Sets the line style of the element    
+     * Sets the line style of the element
      *
-     * @param Image_Graph_Line $lineStyle The line style of the element 
+     * @param Image_Graph_Line $lineStyle The line style of the element
      * @see Image_Graph_Line
      */
     function setLineStyle(& $lineStyle)
     {
         if (!is_object($lineStyle)) {
             $this->_error(
-                'Could not set line style for ' . get_class($this) . ': ' . 
+                'Could not set line style for ' . get_class($this) . ': ' .
                 get_class($lineStyle), array('linestyle' => &$lineStyle)
             );
         } else {
@@ -275,23 +275,23 @@ class Image_Graph_Element extends Image_Graph_Common
             $this->add($lineStyle);
         }
     }
-    
+
     /**
      * Sets the line color of the element.
-     *     
+     *
      * See colors.txt in the docs/ folder for a list of available named colors.
      *
      * @param mixed $color The color
      */
     function setLineColor($color)
     {
-        $this->_lineStyle = $color;        
+        $this->_lineStyle = $color;
     }
 
     /**
-     * Gets the line style of the element	 
+     * Gets the line style of the element
      *
-     * @return int A GD linestyle representing the line style 
+     * @return int A GD linestyle representing the line style
      * @see Image_Graph_Line
      * @access private
      */
@@ -311,9 +311,9 @@ class Image_Graph_Element extends Image_Graph_Common
     }
 
     /**
-     * Sets the fill style of the element	 
+     * Sets the fill style of the element
      *
-     * @param Image_Graph_Fill $fillStyle The fill style of the element 
+     * @param Image_Graph_Fill $fillStyle The fill style of the element
      * @see Image_Graph_Fill
      */
     function setFillStyle(& $fillStyle)
@@ -331,8 +331,8 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Sets the fill color of the element.
-     *     
-     * See colors.txt in the docs/ folder for a list of available named colors.    
+     *
+     * See colors.txt in the docs/ folder for a list of available named colors.
      *
      * @param mixed $color The color
      */
@@ -340,12 +340,12 @@ class Image_Graph_Element extends Image_Graph_Common
     {
         $this->_fillStyle = $color;
     }
-    
+
 
     /**
-     * Gets the fill style of the element	 
+     * Gets the fill style of the element
      *
-     * @return int A GD filestyle representing the fill style 
+     * @return int A GD filestyle representing the fill style
      * @see Image_Graph_Fill
      * @access private
      */
@@ -363,14 +363,14 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Gets the font of the element.
-     * 
+     *
      * If not font has been set, the parent font is propagated through it's
      * children.
-     * 
+     *
      * @return array An associated array used for driver
      * @access private
      */
-    function _getFont($options = false)    
+    function _getFont($options = false)
     {
         if ($options === false) {
             $options = $this->_fontOptions;
@@ -379,11 +379,11 @@ class Image_Graph_Element extends Image_Graph_Common
         }
 
         if ($this->_font == null) {
-            $result = $this->_parent->_getFont($options);            
+            $result = $this->_parent->_getFont($options);
         } else {
             $result = $this->_font->_getFont($options);
         }
-        
+
         if ((isset($result['size'])) && (isset($result['size_rel']))) {
             $result['size'] += $result['size_rel'];
             unset($result['size_rel']);
@@ -392,9 +392,9 @@ class Image_Graph_Element extends Image_Graph_Common
     }
 
     /**
-     * Sets the font of the element  
+     * Sets the font of the element
      *
-     * @param Image_Graph_Font $font The font of the element 
+     * @param Image_Graph_Font $font The font of the element
      * @see Image_Graph_Font
      */
     function setFont(& $font)
@@ -408,18 +408,18 @@ class Image_Graph_Element extends Image_Graph_Common
     }
 
     /**
-     * Sets the font size  
+     * Sets the font size
      *
-     * @param int $size The size of the font 
+     * @param int $size The size of the font
      */
     function setFontSize($size) {
         $this->_fontOptions['size'] = $size;
     }
 
     /**
-     * Sets the font angle  
+     * Sets the font angle
      *
-     * @param int $angle The angle of the font 
+     * @param int $angle The angle of the font
      */
     function setFontAngle($angle) {
         if ($angle == 'vertical') {
@@ -431,21 +431,21 @@ class Image_Graph_Element extends Image_Graph_Common
     }
 
     /**
-     * Sets the font color  
+     * Sets the font color
      *
-     * @param mixed $color The color of the font 
+     * @param mixed $color The color of the font
      */
     function setFontColor($color) {
         $this->_fontOptions['color'] = $color;
     }
 
     /**
-     * Sets the coordinates of the element	 
+     * Sets the coordinates of the element
      *
-     * @param int $left The leftmost pixel of the element on the canvas 
-     * @param int $top The topmost pixel of the element on the canvas 
-     * @param int $right The rightmost pixel of the element on the canvas 
-     * @param int $bottom The bottommost pixel of the element on the canvas 
+     * @param int $left The leftmost pixel of the element on the canvas
+     * @param int $top The topmost pixel of the element on the canvas
+     * @param int $right The rightmost pixel of the element on the canvas
+     * @param int $bottom The bottommost pixel of the element on the canvas
      * @access private
      */
     function _setCoords($left, $top, $right, $bottom)
@@ -457,7 +457,7 @@ class Image_Graph_Element extends Image_Graph_Common
     }
 
     /**
-     * Moves the element	 
+     * Moves the element
      *
      * @param int $deltaX Number of pixels to move the element to the right
      *   (negative values move to the left)
@@ -474,9 +474,9 @@ class Image_Graph_Element extends Image_Graph_Common
     }
 
     /**
-     * Sets the width of the element relative to the left side	 
+     * Sets the width of the element relative to the left side
      *
-     * @param int $width Number of pixels the element should be in width  
+     * @param int $width Number of pixels the element should be in width
      * @access private
      */
     function _setWidth($width)
@@ -485,20 +485,20 @@ class Image_Graph_Element extends Image_Graph_Common
     }
 
     /**
-     * Sets the height of the element relative to the top    
+     * Sets the height of the element relative to the top
      *
-     * @param int $width Number of pixels the element should be in height  
+     * @param int $width Number of pixels the element should be in height
      * @access private
      */
     function _setHeight($height)
     {
         $this->_bottom = $this->_top + $height;
     }
-    
+
     /**
-     * Sets padding of the element    
+     * Sets padding of the element
      *
-     * @param int $padding Number of pixels the element should be padded with  
+     * @param int $padding Number of pixels the element should be padded with
      */
     function setPadding($padding)
     {
@@ -506,7 +506,7 @@ class Image_Graph_Element extends Image_Graph_Common
     }
 
     /**
-     * The width of the element on the canvas 
+     * The width of the element on the canvas
      *
      * @return int Number of pixels representing the width of the element
      */
@@ -516,7 +516,7 @@ class Image_Graph_Element extends Image_Graph_Common
     }
 
     /**
-     * The height of the element on the canvas 
+     * The height of the element on the canvas
      *
      * @return int Number of pixels representing the height of the element
      */
@@ -526,7 +526,7 @@ class Image_Graph_Element extends Image_Graph_Common
     }
 
     /**
-     * Left boundary of the background fill area 
+     * Left boundary of the background fill area
      *
      * @return int Leftmost position on the canvas
      * @access private
@@ -537,7 +537,7 @@ class Image_Graph_Element extends Image_Graph_Common
     }
 
     /**
-     * Top boundary of the background fill area 
+     * Top boundary of the background fill area
      *
      * @return int Topmost position on the canvas
      * @access private
@@ -548,7 +548,7 @@ class Image_Graph_Element extends Image_Graph_Common
     }
 
     /**
-     * Right boundary of the background fill area 
+     * Right boundary of the background fill area
      *
      * @return int Rightmost position on the canvas
      * @access private
@@ -559,7 +559,7 @@ class Image_Graph_Element extends Image_Graph_Common
     }
 
     /**
-     * Bottom boundary of the background fill area 
+     * Bottom boundary of the background fill area
      *
      * @return int Bottommost position on the canvas
      * @access private
@@ -568,9 +568,9 @@ class Image_Graph_Element extends Image_Graph_Common
     {
         return $this->_bottom - $this->_padding;
     }
-    
+
     /**
-     * Returns the filling width of the element on the canvas 
+     * Returns the filling width of the element on the canvas
      *
      * @return int Filling width
      * @access private
@@ -578,10 +578,10 @@ class Image_Graph_Element extends Image_Graph_Common
     function _fillWidth()
     {
         return $this->_fillRight() - $this->_fillLeft() + 1;
-    }    
-    
+    }
+
     /**
-     * Returns the filling height of the element on the canvas 
+     * Returns the filling height of the element on the canvas
      *
      * @return int Filling height
      * @access private
@@ -589,70 +589,70 @@ class Image_Graph_Element extends Image_Graph_Common
     function _fillHeight()
     {
         return $this->_fillBottom() - $this->_fillTop() + 1;
-    }    
-    
+    }
+
     /**
      * Draws a shadow 'around' the element
      *
-     * @access private 
+     * @access private
      */
     function _displayShadow()
-    {                
-/*        if 
-            ((!file_exists(dirname(__FILE__).'/Images/Shadows/tr.png')) || 
-            (!file_exists(dirname(__FILE__).'/Images/Shadows/r.png')) || 
-            (!file_exists(dirname(__FILE__).'/Images/Shadows/bl.png')) || 
-            (!file_exists(dirname(__FILE__).'/Images/Shadows/b.png')) || 
+    {
+/*        if
+            ((!file_exists(dirname(__FILE__).'/Images/Shadows/tr.png')) ||
+            (!file_exists(dirname(__FILE__).'/Images/Shadows/r.png')) ||
+            (!file_exists(dirname(__FILE__).'/Images/Shadows/bl.png')) ||
+            (!file_exists(dirname(__FILE__).'/Images/Shadows/b.png')) ||
             (!file_exists(dirname(__FILE__).'/Images/Shadows/br.png'))) {
             $this->_error('Shadows incomplete, cannot continue');
-        } else {                    
+        } else {
             $shadows['TR'] = ImageCreateFromPNG(dirname(__FILE__).'/Images/Shadows/tr.png');
             $shadows['R'] = ImageCreateFromPNG(dirname(__FILE__).'/Images/Shadows/r.png');
             $shadows['BL'] = ImageCreateFromPNG(dirname(__FILE__).'/Images/Shadows/bl.png');
             $shadows['B'] = ImageCreateFromPNG(dirname(__FILE__).'/Images/Shadows/b.png');
-            $shadows['BR'] = ImageCreateFromPNG(dirname(__FILE__).'/Images/Shadows/br.png');                        
-            
+            $shadows['BR'] = ImageCreateFromPNG(dirname(__FILE__).'/Images/Shadows/br.png');
+
             $tR['X'] = floor($this->_right+1);
             $tR['Y'] = floor($this->_top);
             $tR['W'] = ImageSX($shadows['TR']);
             $tR['H'] = ImageSY($shadows['TR']);
-    
+
             $r['X'] = $tR['X'];
             $r['Y'] = $tR['Y'] + $tR['H'];
             $r['W'] = ImageSX($shadows['R']);
             $r['H'] = floor($this->_bottom - $r['Y'] + 1);
-            
+
             $bR['X'] = $tR['X'];
-            $bR['Y'] = $r['Y'] + $r['H'];       
+            $bR['Y'] = $r['Y'] + $r['H'];
             $bR['W'] = ImageSX($shadows['BR']);
-            $bR['H'] = ImageSY($shadows['BR']);       
-    
+            $bR['H'] = ImageSY($shadows['BR']);
+
             $bL['X'] = floor($this->_left);
-            $bL['Y'] = $bR['Y'];       
+            $bL['Y'] = $bR['Y'];
             $bL['W'] = ImageSX($shadows['BL']);
-            $bL['H'] = ImageSY($shadows['BL']);       
-    
+            $bL['H'] = ImageSY($shadows['BL']);
+
             $b['X'] = $bL['X'] + $bL['W'];
             $b['Y'] = $bL['Y'];
             $b['W'] = floor($bR['X']-$bL['X']-$bL['W']);
             $b['H'] = ImageSY($shadows['B']);
-                          
-            
-            ImageCopyResampled($this->_canvas(), $shadows['TR'], $tR['X'], $tR['Y'], 0, 0, $tR['W'], $tR['H'], $tR['W'], $tR['H']);                                               
-            ImageCopyResampled($this->_canvas(), $shadows['BR'], $bR['X'], $bR['Y'], 0, 0, $bR['W'], $bR['H'], $bR['W'], $bR['H']);                                               
-            ImageCopyResampled($this->_canvas(), $shadows['BL'], $bL['X'], $bL['Y'], 0, 0, $bL['W'], $bL['H'], $bL['W'], $bL['H']);                                               
-           
-            ImageCopyResampled($this->_canvas(), $shadows['R'], $r['X'], $r['Y'], 0, 0, $r['W'], $r['H'], $r['W'], ImageSY($shadows['R']));                                               
-            ImageCopyResampled($this->_canvas(), $shadows['B'], $b['X'], $b['Y'], 0, 0, $b['W'], $b['H'], ImageSX($shadows['B']), $b['H']);                                               
-            
-            ImageDestroy($shadows['TR']);                                              
-            ImageDestroy($shadows['R']);                                              
-            ImageDestroy($shadows['BL']);                                              
-            ImageDestroy($shadows['B']);                                              
+
+
+            ImageCopyResampled($this->_canvas(), $shadows['TR'], $tR['X'], $tR['Y'], 0, 0, $tR['W'], $tR['H'], $tR['W'], $tR['H']);
+            ImageCopyResampled($this->_canvas(), $shadows['BR'], $bR['X'], $bR['Y'], 0, 0, $bR['W'], $bR['H'], $bR['W'], $bR['H']);
+            ImageCopyResampled($this->_canvas(), $shadows['BL'], $bL['X'], $bL['Y'], 0, 0, $bL['W'], $bL['H'], $bL['W'], $bL['H']);
+
+            ImageCopyResampled($this->_canvas(), $shadows['R'], $r['X'], $r['Y'], 0, 0, $r['W'], $r['H'], $r['W'], ImageSY($shadows['R']));
+            ImageCopyResampled($this->_canvas(), $shadows['B'], $b['X'], $b['Y'], 0, 0, $b['W'], $b['H'], ImageSX($shadows['B']), $b['H']);
+
+            ImageDestroy($shadows['TR']);
+            ImageDestroy($shadows['R']);
+            ImageDestroy($shadows['BL']);
+            ImageDestroy($shadows['B']);
             ImageDestroy($shadows['BR']);
-        }*/                                              
+        }*/
     }
-    
+
     /**
      * Writes text to the canvas.
      *
@@ -666,7 +666,7 @@ class Image_Graph_Element extends Image_Graph_Common
         if ($font === false) {
             $font = $this->_getFont();
         }
-        
+
         if ($alignment === false) {
             $alignment = IMAGE_GRAPH_ALIGN_LEFT + IMAGE_GRAPH_ALIGN_TOP;
         }
@@ -674,13 +674,13 @@ class Image_Graph_Element extends Image_Graph_Common
         $this->_driver->setFont($font);
         $this->_driver->write($x, $y, $text, $alignment);
     }
-        
-                       
+
+
 
     /**
      * Output the element to the canvas
      *
-     * @see Image_Graph_Common 
+     * @see Image_Graph_Common
      * @access private
      */
     function _done()
@@ -690,7 +690,7 @@ class Image_Graph_Element extends Image_Graph_Common
         $this->_driver->rectangle($this->_left, $this->_top, $this->_right, $this->_bottom);
 
         $result = parent::_done();
-        
+
         return $result;
     }
 

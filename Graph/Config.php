@@ -30,18 +30,18 @@
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Specfies the path to the system location of TrueType font files.
- * 
+ *
  * Remember trailing slash!
- * 
+ *
  * This is set by default on Windows systems to %SystemRoot%\Fonts\
  */
 if (isset($_SERVER['SystemRoot'])) {
     define('IMAGE_GRAPH_SYSTEM_FONT_PATH', $_SERVER['SystemRoot'] . '/Fonts/');
-} else {    
+} else {
     define('IMAGE_GRAPH_SYSTEM_FONT_PATH', '');
 }
 ?>

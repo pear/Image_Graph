@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Plot     
+ * @subpackage Plot
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Plot/Smoothed/Bezier.php
@@ -41,24 +41,24 @@ require_once 'Image/Graph/Plot/Smoothed/Bezier.php';
 
 /**
  * Bezier smoothed line chart.
- * 
+ *
  * Similar to a {@link Image_Graph_Plot_Line}, but the interconnecting lines
  * between two datapoints are smoothed using a Bezier curve, which enables the
  * chart to appear as a nice curved plot instead of the sharp edges of a
  * conventional {@link Image_Graph_Plot_Line}. Smoothed charts are only supported
  * with non-stacked types
- *               
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Plot
  */
-class Image_Graph_Plot_Smoothed_Line extends Image_Graph_Plot_Smoothed_Bezier 
+class Image_Graph_Plot_Smoothed_Line extends Image_Graph_Plot_Smoothed_Bezier
 {
 
     /**
-     * Gets the fill style of the element         
+     * Gets the fill style of the element
      *
-     * @return int A GD filestyle representing the fill style 
+     * @return int A GD filestyle representing the fill style
      * @see Image_Graph_Fill
      * @access private
      */
@@ -81,7 +81,7 @@ class Image_Graph_Plot_Smoothed_Line extends Image_Graph_Plot_Smoothed_Bezier
         $this->_addSamplePoints($x0, $y0, $x1, $y1);
         $this->_driver->polygonEnd(false);
     }
-    
+
     /**
      * Output the Bezier smoothed plot as an Line Chart
      *
@@ -101,14 +101,14 @@ class Image_Graph_Plot_Smoothed_Line extends Image_Graph_Plot_Smoothed_Bezier
                 $p0 = $dataset->_nearby(-2);
                 $p2 = $dataset->_nearby(0);
                 $p3 = $dataset->_nearby(1);
-                if ($p2) {                            
+                if ($p2) {
                     $cp = $this->_getControlPoints($p1, $p0, $p2, $p3);
                     $this->_driver->splineAdd(
-                        $cp['X'], 
-                        $cp['Y'], 
-                        $cp['P1X'], 
-                        $cp['P1Y'], 
-                        $cp['P2X'], 
+                        $cp['X'],
+                        $cp['Y'],
+                        $cp['P1X'],
+                        $cp['P1Y'],
+                        $cp['P2X'],
                         $cp['P2Y']
                     );
                 } else {
@@ -118,7 +118,7 @@ class Image_Graph_Plot_Smoothed_Line extends Image_Graph_Plot_Smoothed_Bezier
                 }
             }
             $this->_getLineStyle();
-            $this->_driver->splineEnd(false);            
+            $this->_driver->splineEnd(false);
         }
         unset($keys);
         $this->_drawMarker();

@@ -24,14 +24,14 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph.php
@@ -40,64 +40,64 @@ require_once 'Image/Graph.php';
 
 /**
  * Class for simple creation of graphs
- *   
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  */
-class Image_Graph_Simple extends Image_Graph 
+class Image_Graph_Simple extends Image_Graph
 {
-   
+
     /**
      * Image_Graph_Simple [Constructor]
      *
-     * @param int $width The width of the graph in pixels	 
-     * @param int $height The height of the graph in pixels	 
+     * @param int $width The width of the graph in pixels
+     * @param int $height The height of the graph in pixels
      */
     function &Image_Graph_Simple($width, $height, $plotType, $data, $title, $lineColor = 'black', $fillColor = 'white', $font = false)
     {
         parent::Image_Graph($width, $height);
-        
+
         $plotarea =& Image_Graph::factory('plotarea');
-        
+
         $dataset =& Image_Graph::factory('dataset', array($data));
-    
-        if ($font === false) {    
+
+        if ($font === false) {
             $font =& Image_Graph::factory('Image_Graph_Font');
         } elseif (is_string($font)) {
             $font =& Image_Graph::factory('ttf_font', $font);
             $font->setSize(8);
         }
-        
+
         $this->setFont($font);
-        
+
         $this->add(
             Image_Graph::vertical(
-                Image_Graph::factory('title', 
+                Image_Graph::factory('title',
                     array(
-                        $title, 
+                        $title,
                         array('size_rel' => 2)
                     )
                 ),
                 $plotarea,
                 10
-            )   
+            )
         );
 
-        $plotarea->addNew('line_grid', array(), IMAGE_GRAPH_AXIS_Y);        
-        
+        $plotarea->addNew('line_grid', array(), IMAGE_GRAPH_AXIS_Y);
+
         $plot =& $plotarea->addNew($plotType, &$dataset);
         $plot->setLineColor($lineColor);
         $plot->setFillColor($fillColor);
-        
+
         $axisX =& $plotarea->getAxis(IMAGE_GRAPH_AXIS_X);
         $axisX->showLabel(
-            IMAGE_GRAPH_LABEL_MINIMUM + 
-            IMAGE_GRAPH_LABEL_ZERO + 
+            IMAGE_GRAPH_LABEL_MINIMUM +
+            IMAGE_GRAPH_LABEL_ZERO +
             IMAGE_GRAPH_LABEL_MAXIMUM
         );
-        
+
     }
-    
+
     /**
      * Factory method to create the Image_Simple_Graph object.
      */
@@ -115,7 +115,7 @@ class Image_Graph_Simple extends Image_Graph
                 $font
             )
         );
-    }           
+    }
 
 }
 ?>

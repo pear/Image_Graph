@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Plot     
+ * @subpackage Plot
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Plot.php
@@ -41,12 +41,12 @@ require_once 'Image/Graph/Plot.php';
 
 /**
  * Radar chart.
- *               
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Plot
  */
-class Image_Graph_Plot_Radar extends Image_Graph_Plot 
+class Image_Graph_Plot_Radar extends Image_Graph_Plot
 {
 
     /**
@@ -66,7 +66,7 @@ class Image_Graph_Plot_Radar extends Image_Graph_Plot
         $r = min($rx, $ry);
         $cx = ($x0 + $x1) / 2;
         $cy = ($y0 + $y1) / 2;
-        $max = 5;        
+        $max = 5;
         for ($i = 0; $i < $p; $i++) {
             $v = 2 * pi() * $i / $p;
             $t = $r * rand(3, $max) / $max;
@@ -76,7 +76,7 @@ class Image_Graph_Plot_Radar extends Image_Graph_Plot
         }
         $this->_driver->polygonEnd();
     }
-    
+
     /**
      * Output the plot
      *
@@ -87,14 +87,14 @@ class Image_Graph_Plot_Radar extends Image_Graph_Plot
         if (is_a($this->_parent, 'Image_Graph_Plotarea_Radar')) {
             $keys = array_keys($this->_dataset);
             foreach ($keys as $key) {
-                $dataset = & $this->_dataset[$key];                    
+                $dataset = & $this->_dataset[$key];
                 $maxY = $dataset->maximumY();
                 $count = $dataset->count();
 
                 $dataset->_reset();
                 while ($point = $dataset->_next()) {
                     $this->_driver->polygonAdd(
-                        $this->_pointX($point), 
+                        $this->_pointX($point),
                         $this->_pointY($point)
                     );
                 }
@@ -105,7 +105,7 @@ class Image_Graph_Plot_Radar extends Image_Graph_Plot
             unset($keys);
         }
         $this->_drawMarker();
-        
+
         return parent::_done();
     }
 

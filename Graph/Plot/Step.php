@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Plot     
+ * @subpackage Plot
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Plot/Bar.php
@@ -41,7 +41,7 @@ require_once 'Image/Graph/Plot/Bar.php';
 
 /**
  * Stepchart.
- *               
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Plot
@@ -60,14 +60,14 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
     {
-        $dx = abs($x1 - $x0) / 3;        
-        $dy = abs($y1 - $y0) / 3;      
+        $dx = abs($x1 - $x0) / 3;
+        $dy = abs($y1 - $y0) / 3;
         $this->_driver->polygonAdd($x0, $y1);
         $this->_driver->polygonAdd($x0, $y0 + $dy);
-        
+
         $this->_driver->polygonAdd($x0 + $dx, $y0 + $dy);
         $this->_driver->polygonAdd($x0 + $dx, $y0);
-        
+
         $this->_driver->polygonAdd($x0 + 2*$dx, $y0);
         $this->_driver->polygonAdd($x0 + 2*$dx, $y0 + 2*$dy);
 
@@ -75,11 +75,11 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
         $this->_driver->polygonAdd($x1, $y1);
         $this->_driver->polygonEnd();
     }
-    
+
     /**
      * PlotType [Constructor]
      *
-     * A 'normal' step chart is 'stacked'     
+     * A 'normal' step chart is 'stacked'
      *
      * @param Dataset $dataset The data set (value containter) to plot
      * @param string $multiType The type of the plot
@@ -91,10 +91,10 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
         $multiType = strtolower($multiType);
         if (($multiType != 'stacked') && ($multiType != 'stacked100pct')) {
             $multiType = 'stacked';
-        }          
+        }
         parent::Image_Graph_Plot($dataset, $multiType, $title);
     }
-        
+
     /**
      * Output the plot
      *
@@ -123,7 +123,7 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
 
         $point = array ('X' => $dataset->maximumX(), 'Y' => '#min_pos#');
         $base[] = $this->_pointY($point);
-        $base[] = $this->_pointX($point) + $width;                
+        $base[] = $this->_pointX($point) + $width;
 
         $keys = array_keys($this->_dataset);
         foreach ($keys as $key) {
@@ -135,19 +135,19 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
             while ($point = $dataset->_next()) {
                 $x = $point['X'];
                 $p = $point;
-                
+
                 if (!isset($current[$x])) {
                     $current[$x] = 0;
                 }
-                                        
-                if ($this->_multiType == 'stacked100pct') {                            
+
+                if ($this->_multiType == 'stacked100pct') {
                     $p['Y'] = 100 * ($current[$x] + $point['Y']) / $total['TOTAL_Y'][$x];
                 } else {
                     $p['Y'] += $current[$x];
                 }
                 $current[$x] += $point['Y'];
                 $point = $p;
-                                    
+
                 $x0 = $last;
                 $y0 = $this->_pointY($point);
                 $last = $x1 = $this->_pointX($point) + $width;
@@ -162,7 +162,7 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
                 list(, $y) = each($polygon);
                 $this->_driver->polygonAdd($x, $y);
             }
-            
+
             $this->_getFillStyle($key);
             $this->_getLineStyle($key);
             $this->_driver->polygonEnd();

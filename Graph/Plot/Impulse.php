@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Plot     
+ * @subpackage Plot
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Plot.php
@@ -41,12 +41,12 @@ require_once 'Image/Graph/Plot.php';
 
 /**
  * Impulse chart.
- *               
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Plot
  */
-class Image_Graph_Plot_Impulse extends Image_Graph_Plot 
+class Image_Graph_Plot_Impulse extends Image_Graph_Plot
 {
 
     /**
@@ -78,12 +78,12 @@ class Image_Graph_Plot_Impulse extends Image_Graph_Plot
         if (!is_array($this->_dataset)) {
             return false;
         }
-        
+
         if ($this->_multiType == 'stacked100pct') {
             $total = $this->_getTotals();
         }
         $current = array();
-        $number = 0;        
+        $number = 0;
 
         $minYaxis = $this->_parent->_getMinimum($this->_axisY);
         $maxYaxis = $this->_parent->_getMaximum($this->_axisY);
@@ -91,50 +91,50 @@ class Image_Graph_Plot_Impulse extends Image_Graph_Plot
         $keys = array_keys($this->_dataset);
         foreach ($keys as $key) {
             $dataset =& $this->_dataset[$key];
-            $dataset->_reset();            
+            $dataset->_reset();
             while ($point = $dataset->_next()) {
                 $x0 = $this->_pointX($point);
-                if (($this->_multiType == 'stacked') || 
-                    ($this->_multiType == 'stacked100pct')) 
+                if (($this->_multiType == 'stacked') ||
+                    ($this->_multiType == 'stacked100pct'))
                 {
-                    $x = $point['X'];                    
+                    $x = $point['X'];
 
                     if ($point['Y'] >= 0) {
                         if (!isset($current[$x])) {
                             $current[$x] = 0;
                         }
-                        
-                        if ($this->_multiType == 'stacked') {                        
+
+                        if ($this->_multiType == 'stacked') {
                             $p0 = array(
-                                'X' => $point['X'], 
+                                'X' => $point['X'],
                                 'Y' => $current[$x]
                             );
                             $p1 = array(
-                                'X' => $point['X'], 
+                                'X' => $point['X'],
                                 'Y' => $current[$x] + $point['Y']
                             );
                         } else {
                             $p0 = array(
-                                'X' => $point['X'], 
+                                'X' => $point['X'],
                                 'Y' => 100 * $current[$x] / $total['TOTAL_Y'][$x]
                             );
                             $p1 = array(
-                                'X' => $point['X'], 
+                                'X' => $point['X'],
                                 'Y' => 100 * ($current[$x] + $point['Y']) / $total['TOTAL_Y'][$x]
                             );
                         }
                         $current[$x] += $point['Y'];
                     } else {
                         if (!isset($currentNegative[$x])) {
-                            $currentNegative[$x] = 0;                        
+                            $currentNegative[$x] = 0;
                         }
 
                         $p0 = array(
-                                'X' => $point['X'], 
+                                'X' => $point['X'],
                                 'Y' => $currentNegative[$x]
                             );
                         $p1 = array(
-                                'X' => $point['X'], 
+                                'X' => $point['X'],
                                 'Y' => $currentNegative[$x] + $point['Y']
                             );
                         $currentNegative[$x] += $point['Y'];
@@ -144,35 +144,35 @@ class Image_Graph_Plot_Impulse extends Image_Graph_Plot
                     $p1 = $point;
                 }
 
-                if ((($minY = min($p0['Y'], $p1['Y'])) < $maxYaxis) && 
+                if ((($minY = min($p0['Y'], $p1['Y'])) < $maxYaxis) &&
                     (($maxY = max($p0['Y'], $p1['Y'])) > $minYaxis)
                 ) {
                     $p0['Y'] = $minY;
-                    $p1['Y'] = $maxY;          
-                              
+                    $p1['Y'] = $maxY;
+
                     if ($p0['Y'] < $minYaxis) {
                         $p0['Y'] = '#min_pos#';
                     }
                     if ($p1['Y'] > $maxYaxis) {
                         $p1['Y'] = '#max_neg#';
-                    }                        
+                    }
 
                     $x1 = $this->_pointX($p0);
                     $y1 = $this->_pointY($p0);
-                
+
                     $x2 = $this->_pointX($p1);
                     $y2 = $this->_pointY($p1);
-                
+
                     if ($this->_multiType == 'normal') {
-                        $offset = 5*$number;                    
+                        $offset = 5*$number;
                         $x1 += $offset;
                         $x2 += $offset;
                     }
-        
+
                     $ID = $point['ID'];
                     if (($ID === false) && (count($this->_dataset) > 1)) {
                         $ID = $key;
-                    }                   
+                    }
                     $this->_getLineStyle($ID);
                     $this->_driver->line($x1, $y1, $x2, $y2);
                 }

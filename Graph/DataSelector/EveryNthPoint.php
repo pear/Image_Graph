@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage DataSelector     
+ * @subpackage DataSelector
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/DataSelector.php
@@ -41,15 +41,15 @@ require_once 'Image/Graph/DataSelector.php';
 
 /**
  * Filter out all points except every Nth point.
- * 
+ *
  * Use this dataselector if you have a large number of datapoints, but only want to
  * show markers for a small number of them, say every 10th.
- *     
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage DataSelector
  */
-class Image_Graph_DataSelector_EveryNthPoint extends Image_Graph_DataSelector 
+class Image_Graph_DataSelector_EveryNthPoint extends Image_Graph_DataSelector
 {
 
     /**
@@ -60,7 +60,7 @@ class Image_Graph_DataSelector_EveryNthPoint extends Image_Graph_DataSelector
     var $_pointNum = 0;
 
     /**
-     * The number of points between every 'show', default: 10	 
+     * The number of points between every 'show', default: 10
      * @var int
      * @access private
      */
@@ -84,7 +84,7 @@ class Image_Graph_DataSelector_EveryNthPoint extends Image_Graph_DataSelector
      * @param array $values The values to check
      * @return bool True if the Values should cause a marker to be shown,
      *   false if not
-     * @access private     
+     * @access private
      */
     function _select($values)
     {

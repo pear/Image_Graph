@@ -24,16 +24,16 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Plot     
+ * @subpackage Plot
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
  * @since 0.3.0dev2
- */ 
+ */
 
 /**
  * Include file Image/Graph/Plot/Smoothed/Bezier.php
@@ -42,30 +42,30 @@ require_once 'Image/Graph/Plot/Smoothed/Bezier.php';
 
 /**
  * Smoothed radar chart.
- *               
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Plot
  * @since 0.3.0dev2
  */
-class Image_Graph_Plot_Smoothed_Radar extends Image_Graph_Plot_Smoothed_Bezier 
+class Image_Graph_Plot_Smoothed_Radar extends Image_Graph_Plot_Smoothed_Bezier
 {
-    
+
     // TODO Create legend sample for smoothed radar chart
-    
+
     /**
      * Output the plot
      *
      * @access private
      */
     function _done()
-    {        
+    {
         if (is_a($this->_parent, 'Image_Graph_Plotarea_Radar')) {
             $keys = array_keys($this->_dataset);
             foreach ($keys as $key) {
                 $dataset = & $this->_dataset[$key];
                 if ($dataset->count() >= 3) {
-                    $dataset->_reset();                
+                    $dataset->_reset();
                     $p1_ = $dataset->_next();
                     $p2_ = $dataset->_next();
                     $p3_ = $dataset->_next();
@@ -75,51 +75,51 @@ class Image_Graph_Plot_Smoothed_Radar extends Image_Graph_Plot_Smoothed_Bezier
                             $plast_ = $p;
                         }
                     }
-                    
+
                     if ($plast_ === false) {
                         $plast_ = $p3_;
-                    }                
+                    }
                     $dataset->_reset();
                     while ($p1 = $dataset->_next()) {
-                        $p0 = $dataset->_nearby(-2);                    
+                        $p0 = $dataset->_nearby(-2);
                         $p2 = $dataset->_nearby(0);
                         $p3 = $dataset->_nearby(1);
-                        
+
                         if ($p0 === false) {
                             $p0 = $plast_;
                         }
-                        
+
                         if ($p2 === false) {
                             $p2 = $p1_;
                             $p3 = $p2_;
                         } elseif ($p3 === false) {
                             $p3 = $p1_;
                         }
-    
-                                                
+
+
                         $cp = $this->_getControlPoints($p1, $p0, $p2, $p3);
                         $this->_driver->splineAdd(
-                            $cp['X'], 
-                            $cp['Y'], 
-                            $cp['P1X'], 
-                            $cp['P1Y'], 
-                            $cp['P2X'], 
+                            $cp['X'],
+                            $cp['Y'],
+                            $cp['P1X'],
+                            $cp['P1Y'],
+                            $cp['P2X'],
                             $cp['P2Y']
                         );
-                        
+
                         $next2last = $p0;
                         $last = $p1;
                     }
-                    
+
                     $cp = $this->_getControlPoints($p1_, $plast_, $p2_, $p3_);
                     $this->_driver->splineAdd(
-                        $cp['X'], 
-                        $cp['Y'], 
-                        $cp['P1X'], 
-                        $cp['P1Y'], 
-                        $cp['P2X'], 
+                        $cp['X'],
+                        $cp['Y'],
+                        $cp['P1X'],
+                        $cp['P1Y'],
+                        $cp['P2X'],
                         $cp['P2Y']
-                    );                
+                    );
                     $this->_getFillStyle($key);
                     $this->_getLineStyle($key);
                     $this->_driver->splineEnd(true);
@@ -127,7 +127,7 @@ class Image_Graph_Plot_Smoothed_Radar extends Image_Graph_Plot_Smoothed_Bezier
             }
             unset($keys);
         }
-        $this->_drawMarker();                 
+        $this->_drawMarker();
         return parent::_done();
     }
 

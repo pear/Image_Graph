@@ -24,9 +24,9 @@
 
 /**
  * Class for handling output in PDF format.
- * 
+ *
  * Requires PHP extension PDFlib
- * 
+ *
  * @package Image_Graph
  * @subpackage Driver
  * @category images
@@ -40,7 +40,7 @@
 /**
  * Include file Image/Graph/Driver.php
  */
-require_once 'Image/Graph/Driver.php'; 
+require_once 'Image/Graph/Driver.php';
 
 /**
  * Include file Image/Graph/Constants.php
@@ -54,14 +54,14 @@ require_once 'Image/Graph/Color.php';
 
 /**
  * PDF Driver class.
- * 
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Driver
  * @since 0.3.0dev2
  */
-class Image_Graph_Driver_PDFlib extends Image_Graph_Driver 
-{   
+class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
+{
 
     /**
      * The PDF document
@@ -100,167 +100,167 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
 
     /**
      * Create the PDF driver.
-     * 
+     *
      * Parameters available:
-     * 
+     *
      * 'page' Specify the page/paper format for the graph's page, available
      * formats are: A0, A1, A2, A3, A4, A5, A6, B5, letter, legal, ledger,
      * 11x17, cd_front, inlay, inlay_nosides
-     * 
+     *
      * 'align' Alignment of the graph on the page, available options are:
      * topleft, topcenter, topright, leftcenter, center, rightcenter,
      * leftbottom, centerbottom, rightbottom
-     * 
+     *
      * 'orientation' Specifies the paper orientation, default is 'portrait' and
      * 'landscape' is also supported.
-     * 
-     * 'creator' The creator tag of the PDF/graph 
-     * 
+     *
+     * 'creator' The creator tag of the PDF/graph
+     *
      * 'author' The author tag of the PDF/graph
-     * 
+     *
      * 'title' The title tag of the PDF/graph
-     * 
+     *
      * 'width' The width of the graph on the page
-     * 
+     *
      * 'height' The height of the graph on the page
-     * 
+     *
      * 'left' The left offset of the graph on the page
-     * 
+     *
      * 'top' The top offset of the graph on the page
-     * 
+     *
      * 'filename' The PDF file to open/add page to, using 'filename' requires
      * the commercial version of PDFlib (http://www.pdflib.com/), this has for
-     * obvious ($ 450) reasons not been tested 
-     * 
+     * obvious ($ 450) reasons not been tested
+     *
      * 'pdf' An existing PDFlib PDF document to add the page to
-     * 
+     *
      * 'add_page' (true/false) Used together with 'pdf', to specify whether the
      * driver should add a new graph page (true) or create the graph on the
      * current page (false), default is 'true'
-     * 
+     *
      * The 'page' and 'width' & 'height' can be mutually omitted, if 'page' is
      * omitted the page is created using dimensions of width x height, and if
      * width and height are omitted the page dimensions are used for the graph.
-     * 
+     *
      * If 'pdf' is specified, 'filename', 'creator', 'author' and 'title' has no
      * effect.
-     * 
+     *
      * 'left' and 'top' are overridden by 'align'
-     * 
+     *
      * It is required either to specify 'width' & 'height' or 'page'.
-     * 
+     *
      * The PDF format/PDFlib has some limitations on the capabilities, which
      * means some functionality available using other drivers (fx. alpha
      * blending and gradient fills) are not supported with PDF (see Drivers.txt
      * in the docs/ folder for further details)
-     * 
+     *
      * @param array $param Parameter array
      */
     function &Image_Graph_Driver_PDFlib($param)
     {
         if (isset($param['page'])) {
             switch (strtoupper($param['page'])) {
-            case 'A0':  
+            case 'A0':
                 $this->_pageWidth = 2380;
                 $this->_pageHeight = 3368;
                 break;
-                
-            case 'A1':  
+
+            case 'A1':
                 $this->_pageWidth = 1684;
                 $this->_pageHeight = 2380;
                 break;
 
-            case 'A2':  
+            case 'A2':
                 $this->_pageWidth = 1190;
                 $this->_pageHeight = 1684;
                 break;
-                
-            case 'A3':  
+
+            case 'A3':
                 $this->_pageWidth = 842;
                 $this->_pageHeight = 1190;
                 break;
-                
-            case 'A4':  
+
+            case 'A4':
                 $this->_pageWidth = 595;
                 $this->_pageHeight = 842;
                 break;
-                
-            case 'A5':  
+
+            case 'A5':
                 $this->_pageWidth = 421;
                 $this->_pageHeight = 595;
                 break;
-                
-            case 'A6':  
+
+            case 'A6':
                 $this->_pageWidth = 297;
                 $this->_pageHeight = 421;
                 break;
-                
-            case 'B5':  
+
+            case 'B5':
                 $this->_pageWidth = 501;
                 $this->_pageHeight = 709;
                 break;
 
-            case 'LETTER':  
+            case 'LETTER':
                 $this->_pageWidth = 612;
                 $this->_pageHeight = 792;
                 break;
-                
-            case 'LEGAL':  
+
+            case 'LEGAL':
                 $this->_pageWidth = 612;
                 $this->_pageHeight = 1008;
                 break;
 
-            case 'LEDGER':  
+            case 'LEDGER':
                 $this->_pageWidth = 1224;
                 $this->_pageHeight = 792;
                 break;
 
-            case '11X17':  
+            case '11X17':
                 $this->_pageWidth = 792;
                 $this->_pageHeight = 1224;
                 break;
-                
-            case 'CD_FRONT':  
+
+            case 'CD_FRONT':
                 $this->_pageWidth = 337;
                 $this->_pageHeight = 337;
                 break;
 
-            case 'INLAY':  
+            case 'INLAY':
                 $this->_pageWidth = 425;
                 $this->_pageHeight = 332;
                 break;
 
-            case 'INLAY_NOSIDES':  
+            case 'INLAY_NOSIDES':
                 $this->_pageWidth = 390;
                 $this->_pageHeight = 332;
                 break;
             }
         }
-        
+
         if ((isset($param['orientation'])) && (strtoupper($param['orientation']) == 'LANDSCAPE')) {
             $w = $this->_pageWidth;
             $this->_pageWidth = $this->_pageHeight;
             $this->_pageHeight = $w;
-        }            
-        
+        }
+
         parent::Image_Graph_Driver($param);
-        
+
         if (!$this->_pageWidth) {
             $this->_pageWidth = $this->_width;
         } elseif (!$this->_width) {
             $this->_width = $this->_pageWidth;
         }
-        
+
         if (!$this->_pageHeight) {
             $this->_pageHeight = $this->_height;
         } elseif (!$this->_height) {
             $this->_height = $this->_pageHeight;
         }
-        
+
         $this->_width = min($this->_width, $this->_pageWidth);
         $this->_height = min($this->_height, $this->_pageHeight);
 
-        if ((isset($param['align'])) && 
+        if ((isset($param['align'])) &&
             (($this->_width != $this->_pageWidth) || ($this->_height != $this->_pageHeight))
         ) {
             switch (strtoupper($param['align'])) {
@@ -308,33 +308,33 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
                 $this->_top = $this->_pageHeight - $this->_height;
                 $this->_left = $this->_pageWidth - $this->_width;
                 break;
-            } 
-        }            
-        
+            }
+        }
+
         $this->_pdflib = $this->_version();
 
-        $addPage = true;        
-        if ((isset($param['pdf'])) && (is_resource($param['pdf']))) {            
+        $addPage = true;
+        if ((isset($param['pdf'])) && (is_resource($param['pdf']))) {
             $this->_pdf =& $param['pdf'];
             if ((isset($param['add_page'])) && ($param['add_page'] === false)) {
                 $addPage = false;
             }
         } else {
             $this->_pdf = pdf_new();
-                    
+
             if (isset($param['filename'])) {
                 pdf_open_file($this->_pdf, $param['filename']);
             } else {
                 pdf_open_file($this->_pdf, '');
             }
 
-            pdf_set_parameter($this->_pdf, 'warning', 'true'); 
+            pdf_set_parameter($this->_pdf, 'warning', 'true');
 
-            pdf_set_info($this->_pdf, 'Creator', (isset($param['creator']) ? $param['creator'] : 'PEAR::Image_Graph')); 
-            pdf_set_info($this->_pdf, 'Author', (isset($param['author']) ? $param['author'] : 'Jesper Veggerby')); 
+            pdf_set_info($this->_pdf, 'Creator', (isset($param['creator']) ? $param['creator'] : 'PEAR::Image_Graph'));
+            pdf_set_info($this->_pdf, 'Author', (isset($param['author']) ? $param['author'] : 'Jesper Veggerby'));
             pdf_set_info($this->_pdf, 'Title', (isset($param['title']) ? $param['title'] : 'Image_Graph'));
-        }            
-                
+        }
+
         if ($addPage) {
             pdf_begin_page($this->_pdf, $this->_pageWidth, $this->_pageHeight);
         }
@@ -343,7 +343,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
     /**
      * Get the x-point from the relative to absolute coordinates
      *
-     * @param float $x The relative x-coordinate (in percentage of total width) 
+     * @param float $x The relative x-coordinate (in percentage of total width)
      * @return float The x-coordinate as applied to the driver
      * @access private
      */
@@ -355,7 +355,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
     /**
      * Get the y-point from the relative to absolute coordinates
      *
-     * @param float $y The relative y-coordinate (in percentage of total width) 
+     * @param float $y The relative y-coordinate (in percentage of total width)
      * @return float The y-coordinate as applied to the driver
      * @access private
      */
@@ -363,7 +363,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
     {
         return $this->_pageHeight - ($this->_top + $y);
     }
-       
+
     /**
      * Get the color index for the RGB color
      *
@@ -383,7 +383,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
             return $color;
         }
     }
-    
+
     /**
      * Get the PDF linestyle
      *
@@ -400,16 +400,16 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
 
         if (($lineStyle == 'transparent') || ($lineStyle === false)) {
             return false;
-        } 
-        
-        $color = $this->_color($lineStyle);        
-        
-        pdf_setlinewidth($this->_pdf, $this->_thickness); 
+        }
+
+        $color = $this->_color($lineStyle);
+
+        pdf_setlinewidth($this->_pdf, $this->_thickness);
         if ($this->_pdflib < 4) {
             pdf_setrgbcolor_stroke($this->_pdf, $color[0]/255, $color[1]/255, $color[2]/255);
-        } else {        
+        } else {
             pdf_setcolor($this->_pdf, 'stroke', 'rgb', $color[0], $color[1], $color[2], 0);
-        }        
+        }
         return true;
     }
 
@@ -429,18 +429,18 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
 
         if (($fillStyle == 'transparent') || ($fillStyle === false)) {
             return false;
-        } 
-        
+        }
+
         $color = $this->_color($fillStyle);
-                
+
         if ($this->_pdflib < 4) {
             pdf_setrgbcolor_fill($this->_pdf, $color[0]/255, $color[1]/255, $color[2]/255);
         } else {
             pdf_setcolor($this->_pdf, 'fill', 'rgb', $color[0], $color[1], $color[2], 0);
         }
-        return true;        
+        return true;
     }
-        
+
     /**
      * Set the PDF font
      *
@@ -461,10 +461,10 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
             $this->_setFillStyle('black');
         }
     }
-                
+
     /**
      * Sets an image that should be used for filling.
-     * 
+     *
      * Image filling is not supported with PDF, filling 'transparent'
      *
      * @param string $filename The filename of the image to fill with
@@ -476,7 +476,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
 
     /**
      * Sets a gradient fill
-     * 
+     *
      * Gradient filling is not supported with PDF, end color used as solid fill.
      *
      * @param array $gradient Gradient fill options
@@ -488,14 +488,14 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
 
     /**
      * Sets the font options.
-     * 
+     *
      * The $font array may have the following entries:
-     * 
+     *
      * 'ttf' = the .ttf file (either the basename, filename or full path)
      * If 'ttf' is specified, then the following can be specified
-     * 
+     *
      * 'size' = size in pixels
-     * 
+     *
      * 'angle' = the angle with which to write the text
      *
      * @param array $font The font options.
@@ -523,11 +523,11 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
         if (!isset($this->_font['size'])) {
             $this->_font['size'] = 12;
         }
-        
+
         if (!isset($this->_font['encoding'])) {
             $this->_font['encoding'] = 'winansi';
-        } 
-        
+        }
+
         if (!isset($this->_font['color'])) {
             $this->_font['color'] = 'black';
         }
@@ -545,13 +545,13 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
         pdf_initgraphics($this->_pdf);
         parent::_reset();
     }
-                    
+
     /**
      * Draw a line
      *
-     * @param int $x0 X start point 
-     * @param int $y0 X start point 
-     * @param int $x1 X end point 
+     * @param int $x0 X start point
+     * @param int $y0 X start point
+     * @param int $x1 X end point
      * @param int $y1 Y end point
      * @param mixed $color The line color, can be omitted
      */
@@ -562,13 +562,13 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
             pdf_lineto($this->_pdf, $this->_getX($x1), $this->_getY($y1));
             pdf_stroke($this->_pdf);
         }
-        parent::line($x0, $y0, $x1, $y1, $color);        
+        parent::line($x0, $y0, $x1, $y1, $color);
     }
-    
+
     /**
      * Draws a polygon
      *
-     * @param bool $connectEnds Specifies wether the start point should be
+     * @param bool $connectEnds Specifies whether the start point should be
      *   connected to the endpoint (closed polygon) or not (connected line)
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
@@ -580,22 +580,22 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
         if ($connectEnds) {
             $fill = $this->_setFillStyle($fillColor);
         }
-        
+
         if (($line) || ($fill)) {
             $first = true;
             foreach ($this->_polygon as $point) {
-                if ($first === true) {                
+                if ($first === true) {
                     pdf_moveto($this->_pdf, $point['X'], $point['Y']);
                     $first = $point;
                 } else {
                     pdf_lineto($this->_pdf, $point['X'], $point['Y']);
-                }            
+                }
             }
-            
+
             if ($connectEnds) {
                 pdf_lineto($this->_pdf, $first['X'], $first['Y']);
             }
-            
+
             if (($line) && ($fill)) {
                 pdf_fill_stroke($this->_pdf);
             } elseif ($line) {
@@ -610,7 +610,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
     /**
      * Draws a polygon
      *
-     * @param bool $connectEnds Specifies wether the start point should be
+     * @param bool $connectEnds Specifies whether the start point should be
      *   connected to the endpoint (closed polygon) or not (connected line)
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
@@ -624,22 +624,22 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
         }
 
         $first = true;
-        foreach ($this->_polygon as $point) {            
+        foreach ($this->_polygon as $point) {
             if ($first === true) {
                 pdf_moveto($this->_pdf, $point['X'], $point['Y']);
                 $first = $point;
             } else {
                 if (isset($last['P1X'])) {
-                    pdf_curveto($this->_pdf, 
-                        $last['P1X'], 
-                        $last['P1Y'], 
-                        $last['P2X'], 
-                        $last['P2Y'], 
-                        $point['X'], 
+                    pdf_curveto($this->_pdf,
+                        $last['P1X'],
+                        $last['P1Y'],
+                        $last['P2X'],
+                        $last['P2Y'],
+                        $point['X'],
                         $point['Y']
                     );
                 } else {
-                    pdf_lineto($this->_pdf, 
+                    pdf_lineto($this->_pdf,
                         $point['X'],
                         $point['Y']
                     );
@@ -647,20 +647,20 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
             }
             $last = $point;
         }
-        
+
         if ($connectEnds) {
             if (isset($last['P1X'])) {
-                pdf_curveto($this->_pdf, 
-                    $last['P1X'], 
-                    $last['P1Y'], 
-                    $last['P2X'], 
-                    $last['P2Y'], 
-                    $first['X'], 
+                pdf_curveto($this->_pdf,
+                    $last['P1X'],
+                    $last['P1Y'],
+                    $last['P2X'],
+                    $last['P2Y'],
+                    $first['X'],
                     $first['Y']
                 );
             } else {
-                pdf_lineto($this->_pdf, 
-                    $first['X'], 
+                pdf_lineto($this->_pdf,
+                    $first['X'],
                     $first['Y']
                 );
             }
@@ -675,19 +675,19 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
         }
         parent::splineEnd($connectEnds);
     }
-    
+
     /**
      * Draw a rectangle
      *
-     * @param int $x0 X start point 
-     * @param int $y0 X start point 
-     * @param int $x1 X end point 
+     * @param int $x0 X start point
+     * @param int $y0 X start point
+     * @param int $x1 X end point
      * @param int $y1 Y end point
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
      */
     function rectangle($x0, $y0, $x1, $y1, $fillColor = false, $lineColor = false)
-    {       
+    {
         $line = $this->_setLineStyle($lineColor);
         $fill = $this->_setFillStyle($fillColor);
         if (($line) || ($fill)) {
@@ -701,14 +701,14 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
             }
         }
         parent::rectangle($x0, $y0, $x1, $y1, $fillColor, $lineColor);
-    }    
+    }
 
     /**
      * Draw an ellipse
      *
-     * @param int $x Center point x-value 
+     * @param int $x Center point x-value
      * @param int $y Center point y-value
-     * @param int $rx X-radius of ellipse 
+     * @param int $rx X-radius of ellipse
      * @param int $ry Y-radius of ellipse
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
@@ -722,28 +722,28 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
                 pdf_circle($this->_pdf, $this->_getX($x), $this->_getY($y), $rx);
             } else {
                 pdf_moveto($this->_pdf, $this->_getX($x - $rx), $this->_getY($y));
-                pdf_curveto($this->_pdf, 
+                pdf_curveto($this->_pdf,
                     $this->_getX($x - $rx), $this->_getY($y),
                     $this->_getX($x - $rx), $this->_getY($y - $ry),
                     $this->_getX($x), $this->_getY($y - $ry)
                 );
-                pdf_curveto($this->_pdf, 
+                pdf_curveto($this->_pdf,
                     $this->_getX($x), $this->_getY($y - $ry),
                     $this->_getX($x + $rx), $this->_getY($y - $ry),
                     $this->_getX($x + $rx), $this->_getY($y)
                 );
-                pdf_curveto($this->_pdf, 
+                pdf_curveto($this->_pdf,
                     $this->_getX($x + $rx), $this->_getY($y),
                     $this->_getX($x + $rx), $this->_getY($y + $ry),
                     $this->_getX($x), $this->_getY($y + $ry)
                 );
-                pdf_curveto($this->_pdf, 
+                pdf_curveto($this->_pdf,
                     $this->_getX($x), $this->_getY($y + $ry),
                     $this->_getX($x - $rx), $this->_getY($y + $ry),
                     $this->_getX($x - $rx), $this->_getY($y)
                 );
             }
-            
+
             if (($line) && ($fill)) {
                 pdf_fill_stroke($this->_pdf);
             } elseif ($line) {
@@ -751,16 +751,16 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
             } elseif ($fill) {
                 pdf_fill($this->_pdf);
             }
-        }    
-        parent::ellipse($x, $y, $rx, $ry, $fillColor, $lineColor);        
+        }
+        parent::ellipse($x, $y, $rx, $ry, $fillColor, $lineColor);
     }
 
     /**
      * Draw a pie slice
      *
-     * @param int $x Center point x-value 
+     * @param int $x Center point x-value
      * @param int $y Center point y-value
-     * @param int $rx X-radius of pie slice 
+     * @param int $rx X-radius of pie slice
      * @param int $ry Y-radius of pie slice
      * @param int $v1 The starting angle
      * @param int $v2 The end angle
@@ -770,21 +770,21 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
      * @param mixed $lineColor The line color, can be omitted
      */
     function pieSlice($x, $y, $rx, $ry, $v1, $v2, $srx = false, $sry = false, $fillColor = false, $lineColor = false)
-    {        
+    {
         // TODO Implement PDFLIB::pieSlice()
         parent::pieSlice($x, $y, $rx, $ry, $v1, $v2, $fillColor, $lineColor);
     }
-    
+
     /**
      * Get the width of a text,
      *
      * @param string $text The text to get the width of
      * @return int The width of the text
-     */ 
+     */
     function textWidth($text)
     {
         if ($this->_pdfFont === false) {
-             return $this->_font['size'] * 0.7 * strlen($text);        
+             return $this->_font['size'] * 0.7 * strlen($text);
          } else {
             return pdf_stringwidth($this->_pdf, $text, $this->_pdfFont, $this->_font['size']);
         }
@@ -795,7 +795,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
      *
      * @param string $text The text to get the height of
      * @return int The height of the text
-     */ 
+     */
     function textHeight($text)
     {
         if (isset($this->_font['size'])) {
@@ -804,13 +804,13 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
             return 12;
         }
     }
-    
+
     /**
      * Writes text.
-     * 
+     *
      * Angled text not supported on PDF.
      *
-     * @param int $x X-point of text 
+     * @param int $x X-point of text
      * @param int $y Y-point of text
      * @param string $text The text to write
      * @param int $alignment The alignment of the text
@@ -838,18 +838,18 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
         if (($color === false) && (isset($this->_font['color']))) {
             $color = $this->_font['color'];
         }
-        
+
         pdf_show_xy($this->_pdf, $text, $this->_getX($x), $this->_getY($y));
-        
+
         parent::write($x, $y, $text, $alignment);
     }
 
     /**
      * Overlay image
      *
-     * @param int $x X-point of overlayed image 
+     * @param int $x X-point of overlayed image
      * @param int $y Y-point of overlayed image
-     * @param string $filename The filename of the image to overlay  
+     * @param string $filename The filename of the image to overlay
      * @param int $width The width of the overlayed image (resizing if possible)
      * @param int $height The height of the overlayed image (resizing if
      *   possible)
@@ -861,11 +861,11 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
         } elseif (substr($filename, -4) == '.jpg') {
             $type = 'jpeg';
         }
-                     
+
         $image = pdf_load_image($this->_pdf, $type, $filename, '');
-        $width_ = pdf_get_value($this->_pdf, 'imagewidth', $image); 
+        $width_ = pdf_get_value($this->_pdf, 'imagewidth', $image);
         $height_ = pdf_get_value($this->_pdf, 'imageheight', $image);
-        
+
         $outputWidth = ($width !== false ? $width : $width_);
         $outputHeight = ($height !== false ? $height : $height_);
 
@@ -874,23 +874,23 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
         } elseif ($alignment & IMAGE_GRAPH_ALIGN_CENTER_X) {
             $x -= $outputWidth / 2;
         }
-    
+
         if ($alignment & IMAGE_GRAPH_ALIGN_TOP) {
-            $y += $outputHeight; 
+            $y += $outputHeight;
         } elseif ($alignment & IMAGE_GRAPH_ALIGN_CENTER_Y) {
             $y -= $outputHeight / 2;
         }
-        
+
         if (($width === false) && ($height === false)) {
             $scale = 1;
         } else {
             $scale = max(($height/$height_), ($width/$width_));
-        } 
+        }
 
         pdf_place_image($this->_pdf, $image, $this->_getX($x), $this->_getY($y), $scale);
         pdf_close_image($this->_pdf, $image);
     }
-        
+
     /**
      * Output the result of the driver
      *
@@ -898,27 +898,27 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
      * @abstract
      */
     function done($param = false)
-    {        
-        pdf_end_page($this->_pdf); 
-        pdf_close($this->_pdf); 
+    {
+        pdf_end_page($this->_pdf);
+        pdf_close($this->_pdf);
 
-        $buf = pdf_get_buffer($this->_pdf); 
-        $len = strlen($buf); 
+        $buf = pdf_get_buffer($this->_pdf);
+        $len = strlen($buf);
 
         if (isset($param['filename'])) {
             $fp = @fopen($param['filename'], 'wb');
             if ($fp) {
                 fwrite($fp, $buf, strlen($buf));
-            } 
+            }
         } else {
-            header('Content-type: application/pdf'); 
-            header('Content-Length: ' . $len); 
-            header('Content-Disposition: inline; filename=image_graph.pdf'); 
+            header('Content-type: application/pdf');
+            header('Content-Length: ' . $len);
+            header('Content-Disposition: inline; filename=image_graph.pdf');
             print $buf;
-        } 
+        }
 
         pdf_delete($this->_pdf);
-    }     
+    }
 
     /**
      * Check which major version of PDFlib is installed
@@ -935,21 +935,21 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
             phpinfo(8);
             $php_info = ob_get_contents();
             ob_end_clean();
-    
-            if (ereg("<td[^>]*>PDFlib GmbH Version *<\/td><td[^>]*>([^<]*)<\/td>", 
-                $php_info, $result)) 
+
+            if (ereg("<td[^>]*>PDFlib GmbH Version *<\/td><td[^>]*>([^<]*)<\/td>",
+                $php_info, $result))
             {
                 $version = $result[1];
             }
         }
 
         if (ereg('([0-9]{1,2})\.[0-9]{1,2}(\.[0-9]{1,2})?', trim($version), $result)) {
-            return $result[1]; 
+            return $result[1];
         } else {
             return 0;
         }
     }
-        
+
 }
 
 ?>

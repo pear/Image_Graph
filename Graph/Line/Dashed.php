@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Line     
+ * @subpackage Line
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Line/Formatted.php
@@ -41,32 +41,32 @@ require_once 'Image/Graph/Line/Formatted.php';
 
 /**
  * Dashed line style.
- * 
- * This style displays as a short line with a shorter space afterwards, i.e 
+ *
+ * This style displays as a short line with a shorter space afterwards, i.e
  * 4px color1, 2px color2, 4px color1, etc.
- *             
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
- * @subpackage Line 
+ * @subpackage Line
  */
-class Image_Graph_Line_Dashed extends Image_Graph_Line_Formatted 
+class Image_Graph_Line_Dashed extends Image_Graph_Line_Formatted
 {
 
     /**
      * Image_Graph_DashedLine [Constructor]
      *
-     * @param mixed $color1 The color for the 'dashes' 
-     * @param mixed $color2 The color for the 'spaces' 
+     * @param mixed $color1 The color for the 'dashes'
+     * @param mixed $color2 The color for the 'spaces'
      */
     function &Image_Graph_Line_Dashed($color1, $color2)
     {
         parent::Image_Graph_Line_Formatted(
             array(
-                $color1, 
-                $color1, 
-                $color1, 
-                $color1, 
-                $color2, 
+                $color1,
+                $color1,
+                $color1,
+                $color1,
+                $color2,
                 $color2
             )
         );

@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Marker     
+ * @subpackage Marker
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Marker.php
@@ -41,12 +41,12 @@ require_once 'Image/Graph/Marker.php';
 
 /**
  * A marker displaying the 'distance' to the datasets average value.
- *              
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Marker
  */
-class Image_Graph_Marker_Average extends Image_Graph_Marker 
+class Image_Graph_Marker_Average extends Image_Graph_Marker
 {
 
     /**
@@ -62,12 +62,12 @@ class Image_Graph_Marker_Average extends Image_Graph_Marker
      */
     function _drawMarker($x, $y, $values = false)
     {
-        if ((isset($values['AVERAGE_Y'])) && 
-            (is_a($this->_parent, 'Image_Graph_Plot'))) 
+        if ((isset($values['AVERAGE_Y'])) &&
+            (is_a($this->_parent, 'Image_Graph_Plot')))
         {
             $point = $this->_pointXY(
                 array(
-                    'X' => $values['APX'], 
+                    'X' => $values['APX'],
                     'Y' => $values['AVERAGE_Y']
                 )
             );
@@ -76,9 +76,9 @@ class Image_Graph_Marker_Average extends Image_Graph_Marker
 
             $this->_getLineStyle();
             $this->_driver->line(
-                $point['X'] - 2, 
-                $point['Y'], 
-                $point['X'] + 2, 
+                $point['X'] - 2,
+                $point['Y'],
+                $point['X'] + 2,
                 $point['Y']
             );
         }

@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Grid     
+ * @subpackage Grid
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Grid.php
@@ -41,23 +41,23 @@ require_once 'Image/Graph/Grid.php';
 
 /**
  * Display a grid
- * 
+ *
  * {@link Image_Graph_Grid}
- *             
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
- * @subpackage Line 
+ * @subpackage Line
  */
-class Image_Graph_Axis_Marker_Line extends Image_Graph_Grid 
+class Image_Graph_Axis_Marker_Line extends Image_Graph_Grid
 {
-    
+
     /**
      * The value
      * @var double
      * @access private
      */
     var $_value = false;
-    
+
     /**
      * Sets the value of the line marker (value on the axis)
      *
@@ -71,7 +71,7 @@ class Image_Graph_Axis_Marker_Line extends Image_Graph_Grid
     /**
      * Output the grid
      *
-     * @access private      
+     * @access private
      */
     function _done()
     {
@@ -84,7 +84,7 @@ class Image_Graph_Axis_Marker_Line extends Image_Graph_Grid
         }
 
         $i = 0;
-        
+
         $this->_value = min($this->_primaryAxis->_getMaximum(), max($this->_primaryAxis->_getMinimum(), $this->_value));
 
         $secondaryPoints = $this->_getSecondaryAxisPoints();

@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Layout     
+ * @subpackage Layout
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Plotarea/Element.php
@@ -41,23 +41,23 @@ require_once 'Image/Graph/Plotarea/Element.php';
 
 /**
  * Defines an area of the graph that can be layout'ed.
- * 
+ *
  * Any class that extends this abstract class can be used within a layout on the canvas.
- *  
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Layout
  * @abstract
  */
-class Image_Graph_Layout extends Image_Graph_Plotarea_Element 
+class Image_Graph_Layout extends Image_Graph_Plotarea_Element
 {
-    
+
     /**
      * Has the coordinates already been updated?
      * @var bool
      * @access private
      */
-    var $_updated = false; 
+    var $_updated = false;
 
     /**
      * Alignment of the area for each vertice (left, top, right, bottom)
@@ -80,12 +80,12 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
      *
      * @access private
      */
-    function _reset()   
+    function _reset()
     {
         parent::_reset();
         $this->_updated = false;
     }
-    
+
     /**
      * (Add basic description here)
      *
@@ -97,7 +97,7 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
             return $offset + $multiplier * ($total * $alignSize['value'] / 100);
         } elseif ($alignSize['unit'] == 'pixels') {
             if (($alignSize['value'] == 'auto_part1') || ($alignSize['value'] == 'auto_part2')) {
-                $alignSize['value'] = $multiplier * $this->_parent->_getAbsolute($alignSize['value']);                                   
+                $alignSize['value'] = $multiplier * $this->_parent->_getAbsolute($alignSize['value']);
             }
             if ($alignSize['value'] < 0) {
                 return $offset + $multiplier * ($total + $alignSize['value']);
@@ -107,7 +107,7 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
         }
         return $offset;
     }
-            
+
     /**
      * Calculate the edges
      *
@@ -140,32 +140,32 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
                 $this->_parent->_fillHeight(),
                 -1
             );
-                
-/*            $left = 
-                $this->_parent->_fillLeft() + ($this->_alignSize['left'] <= 1 ? 
-                    $this->_parent->_fillWidth() * $this->_alignSize['left'] : 
+
+/*            $left =
+                $this->_parent->_fillLeft() + ($this->_alignSize['left'] <= 1 ?
+                    $this->_parent->_fillWidth() * $this->_alignSize['left'] :
                     $this->_alignSize['left']
                 );
-                
-            $top = $this->_parent->_fillTop() + ($this->_alignSize['top'] <= 1 ? 
-                $this->_parent->_fillHeight() * $this->_alignSize['top'] : 
+
+            $top = $this->_parent->_fillTop() + ($this->_alignSize['top'] <= 1 ?
+                $this->_parent->_fillHeight() * $this->_alignSize['top'] :
                 $this->_alignSize['top']
             );
-            
-            $right = $this->_parent->_fillRight() - ($this->_alignSize['right'] <= 1 ? 
-                $this->_parent->_fillWidth() * $this->_alignSize['right'] : 
+
+            $right = $this->_parent->_fillRight() - ($this->_alignSize['right'] <= 1 ?
+                $this->_parent->_fillWidth() * $this->_alignSize['right'] :
                 $this->_alignSize['right']
             );
-            
-            $bottom = $this->_parent->_fillBottom() - ($this->_alignSize['bottom'] <= 1 ? 
-                $this->_parent->_fillHeight() * $this->_alignSize['bottom'] : 
+
+            $bottom = $this->_parent->_fillBottom() - ($this->_alignSize['bottom'] <= 1 ?
+                $this->_parent->_fillHeight() * $this->_alignSize['bottom'] :
                 $this->_alignSize['bottom']
             );*/
-            
+
             $this->_setCoords(
-                $left + $this->_padding, 
-                $top + $this->_padding, 
-                $right - $this->_padding, 
+                $left + $this->_padding,
+                $top + $this->_padding,
+                $right - $this->_padding,
                 $bottom - $this->_padding
             );
         }
@@ -199,18 +199,18 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
         } else {
             $this->_alignSize[$edge] = array(
                 'value' => $size,
-                'unit' => 'pixels'                
+                'unit' => 'pixels'
             );
         }
     }
 
     /**
-     * Sets the coordinates of the element   
+     * Sets the coordinates of the element
      *
-     * @param int $left The leftmost pixel of the element on the canvas 
-     * @param int $top The topmost pixel of the element on the canvas 
-     * @param int $right The rightmost pixel of the element on the canvas 
-     * @param int $bottom The bottommost pixel of the element on the canvas 
+     * @param int $left The leftmost pixel of the element on the canvas
+     * @param int $top The topmost pixel of the element on the canvas
+     * @param int $right The rightmost pixel of the element on the canvas
+     * @param int $bottom The bottommost pixel of the element on the canvas
      * @access private
      */
     function _setCoords($left, $top, $right, $bottom)
@@ -220,9 +220,9 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
     }
 
     /**
-     * Returns the calculated "auto" size   
+     * Returns the calculated "auto" size
      *
-     * @return int The calculated auto size 
+     * @return int The calculated auto size
      * @access private
      */
     function _getAutoSize()

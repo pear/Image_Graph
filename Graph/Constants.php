@@ -30,7 +30,7 @@
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Font.php
@@ -175,7 +175,7 @@ define('IMAGE_GRAPH_ALIGN_LEFT', 0x1);
 define('IMAGE_GRAPH_ALIGN_RIGHT', 0x2);
 
 /**
- * Align text center x (horizontal) 
+ * Align text center x (horizontal)
  */
 define('IMAGE_GRAPH_ALIGN_CENTER_X', 0x4);
 

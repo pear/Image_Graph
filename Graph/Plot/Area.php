@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Plot     
+ * @subpackage Plot
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Plot.php
@@ -41,17 +41,17 @@ require_once 'Image/Graph/Plot.php';
 
 /**
  * Area Chart plot.
- * 
+ *
  * An area chart plots all data points similar to a {@link
  * Image_Graph_Plot_Line}, but the area beneath the line is filled and the whole
  * area 'the-line', 'the right edge', 'the x-axis' and 'the left edge' is
  * bounded. Smoothed charts are only supported with non-stacked types
- *               
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Plot
  */
-class Image_Graph_Plot_Area extends Image_Graph_Plot 
+class Image_Graph_Plot_Area extends Image_Graph_Plot
 {
 
     /**
@@ -65,8 +65,8 @@ class Image_Graph_Plot_Area extends Image_Graph_Plot
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
     {
-        $dx = abs($x1 - $x0) / 3;        
-        $dy = abs($y1 - $y0) / 3;      
+        $dx = abs($x1 - $x0) / 3;
+        $dy = abs($y1 - $y0) / 3;
         $this->_driver->polygonAdd($x0, $y1);
         $this->_driver->polygonAdd($x0, $y0 + $dy);
         $this->_driver->polygonAdd($x0 + $dx, $y0);
@@ -91,7 +91,7 @@ class Image_Graph_Plot_Area extends Image_Graph_Plot
             reset($this->_dataset);
             $key = key($this->_dataset);
             $dataset = & $this->_dataset[$key];
-    
+
             $dataset->_reset();
             $first = true;
             while ($point = $dataset->_next()) {
@@ -102,12 +102,12 @@ class Image_Graph_Plot_Area extends Image_Graph_Plot
                     $first = false;
                 }
                 $lastpoint = $point;
-            }            
-    
+            }
+
             $lastpoint['Y'] = '#min_pos#';
             $base[] = $this->_pointY($lastpoint);
             $base[] = $this->_pointX($lastpoint);
-            $current = array();            
+            $current = array();
         }
 
         $minYaxis = $this->_parent->_getMinimum($this->_axisY);
@@ -136,15 +136,15 @@ class Image_Graph_Plot_Area extends Image_Graph_Plot
                     $base[] = $x1;
                     $current[$x] += $point['Y'];
                 }
-            } else {           
+            } else {
                 $first = true;
-                $plotarea = array();                
-                while ($point = $dataset->_next()) {                    
+                $plotarea = array();
+                while ($point = $dataset->_next()) {
                     if ($first) {
                         $firstPoint = array ('X' => $point['X'], 'Y' => '#min_pos#');
                         $plotarea[] = $this->_pointX($firstPoint);
                         $plotarea[] = $this->_pointY($firstPoint);
-                    }                        
+                    }
                     $plotarea[] = $this->_pointX($point);
                     $plotarea[] = $this->_pointY($point);
                     $lastPoint = $point;
@@ -155,13 +155,13 @@ class Image_Graph_Plot_Area extends Image_Graph_Plot
                 $plotarea[] = $this->_pointX($endPoint);
                 $plotarea[] = $this->_pointY($endPoint);
             }
-            
+
             reset($plotarea);
             while (list(, $x) = each($plotarea)) {
                 list(, $y) = each($plotarea);
                 $this->_driver->polygonAdd($x, $y);
             }
-            
+
             $this->_getFillStyle($key);
             $this->_getLineStyle($key);
             $this->_driver->polygonEnd();

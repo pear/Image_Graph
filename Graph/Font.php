@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Text     
+ * @subpackage Text
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Common.php
@@ -41,12 +41,12 @@ require_once 'Image/Graph/Common.php';
 
 /**
  * A font.
- *  
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Text
- */ 
-class Image_Graph_Font extends Image_Graph_Common 
+ */
+class Image_Graph_Font extends Image_Graph_Common
 {
 
     /**
@@ -67,30 +67,30 @@ class Image_Graph_Font extends Image_Graph_Common
     /**
      * Set the color of the font
      *
-     * @param mixed $color The color object of the Font 
+     * @param mixed $color The color object of the Font
      */
     function setColor($color)
     {
         $this->_color = $color;
     }
-    
+
     /**
      * Get the font 'array'
      *
-     * @return array The font 'summary' to pass to the driver 
-     * @access private 
+     * @return array The font 'summary' to pass to the driver
+     * @access private
      */
     function _getFont($options = false)
-    {    
+    {
         if ($options === false) {
             $options = array();
-        }    
+        }
         $options['font'] = 1;
-        if (!isset($options['color'])) {        
+        if (!isset($options['color'])) {
             $options['color'] = $this->_color;
-        }        
+        }
         return $options;
-    }    
+    }
 
 }
 

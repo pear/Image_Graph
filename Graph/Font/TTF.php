@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Text     
+ * @subpackage Text
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Font/Extended.php
@@ -41,12 +41,12 @@ require_once 'Image/Graph/Font/Extended.php';
 
 /**
  * A truetype font.
- *          
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Text
  */
-class Image_Graph_Font_TTF extends Image_Graph_Font_Extended 
+class Image_Graph_Font_TTF extends Image_Graph_Font_Extended
 {
 
     /**
@@ -83,13 +83,13 @@ class Image_Graph_Font_TTF extends Image_Graph_Font_Extended
     /**
      * Get the font 'array'
      *
-     * @return array The font 'summary' to pass to the driver 
-     * @access private 
+     * @return array The font 'summary' to pass to the driver
+     * @access private
      */
     function _getFont($options = false)
     {
         $options = parent::_getFont($options);
-        unset($options['font']);        
+        unset($options['font']);
         $options['ttf'] = $this->_fontFile;
         if (!isset($options['size'])) {
             $options['size'] = $this->_size;

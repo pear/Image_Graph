@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Marker     
+ * @subpackage Marker
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Marker/Circle.php
@@ -41,20 +41,20 @@ require_once 'Image/Graph/Marker/Circle.php';
 
 /**
  * Display a circle with y-value percentage as radius (require GD2).
- * 
+ *
  * This will display a circle centered on the datapoint with a radius calculated
  * as a percentage of the maximum value. I.e. the radius depends on the y-value
  * of the datapoint
- *              
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Marker
  */
-class Image_Graph_Marker_Bubble extends Image_Graph_Marker_Circle 
+class Image_Graph_Marker_Bubble extends Image_Graph_Marker_Circle
 {
 
     /**
-     * The radius of the marker when 100% 
+     * The radius of the marker when 100%
      * @var int
      * @access private
      */
@@ -63,7 +63,7 @@ class Image_Graph_Marker_Bubble extends Image_Graph_Marker_Circle
     /**
      * Sets the maximum radius the marker can occupy
      *
-     * @param int $radius The new Image_Graph_max radius 
+     * @param int $radius The new Image_Graph_max radius
      */
     function setMaxRadius($radius)
     {
@@ -83,7 +83,7 @@ class Image_Graph_Marker_Bubble extends Image_Graph_Marker_Circle
      */
     function _drawMarker($x, $y, $values = false)
     {
-        $this->_size = $this->_size100Pct*$values['PCT_MAX_Y']/100;        
+        $this->_size = $this->_size100Pct*$values['PCT_MAX_Y']/100;
         parent::_drawMarker($x, $y, $values);
     }
 

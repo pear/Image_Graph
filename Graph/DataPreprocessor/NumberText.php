@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage DataPreprocessor     
+ * @subpackage DataPreprocessor
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/DataPreprocessor.php
@@ -41,18 +41,18 @@ require_once 'Image/Graph/DataPreprocessor.php';
 
 /**
  * Formatting a number as its written in languages supported by Numbers_Words.
- * 
+ *
  * Used to display values as text, i.e. 123 is displayed as one hundred and twenty three.
  * Requires Numbers_Words
- *     
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage DataPreprocessor
  */
-class Image_Graph_DataPreprocessor_NumberText extends Image_Graph_DataPreprocessor 
+class Image_Graph_DataPreprocessor_NumberText extends Image_Graph_DataPreprocessor
 {
 
-    /** 
+    /**
      * The language identifier
      * @var string
      * @access private
@@ -70,7 +70,7 @@ class Image_Graph_DataPreprocessor_NumberText extends Image_Graph_DataPreprocess
     {
         parent::Image_Graph_DataPreprocessor();
         $this->_language = $language;
-        require_once 'Numbers/Words.php';    
+        require_once 'Numbers/Words.php';
     }
 
     /**

@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Axis     
+ * @subpackage Axis
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Axis.php
@@ -40,15 +40,15 @@
 require_once 'Image/Graph/Axis.php';
 
 /**
- * Diplays a logarithmic axis (either X- or Y-axis). 
- *    
+ * Diplays a logarithmic axis (either X- or Y-axis).
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Axis
  */
-class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis 
+class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
 {
-   
+
     /**
      * Image_Graph_AxisLogarithmic [Constructor].
      *
@@ -63,11 +63,11 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
     function &Image_Graph_Axis_Logarithmic($type = IMAGE_GRAPH_AXIS_X)
     {
         parent::Image_Graph_Axis($type);
-        $this->showLabel(IMAGE_GRAPH_LABEL_MINIMUM + IMAGE_GRAPH_LABEL_MAXIMUM);               
+        $this->showLabel(IMAGE_GRAPH_LABEL_MINIMUM + IMAGE_GRAPH_LABEL_MAXIMUM);
     }
-    
+
     /**
-     * Axis value span     
+     * Axis value span
      *
      * @return double The span of the axis (i.e. Max-Min)
      * @access private
@@ -78,7 +78,7 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
     }
 
     /**
-     * Axis span     
+     * Axis span
      *
      * @return double The span of the axis (i.e. Max-Min)
      * @access private
@@ -91,7 +91,7 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
     /**
      * Forces the minimum value of the axis.
      *
-     * For an logarithimc axis this is always 0     
+     * For an logarithimc axis this is always 0
      *
      * @param double $minimum The minumum value to use on the axis
      */
@@ -99,11 +99,11 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
     {
         parent::forceMinimum(0);
     }
-    
+
     /**
      * Gets the minimum value the axis will show.
      *
-     * For an logarithimc axis this is always 0     
+     * For an logarithimc axis this is always 0
      *
      * @return double The minumum value
      * @access private
@@ -121,7 +121,7 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
      * @access private
      */
     function _value($value)
-    {        
+    {
         return log10($value);
     }
 
@@ -138,11 +138,11 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
         if (is_array($this->_labelOptions[$level]['interval'])) {
             return parent::_getNextLabel($currentLabel, $level);
         }
-                
-        if ($currentLabel !== false) {            
+
+        if ($currentLabel !== false) {
             $value = log10($currentLabel);
             $base = floor($value);
-            $frac = $value - $base;        
+            $frac = $value - $base;
             for ($i = 2; $i < 10; $i++) {
                 if ($frac <= (log10($i)-0.01)) {
                     return pow(10, $base)*$i;
@@ -150,10 +150,10 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
             }
             return pow(10, $base+1);
         }
-        
-        return 1;        
+
+        return 1;
     }
-         
+
 }
 
 ?>

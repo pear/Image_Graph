@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Logo     
+ * @subpackage Logo
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Element.php
@@ -41,14 +41,14 @@ require_once 'Image/Graph/Element.php';
 
 /**
  * Displays a logo on the canvas.
- * 
+ *
  * By default the logo is displayed in the top-right corner of the canvas.
- *   
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
- * @subpackage Logo 
+ * @subpackage Logo
  */
-class Image_Graph_Logo extends Image_Graph_Element 
+class Image_Graph_Logo extends Image_Graph_Element
 {
 
     /**
@@ -75,7 +75,7 @@ class Image_Graph_Logo extends Image_Graph_Element
     /**
      * Logo [Constructor]
      *
-     * @param string $filename The filename and path of the image to use for logo 
+     * @param string $filename The filename and path of the image to use for logo
      */
     function &Image_Graph_Logo($fileName, $alignment = IMAGE_GRAPH_ALIGN_TOP_RIGHT)
     {
@@ -88,16 +88,16 @@ class Image_Graph_Logo extends Image_Graph_Element
      * Sets the parent. The parent chain should ultimately be a GraPHP object
      *
      * @see Image_Graph
-     * @param Image_Graph_Common $parent The parent 
+     * @param Image_Graph_Common $parent The parent
      * @access private
      */
     function _setParent(& $parent)
     {
         parent::_setParent($parent);
         $this->_setCoords(
-            $this->_parent->_left, 
-            $this->_parent->_top, 
-            $this->_parent->_right, 
+            $this->_parent->_left,
+            $this->_parent->_top,
+            $this->_parent->_right,
             $this->_parent->_bottom
         );
     }
@@ -130,11 +130,11 @@ class Image_Graph_Logo extends Image_Graph_Element
         }
 
         $this->_driver->overlayImage(
-            $x, 
-            $y, 
-            $this->_fileName, 
-            false, 
-            false, 
+            $x,
+            $y,
+            $this->_fileName,
+            false,
+            false,
             $this->_alignment
         );
     }

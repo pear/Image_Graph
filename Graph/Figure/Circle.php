@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Figure     
+ * @subpackage Figure
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Figure/Ellipse.php
@@ -41,20 +41,20 @@ require_once 'Image/Graph/Figure/Ellipse.php';
 
 /**
  * Circle to draw on the canvas
- *       
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Figure
  */
-class Image_Graph_Figure_Circle extends Image_Graph_Figure_Ellipse 
+class Image_Graph_Figure_Circle extends Image_Graph_Figure_Ellipse
 {
 
     /**
      * Image_Graph_Circle [Constructor]
      *
-     * @param int $x The center pixel of the circle on the canvas 
-     * @param int $y The center pixel of the circle on the canvas 
-     * @param int $radius The radius in pixels of the circle 
+     * @param int $x The center pixel of the circle on the canvas
+     * @param int $y The center pixel of the circle on the canvas
+     * @param int $radius The radius in pixels of the circle
      */
     function &Image_Graph_Figure_Circle($x, $y, $radius)
     {

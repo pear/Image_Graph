@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage Grid     
+ * @subpackage Grid
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/Element.php
@@ -41,7 +41,7 @@ require_once 'Image/Graph/Element.php';
 
 /**
  * A grid displayed on the plotarea.
- * 
+ *
  * A grid is associated with a primary and a secondary axis. The grid is
  * displayed in context of the primary axis' label interval - meaning that a
  * grid for an Y-axis displays a grid for every label on the y-axis (fx. a {@link
@@ -51,13 +51,13 @@ require_once 'Image/Graph/Element.php';
  * fact that elements are 'outputted' in the order they are added, i.e. if an
  * grid is added *after* a chart, the grid will be displayed on top of the chart
  * which is (probably) not desired.
- * 
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Grid
  * @abstract
  */
-class Image_Graph_Grid extends Image_Graph_Plotarea_Element 
+class Image_Graph_Grid extends Image_Graph_Plotarea_Element
 {
 
     /**
@@ -77,8 +77,8 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
     /**
      * Set the primary axis: the grid should 'refer' to
      *
-     * @param Image_Graph_Axis $axis The axis 
-     * @access private 
+     * @param Image_Graph_Axis $axis The axis
+     * @access private
      */
     function _setPrimaryAxis(& $axis)
     {
@@ -88,8 +88,8 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
     /**
      * Set the secondary axis
      *
-     * @param Image_Graph_Axis $axis The axis 
-     * @access private 
+     * @param Image_Graph_Axis $axis The axis
+     * @access private
      */
     function _setSecondaryAxis(& $axis)
     {
@@ -100,36 +100,36 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
      * Get the points on the secondary axis that the grid should 'connect'
      *
      * @return array The secondary data values that should mark the grid 'end points'
-     * @access private	 
+     * @access private
      */
     function _getSecondaryAxisPoints()
     {
         if (is_a($this->_secondaryAxis, 'Image_Graph_Axis_Radar')) {
             $secondaryValue = $this->_secondaryAxis->_getNextLabel();
             $firstValue = $secondaryValue;
-            while (($secondaryValue <= $this->_secondaryAxis->_getMaximum()) && 
+            while (($secondaryValue <= $this->_secondaryAxis->_getMaximum()) &&
                 ($secondaryValue !== false)
             ) {
                 $secondaryAxisPoints[] = $secondaryValue;
                 $secondaryValue = $this->_secondaryAxis->_getNextLabel($secondaryValue);
             }
-            $secondaryAxisPoints[] = $firstValue;            
+            $secondaryAxisPoints[] = $firstValue;
         } else {
             $secondaryAxisPoints = array ('#min#', '#max#');
-        }        
+        }
         return $secondaryAxisPoints;
     }
 
     /**
      * Get the X pixel position represented by a value
      *
-     * @param double $point the value to get the pixel-point for  
+     * @param double $point the value to get the pixel-point for
      * @return double The pixel position along the axis
      * @access private
      */
     function _pointX($point)
     {
-        if (($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y) || 
+        if (($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y) ||
             ($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY))
         {
             $point['AXIS_Y'] = $this->_primaryAxis->_type;
@@ -142,13 +142,13 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
     /**
      * Get the Y pixel position represented by a value
      *
-     * @param double $point the value to get the pixel-point for  
+     * @param double $point the value to get the pixel-point for
      * @return double The pixel position along the axis
      * @access private
      */
     function _pointY($point)
     {
-        if (($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y) || 
+        if (($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y) ||
             ($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY))
         {
             $point['AXIS_Y'] = $this->_primaryAxis->_type;
@@ -156,8 +156,8 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
             $point['AXIS_Y'] = $this->_secondaryAxis->_type;
         }
         return parent::_pointY($point);
-    }    
-    
+    }
+
    /**
      * Causes the object to update all sub elements coordinates.
      *
@@ -166,9 +166,9 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
     function _updateCoords()
     {
         $this->_setCoords(
-            $this->_parent->_plotLeft, 
-            $this->_parent->_plotTop, 
-            $this->_parent->_plotRight, 
+            $this->_parent->_plotLeft,
+            $this->_parent->_plotTop,
+            $this->_parent->_plotRight,
             $this->_parent->_plotBottom
         );
         parent::_updateCoords();

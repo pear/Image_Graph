@@ -24,15 +24,15 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
- * 
+ *
  * @package Image_Graph
- * @subpackage DataPreprocessor     
+ * @subpackage DataPreprocessor
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ */
 
 /**
  * Include file Image/Graph/DataPreprocessor.php
@@ -41,18 +41,18 @@ require_once 'Image/Graph/DataPreprocessor.php';
 
 /**
  * Formatting a value using a userdefined function.
- * 
+ *
  * Use this method to convert/format a value to a 'displayable' lable using a (perhaps)
  * more complex function. An example could be (not very applicable though) if one would
- * need for values to be displayed on the reverse order, i.e. 1234 would be displayed as 
+ * need for values to be displayed on the reverse order, i.e. 1234 would be displayed as
  * 4321, then this method can solve this by creating the function that converts the value
  * and use the FunctionData datapreprocessor to make Image_Graph use this function.
- *     
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
- * @subpackage DataPreprocessor 
+ * @subpackage DataPreprocessor
  */
-class Image_Graph_DataPreprocessor_Function extends Image_Graph_DataPreprocessor 
+class Image_Graph_DataPreprocessor_Function extends Image_Graph_DataPreprocessor
 {
 
     /**
