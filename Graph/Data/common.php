@@ -70,8 +70,6 @@ class Image_Graph_Data_Common
         $this->_graph       =& $graph;
         $this->_data        = $data;
         $this->_attributes  = $attributes;
-        
-        $graph->_axes['y'][ $attributes['axeId'] ]['containsData'] = true;
     }
     
     /**
@@ -111,13 +109,14 @@ class Image_Graph_Data_Common
     {
         if (is_object($this->_datamarker))
         {
-            $yAxe = &$this->_graph->_axes['y'][ $this->_attributes['axeId'] ];
+            $graph = &$this->_graph;
+            $yAxe  = &$graph->{"axeY".$this->_attributes['axeId']};
             $dataKeys  = array_keys($this->_data);
             $numDatapoints = count($this->_datapoints);
     
             for ($counter=0; $counter<$numDatapoints; $counter++) {
                 if (!is_null($this->_datapoints[$counter]) &&
-                    ($yAxe['min'] <= $this->_data[ $dataKeys[$counter] ]) && ($this->_data[ $dataKeys[$counter] ] <= $yAxe['max'])
+                    ($yAxe->_bounds['min'] <= $this->_data[ $dataKeys[$counter] ]) && ($this->_data[ $dataKeys[$counter] ] <= $yAxe->_bounds['max'])
                    ) { // otherwise do not draw
                     $this->_datamarker->drawGD($img, $this->_datapoints[$counter]);
                 }

@@ -26,6 +26,7 @@
     <notes>
 - splitted package into smaller classes to get a more intuitive API
 - renamed marker "rhomb" to "diamond"
+- added workarounds for better results with current Image_Text v0.2
 - applied new directory-structure for package (as defined by the core-group)
     </notes>
     <deps>
@@ -36,6 +37,7 @@
       <dir name="/" baseinstalldir="Image">
         <file role="php">Graph.php</file>
         <dir name="Graph" role="php">
+          <file>Elements.php</file>
           <dir name="Data" role="php">
             <file>bar.php</file>
             <file>common.php</file>

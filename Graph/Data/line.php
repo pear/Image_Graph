@@ -41,14 +41,15 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
 
     function drawGD(&$img)
     {
-        $yAxe = &$this->_graph->_axes['y'][ $this->_attributes['axeId'] ];
+        $graph = &$this->_graph;
+        $yAxe  = &$graph->{"axeY".$this->_attributes['axeId']};
         $drawColor = imagecolorallocate($img, $this->_attributes["color"][0], $this->_attributes["color"][1], $this->_attributes["color"][2]);
         $dataKeys  = array_keys($this->_data);
         $numDatapoints = count($this->_datapoints);
         for ($counter=0; $counter<$numDatapoints; $counter++) {
             if (!is_null($this->_datapoints[$counter])) { // otherwise do not draw this point
                 if (($counter == 0) || (is_null($this->_datapoints[$counter-1]))) {
-                    if (($yAxe['min'] <= $this->_data[ $dataKeys[$counter] ]) && ($this->_data[ $dataKeys[$counter] ] <= $yAxe['max'])) {
+                    if (($yAxe->_bounds['min'] <= $this->_data[ $dataKeys[$counter] ]) && ($this->_data[ $dataKeys[$counter] ] <= $yAxe->_bounds['max'])) {
                         imagesetpixel ($img, $this->_datapoints[$counter][0], $this->_datapoints[$counter][1], $drawColor);
                     } // otherwise do not draw that point since it's out of the drawingarea
                 } else {
