@@ -1,0 +1,46 @@
+====================
+ IMAGE_GRAPH DRIVER
+====================
+$Id$
+
+Driver Status
+--------------
+GD support split into JPEG and PNG driver - GIF and WBMP driver added
+PDF support using PDFlib (http://www.pdflib.com/), PEAR's File_PDF does not provide output
+SWF created using MING library (http://ming.sourceforge.net/) - can't figure out those darn gradients, libswf in TO-DO, SWF text output doesn't seem to work on Win32
+SVG uses a internal SVG creation method, XML_SVG does not seem to support enough functionality
+
+
+Driver Support Matrix
+---------------------- 
+Legend:
+T    Transparency
+A    Alpha blending
+G    Gradient fills
+I    Image fills
+O    Overlay images
+TTF  TrueType fonts supported
+V    Angled/sloped text
+S    Smoothed curves
+C    Comments
+
++    Yes, it is working
+-    No, can't be done
+?    Is it Supported? / Can't get it to work
+!    Not implemented yet
+B    Native Bezier curves
+C    Native quadratic curve splines
+I    Image_Graph implementation
+
+         |   T    A    G    I    O   TTF   V    S    C
+---------+-------------------------------------------------------------------------------------------------------
+JPEG     |   -    X    X    X    X    X    X    I
+WBMP     |   -    X    X    X    X    X    X    I
+PNG      |   X    X    X    X    X    X    X    I
+GIF      |   X    X    X    X    X    X    X    I
+SVG      |   -    X    X    -    X    X    X    B
+XMLSVG   |   ?    X    ?    -    -    ?    ?    ?    Uses XML_SVG
+PDF      |   -    -    -    -    !    !    -    ?    Uses File_PDF. Can't get it to work at all - worth the effort?
+PDFlib   |   -    -    -    -    X    X    -    B
+SWF      |   -    X    ?    X    X    -    ?    C
+LIBSWF   |   !    !    !    !    !    -    !	!

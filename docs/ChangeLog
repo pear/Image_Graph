@@ -1,115 +1,174 @@
 *************************
  Image_Graph - Changelog
 *************************
-Version 0.2.0 [devel] - Jesper Veggerby <pear.nosey@veggerby.dk>
-	* First PEAR version - GraPHPite changes to Image_Graph
-	* Changed Image_Graph_Axis_Sequential to Image_Graph_Axis_Category
-	* Changed default X-axis to be Image_Graph_Axis_Category
-	* Changed all plot types to be stackable
-		- This implies removing Image_Graph_Plot_Stacked_Bar, Image_Graph_Plot_Stacked_Bar100Pct,
-		  Image_Graph_Plot_Stacked_Area, Image_Graph_Plot_MultipleData
-		- Modified the way axis handling is done - no user impact
-	* Removed Image_Graph_Plot_Bar_Horizontal
-	* Modified management of axis maxima
-	* Removed Image_Graph_Text completely, replaced by Image_Graph_Element::write() - performance improvement
-	* Added possibility to draw graph on an existing image
-	* Added caching capability
-	* Added Image_Graph_Axis_Marker_Area and Image_Graph_Axis_Marker_Line
-	* Added marks to axis (a value marker, i.e. an arrow or a ranged box)
-	* Fixed bug where stacked / multiple charts containing all zeros in datasets did not display or gave a division by zero error in Axis.php
-	* Modified Image_Graph_Fill_Gradient for better performance
-	* Added Image_Graph::factory and Image_Graph::layoutFactory methods, mainly for lazy include
-	* Removed Include.php, use either factory methods or include necessary files manually
-	* Added Image_Graph_Simple for very simple creation of graphs
-	* Added secondary y-axis
-	* Changed internal color scheme to use Image_Color - user impact:
-		- Image_Graph::newColor(), Image_Graph::addColor removed
-		- Uses Image_Graph_Color from 'old' Image_Graph package, which statically uses 
-		  Image_Graph_Color::allocateColor() and Image_Graph_Color::color2RGB()
-		- Constants IMAGE_GRAPH_[COLORNAME] removed. Use string names, i.e. 'white', 'blue' as
-		  defined by Image_Color (now a dependency)
-		- Standard 'string' color formats supported
-	* Added internal error handler Image_Graph_Common::_error() which uses PEAR_ErrorStack and Log
-	* Changed Image_Graph_Marker_PercentageCircle to Image_Graph_Marker_Bubble
-	* Changed logo
-	* Changed all strings using double quotes to single quotes for performance
+Version 0.3.0dev2 [XX] - Jesper Veggerby <pear.nosey@veggerby.dk>
+    * Added functionality for multi-level labels (ticks, text, etc.) to support for minor and major labels (and more if needed)
+    * Fixed bug causing displayErrors() to generate WARNING and FATAL ERROR
+    * Fixed problems with gradient fills (did not display propery using GD drivers)
+    * Changed while-list-each to foreach for performance reasons (minor)
+    * Added fontmapping in GD drivers useful for mapping mnemonic fontnames, i.e. Times New Roman to font file names (either partial or full)
+    * Added configuration option in Config.php (IMAGE_GRAPH_SYSTEM_FONT_PATH) enabling to specify default search path for system fonts
+        - On Windows systems this defaults to %SYSTEMROOT%\Fonts\
+    * Added 'auto' split on layouts - calculated automatically based on actual sizes of the parts (supported only with titles)
+    * Added visual tests - not PHPUnit, test cases:
+        - Driver support for gradients
+        - Text output alignment
+
+Version 0.3.0dev2 (pre-release #3) [2004-Dec-08] - Jesper Veggerby <pear.nosey@veggerby.dk>
+    * Added drivers for GD subtypes GIF and WBMP
+    * Added drivers for SWF (MING) and PDF (PDFlib) - initial stage
+    * Added support for setting width on the bars in a bar chart
+    * Added setFontColor(), setFontSize(), setFontAngle() to elements for easy change of properties of propagating fonts, without needing to create a new object
+    * Fonts now propagate through the structure, meaning if you set a font on the Graph all other elements inherit this font (but can be overridden)
+        - This does *not* break BC
+    * Changed Image_Graph_Title constructor slightly (second parameter, see Docs. for details)
+    * Changed Image_Graph_Axis::setTitle() slightly to accomodate propagating fonts (no BC break)
+    * Removed GLOBAL font variables	
+        - This is a minor BC break!
+    * Fixed problem with bar-, area-, step- and impulse-charts when using forceMinimum(), causing bars to display 'below' x-axis
+
+Version 0.3.0dev2 (pre-release #2) [2004-Nov-30] - Jesper Veggerby <pear.nosey@veggerby.dk>
+    * Added support for adding an array to Image_Graph_Dataset_Trivial for easy point addition
+    * Re-implemented support for line styles
+    * API Change with minor impact on BC: Image_Graph_Fill now inherits from Image_Graph_Common (instead of Image_Graph_Element)
+    * Changed GD driver
+        - Image_Graph_Driver_GD is now abstract
+        - GD formats JPEG and PNG are now separate classes, Image_Graph_Driver_GD_JPG and Image_Graph_Driver_GD_PNG
+        - Driver types are now 'png' and 'jpg', specifying 'gd' will default to 'png'
+    * Fixed Image_Graph_Axis::force(Minimum|Maximum)
+    * Repost: Included some more aliases for the Image_Graph::factory() method
+
+Version 0.3.0dev2 (pre-release) [2004-Nov-25] - Jesper Veggerby <pear.nosey@veggerby.dk>
+    * Added new setTitle() method to axis to allow for easier displaying of axis titles
+    * Added Image_Graph_Plot_CandleStick to display financial charts for the stock market
+    * Added Image_Graph_Plot_Band
+    * Added major tick customizability to axis
+    * Added possibility to use user-defined values as axis-labels
+    * Implemented drivers to support different output formats
+        - Currently full GD and SVG (own) support
+        - Drivers planned SVG (XML_SVG), PDF (File_PDF + PDFlib) and SWF (MING + libswf)
+        - No BC breaking API changes
+        - Currently no support for animations, i.e. SVG and SWF
+    * Modified Image_Graph_Axis_Radar to be a category axis
+    * Modified Image_Graph_Dataset to allow for y-value to be an array of values (to support candlestick diagrams)
+    * Changed pie chart legends, so they show all data values as legend except just one for complete chart
+    * Changed logging behaviour (added Image_Graph::setLog() method)
+    * Updated how bar charts calculate width
+    * Legends now scale properly	
+    * Legends now show differently depending on plot type
+    * API Changes with minor impact on BC
+        - Removed caching
+        - Removed Image_Graph::saveAs(), functionality moved to Image_Graph_Driver::done() method
+        - Removed Image_Graph::thumbnail()
+        - Removed Image_Graph_Axis_Multidimensional, mainly for perfomance reasons
+    * Added some error/insanity checks
+    * Fixed problems with Image_Graph_Axis_Radar showing values in wrong order
+    * Fixed bug causing negative bars to display incorrecly (why o' why is 0 == 'some string'?)
+    * Fixed bug causing setLineStyle() to fail
+    * Fixed Bug #2684 "Source typo breaking data selectors"
+    * Fixed Bug #2685 "Plots do not honor ID tags for fills"
+    * Fixed bug #2791 "wrong x-axis label position when using ttf font"
+
+Version 0.3.0dev1 [2004-Oct-25] - Jesper Veggerby <pear.nosey@veggerby.dk>
+    * First PEAR version - GraPHPite changes to Image_Graph
+    * Changed Image_Graph_Axis_Sequential to Image_Graph_Axis_Category
+    * Changed default X-axis to be Image_Graph_Axis_Category
+    * Changed all plot types to be stackable
+        - This implies removing Image_Graph_Plot_Stacked_Bar, Image_Graph_Plot_Stacked_Bar100Pct, Image_Graph_Plot_Stacked_Area, Image_Graph_Plot_MultipleData
+        - Modified the way axis handling is done - no user impact
+    * Removed Image_Graph_Plot_Bar_Horizontal
+    * Modified management of axis maxima
+    * Removed Image_Graph_Text completely, replaced by Image_Graph_Element::write() - performance improvement
+    * Added possibility to draw graph on an existing image
+    * Added caching capability
+    * Added Image_Graph_Axis_Marker_Area and Image_Graph_Axis_Marker_Line
+    * Added marks to axis (a value marker, i.e. an arrow or a ranged box)
+    * Fixed bug where stacked / multiple charts containing all zeros in datasets did not display or gave a division by zero error in Axis.php
+    * Modified Image_Graph_Fill_Gradient for better performance
+    * Added Image_Graph::factory and Image_Graph::layoutFactory methods, mainly for lazy include
+    * Removed Include.php, use either factory methods or include necessary files manually
+    * Added Image_Graph_Simple for very simple creation of graphs
+    * Added secondary y-axis
+    * Changed internal color scheme to use Image_Color - user impact:
+        - Image_Graph::newColor(), Image_Graph::addColor removed
+        - Uses Image_Graph_Color from 'old' Image_Graph package, which statically uses Image_Graph_Color::allocateColor() and Image_Graph_Color::color2RGB()
+        - Constants IMAGE_GRAPH_[COLORNAME] removed. Use string names, i.e. 'white', 'blue' as defined by Image_Color (now a dependency)
+        - Standard 'string' color formats supported
+    * Added internal error handler Image_Graph_Common::_error() which uses PEAR_ErrorStack and Log
+    * Changed Image_Graph_Marker_PercentageCircle to Image_Graph_Marker_Bubble
+    * Changed logo
+    * Changed all strings using double quotes to single quotes for performance
 
 Version 1.2 [2004-Sep-15] - Jesper Veggerby <pear.nosey@veggerby.dk>
-	* Fixed some more errors caused by error_reporting using E_NOTICE
-	* Documentation brush up
-	* Added logarithmic axis
-	* Tested with PHP5
-	* License changed from GPL to LGPL	
-	* Changed to accomodate PEAR standards
-		- All classes are now named according to PEAR naming scheme, i.e. Image_Graph_*
-		- All class methods are sturdy caps i.e. Element::done(), Axis::forceMinimum()
-		- Include files are now named .php instead of .inc
-		- File structure changed
-		- All private variables/methods are prefixed with a _ (should have no effect on usage since
-		  they are (should be!) private)
-	* Axis' are now returned via the Plotarea::getAxis() method
-	* Add methods now return a reference to the object, instead of the 'odd' way of creating
-	  global variables, i.e.:
-		$Graph->addPlot(new Plot(), 'Plot');
-	  is changed to:
-		$Plot =& $Graph->addPlot(new Plot());
-	* Coloring scheme changed so that named colors are now linked to a 24 bit integer value
-	  instead of the objects. setFillColor, setLineColor, setBorderColor and 
-	  setBackgroundColor instead of the corresponding -Style, to use the named colors). The
-	  colors are named according to the PEAR naming scheme: IMAGE_GRAPH_[COLOR], fx 
-	  IMAGE_GRAPH_RED
-	* Included (a few) examples in the distribution
+    * Fixed some more errors caused by error_reporting using E_NOTICE
+    * Documentation brush up
+    * Added logarithmic axis
+    * Tested with PHP5
+    * License changed from GPL to LGPL	
+    * Changed to accomodate PEAR standards
+        - All classes are now named according to PEAR naming scheme, i.e. Image_Graph_*
+        - All class methods are sturdy caps i.e. Element::done(), Axis::forceMinimum()
+        - Include files are now named .php instead of .inc
+        - File structure changed
+        - All private variables/methods are prefixed with a _ (should have no effect on usage since they are (should be!) private)
+    * Axis' are now returned via the Plotarea::getAxis() method
+    * Add methods now return a reference to the object, instead of the 'odd' way of creating global variables, i.e.:
+            $Graph->addPlot(new Plot(), 'Plot');
+        is changed to:
+            $Plot =& $Graph->addPlot(new Plot());
+    * Coloring scheme changed so that named colors are now linked to a 24 bit integer value instead of the objects. setFillColor, setLineColor, setBorderColor and setBackgroundColor instead of the corresponding -Style, to use the named colors). The colors are named according to the PEAR naming scheme: IMAGE_GRAPH_[COLOR], fx  IMAGE_GRAPH_RED
+    * Included (a few) examples in the distribution
 
 Version 1.1 [2004-Aug-16] - Jesper Veggerby <pear.nosey@veggerby.dk>
-	* Added support for legends in PlotTypeMultipleData (i.e. StackedBarChart, StackedAreaChart and StackedBarChart100Pct)
-	* Added step-, impulse-, horizontal bar- and dot chart (dot chart is marker only chart)
-	* Added AxisSequential for using a non-numerical axis (i.e x-values '1st quarter', '2nd quarter', etc.) for use 'instead' of a ArrayData preprocessor for labelling
-	* Added setLineColor, setFillColor, setBackgroundColor and setBorderColor to allow settting colors directly using RGB values instead of Color objects
-	* Added PlotareaMap to allow for map charts
-	* Added FloodFillMarker and PercentageCircleMarker
-	* Changed CircleMarker to use polygon instead of arc, to allow (proper) non-solid filling
-	* Fixed Title to work when used in a Layout
-	* Added a secondary Marker to the Marker class to allow for multiple/'nested' markers
-	* Added global variable DEFAULT_VERTICAL_FONT (which is an instance of VerticalFont)
-	* Added PlotareaLayout - a standard layout with plot- and axis- titles (using DEFAULT_FONT!)
-	* Added showShadow to GraPHPElement to allow *any* element to be able to show shadows! Note however it may not always look good
-	* 'Re'-fixed bug #989601 - Pixel oddities
-	* Changed Documentation to NOT include source code - to reduce documentation size (approx 2Mb)
+    * Added support for legends in PlotTypeMultipleData (i.e. StackedBarChart, StackedAreaChart and StackedBarChart100Pct)
+    * Added step-, impulse-, horizontal bar- and dot chart (dot chart is marker only chart)
+    * Added AxisSequential for using a non-numerical axis (i.e x-values '1st quarter', '2nd quarter', etc.) for use 'instead' of a ArrayData preprocessor for labelling
+    * Added setLineColor, setFillColor, setBackgroundColor and setBorderColor to allow settting colors directly using RGB values instead of Color objects
+    * Added PlotareaMap to allow for map charts
+    * Added FloodFillMarker and PercentageCircleMarker
+    * Changed CircleMarker to use polygon instead of arc, to allow (proper) non-solid filling
+    * Fixed Title to work when used in a Layout
+    * Added a secondary Marker to the Marker class to allow for multiple/'nested' markers
+    * Added global variable DEFAULT_VERTICAL_FONT (which is an instance of VerticalFont)
+    * Added PlotareaLayout - a standard layout with plot- and axis- titles (using DEFAULT_FONT!)
+    * Added showShadow to GraPHPElement to allow *any* element to be able to show shadows! Note however it may not always look good
+    * 'Re'-fixed bug #989601 - Pixel oddities
+    * Changed Documentation to NOT include source code - to reduce documentation size (approx 2Mb)
 
 Version 1.0 [2004-Jul-26] - Jesper Veggerby <pear.nosey@veggerby.dk>
-	* Added spider/radar charts
-	* Added AverageMarker
-	* Added LineArray and MarkerArray similar to FillArray
-	* Changed include file structure - every class in its own file (Java style)
-	* Fixed so that GraPHPite works with error_reporting using E_NOTICE
-	* Changed PieCharts to use polygon instead of arc, to allow (proper) non-solid filling
-	* Fixed bug #982634 - GradientFill on BarChart broken in 0.9e?
-	* Fixed bug #989601 - Pixel oddities
-	* Legends with GradientFill or ImageFill now shows correctly (FillArray shows the 'next in line')
+    * Added spider/radar charts
+    * Added AverageMarker
+    * Added LineArray and MarkerArray similar to FillArray
+    * Changed include file structure - every class in its own file (Java style)
+    * Fixed so that GraPHPite works with error_reporting using E_NOTICE
+    * Changed PieCharts to use polygon instead of arc, to allow (proper) non-solid filling
+    * Fixed bug #982634 - GradientFill on BarChart broken in 0.9e?
+    * Fixed bug #989601 - Pixel oddities
+    * Legends with GradientFill or ImageFill now shows correctly (FillArray shows the 'next in line')
 
 Version 0.9e [2004-Jun-29] - Jesper Veggerby <pear.nosey@veggerby.dk>
-	* Added stacked area charts
-	* Added possibility to show min, max and zero labels on axis
-	* Changed FontTTF so that scaling when angled works properly
-	* Added VerticalFont, fx for simple vertical printing of X-axis labels
-	* Changed Layout/Plotarea hierarki slightly - does not have any effect on usage
-	* Made Text as layoutable, i.e. it is possible to use in vertical/horizontal layouts
-	* Fixed bug #978231 - The plottype.inc has an error in the function MaximumY()
-	* Fixed bug #981227 - GradientFill/ImageFill does not work within FillArray
-	* Added possibility to hide the GraPHPite logo
+    * Added stacked area charts
+    * Added possibility to show min, max and zero labels on axis
+    * Changed FontTTF so that scaling when angled works properly
+    * Added VerticalFont, fx for simple vertical printing of X-axis labels
+    * Changed Layout/Plotarea hierarki slightly - does not have any effect on usage
+    * Made Text as layoutable, i.e. it is possible to use in vertical/horizontal layouts
+    * Fixed bug #978231 - The plottype.inc has an error in the function MaximumY()
+    * Fixed bug #981227 - GradientFill/ImageFill does not work within FillArray
+    * Added possibility to hide the GraPHPite logo
 
 Version 0.9d [2004-Jun-25] - Jesper Veggerby <pear.nosey@veggerby.dk>
-	* Added legends
-	* Added layouts (Java style)
+    * Added legends
+    * Added layouts (Java style)
 
 Version 0.9c [2004-Jun-15] - Jesper Veggerby <pear.nosey@veggerby.dk>
-	* Added pie-charts
-	* Added stacked/multiple bar charts
-	* Fixed bugs
-	* Improved visual appearance
+    * Added pie-charts
+    * Added stacked/multiple bar charts
+    * Fixed bugs
+    * Improved visual appearance
 
 Version 0.9b [2003-Nov-03] - Jesper Veggerby <pear.nosey@veggerby.dk>
-	* 2nd release, minor changed
+    * 2nd release, minor changed
 
 Versiob 0.9a [2003-Oct-14] - Jesper Veggerby <pear.nosey@veggerby.dk>
-	* Initial release
+    * Initial release
