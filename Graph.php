@@ -719,6 +719,7 @@ class Image_Graph
                 $tempText = new Image_Text("", $currAxis->values->_fontOptions);
                 $maxHeight = 0;
 
+                $currAxis->_internalTempValues['maxLabelHeight'] = 0;
                 for ($labelCount=0; $labelCount < $currAxis->_bounds['max']; $labelCount++) {
                     $currLabel = $currAxis->values->_text[$labelCount];
                     if (isset($currLabel) && !empty($currLabel)) {
@@ -914,7 +915,9 @@ class Image_Graph
         }
 
         // drawing of labels/numbers on the X-axis
-        if (!empty($this->_defaultFontOptions)) { // otherwise we don't have correct settings for font-filename etc.
+        if (!empty($this->_defaultFontOptions) &&   // otherwise we don't have correct settings for font-filename etc.
+            !empty($this->axisX->values->_text)
+           ) {
             require_once 'Image/Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
             $options = $this->axisX->values->_fontOptions;
             $tempText = new Image_Text("", $options);
@@ -932,7 +935,10 @@ class Image_Graph
 
 
             for ($labelCount=0; $labelCount<$this->axisX->_bounds['max']; $labelCount++) {
-                $currLabel = $this->axisX->values->_text[$labelCount];
+                unset($currLabel);
+                if (isset($this->axisX->values->_text[$labelCount])) {
+                    $currLabel = $this->axisX->values->_text[$labelCount];
+                }
                 if (isset($currLabel) && !empty($currLabel)) {
                     if (is_string($currLabel)) {
                         $tempText->set('text', $currLabel);

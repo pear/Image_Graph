@@ -186,11 +186,16 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
         if (($drawWhat == IMAGE_GRAPH_DRAW_FILLANDBORDER) ||
             ($drawWhat == IMAGE_GRAPH_DRAW_JUSTBORDER)) {
             for ($counter=0; $counter<$numData; $counter++) {
+                unset($beforeData);
                 if (!is_array($this->_stackingData)) {
-                    $beforeData = array(0, @$this->_data[$counter-1]);
+                    if ($counter>0) {
+                        $beforeData = array(0, @$this->_data[$counter-1]);
+                    }
                     $currData   = array(0, $this->_data[$counter]);
                 } else {
-                    $beforeData = $this->_stackingData[$counter-1];
+                    if ($counter>0) {
+                        $beforeData = $this->_stackingData[$counter-1];
+                    }
                     $currData   = $this->_stackingData[$counter];
                 }
                 if (!is_null($currData[0]) && !is_null($currData[1])) {

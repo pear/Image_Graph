@@ -21,20 +21,25 @@
     </maintainer>
   </maintainers>
   <release>
-    <version>0.2.0RC1</version>
-    <date>2004-02-14</date>
+    <version>0.2.1</version>
+    <date>2004-02-22</date>
     <license>PHP License</license>
     <state>alpha</state>
     <notes>
-- splitted package into smaller classes to get a more intuitive API
-- improved API a lot now that it's possible to be more flexible due to improved OO
-- renamed marker "rhomb" to "diamond"
-- applied new directory-structure for package (as defined by the core-group)
-- added workarounds for better results with current Image_Text v0.2
+- adapted package to new, completely changed API of Image_Text
+- updated examples due to API-break of Image_Text (e.g. use "font_path" instead of "fontPath" now)
+- created new class Image_Graph_Axis_Values for better customization
+- in the same step deprecated Image_Graph_Axis::setNumbercolor(), Image_Graph_Axis::setNumberformat() and Image_Graph_Axis_X::setLabels()
+- added much more phpdoc-documentation in source, commited doc to PEAR-manual etc.
+- fixed php closing-tags
+- some bugfixes
+
+Note: This release does *not* break BC. However the font-options have changed because of the API-break in Image_Text!
     </notes>
     <deps>
       <dep type="ext" rel="has" version="2">gd</dep>
-      <dep type="pkg" rel="ge" version="0.2">Image_Text</dep>
+      <dep type="pkg" rel="ge" version="0.4pl1">Image_Text</dep>
+      <dep type="pkg" rel="lt" version="0.5">Image_Text</dep>
       <dep type="pkg" rel="ge" version="0.4">Image_Color</dep>
     </deps> 
     <filelist>
@@ -61,6 +66,7 @@
           </dir> 
         </dir> 
         <dir name="docs" role="doc">
+          <file>LICENSE</file>
           <file>README</file>
           <file>TODO</file>
           <dir name="examples" role="doc">
@@ -78,6 +84,24 @@
     </filelist>
   </release>
   <changelog>
+    <release>
+      <version>0.2.0RC1</version>
+      <date>2004-02-14</date>
+      <license>PHP License</license>
+      <state>alpha</state>
+      <notes>
+  - splitted package into smaller classes to get a more intuitive API
+  - improved API a lot now that it's possible to be more flexible due to improved OO
+  - renamed marker "rhomb" to "diamond"
+  - applied new directory-structure for package (as defined by the core-group)
+  - added workarounds for better results with current Image_Text v0.2
+      </notes>
+      <deps>
+        <dep type="ext" rel="has" version="2">gd</dep>
+        <dep type="pkg" rel="ge" version="0.2">Image_Text</dep>
+        <dep type="pkg" rel="ge" version="0.4">Image_Color</dep>
+      </deps> 
+    </release>
     <release>
       <version>0.1.1</version>
       <date>2003-11-13</date>

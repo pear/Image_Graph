@@ -645,6 +645,7 @@ class Image_Graph_Axis_X extends Image_Graph_Axis
     * @see    setAxistype()
     * @see    Image_Graph_Axis_Values::setText()
     * @see    $values
+    * @deprecated
     */
     function setLabels($labels)
     {
@@ -905,7 +906,7 @@ class Image_Graph_Axis_Y extends Image_Graph_Axis
 /**
 * Class for handling textual and numerical values on the axes
 *
-* This class provied methods and attributes for customization of an
+* This class provides methods and attributes for customization of an
 * axis. You can use it to set the options like the font, it's size or
 * the color in which values (both numerical and textual, depending on
 * the axis) will be drawn.

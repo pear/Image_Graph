@@ -5,7 +5,7 @@
 brought to you by the help of SpeedPartner.de
 
 PEAR homepage: http://pear.php.net/package/Image_Graph
-additional information: http://pear.speedpartner.de
+additional information: http://pear.speedpartner.de/
 
 maintainer: Stefan Neufeind <pear.neufeind at speedpartner.de>
 
@@ -22,6 +22,13 @@ can then be greatly enhanced by the (careful) use of datamarkers, by doing fills
 
 Documentation, tutorials etc.:
 ------------------------------
+Documentation for this package can be found in the official PEAR manual at:
+http://pear.php.net/manual/
+
+API-docs in "conventional" style can be found at:
+http://pear.speedpartner.de/
+There you will also find PNG-files of the examples shipped with the package.
+
 Have a look at the examples which you find in docs/examples/. Together with the
 API-reference they serve as the only tutorials available - sorry. But at the
 present step I mainly concentrate on the development and improvement of the
@@ -39,4 +46,4 @@ can't plan every detail that might become useful one day. Be asured that we
 will try our best to keep the API consistent about the next releases. But
 please note that this package is still heavily under development and therefor
 the API might be changed in some ways (hopefully only extended). Please have
-a look at the release-notes to keep informed of all important changes.d
+a look at the release-notes to keep informed of all important changes.
