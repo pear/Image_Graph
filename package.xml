@@ -25,23 +25,11 @@
     </maintainer>
   </maintainers>
   <release>
-    <version>0.3.0dev3</version>
-    <date>2005-01-27</date>
+    <version>0.3.0dev4</version>
+    <date>2005-01-28</date>
     <license>LGPL</license>
     <state>devel</state>
-    <notes>* Added possibility to invert axis direction, fx. minimum at top or bottom
-* Added methods to handle axis label customization (Image_Graph_Axis::setLabelOption() and Image_Graph_Axis::setLabelOptions())
-* Minor change to the way GD driver(s) calculate height (so that fx. x-axis labels appear printed on the same baseline)
-* Fixed axis so that forceMinimum() works with axis intersection
-* Fixed PDF (PDFlib) driver to display images correctly
-* Fixed factory method class name alias 'vector', tried to create Image_Graph_Dataset_Vector instead of Image_Graph_Dataset_VectorFunction
-* Fixed a minor problem in category axis when adding more that one point with the same value, i.e. ('A', 10), ('A', 20)
-* Fixed problem with grids on category axis
-* Added possiblitity to add simple colors to Image_Graph_Line_Array
-* Added id tags for line styles
-* Performance optimization/tuning (axis, elements)
-* Removed XML_SVG driver which was included by mistake (SWF driver remains, but has several unimplemented features)
-* Added more tests</notes>
+    <notes>Fixed problem with logarithmic axis causing an infinite loop</notes>
     <deps>
       <dep type="ext" rel="has" optional="no">gd</dep>
       <dep type="pkg" rel="ge" version="1.3.1" optional="no">PEAR</dep>
@@ -355,11 +343,11 @@
     <provides type="function" name="Image_Graph::factory" />
     <provides type="function" name="Image_Graph::layoutFactory" />
     <filelist>
-      <file role="doc" baseinstalldir="Image" md5sum="85a9a89dfc75d101d257dc6257ddd6ac" name="docs/ChangeLog"/>
+      <file role="doc" baseinstalldir="Image" md5sum="4105653694b3b1fc637bb2799104eccf" name="docs/ChangeLog"/>
       <file role="doc" baseinstalldir="Image" md5sum="67235d254852f317d16b145f0043bdc1" name="docs/colors.txt"/>
       <file role="doc" baseinstalldir="Image" md5sum="8590cb799ab63f05f8a0e258909d24db" name="docs/Drivers.txt"/>
       <file role="doc" baseinstalldir="Image" md5sum="e6bb8d9b76fc20599242154f24fa1a87" name="docs/LICENSE"/>
-      <file role="doc" baseinstalldir="Image" md5sum="a7c26b06e500bb5d9927c75370485b49" name="docs/README"/>
+      <file role="doc" baseinstalldir="Image" md5sum="d50618a0bbc908e1319f8439ea029a68" name="docs/README"/>
       <file role="doc" baseinstalldir="Image" md5sum="df4b52fb759fb12a1bbdfab4bc38bbfd" name="docs/examples/barchart1.php"/>
       <file role="doc" baseinstalldir="Image" md5sum="50a588b1decfe54e9996e72e44a6182f" name="docs/examples/drivers1.php"/>
       <file role="doc" baseinstalldir="Image" md5sum="80be1b39294431abc0cef17ce48fa6f4" name="docs/examples/drivers2.php"/>
@@ -393,7 +381,7 @@
       <file role="php" baseinstalldir="Image" md5sum="b5495f11fdff8d9b52528aa3ce892a64" name="Graph/Title.php"/>
       <file role="php" baseinstalldir="Image" md5sum="136b59a683194980639c069f6b569224" name="Graph/Tool.php"/>
       <file role="php" baseinstalldir="Image" md5sum="a49bd71937e4dceb8acd789a73f373b5" name="Graph/Axis/Category.php"/>
-      <file role="php" baseinstalldir="Image" md5sum="dd0b9b12ddd8bc1239e731adc99f26c7" name="Graph/Axis/Logarithmic.php"/>
+      <file role="php" baseinstalldir="Image" md5sum="848cc51dd55a11f99087e75216734a14" name="Graph/Axis/Logarithmic.php"/>
       <file role="php" baseinstalldir="Image" md5sum="ead6d13beafc911acbd0b5545be74bed" name="Graph/Axis/Radar.php"/>
       <file role="php" baseinstalldir="Image" md5sum="fe8541d50000c450e47a0ed8dc14ec60" name="Graph/Axis/Marker/Area.php"/>
       <file role="php" baseinstalldir="Image" md5sum="2600b27792d174f78cf6142ca72f162b" name="Graph/Axis/Marker/Line.php"/>
@@ -606,6 +594,13 @@
 * Performance optimization/tuning (axis, elements)
 * Removed XML_SVG driver which was included by mistake (SWF driver remains, but has several unimplemented features)
 * Added more tests</notes>
+    </release>
+    <release>
+      <version>0.3.0dev4</version>
+      <date>2005-01-28</date>
+      <license>LGPL</license>
+      <state>devel</state>
+      <notes>Fixed problem with logarithmic axis causing an infinite loop</notes>
     </release>
   </changelog>
 </package>
