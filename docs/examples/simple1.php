@@ -18,9 +18,9 @@
     $graph->axeY0->setFontOptions(array("fontSize" => 8));
     $graph->axeY0->setColor(array(0x40, 0x40, 0xFF));
 
-    $data    = array( "Mo.\n8.9." => 15.8,
-                      "Di.\n9.9." => 37.2,
-                      "Mi.\n10.9." => 50.0
+    $data    = array( 15.8,
+                      37.2,
+                      50.0
                     );
 
     $graph->setDataDefaultColor(array(0xCC,0x29,0x29));

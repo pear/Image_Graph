@@ -362,7 +362,6 @@ class Image_Graph
                     unset($this->{$currAxe}->_ticksMinorEffective[$key]);
                 }
             }
-
         } // for ($axeCount=0; $axeCount<=1; $axeCount++)
     }
 

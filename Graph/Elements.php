@@ -489,6 +489,10 @@ class Image_Graph_Axe_Y extends Image_Graph_Axe
     */
     function _autoadjustBoundsAndTicks()
     {
+        // calling this without any data doesn't make too much sense
+        if (!$this->_containsData) {
+            return;
+        }
         $step = 1;
         $faktor = 1;
 
