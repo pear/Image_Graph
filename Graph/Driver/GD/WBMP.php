@@ -23,46 +23,52 @@
 // +--------------------------------------------------------------------------+
 
 /**
- * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * Class for handling output in WBMP format.
  * 
  * @package Image_Graph
- * @subpackage DataSelector     
+ * @subpackage Driver
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ * @since 0.3.0dev2
+ */
 
 /**
- * Filter used for selecting which data to show as markers
+ * Include file Image/Graph/Driver/GD.php
+ */
+require_once 'Image/Graph/Driver/GD.php'; 
+
+/**
+ * GD Driver class.
  * 
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
- * @subpackage DataSelector
+ * @subpackage Driver
+ * @since 0.3.0dev2
  * @abstract
  */
-class Image_Graph_DataSelector 
-{
+class Image_Graph_Driver_GD_WBMP extends Image_Graph_Driver_GD 
+{   
 
     /**
-     * Image_Graph_DataSelector [Constructor]
-	 */
-    function &Image_Graph_DataSelector()
+     * Output the result of the driver
+     * @param array $param Parameter array
+     * @abstract
+     */
+    function done($param = false)
     {
-    }
-
-    /**
-     * Check if a specified value should be 'selected', ie shown as a marker
-     * @param array $values The values to check
-     * @return bool True if the Values should cause a marker to be shown, false if not
-     * @access private
-	 */
-    function _select($values)
-    {
-        return true;
-    }
-
+        parent::done($param);
+        if (($param === false) || (!isset($param['filename']))) {            
+            header('Content-type: image/vnd.wap.wbmp');
+            header('Content-Disposition: inline; filename = \"'. basename($_SERVER['PHP_SELF'], '.php') . '.wbmp\"');
+            ImageWBMP($this->_canvas);
+        } elseif (isset($param['filename'])) {
+            ImageWBMP($this->_canvas, $param['filename']);
+        }
+    }     
+    
 }
 
 ?>

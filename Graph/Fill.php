@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Fill     
  * @category images
@@ -40,9 +41,13 @@ require_once 'Image/Graph/Element.php';
 
 /**
  * Style used for filling elements. 
+ *  
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Fill
  * @abstract
  */
-class Image_Graph_Fill extends Image_Graph_Element 
+class Image_Graph_Fill extends Image_Graph_Common
 {
 
     /**
@@ -51,30 +56,6 @@ class Image_Graph_Fill extends Image_Graph_Element
      */
     function _reset()
     {
-    }
-
-    /**
-    * Return the fillstyle at positions X, Y 
-    * @param int $x The X position
-    * @param int $y The Y position
-    * @param int $w The Width
-    * @param int $h The Height
-    * @return int A GD fillstyle 
-    * @access private
-    */
-    function _getFillStyleAt($x, $y, $w, $h, $ID = false)
-    {
-        return $this->_getFillStyle($ID);
-    }
-
-    /**
-     * Causes the object to update all sub elements coordinates (Image_Graph_Common, does not itself have coordinates, this is basically an abstract method)
-     * @access private
-     */
-    function _updateCoords()
-    {
-        $this->_setCoords($this->_parent->_fillLeft()-1, $this->_parent->_fillTop()-1, $this->_parent->_fillRight()+1, $this->_parent->_fillBottom()+1);
-        parent::_updateCoords();
     }
 
 }

@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Marker     
  * @category images
@@ -40,8 +41,13 @@ require_once 'Image/Graph/Plotarea/Element.php';
 
 /**
  * Data point marker.
+ * 
  * The data point marker is used for marking the datapoints on a graph with some 
  * visual label, fx. a cross, a text box with the value or an icon.
+ *   
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Marker
  * @abstract
  */
 class Image_Graph_Marker extends Image_Graph_Plotarea_Element 
@@ -55,7 +61,8 @@ class Image_Graph_Marker extends Image_Graph_Plotarea_Element
     var $_secondaryMarker = false;
 
     /**
-     * The 'size' of the marker, the meaning depends on the specific Marker implementation
+     * The 'size' of the marker, the meaning depends on the specific Marker
+     * implementation
      * @var int
      * @access private
      */
@@ -63,7 +70,8 @@ class Image_Graph_Marker extends Image_Graph_Plotarea_Element
 
     /**
      * Set the 'size' of the marker
-     * @param int $size The 'size' of the marker, the meaning depends on the specific Marker implementation 
+     * @param int $size The 'size' of the marker, the meaning depends on the
+     * specific Marker implementation
      */
     function setSize($size)
     {
@@ -82,9 +90,12 @@ class Image_Graph_Marker extends Image_Graph_Plotarea_Element
 
     /**
      * Draw the marker on the canvas
-     * @param int $x The X (horizontal) position (in pixels) of the marker on the canvas 
-     * @param int $y The Y (vertical) position (in pixels) of the marker on the canvas 
-     * @param array $values The values representing the data the marker 'points' to 
+     * @param int $x The X (horizontal) position (in pixels) of the marker on
+     * the canvas 
+     * @param int $y The Y (vertical) position (in pixels) of the marker on the
+     * canvas
+     * @param array $values The values representing the data the marker 'points'
+     * to
      * @access private
      */
     function _drawMarker($x, $y, $values = false)

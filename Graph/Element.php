@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
@@ -39,81 +40,112 @@ require_once 'Image/Graph/Common.php';
 
 /**
  * Representation of a element.
- * The Image_Graph_Element can be drawn on the canvas, ie it has coordinates, {@see Image_Graph_Line},
- * {@see Image_Graph_Fill}, border and background - although not all of these may apply to all
- * children.
+ * 
+ * The Image_Graph_Element can be drawn on the canvas, ie it has coordinates,
+ * {@link Image_Graph_Line}, {@link Image_Graph_Fill}, border and background -
+ * although not all of these may apply to all children.
+ * 
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
  * @abstract
  */
 class Image_Graph_Element extends Image_Graph_Common 
 {
 
-    /** The leftmost pixel of the element on the canvas
+    /**
+     * The leftmost pixel of the element on the canvas
      * @var int
      * @access private
      */
     var $_left = 0;
 
-    /** The topmost pixel of the element on the canvas
+    /**
+     * The topmost pixel of the element on the canvas
      * @var int
      * @access private
      */
     var $_top = 0;
 
-    /** The rightmost pixel of the element on the canvas
+    /**
+     * The rightmost pixel of the element on the canvas
      * @var int
      * @access private
      */
     var $_right = 0;
 
-    /** The bottommost pixel of the element on the canvas
+    /**
+     * The bottommost pixel of the element on the canvas
      * @var int
      * @access private
      */
     var $_bottom = 0;
 
-    /** Background of the element. Default: None
+    /**
+     * Background of the element. Default: None
      * @var FillStyle
      * @access private
      */
     var $_background = null;
 
-    /** Borderstyle of the element. Default: None
+    /**
+     * Borderstyle of the element. Default: None
      * @var LineStyle
      * @access private
      */
     var $_borderStyle = null;
 
-    /** Line style of the element. Default: None
+    /**
+     * Line style of the element. Default: None
      * @var LineStyle
      * @access private
      */
     var $_lineStyle = 'black';
 
-    /** Fill style of the element. Default: None
+    /**
+     * Fill style of the element. Default: None
      * @var FillStyle
      * @access private
      */
     var $_fillStyle = 'white';
 
-    /** Font of the element. Default: Standard font - FONT
+    /**
+     * Font of the element. Default: Standard font - FONT
      * @var Font
      * @access private
      * @see $IMAGE_GRAPH_FONT
      */
     var $_font = null;
 
-    /** Enable shadows on the element
+    /**
+     * Font options
+     * @var array
+     * @access private
+     */
+    var $_fontOptions = array();
+
+    /**
+     * Enable shadows on the element
      * @var bool
      * @access private
      */
     var $_shadow = false;
     
-    /** The padding displayed on the element
+    /**
+     * The padding displayed on the element
      * @var int
      * @access private
-     */   
+     */
     var $_padding = 0;
     
+    /**
+     * Resets the elements
+     * @access private
+     */
+    function _reset()
+    {
+        parent::_reset();
+    }
+               
     /**
      * Sets the background fill style of the element     
      * @param Image_Graph_Fill $background The background 
@@ -122,7 +154,10 @@ class Image_Graph_Element extends Image_Graph_Common
     function setBackground(& $background)
     {
         if (!is_a($background, 'Image_Graph_Fill')) {
-            $this->_error('Could not set background for ' . get_class($this) . ': ' . get_class($background), array('background' => &$background));
+            $this->_error(
+                'Could not set background for ' . get_class($this) . ': ' . 
+                get_class($background), array('background' => &$background)
+            );
         } else {
             $this->_background = & $background;
             $this->add($background);
@@ -138,7 +173,10 @@ class Image_Graph_Element extends Image_Graph_Common
     }
 
     /**
-     * Sets the background color of the element    
+     * Sets the background color of the element.
+     * 
+     * See colors.txt in the docs/ folder for a list of available named colors.
+     *     
      * @param mixed $color The color
      */
     function setBackgroundColor($color)
@@ -155,12 +193,13 @@ class Image_Graph_Element extends Image_Graph_Common
     function _getBackground()
     {
         if (is_object($this->_background)) {
-            return $this->_background->_getFillStyle();
+            $this->_driver->setFill($this->_background->_getFillStyle());
         } elseif ($this->_background != null) {
-            return $this->_color($this->_background);
+            $this->_driver->setFill($this->_background);
         } else {
-            return $this->_color();
+            return false;
         }
+        return true;
     }
 
     /**
@@ -171,7 +210,10 @@ class Image_Graph_Element extends Image_Graph_Common
     function setBorderStyle(& $borderStyle)
     {
         if (!is_a($borderStyle, 'Image_Graph_Line')) {
-            $this->_error('Could not set border style for ' . get_class($this) . ': ' . get_class($borderStyle), array('borderstyle' => &$borderStyle));
+            $this->_error(
+                'Could not set border style for ' . get_class($this) . ': ' . 
+                get_class($borderStyle), array('borderstyle' => &$borderStyle)
+            );
         } else {
             $this->_borderStyle = & $borderStyle;
             $this->add($borderStyle);
@@ -179,7 +221,9 @@ class Image_Graph_Element extends Image_Graph_Common
     }
 
     /**
-     * Sets the border color of the element    
+     * Sets the border color of the element.
+     *     
+     * See colors.txt in the docs/ folder for a list of available named colors.
      * @param mixed $color The color
      */
     function setBorderColor($color)
@@ -196,18 +240,16 @@ class Image_Graph_Element extends Image_Graph_Common
     function _getBorderStyle()
     {
         if (is_object($this->_borderStyle)) {
-            return $this->_borderStyle->_getLineStyle();
+            $result = $this->_borderStyle->_getLineStyle();
+            $this->_driver->setLineThickness($result['thickness']);
+            $this->_driver->setLineColor($result['color']);
         } elseif ($this->_borderStyle != null) {
-            if (isset($GLOBALS['_Image_Graph_gd2'])) {
-                ImageSetThickness($this->_canvas(), 1);
-            }
-            return $this->_color($this->_borderStyle);
+            $this->_driver->setLineThickness(1);
+            $this->_driver->setLineColor($this->_borderStyle);
         } else {
-            if (isset($GLOBALS['_Image_Graph_gd2'])) {
-                ImageSetThickness($this->_canvas(), 1);
-            }
-            return $this->_color();
+            return false;
         }
+        return true;
     }
 
     /**
@@ -217,8 +259,11 @@ class Image_Graph_Element extends Image_Graph_Common
      */
     function setLineStyle(& $lineStyle)
     {
-        if (!is_a($lineStyle, 'Image_Graph_Line')) {
-            $this->_error('Could not set line style for ' . get_class($this) . ': ' . get_class($lineStyle), array('linestyle' => &$lineStyle));
+        if (!is_object($lineStyle)) {
+            $this->_error(
+                'Could not set line style for ' . get_class($this) . ': ' . 
+                get_class($lineStyle), array('linestyle' => &$lineStyle)
+            );
         } else {
             $this->_lineStyle = & $lineStyle;
             $this->add($lineStyle);
@@ -226,7 +271,9 @@ class Image_Graph_Element extends Image_Graph_Common
     }
     
     /**
-     * Sets the line color of the element    
+     * Sets the line color of the element.
+     *     
+     * See colors.txt in the docs/ folder for a list of available named colors.
      * @param mixed $color The color
      */
     function setLineColor($color)
@@ -243,18 +290,16 @@ class Image_Graph_Element extends Image_Graph_Common
     function _getLineStyle()
     {
         if (is_object($this->_lineStyle)) {
-            return $this->_lineStyle->_getLineStyle();
+            $result = $this->_lineStyle->_getLineStyle();
+            $this->_driver->setLineThickness($result['thickness']);
+            $this->_driver->setLineColor($result['color']);
         } elseif ($this->_lineStyle != null) {
-            if (isset($GLOBALS['_Image_Graph_gd2'])) {
-                ImageSetThickness($this->_canvas(), 1);
-            }
-            return $this->_color($this->_lineStyle);
+            $this->_driver->setLineThickness(1);
+            $this->_driver->setLineColor($this->_lineStyle);
         } else {
-            if (isset($GLOBALS['_Image_Graph_gd2'])) {
-                ImageSetThickness($this->_canvas(), 1);
-            }
-            return $this->_color('black');
+            return false;
         }
+        return true;
     }
 
     /**
@@ -265,7 +310,10 @@ class Image_Graph_Element extends Image_Graph_Common
     function setFillStyle(& $fillStyle)
     {
         if (!is_a($fillStyle, 'Image_Graph_Fill')) {
-            $this->_error('Could not set fill style for ' . get_class($this) . ': ' . get_class($fillStyle), array('fillstyle' => &$fillStyle));
+            $this->_error(
+                'Could not set fill style for ' . get_class($this) . ': ' .
+                get_class($fillStyle), array('fillstyle' => &$fillStyle)
+            );
         } else {
             $this->_fillStyle = & $fillStyle;
             $this->add($fillStyle);
@@ -273,7 +321,9 @@ class Image_Graph_Element extends Image_Graph_Common
     }
 
     /**
-     * Sets the fill color of the element    
+     * Sets the fill color of the element.
+     *     
+     * See colors.txt in the docs/ folder for a list of available named colors.    
      * @param mixed $color The color
      */
     function setFillColor($color)
@@ -291,23 +341,87 @@ class Image_Graph_Element extends Image_Graph_Common
     function _getFillStyle($ID = false)
     {
         if (is_object($this->_fillStyle)) {
-            return $this->_fillStyle->_getFillStyle($ID);
+            $this->_driver->setFill($this->_fillStyle->_getFillStyle($ID));
         } elseif ($this->_fillStyle != null) {
-            return $this->_color($this->_fillStyle);
+            $this->_driver->setFill($this->_fillStyle);
         } else {
-            return $this->_color();
+            return false;
         }
+        return true;
     }
 
     /**
-     * Sets the font of the element	 
-     * @param Font $font The font of the element 
+     * Gets the font of the element.
+     * 
+     * If not font has been set, the parent font is propagated through it's
+     * children.
+     * 
+     * @return array An associated array used for driver
+     * @access private
+     */
+    function _getFont($options = false)    
+    {
+        if ($options === false) {
+            $options = $this->_fontOptions;
+        } else {
+            $options = array_merge($this->_fontOptions, $options);
+        }
+
+        if ($this->_font == null) {
+            $result = $this->_parent->_getFont($options);            
+        } else {
+            $result = $this->_font->_getFont($options);
+        }
+        
+        if ((isset($result['size'])) && (isset($result['size_rel']))) {
+            $result['size'] += $result['size_rel'];
+            unset($result['size_rel']);
+        }
+        return $result;
+    }
+
+    /**
+     * Sets the font of the element  
+     * @param Image_Graph_Font $font The font of the element 
      * @see Image_Graph_Font
      */
     function setFont(& $font)
     {
-        $this->_font = & $font;
-        $this->add($font);
+        if (!is_a($font, 'Image_Graph_Font')) {
+            $this->_error('Invalid font set on ' . get_class($this));
+        } else {
+            $this->_font = & $font;
+            $this->add($font);
+        }
+    }
+
+    /**
+     * Sets the font size  
+     * @param int $size The size of the font 
+     */
+    function setFontSize($size) {
+        $this->_fontOptions['size'] = $size;
+    }
+
+    /**
+     * Sets the font angle  
+     * @param int $angle The angle of the font 
+     */
+    function setFontAngle($angle) {
+        if ($angle == 'vertical') {
+            $this->_fontOptions['vertical'] = true;
+            $this->_fontOptions['angle'] = 90;
+        } else {
+            $this->_fontOptions['angle'] = $angle;
+        }
+    }
+
+    /**
+     * Sets the font color  
+     * @param mixed $color The color of the font 
+     */
+    function setFontColor($color) {
+        $this->_fontOptions['color'] = $color;
     }
 
     /**
@@ -328,8 +442,10 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Moves the element	 
-     * @param int $deltaX Number of pixels to move the element to the right (negative values move to the left) 
-     * @param int $deltaY Number of pixels to move the element downwards (negative values move upwards) 
+     * @param int $deltaX Number of pixels to move the element to the right
+     * (negative values move to the left)
+     * @param int $deltaY Number of pixels to move the element downwards
+     * (negative values move upwards)
      * @access private
      */
     function _move($deltaX, $deltaY)
@@ -453,11 +569,11 @@ class Image_Graph_Element extends Image_Graph_Common
      */
     function _displayShadow()
     {                
-        if 
-            ((!file_exists(dirname(__FILE__).'/Images/Shadows/tr.png')) or
-            (!file_exists(dirname(__FILE__).'/Images/Shadows/r.png')) or
-            (!file_exists(dirname(__FILE__).'/Images/Shadows/bl.png')) or
-            (!file_exists(dirname(__FILE__).'/Images/Shadows/b.png')) or
+/*        if 
+            ((!file_exists(dirname(__FILE__).'/Images/Shadows/tr.png')) || 
+            (!file_exists(dirname(__FILE__).'/Images/Shadows/r.png')) || 
+            (!file_exists(dirname(__FILE__).'/Images/Shadows/bl.png')) || 
+            (!file_exists(dirname(__FILE__).'/Images/Shadows/b.png')) || 
             (!file_exists(dirname(__FILE__).'/Images/Shadows/br.png'))) {
             $this->_error('Shadows incomplete, cannot continue');
         } else {                    
@@ -505,7 +621,7 @@ class Image_Graph_Element extends Image_Graph_Common
             ImageDestroy($shadows['BL']);                                              
             ImageDestroy($shadows['B']);                                              
             ImageDestroy($shadows['BR']);
-        }                                              
+        }*/                                              
     }
     
     /**
@@ -515,32 +631,18 @@ class Image_Graph_Element extends Image_Graph_Common
      * @param string $text The text
      * @param int $alignmen The text alignment (both vertically and horizontally)
      */
-    function write($x, $y, $text, $alignment = false) {
-        if ($this->_font == null) {
-            $this->setFont($GLOBALS['_Image_Graph_font']);
+    function write($x, $y, $text, $alignment = false, $font = false)
+    {
+        if ($font === false) {
+            $font = $this->_getFont();
         }
         
         if ($alignment === false) {
             $alignment = IMAGE_GRAPH_ALIGN_LEFT + IMAGE_GRAPH_ALIGN_TOP;
         }
 
-        if ($alignment & IMAGE_GRAPH_ALIGN_RIGHT) {
-            $x0 = $x - $this->_font->width($text);
-        } elseif ($alignment & IMAGE_GRAPH_ALIGN_CENTER_X) {
-            $x0 = $x - $this->_font->_centerWidth($text);
-        } else {
-            $x0 = $x;
-        }
-
-        if ($alignment & IMAGE_GRAPH_ALIGN_BOTTOM) {
-            $y0 = $y - $this->_font->height($text);
-        } elseif ($alignment & IMAGE_GRAPH_ALIGN_CENTER_Y) {
-            $y0 = $y - $this->_font->_centerHeight($text);
-        } else {
-            $y0 = $y;
-        }
-
-        $this->_font->_write($x0, $y0, $text);
+        $this->_driver->setFont($font);
+        $this->_driver->write($x, $y, $text, $alignment);
     }
         
                        
@@ -552,22 +654,13 @@ class Image_Graph_Element extends Image_Graph_Common
      */
     function _done()
     {
-        if (is_a($this->_fillStyle, 'Image_Graph_Fill')) {
-            $this->_fillStyle->_reset();
-        }
-                
-        if ($this->_background != null) {
-            ImageFilledRectangle($this->_canvas(), $this->_left, $this->_top, $this->_right, $this->_bottom, $this->_getBackground());
-        }
+        $this->_getBackground();
+        $this->_getBorderStyle();
+        $this->_driver->rectangle($this->_left, $this->_top, $this->_right, $this->_bottom);
 
-        if ($this->_borderStyle != null) {
-            ImageRectangle($this->_canvas(), $this->_left, $this->_top, $this->_right, $this->_bottom, $this->_getBorderStyle());
-        }
-        parent::_done();
+        $result = parent::_done();
         
-        if ($this->_shadow) {
-            $this->_displayShadow();
-        }
+        return $result;
     }
 
 }

@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Dataset     
  * @category images
@@ -35,6 +36,10 @@
 
 /**
  * Data set used to represent a data collection to plot in a chart
+ * 
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Dataset
  * @abstract
  */
 class Image_Graph_Dataset 
@@ -113,18 +118,26 @@ class Image_Graph_Dataset
 	 */
     function addPoint($x, $y = false, $ID = false)
     {
+        if (is_array($y)) {
+            $maxY = max($y);
+            $minY = min($y);
+        } else {
+            $maxY = $y;
+            $minY = $y;
+        }
+                         
         if ($this->_count) {
             $this->_minimumX = min($x, $this->_minimumX);
             $this->_maximumX = max($x, $this->_maximumX);
-            $this->_minimumY = min($y, $this->_minimumY);
-            $this->_maximumY = max($y, $this->_maximumY);
+            $this->_minimumY = min($minY, $this->_minimumY);
+            $this->_maximumY = max($maxY, $this->_maximumY);
         } else {
             $this->_minimumX = $x;
-            $this->_maximumX = $x;
-            $this->_minimumY = $y;
-            $this->_maximumY = $y;
-        }
-
+            $this->_maximumX = $x;            
+            $this->_minimumY = $minY;
+            $this->_maximumY = $maxY;
+        }                
+        
         $this->_count++;
     }
 
@@ -139,7 +152,8 @@ class Image_Graph_Dataset
 
     /**
      * Gets a X point from the dataset
-     * @param var $x The variable to return an X value from, fx in a vector function data set
+     * @param var $x The variable to return an X value from, fx in a vector
+     * function data set
      * @return var The X value of the variable
      * @access private
 	 */
@@ -150,7 +164,8 @@ class Image_Graph_Dataset
 
     /**
      * Gets a Y point from the dataset
-     * @param var $x The variable to return an Y value from, fx in a vector function data set
+     * @param var $x The variable to return an Y value from, fx in a vector
+     * function data set
      * @return var The Y value of the variable
      * @access private
 	 */
@@ -161,7 +176,8 @@ class Image_Graph_Dataset
 
     /**
      * Gets a ID from the dataset
-     * @param var $x The variable to return an Y value from, fx in a vector function data set
+     * @param var $x The variable to return an Y value from, fx in a vector
+     * function data set
      * @return var The ID value of the variable
      * @access private
 	 */
@@ -279,7 +295,8 @@ class Image_Graph_Dataset
 
     /**
      * Get a point close to the internal pointer
-     * @param int Step Number of points next to the internal pointer, negative Step is towards lower X values, positive towards higher X values
+     * @param int Step Number of points next to the internal pointer, negative
+     * Step is towards lower X values, positive towards higher X values
      * @return array The point
      * @access private
 	 */
@@ -288,7 +305,7 @@ class Image_Graph_Dataset
         $x = $this->_getPointX($this->_posX + $this->_stepX() * $step);
         $y = $this->_getPointY($this->_posX + $this->_stepX() * $step);
         $ID = $this->_getPointID($this->_posX + $this->_stepX() * $step);
-        if (($x === false) or ($y === false)) {
+        if (($x === false) || ($y === false)) {
             return false;
         } else {
             return array ('X' => $x, 'Y' => $y, 'ID' => $ID);
@@ -335,6 +352,56 @@ class Image_Graph_Dataset
         } else {
             return false;
         }
+    }      
+
+    /**
+     * Get the median of the array passed Y points
+     * @param array $data The data-array to get the median from
+     * @param int $quartile The quartile to return the median from
+     * @return var The Y-median across the dataset from the specified quartile
+     * @access private
+     */
+    function _median($data, $quartile = 'second')
+    {
+        sort($data);
+        $point = (count($data) - 1) / 2;
+        
+        if ($quartile == 'first') {
+            $lowPoint = 0;
+            $highPoint = floor($point);
+        } elseif ($quartile == 'third') {
+            $lowPoint = round($point);
+            $highPoint = count($data) - 1;
+        } else {
+            $lowPoint = 0;
+            $highPoint = count($data) - 1;
+        }
+
+        $point = ($lowPoint + $highPoint) / 2;
+
+        if (floor($point) != $point) {
+            $point = floor($point);           
+            return ($data[$point] + $data[($point + 1)]) / 2;
+        } else {
+            return $data[$point];
+        }
+    }
+
+    /**
+     * Get the median of the datasets Y points
+     * @param int $quartile The quartile to return the median from
+     * @return var The Y-median across the dataset from the specified quartile
+     * @access private
+     */
+    function _medianY($quartile = 'second')
+    {               
+        $pointsY = array();        
+        $posX = $this->_minimumX;
+        while ($posX <= $this->_maximumX) {
+            $pointsY[] = $this->_getPointY($posX);
+            $posX += $this->_stepX();
+        }
+        return $this->_median($pointsY, $quartile);                
     }        
 
 }

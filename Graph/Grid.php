@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Grid     
  * @category images
@@ -40,14 +41,20 @@ require_once 'Image/Graph/Element.php';
 
 /**
  * A grid displayed on the plotarea.
- * A grid is associated with a primary and a secondary axis. The grid is displayed in
- * context of the primary axis' label interval - meaning that a grid for an Y-axis displays
- * a grid for every label on the y-axis (fx. a {@see Image_Graph_Grid_Lines}, which displays horizontal
- * lines for every label on the y-axis from the x-axis minimum to the x-axis maximum).
- * You should always add the grid as one of the first elements to the plotarea. This is
- * due to the fact that elements are 'outputted' in the order they are added, i.e. if
- * an grid is added *after* a chart, the grid will be displayed on top of the chart which is
- * (probably) not desired. 
+ * 
+ * A grid is associated with a primary and a secondary axis. The grid is
+ * displayed in context of the primary axis' label interval - meaning that a
+ * grid for an Y-axis displays a grid for every label on the y-axis (fx. a {@link
+ * Image_Graph_Grid_Lines}, which displays horizontal lines for every label on
+ * the y-axis from the x-axis minimum to the x-axis maximum). You should always
+ * add the grid as one of the first elements to the plotarea. This is due to the
+ * fact that elements are 'outputted' in the order they are added, i.e. if an
+ * grid is added *after* a chart, the grid will be displayed on top of the chart
+ * which is (probably) not desired.
+ * 
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Grid
  * @abstract
  */
 class Image_Graph_Grid extends Image_Graph_Plotarea_Element 
@@ -94,22 +101,19 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
      */
     function _getSecondaryAxisPoints()
     {
-        if (is_a($this->_secondaryAxis, 'Image_Graph_Axis_Multidimensional')) {
+        if (is_a($this->_secondaryAxis, 'Image_Graph_Axis_Radar')) {
             $secondaryValue = $this->_secondaryAxis->_getNextLabel();
-
-            while (($secondaryValue <= $this->_secondaryAxis->_getMaximum()) and ($secondaryValue !== false)) {
+            $firstValue = $secondaryValue;
+            while (($secondaryValue <= $this->_secondaryAxis->_getMaximum()) && 
+                ($secondaryValue !== false)
+            ) {
                 $secondaryAxisPoints[] = $secondaryValue;
-                $secondaryValue = $this->_primaryAxis->_getNextLabel($secondaryValue);
-            }       
-        } elseif (is_a($this->_secondaryAxis, 'Image_Graph_Axis_Category')) {
-            $first = $this->_secondaryAxis->_getNextLabel();
-            while ($next = $this->_secondaryAxis->_getNextLabel($first)) {
-                $last = $next;
+                $secondaryValue = $this->_secondaryAxis->_getNextLabel($secondaryValue);
             }
-            $secondaryAxisPoints = array ($first, $last);
+            $secondaryAxisPoints[] = $firstValue;            
         } else {
-            $secondaryAxisPoints = array ($this->_secondaryAxis->_getMinimum(), $this->_secondaryAxis->_getMaximum());
-        }
+            $secondaryAxisPoints = array ('#min#', '#max#');
+        }        
         return $secondaryAxisPoints;
     }
 
@@ -121,7 +125,9 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
      */
     function _pointX($point)
     {
-        if (($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y) or ($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY)) {
+        if (($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y) || 
+            ($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY))
+        {
             $point['AXIS_Y'] = $this->_primaryAxis->_type;
         } else {
             $point['AXIS_Y'] = $this->_secondaryAxis->_type;
@@ -137,7 +143,9 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
      */
     function _pointY($point)
     {
-        if (($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y) or ($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY)) {
+        if (($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y) || 
+            ($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY))
+        {
             $point['AXIS_Y'] = $this->_primaryAxis->_type;
         } else {
             $point['AXIS_Y'] = $this->_secondaryAxis->_type;
@@ -146,12 +154,17 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
     }    
     
    /**
-     * Causes the object to update all sub elements coordinates (Image_Graph_Common, does not itself have coordinates, this is basically an abstract method)
+     * Causes the object to update all sub elements coordinates.
      * @access private
      */
     function _updateCoords()
     {
-        $this->_setCoords($this->_parent->_plotLeft, $this->_parent->_plotTop, $this->_parent->_plotRight, $this->_parent->_plotBottom);
+        $this->_setCoords(
+            $this->_parent->_plotLeft, 
+            $this->_parent->_plotTop, 
+            $this->_parent->_plotRight, 
+            $this->_parent->_plotBottom
+        );
         parent::_updateCoords();
     }
 

@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Fill     
  * @category images
@@ -40,12 +41,19 @@ require_once 'Image/Graph/Fill.php';
 
 /**
  * A sequential array of fillstyles.
- * This is used for filling multiple objects within the same element with different styles.
- * This is done by adding multiple fillstyles to a FillArrray structure. The fillarray 
- * will then when requested return the 'next' fillstyle in sequential order. It is possible
- * to specify ID tags to each fillstyle, which is used to make sure some data uses a 
- * specific fillstyle (i.e. in a multiple-/stackedbarchart you name the {@see Image_Graph_Dataset}s and
- * uses this name as ID tag when adding the dataset's associated fillstyle to the fillarray.
+ * 
+ * This is used for filling multiple objects within the same element with
+ * different styles. This is done by adding multiple fillstyles to a FillArrray
+ * structure. The fillarray will then when requested return the 'next' fillstyle
+ * in sequential order. It is possible to specify ID tags to each fillstyle,
+ * which is used to make sure some data uses a specific fillstyle (i.e. in a
+ * multiple-/stackedbarchart you name the {@link Image_Graph_Dataset}s and uses
+ * this name as ID tag when adding the dataset's associated fillstyle to the
+ * fillarray.
+ *        
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Fill
  */
 class Image_Graph_Fill_Array extends Image_Graph_Fill 
 {
@@ -73,10 +81,6 @@ class Image_Graph_Fill_Array extends Image_Graph_Fill
      */
     function &add(& $style, $id = '')
     {        
-        if (is_a($style, 'Image_Graph_Element')) {
-            parent::add($style);
-        }
-        
         if ($id == '') {
             $this->_fillStyles[] = & $style;
         } else {
@@ -97,6 +101,7 @@ class Image_Graph_Fill_Array extends Image_Graph_Fill
         } else {
             $this->_fillStyles[] = $color;
         }
+        reset($this->_fillStyles);
     }
 
     /**
@@ -106,49 +111,23 @@ class Image_Graph_Fill_Array extends Image_Graph_Fill
      */
     function _getFillStyle($ID = false)
     {        
-        if (($ID === false) or (!$this->_fillStyles[$ID])) {
+        if (($ID === false) || (!isset($this->_fillStyles[$ID]))) {
             $ID = key($this->_fillStyles);
             if (!next($this->_fillStyles)) {
                 reset($this->_fillStyles);
             }
         }
-        $fillStyle = & $this->_fillStyles[$ID];
-        
+        $fillStyle =& $this->_fillStyles[$ID];
+
         if (is_object($fillStyle)) {
             return $fillStyle->_getFillStyle($ID);
         } elseif ($fillStyle != null) {
-            return $this->_color($fillStyle);
+            return $fillStyle;
         } else {
             return parent::_getFillStyle($ID);
         }
     }
-
-    /**
-    * Return the fillstyle at positions X, Y 
-    * @param int $x The X position
-    * @param int $y The Y position
-    * @param int $w The Width
-    * @param int $h The Height
-    * @return int A GD fillstyle 
-    * @access private
-    */
-    function _getFillStyleAt($x, $y, $w, $h, $ID = false)
-    {
-        if (($ID === false) and (!(list ($ID, $fillStyle) = each($this->_fillStyles)))) {
-            reset($this->_fillStyles);
-            list ($ID, $fillStyle) = each($this->_fillStyles);
-        }
-        $fillStyle = & $this->_fillStyles[$ID];
-
-        if (is_object($fillStyle)) {
-            return $fillStyle->_getFillStyleAt($x, $y, $w, $h, $ID);
-        } elseif ($fillStyle != null) {
-            return $this->_color($fillStyle);
-        } else {
-            return parent::_getFillStyleAt($x, $y, $w, $h, $ID);
-        }
-    }
-
+    
 }
 
 ?>

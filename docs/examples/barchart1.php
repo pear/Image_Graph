@@ -1,5 +1,5 @@
 <?php
-    include('Image/Graph.php');
+    include 'Image/Graph.php';
     
     // create the graph
     $Graph =& Image_Graph::factory('graph', array(400, 300));
@@ -41,7 +41,7 @@
         )
     );
     
-    $Legend->setPlotArea($Plotarea);
+    $Legend->setPlotarea($Plotarea);
     
     // create the dataset
     $Dataset =& Image_Graph::factory('dataset');

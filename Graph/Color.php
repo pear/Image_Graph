@@ -57,7 +57,8 @@ class Image_Graph_Color extends Image_Color
     * @access   public
     * @static
     */  
-    function allocateColor(&$img, $color) {
+    function allocateColor(&$img, $color)
+    {
         $color = Image_Graph_Color::color2RGB($color);
 
         if ($color[3] == 255) {

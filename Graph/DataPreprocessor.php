@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage DataPreprocessor     
  * @category images
@@ -35,11 +36,16 @@
 
 /**
  * Data preprocessor used for preformatting a data.
+ * 
  * A data preprocessor is used in cases where a value from a dataset or label must be
  * displayed in another format or way than entered. This could for example be the need
  * to display X-values as a date instead of 1, 2, 3, .. or even worse unix-timestamps. 
- * It could also be when a {@see Image_Graph_Marker_Value} needs to display values as percentages
+ * It could also be when a {@link Image_Graph_Marker_Value} needs to display values as percentages
  * with 1 decimal digit instead of the default formatting (fx. 12.01271 -> 12.0%).
+ *
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage DataPreprocessor
  * @abstract
  */
 class Image_Graph_DataPreprocessor 

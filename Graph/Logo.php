@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Logo     
  * @category images
@@ -40,7 +41,12 @@ require_once 'Image/Graph/Element.php';
 
 /**
  * Displays a logo on the canvas.
- * By default the logo is displayed in the top-right corner of the canvas. 
+ * 
+ * By default the logo is displayed in the top-right corner of the canvas.
+ *   
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Logo 
  */
 class Image_Graph_Logo extends Image_Graph_Element 
 {
@@ -73,15 +79,7 @@ class Image_Graph_Logo extends Image_Graph_Element
     function &Image_Graph_Logo($fileName, $alignment = IMAGE_GRAPH_ALIGN_TOP_RIGHT)
     {
         parent::Image_Graph_Element();
-        if (file_exists($fileName)) {
-            if (strtolower(substr($fileName, -4)) == '.png') {
-                $this->_image = ImageCreateFromPNG($this->_fileName = $fileName);
-            } else {
-                $this->_image = ImageCreateFromJPEG($this->_fileName = $fileName);
-            }
-        } else {
-            $this->_image = false;
-        }
+        $this->_fileName = $fileName;
         $this->_alignment = $alignment;
     }
 
@@ -94,7 +92,12 @@ class Image_Graph_Logo extends Image_Graph_Element
     function _setParent(& $parent)
     {
         parent::_setParent($parent);
-        $this->_setCoords($this->_parent->_left, $this->_parent->_top, $this->_parent->_right, $this->_parent->_bottom);
+        $this->_setCoords(
+            $this->_parent->_left, 
+            $this->_parent->_top, 
+            $this->_parent->_right, 
+            $this->_parent->_bottom
+        );
     }
 
     /**
@@ -103,31 +106,34 @@ class Image_Graph_Logo extends Image_Graph_Element
      */
     function _done()
     {
-        parent::_done();
-        if (!$this->_image) {
+        if (parent::_done() === false) {
             return false;
         }
-        $logoWidth = ImageSX($this->_image);
-        $logoHeight = ImageSY($this->_image);
+
         if ($this->_alignment & IMAGE_GRAPH_ALIGN_LEFT) {
             $x = $this->_parent->_left + 2;
-        }
-        elseif ($this->_alignment & IMAGE_GRAPH_ALIGN_RIGHT) {
-            $x = $this->_parent->_right - $logoWidth - 2;
+        } elseif ($this->_alignment & IMAGE_GRAPH_ALIGN_RIGHT) {
+            $x = $this->_parent->_right - 2;
         } else {
-            $x = $this->_parent->_left + ($this->_parent->width() - $logoWidth) / 2;
+            $x = ($this->_parent->_left + $this->_parent->_right) / 2;
         }
 
         if ($this->_alignment & IMAGE_GRAPH_ALIGN_TOP) {
             $y = $this->_parent->_top + 2;
-        }
-        elseif ($this->_alignment & IMAGE_GRAPH_ALIGN_BOTTOM) {
-            $y = $this->_parent->_bottom - $logoHeight - 2;
+        } elseif ($this->_alignment & IMAGE_GRAPH_ALIGN_BOTTOM) {
+            $y = $this->_parent->_bottom - 2;
         } else {
-            $y = $this->_parent->_top + ($this->_parent->height() - $logoHeight) / 2;
+            $y = ($this->_parent->_top + $this->_parent->_bottom) / 2;
         }
 
-        ImageCopy($this->_canvas(), $this->_image, $x, $y, 0, 0, $logoWidth, $logoHeight);
+        $this->_driver->overlayImage(
+            $x, 
+            $y, 
+            $this->_fileName, 
+            false, 
+            false, 
+            $this->_alignment
+        );
     }
 
 }

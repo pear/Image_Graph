@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
@@ -31,8 +32,6 @@
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
  */
-
-require_once 'Image/Color.php';
 
 if (!function_exists('is_a')) {
 
@@ -57,66 +56,67 @@ if (!function_exists('is_a')) {
 }
 
 /**
- * Check which version of GD is installed
- * @return int 0 if GD isn't installed, 1 if GD 1.x is installed and 2 if GD 2.x is installed
- */
-function Image_Graph_gd_version()
-{
-    if (function_exists('gd_info')) {
-        $info = gd_info();
-        $version = $info['GD Version'];
-    } else {
-        ob_start();
-        phpinfo(8);
-        $php_info = ob_get_contents();
-        ob_end_clean();
-
-        if (ereg("<td[^>]*>GD Version *<\/td><td[^>]*>([^<]*)<\/td>", $php_info, $result)) {
-            $version = $result[1];
-        }
-    }
-
-    if ($version) {
-        define('GD_VERSION', $version);
-    }
-
-    if (ereg('1\.[0-9]{1,2}', $version)) {
-        return 1;
-    }
-    elseif (ereg('2\.[0-9]{1,2}', $version)) {
-        return 2;
-    } else {
-        return 0;
-    }
-}
-
-/**
  * The ultimate ancestor of all Image_Graph classes.
+ * 
  * This class contains common functionality needed by all Image_Graph classes.
+ * 
+ * @author  Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
  * @abstract
  */
 class Image_Graph_Common
 {
 
-    /** The parent container of the current Image_Graph object
+    /** 
+     * The parent container of the current Image_Graph object
+     * 
      * @var Image_Graph_Common
      * @access private
      */
     var $_parent = null;
 
-    /** The sub-elements of the current Image_Graph container object
+    /**
+     * The sub-elements of the current Image_Graph container object
+     * 
      * @var array
      * @access private
      */
     var $_elements;
+
+    /** 
+     * The driver for output.
+     * 
+     * Enables support for multiple output formats.
+     * 
+     * @var Image_Graph_Driver
+     * @access private
+     */
+    var $_driver = null;
     
     /**
-     * Constructor
+     * Constructor [Image_Graph_Common]
      */
     function &Image_Graph_Common()
-    {
+    {        
     }    
 
+    /**
+     * Resets the elements
+     * 
+     * @access private
+     */
+    function _reset()    
+    {
+        if (is_array($this->_elements)) {
+            $keys = array_keys($this->_elements);
+            foreach ($keys as $key) {
+                $this->_elements[$key]->_setParent($this);
+                $this->_elements[$key]->_reset();                
+            }
+            unset($keys);
+        }
+    }        
+        
     /**
      * Sets the parent. The parent chain should ultimately be a GraPHP object
      * @see Image_Graph_Common
@@ -125,16 +125,40 @@ class Image_Graph_Common
      */
     function _setParent(& $parent)
     {
-        $this->_parent = & $parent;
+        $this->_parent =& $parent;        
+        $this->_driver =& $this->_parent->_getDriver();
+
+        if (is_array($this->_elements)) {
+            $keys = array_keys($this->_elements);
+            foreach ($keys as $key) {
+                $this->_elements[$key]->_setParent($this);
+            }
+            unset($keys);
+        }
     }
 
     /**
-     * Adds an element to the objects element list, the new Image_Graph_elements parent is automatically set
+     * Get the driver
+     * @return Image_Graph_Driver The driver
+     * @access private
+     */
+    function &_getDriver()
+    {
+        if (is_a($this->_parent, 'Image_Graph_Common')) {
+            return $this->_parent->_getDriver();
+        } else {
+            $this->_error('Invalid driver');
+        }
+    }
+
+    /**
+     * Adds an element to the objects element list.
+     * The new Image_Graph_elements parent is automatically set.
      * @param Image_Graph_Common $element The new Image_Graph_element
      * @return Image_Graph_Common The new Image_Graph_element
      */
     function &add(& $element)
-    {
+    {        
         if (!is_a($element, 'Image_Graph_Font')) {
             $this->_elements[] = &$element;
         }
@@ -143,12 +167,13 @@ class Image_Graph_Common
     }
 
     /**
-     * Creates an object from the class specified and adds it to the objects element list.
-     * If only one parameter is required for the constructor of the class simply pass this
-     * parameter as the $params parameter, unless the parameter is an array or a reference
-     * to a value, in that case you must 'enclose' the parameter in an array. Similar if
-     * the constructor takes more than one parameter specify the parameters in an array.
-     * See {@see Image_Graph::factory()}
+     * Creates an object from the class specified and adds it to the objects
+     * element list. If only one parameter is required for the constructor of
+     * the class simply pass this parameter as the $params parameter, unless the
+     * parameter is an array or a reference to a value, in that case you must
+     * 'enclose' the parameter in an array. Similar if the constructor takes
+     * more than one parameter specify the parameters in an array. See {@link
+     * Image_Graph::factory()}
      * @param string $class The class for the object
      * @param mixed $params The paramaters to pass to the constructor
      * @return Image_Graph_Common The new Image_Graph_element
@@ -169,7 +194,8 @@ class Image_Graph_Common
      * @return PEAR_ErrorStack The package specific error handling stack
      * @access private
      */
-    function &_getErrorStack() {
+    function &_getErrorStack()
+    {
         $stack =& PEAR_ErrorStack::singleton('Image_Graph');
         return $stack;
     }        
@@ -184,34 +210,13 @@ class Image_Graph_Common
     function _error($text, $params = false, $error_code = IMAGE_GRAPH_ERROR_GENERIC)
     {
         $stack =& $this->_getErrorStack();
-        $canvas =& $this->_canvas();
         if (!is_array($params)) {
-            $params = array('image' => &$canvas, 'object' => &$this);
+            $params = array('driver' => &$this->_driver, 'object' => &$this);
         } else {
-            $params['canvas'] =& $canvas;
+            $params['driver'] =& $this->_driver;
             $params['object'] =& $this;
         }
         $stack->push($error_code, 'error', $params, $text);        
-    }
-
-    /**
-     * Returns the graph's canvas. Penultimately it should call Canvas() from the GraPHP object
-     * @see Image_Graph
-     * @return resource A GD image representing the graph's canvas
-     * @access private
-     */
-    function &_canvas()
-    {
-        if ($this->_parent) {
-            $canvas =& $this->_parent->_canvas();
-            if (is_resource($canvas)) {
-                return $canvas;
-            } else {
-                return false;                
-            }
-        } else {
-            return false;
-        }
     }
 
     /**
@@ -245,51 +250,44 @@ class Image_Graph_Common
     }
 
     /**
-     * Get the color index for the RGB color
-     * @param int $color The color
-     * @return int The GD image index of the color
-     * @access private
-     */
-    function _color($color = false)
-    {
-        if ($color === false) {
-            return ImageColorTransparent($this->_canvas());
-        } else {
-            $canvas = $this->_canvas();
-            return Image_Graph_Color::allocateColor($canvas, $color);
-        }
-    }
-    /**
-     * Causes the object to update all sub elements coordinates (Image_Graph_Common, does not itself have coordinates, this is basically an abstract method)
+     * Causes the object to update all sub elements coordinates
+     * (Image_Graph_Common, does not itself have coordinates, this is basically
+     * an abstract method)
      * @access private
      */
     function _updateCoords()
-    {
+    {        
         if (is_array($this->_elements)) {
-            reset($this->_elements);
-
             $keys = array_keys($this->_elements);
-            while (list ($ID, $key) = each($keys)) {
+            foreach ($keys as $key) {
                 $this->_elements[$key]->_updateCoords();
             }
+            unset($keys);
         }
     }
 
     /**
-     * The last method to call. Calling Done causes output to the canvas. All sub elements done() method
-     * will be invoked
+     * The last method to call. Calling Done causes output to the canvas. All
+     * sub elements done() method will be invoked
+     * @return bool True if successfull, false if errors
      * @access private
      */
     function _done()
     {
-        if (is_array($this->_elements)) {
-            reset($this->_elements);
-
-            $keys = array_keys($this->_elements);
-            while (list ($ID, $key) = each($keys)) {
-                $this->_elements[$key]->_done();
-            }
+        if (($this->_driver == null) || (!is_a($this->_driver, 'Image_Graph_Driver'))) {
+            return false;
         }
+        
+        if (is_array($this->_elements)) {
+            $keys = array_keys($this->_elements);
+            foreach ($keys as $key) {
+                if ($this->_elements[$key]->_done() === false) {
+                    return false;
+                }
+            }
+            unset($keys);
+        }
+        return true;
     }
 
 }

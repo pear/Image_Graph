@@ -23,46 +23,81 @@
 // +--------------------------------------------------------------------------+
 
 /**
- * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * Class for handling output in GIF format.
  * 
  * @package Image_Graph
- * @subpackage DataSelector     
+ * @subpackage Driver
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ * @since 0.3.0dev2
+ */
 
 /**
- * Filter used for selecting which data to show as markers
+ * Include file Image/Graph/Driver/GD.php
+ */
+require_once 'Image/Graph/Driver/GD.php'; 
+
+/**
+ * GD Driver class.
  * 
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
- * @subpackage DataSelector
+ * @subpackage Driver
+ * @since 0.3.0dev2
  * @abstract
  */
-class Image_Graph_DataSelector 
-{
+class Image_Graph_Driver_GD_GIF extends Image_Graph_Driver_GD 
+{   
 
     /**
-     * Image_Graph_DataSelector [Constructor]
-	 */
-    function &Image_Graph_DataSelector()
+     * Create the PNG driver
+     * @param array $param Parameter array
+     */
+    function &Image_Graph_Driver_GD_GIF($param)
     {
+        parent::Image_Graph_Driver_GD($param);
+        
+        if (isset($param['transparent'])) {
+            $this->rectangle(
+                $this->_left, 
+                $this->_top, 
+                $this->_left + $this->_width - 1, 
+                $this->_top + $this->_height - 1, 
+                'transparent', 
+                'transparent'
+            );
+        } else {
+            $this->rectangle(
+                $this->_left, 
+                $this->_top, 
+                $this->_left + $this->_width - 1, 
+                $this->_top + $this->_height - 1, 
+                'white', 
+                'transparent'
+            );
+        }
     }
-
+        
     /**
-     * Check if a specified value should be 'selected', ie shown as a marker
-     * @param array $values The values to check
-     * @return bool True if the Values should cause a marker to be shown, false if not
-     * @access private
-	 */
-    function _select($values)
+     * Output the result of the driver
+     * @param array $param Parameter array
+     * @abstract
+     */
+    function done($param = false)
     {
-        return true;
-    }
-
+        parent::done($param);
+        if (($param === false) || (!isset($param['filename']))) {            
+            header('Content-type: image/gif');
+            header('Content-Disposition: inline; filename = \"'. basename($_SERVER['PHP_SELF'], '.php') . '.gif\"');
+            ImageGIF($this->_canvas);
+        } elseif (isset($param['filename'])) {
+            ImageGIF($this->_canvas, $param['filename']);
+        }
+    }     
+    
 }
 
 ?>

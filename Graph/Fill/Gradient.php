@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Fill     
  * @category images
@@ -40,18 +41,32 @@ require_once 'Image/Graph/Fill/Image.php';
 
 /**
  * Fill using a gradient color.
- * This creates a scaled fillstyle with colors flowing gradiently between 2 specified 
- * RGB values. Several directions are supported:
- * 0. Vertically (IMAGE_GRAPH_GRAD_VERTICAL)
- * 1. Horizontally (IMAGE_GRAPH_GRAD_HORIZONTAL)
- * 2. Mirrored vertically (the color grades from a-b-a vertically) (IMAGE_GRAPH_GRAD_VERTICAL_MIRRORED) 
- * 3. Mirrored horizontally (the color grades from a-b-a horizontally) IMAGE_GRAPH_GRAD_HORIZONTAL_MIRRORED 
- * 4. Diagonally from top-left to right-bottom (IMAGE_GRAPH_GRAD_DIAGONALLY_TL_BR) 
- * 5. Diagonally from bottom-left to top-right (IMAGE_GRAPH_GRAD_DIAGONALLY_BL_TR) 
- * 6. Radially (concentric circles in the center) (IMAGE_GRAPH_GRAD_RADIAL)
+ * This creates a scaled fillstyle with colors flowing gradiently between 2
+ * specified RGB values. Several directions are supported:
+ * 
+ * 1 Vertically (IMAGE_GRAPH_GRAD_VERTICAL)
+ * 
+ * 2 Horizontally (IMAGE_GRAPH_GRAD_HORIZONTAL)
+ * 
+ * 3 Mirrored vertically (the color grades from a- b-a vertically)
+ * (IMAGE_GRAPH_GRAD_VERTICAL_MIRRORED)
+ * 
+ * 4 Mirrored horizontally (the color grades from a-b-a horizontally)
+ * IMAGE_GRAPH_GRAD_HORIZONTAL_MIRRORED
+ * 
+ * 5 Diagonally from top-left to right-bottom
+ * (IMAGE_GRAPH_GRAD_DIAGONALLY_TL_BR)
+ * 
+ * 6 Diagonally from bottom-left to top-right
+ * (IMAGE_GRAPH_GRAD_DIAGONALLY_BL_TR)
+ * 
+ * 7 Radially (concentric circles in the center) (IMAGE_GRAPH_GRAD_RADIAL)
+ *         
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Fill
  */
-// TODO Make gradient fills be dependent upon the coordinates of the fill element (fx. a bar) not the entire area (fx. the plotarea)
-class Image_Graph_Fill_Gradient extends Image_Graph_Fill_Image 
+class Image_Graph_Fill_Gradient extends Image_Graph_Fill //Image_Graph_Fill_Image 
 {
 
     /**
@@ -76,198 +91,34 @@ class Image_Graph_Fill_Gradient extends Image_Graph_Fill_Image
     var $_endColor;
 
     /**
-     * The alpha channel
-     * @var int
-     * @access private
-     */
-    var $_alpha;
-
-    /**
      * Image_Graph_GradientFill [Constructor]
      * @param int $direction The direction of the gradient
      * @param mixed $startColor The value of the starting color
      * @param mixed $endColor The value of the ending color
-     * @param mixed $alpha The alpha channel (not supported!)
      */
-    function &Image_Graph_Fill_Gradient($direction, $startColor, $endColor, $alpha = false)
+    function &Image_Graph_Fill_Gradient($direction, $startColor, $endColor)
     {
-        parent::Image_Graph_Fill_Image('');
+        parent::Image_Graph_Fill();
         $this->_direction = $direction;
-        $this->_startColor = Image_Graph_Color::color2RGB($startColor);
-        $this->_endColor = Image_Graph_Color::color2RGB($endColor);
-        $this->_alpha = false;
+        $this->_startColor = $startColor;
+        $this->_endColor = $endColor;
     }
     
     /**
-     * Causes the object to update all sub elements coordinates (Image_Graph_Common, does not itself have coordinates, this is basically an abstract method)
-     * @access private
+     * Return the fillstyle
+     * @return int A GD fillstyle 
+     * @access private 
      */
-    function _updateCoords() {
-        parent::_updateCoords();
-        
-        $width = $this->width();
-        $height = $this->height();
-        
-        switch ($this->_direction) {
-            case IMAGE_GRAPH_GRAD_HORIZONTAL :
-                $count = $width;
-                break;
-
-            case IMAGE_GRAPH_GRAD_VERTICAL :
-                $count = $height;
-                break;
-
-            case IMAGE_GRAPH_GRAD_HORIZONTAL_MIRRORED :
-                $count = $width/2;
-                break;
-
-            case IMAGE_GRAPH_GRAD_VERTICAL_MIRRORED :
-                $count = $height/2;
-                break;
-
-            case IMAGE_GRAPH_GRAD_DIAGONALLY_TL_BR :
-            case IMAGE_GRAPH_GRAD_DIAGONALLY_BL_TR :
-                $count = sqrt($width*$width + $height*$height);
-                break;
-
-            case IMAGE_GRAPH_GRAD_RADIAL :
-                $count = max($width, $height);
-                break;
-        }
-
-        if (isset($GLOBALS['_Image_Graph_gd2'])) {
-            $this->_image = ImageCreateTrueColor($this->_graphWidth(), $this->_graphHeight());
-            if ($this->_alpha !== false) {
-                ImageAlphaBlending($this->_image, true);
-                ImageColorTransparent($this->_image, $transparent = Image_Graph_Color::allocateColor($this->_image, array(0xab, 0xe1, 0x23)));        
-                ImageFilledRectangle($this->_image, 0, 0, $this->_graphWidth()-1, $this->_graphHeight()-1, $transparent);
-            }
-        } else {
-            $this->_image = ImageCreate($this->_graphWidth(), $this->_graphHeight());
-        }
-
-        $redIncrement = ($this->_endColor[0] - $this->_startColor[0]) / $count;
-        $greenIncrement = ($this->_endColor[1] - $this->_startColor[1]) / $count;
-        $blueIncrement = ($this->_endColor[2] - $this->_startColor[2]) / $count;
-
-        for ($i = 0; $i <= $count; $i ++) {
-            unset($color);
-            if ($i == 0) {
-                $color = array($this->_startColor[0], $this->_startColor[1], $this->_startColor[2]);
-            } else {
-                $color[0] = round(($redIncrement * $i) + $redIncrement + $this->_startColor[0]);
-                $color[1] = round(($greenIncrement * $i) + $greenIncrement + $this->_startColor[1]);
-                $color[2] = round(($blueIncrement * $i) + $blueIncrement + $this->_startColor[2]);
-            }
-            if ($this->_alpha !== false) {
-                $color[3] = $this->_alpha;
-            }
-            $color = Image_Graph_Color::allocateColor($this->_image, $color);
-
-            switch ($this->_direction) {
-                case IMAGE_GRAPH_GRAD_HORIZONTAL :
-                    ImageLine($this->_image, 
-                        $this->_left + $i, 
-                        $this->_top, 
-                        $this->_left + $i, 
-                        $this->_top + $height-1, $color);
-                    break;
-
-                case IMAGE_GRAPH_GRAD_VERTICAL :
-                    ImageLine($this->_image, 
-                        $this->_left, 
-                        $this->_top + $height - $i, 
-                        $this->_left + $width - 1, 
-                        $this->_top + $height - $i, $color);
-                    break;
-
-                case IMAGE_GRAPH_GRAD_HORIZONTAL_MIRRORED :
-                    ImageLine($this->_image, 
-                        $this->_left + $i, 
-                        $this->_top, 
-                        $this->_left + $i, 
-                        $this->_top + $height-1, $color);
-                    ImageLine($this->_image, 
-                        $this->_left + $width - $i, 
-                        $this->_top, 
-                        $this->_left + $width - $i, 
-                        $this->_top + $height-1, $color);
-                    break;
-
-                case IMAGE_GRAPH_GRAD_VERTICAL_MIRRORED :
-                    ImageLine($this->_image, 
-                        $this->_left, 
-                        $this->_top + $i, 
-                        $this->_left + $width - 1, 
-                        $this->_top + $i, $color);
-                    ImageLine($this->_image, 
-                        $this->_left, 
-                        $this->_top + $height - $i, 
-                        $this->_left + $width - 1, 
-                        $this->_top + $height - $i, $color);
-                    break;
-
-                case IMAGE_GRAPH_GRAD_DIAGONALLY_TL_BR :
-                    if ($i > $width) {
-                        $polygon = array (
-                            $this->_left + $width, 
-                            $this->_top + $i - $width, 
-                            $this->_left + $width, 
-                            $this->_top + $height, 
-                            $this->_left + $i - $width, 
-                            $this->_top + $height);
-                    } else {
-                        $polygon = array (
-                            $this->_left, 
-                            $this->_top + $i, 
-                            $this->_left, 
-                            $this->_top + $height, 
-                            $this->_left + $width, 
-                            $this->_top + $height, 
-                            $this->_left + $width, 
-                            $this->_top, 
-                            $this->_left + $i, 
-                            $this->_top);
-                    }
-                    ImageFilledPolygon($this->_image, $polygon, count($polygon) / 2, $color);
-                    break;
-
-                case IMAGE_GRAPH_GRAD_DIAGONALLY_BL_TR :
-                    if ($i > $height) {
-                        $polygon = array (
-                            $this->_left + $i - $height, 
-                            $this->_top, 
-                            $this->_left + $width, 
-                            $this->_top, 
-                            $this->_left + $width, 
-                            $this->_top + 2 * $height - $i);
-                    } else {
-                        $polygon = array (
-                            $this->_left, 
-                            $this->_top + $height - $i, 
-                            $this->_left, 
-                            $this->_top, 
-                            $this->_left + $width, 
-                            $this->_top, 
-                            $this->_left + $width, 
-                            $this->_top + $height, 
-                            $this->_left + $i, 
-                            $this->_top + $height);
-                    }
-                    ImageFilledPolygon($this->_image, $polygon, count($polygon) / 2, $color);
-                    break;
-
-                case IMAGE_GRAPH_GRAD_RADIAL :
-                    if (($GLOBALS['_Image_Graph_gd2']) and ($i < $count)) {
-                        ImageFilledEllipse($this->_image, 
-                            $this->_left + $width / 2, 
-                            $this->_top + $height / 2, $count - $i, $count - $i, $color);
-                    }
-                    break;
-            }
-        }
+    function _getFillStyle($ID = false)
+    {
+        return array(
+            'type' => 'gradient', 
+            'start' => $this->_startColor, 
+            'end' => $this->_endColor, 
+            'direction' => $this->_direction
+        );
     }
-    
+            
 }
 
 ?>

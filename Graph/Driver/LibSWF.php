@@ -23,45 +23,34 @@
 // +--------------------------------------------------------------------------+
 
 /**
- * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * Class for handling output in SWF format.
  * 
+ * Outputs the graph in SWF format (ShockWave Flash). Requires libswf.
  * @package Image_Graph
- * @subpackage DataSelector     
+ * @subpackage Driver
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
- */ 
+ * @since 0.3.0dev2
+ */
+ 
+/**
+ * Include file Image/Graph/Driver.php
+ */
+require_once 'Image/Graph/Driver.php';
 
 /**
- * Filter used for selecting which data to show as markers
- * 
+ * SWF Driver class.
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
- * @subpackage DataSelector
- * @abstract
+ * @subpackage Driver
+ * @since 0.3.0dev2
  */
-class Image_Graph_DataSelector 
-{
-
-    /**
-     * Image_Graph_DataSelector [Constructor]
-	 */
-    function &Image_Graph_DataSelector()
-    {
-    }
-
-    /**
-     * Check if a specified value should be 'selected', ie shown as a marker
-     * @param array $values The values to check
-     * @return bool True if the Values should cause a marker to be shown, false if not
-     * @access private
-	 */
-    function _select($values)
-    {
-        return true;
-    }
+class Image_Graph_Driver_LibSWF extends Image_Graph_Driver 
+{   
+    // TODO Create LibSWF support
 
 }
 

@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Text     
  * @category images
@@ -40,6 +41,10 @@ require_once 'Image/Graph/Layout.php';
 
 /**
  * Title
+ *   
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Text
  */
 class Image_Graph_Title extends Image_Graph_Layout 
 {
@@ -59,14 +64,33 @@ class Image_Graph_Title extends Image_Graph_Layout
     var $_font;
 
     /**
-     * Create the title
+     * Create the title.
+     * 
+     * Pass a Image_Graph_Font object - preferably by-ref (&amp;) as second
+     * parameter, the font size in pixels or an associated array with some or
+     * all of the followin keys:
+     * 
+     * 'size' The size of the title
+     * 
+     * 'angle' The angle at which to write the title (in degrees or 'vertical')
+     * 
+     * 'color' The font-face color
+     * 
      * @param sting $text The text to represent the title
-     * @param Font $font The font to use in the title
+     * @param mixed $fontOptions The font to use in the title
      */
-    function &Image_Graph_Title($text, & $font)
+    function &Image_Graph_Title($text, $fontOptions = false)
     {
         parent::Image_Graph_Layout();
-        $this->_font = & $font;
+        if (is_object($fontOptions)) {
+            $this->_font = & $fontOptions;
+        } else {
+            if (is_array($fontOptions)) {
+                $this->_fontOptions = $fontOptions;
+            } else {
+                $this->_fontOptions['size'] = $fontOptions;
+            }
+        }
         $this->setText($text);
     }
 
@@ -80,30 +104,49 @@ class Image_Graph_Title extends Image_Graph_Layout
     }
 
     /**
+     * Returns the calculated "auto" size   
+     * @return int The calculated auto size 
+     * @access private
+     */
+    function _getAutoSize()
+    {
+        $this->_driver->setFont($this->_getFont());
+        return $this->_driver->textHeight($this->_text);
+    }
+
+    /**
      * Output the text 
      * @access private
      */
     function _done()
     {
-        if (!$this->_font) {
-            return false;
-        }
+        $this->_driver->setFont($this->_getFont());
         
         if (!is_a($this->_parent, 'Image_Graph_Layout')) {
             $this->_setCoords(
                 $this->_parent->_fillLeft(),
                 $this->_parent->_fillTop(),
                 $this->_parent->_fillRight(),
-                $this->_parent->_fillTop() + $this->_font->height($this->_text)
+                $this->_parent->_fillTop() + $this->_driver->textHeight($this->_text)
             );
         }               
         
-        parent::_done();
+        if (parent::_done() === false) {
+            return false;
+        }
 
-        $this->_font->_write(
-            ($this->_left + $this->_right - $this->_font->width($this->_text)) / 2, 
-            ($this->_top + $this->_bottom - $this->_font->height($this->_text)) / 2, 
-            $this->_text
+        $x = ($this->_left + $this->_right) / 2;
+        $y = ($this->_top + $this->_bottom) / 2;
+
+/*        $this->_getFillStyle();
+        $this->_getLineStyle();
+        $this->_driver->rectangle($this->_left, $this->_top, $this->_right, $this->_bottom);*/ 
+
+        $this->write(
+            $x,
+            $y, 
+            $this->_text,
+            IMAGE_GRAPH_ALIGN_CENTER_X + IMAGE_GRAPH_ALIGN_CENTER_Y
         );
     }
 

@@ -1,11 +1,13 @@
 <?php
-    include('Image/Graph.php');
+    include 'Image/Graph.php';
     
-    function XtoYear($Value) {
+    function XtoYear($Value)
+    {
         return floor($Value+1998);
     }
     
-    function salaries($Value) {
+    function salaries($Value)
+    {
         // I wish!
         return exp($Value)+1000;
     }

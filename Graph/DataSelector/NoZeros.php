@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage DataSelector     
  * @category images
@@ -40,7 +41,12 @@ require_once 'Image/Graph/DataSelector.php';
 
 /**
  * Filter out all zero's.
+ * 
  * Display all Y-values as markers, except those with Y = 0
+ *      
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage DataSelector
  */
 class Image_Graph_DataSelector_NoZeros extends Image_Graph_DataSelector 
 {
@@ -48,7 +54,8 @@ class Image_Graph_DataSelector_NoZeros extends Image_Graph_DataSelector
     /**
      * Check if a specified value should be 'selected', ie shown as a marker
      * @param array $values The values to check
-     * @return bool True if the Values should cause a marker to be shown, false if not
+     * @return bool True if the Values should cause a marker to be shown, false
+     * if not
      * @access private
 	 */
     function _select($values)

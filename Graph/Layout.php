@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Layout     
  * @category images
@@ -40,11 +41,23 @@ require_once 'Image/Graph/Plotarea/Element.php';
 
 /**
  * Defines an area of the graph that can be layout'ed.
+ * 
  * Any class that extends this abstract class can be used within a layout on the canvas.
+ *  
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Layout
  * @abstract
  */
 class Image_Graph_Layout extends Image_Graph_Plotarea_Element 
 {
+    
+    /**
+     * Has the coordinates already been updated?
+     * @var bool
+     * @access private
+     */
+    var $_updated = false; 
 
     /**
      * Alignment of the area for each vertice (left, top, right, bottom)
@@ -61,19 +74,96 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
         parent::Image_Graph_Element();
         $this->_padding = 2;
     }
+
+    /**
+     * Resets the elements
+     * @access private
+     */
+    function _reset()   
+    {
+        parent::_reset();
+        $this->_updated = false;
+    }
     
+    /**
+     * @since 0.3.0dev2
+     * @access private
+     */
+    function _calcEdgeOffset($alignSize, $offset, $total, $multiplier) {
+        if ($alignSize['unit'] == 'percentage') {
+            return $offset + $multiplier * ($total * $alignSize['value'] / 100);
+        } elseif ($alignSize['unit'] == 'pixels') {
+            if (($alignSize['value'] == 'auto_part1') || ($alignSize['value'] == 'auto_part2')) {
+                $alignSize['value'] = $multiplier * $this->_parent->_getAbsolute($alignSize['value']);                                   
+            }
+            if ($alignSize['value'] < 0) {
+                return $offset + $multiplier * ($total + $alignSize['value']);
+            } else {
+                return $offset + $multiplier * $alignSize['value'];
+            }
+        }
+        return $offset;
+    }
+            
     /**
      * Calculate the edges
      * @access private
      */
     function _calcEdges()
     {
-        if (is_array($this->_alignSize)) {
-            $left = $this->_parent->_fillLeft() + ($this->_alignSize['left'] <= 1 ? $this->_parent->_fillWidth() * $this->_alignSize['left'] : $this->_alignSize['left']);
-            $top = $this->_parent->_fillTop() + ($this->_alignSize['top'] <= 1 ? $this->_parent->_fillHeight() * $this->_alignSize['top'] : $this->_alignSize['top']);
-            $right = $this->_parent->_fillRight() - ($this->_alignSize['right'] <= 1 ? $this->_parent->_fillWidth() * $this->_alignSize['right'] : $this->_alignSize['right']);
-            $bottom = $this->_parent->_fillBottom() - ($this->_alignSize['bottom'] <= 1 ? $this->_parent->_fillHeight() * $this->_alignSize['bottom'] : $this->_alignSize['bottom']);
-            $this->_setCoords($left + $this->_padding, $top + $this->_padding, $right - $this->_padding, $bottom - $this->_padding);
+        if ((is_array($this->_alignSize)) && (!$this->_updated)) {
+            $left = $this->_calcEdgeOffset(
+                $this->_alignSize['left'],
+                $this->_parent->_fillLeft(),
+                $this->_parent->_fillWidth(),
+                +1
+            );
+            $top = $this->_calcEdgeOffset(
+                $this->_alignSize['top'],
+                $this->_parent->_fillTop(),
+                $this->_parent->_fillHeight(),
+                +1
+            );
+            $right = $this->_calcEdgeOffset(
+                $this->_alignSize['right'],
+                $this->_parent->_fillRight(),
+                $this->_parent->_fillWidth(),
+                -1
+            );
+            $bottom = $this->_calcEdgeOffset(
+                $this->_alignSize['bottom'],
+                $this->_parent->_fillBottom(),
+                $this->_parent->_fillHeight(),
+                -1
+            );
+                
+/*            $left = 
+                $this->_parent->_fillLeft() + ($this->_alignSize['left'] <= 1 ? 
+                    $this->_parent->_fillWidth() * $this->_alignSize['left'] : 
+                    $this->_alignSize['left']
+                );
+                
+            $top = $this->_parent->_fillTop() + ($this->_alignSize['top'] <= 1 ? 
+                $this->_parent->_fillHeight() * $this->_alignSize['top'] : 
+                $this->_alignSize['top']
+            );
+            
+            $right = $this->_parent->_fillRight() - ($this->_alignSize['right'] <= 1 ? 
+                $this->_parent->_fillWidth() * $this->_alignSize['right'] : 
+                $this->_alignSize['right']
+            );
+            
+            $bottom = $this->_parent->_fillBottom() - ($this->_alignSize['bottom'] <= 1 ? 
+                $this->_parent->_fillHeight() * $this->_alignSize['bottom'] : 
+                $this->_alignSize['bottom']
+            );*/
+            
+            $this->_setCoords(
+                $left + $this->_padding, 
+                $top + $this->_padding, 
+                $right - $this->_padding, 
+                $bottom - $this->_padding
+            );
         }
     }
 
@@ -95,7 +185,17 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
      */
     function _push($edge, $size = '100%')
     {
-        $this->_alignSize[($edge)] = (ereg("([0-9]*)\%", $size, $result) ? min(100, max(0, $result[1] / 100)) : $size);
+        if (ereg("([0-9]*)\%", $size, $result)) {
+            $this->_alignSize[$edge] = array(
+                'value' => min(100, max(0, $result[1])),
+                'unit' => 'percentage'
+            );
+        } else {
+            $this->_alignSize[$edge] = array(
+                'value' => $size,
+                'unit' => 'pixels'                
+            );
+        }
     }
 
     /**
@@ -109,7 +209,17 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
     function _setCoords($left, $top, $right, $bottom)
     {
         parent::_setCoords($left, $top, $right, $bottom);
-        $this->_alignSize = false;
+        $this->_updated = true;
+    }
+
+    /**
+     * Returns the calculated "auto" size   
+     * @return int The calculated auto size 
+     * @access private
+     */
+    function _getAutoSize()
+    {
+        return false;
     }
 
 }

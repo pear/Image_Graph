@@ -32,6 +32,7 @@
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
+ * @since 0.3.0dev2
  */ 
 
 /**
@@ -40,65 +41,76 @@
 require_once 'Image/Graph/Plot/Smoothed/Bezier.php';
 
 /**
- * Bezier smoothed line chart.
- * 
- * Similar to a {@link Image_Graph_Plot_Line}, but the interconnecting lines
- * between two datapoints are smoothed using a Bezier curve, which enables the
- * chart to appear as a nice curved plot instead of the sharp edges of a
- * conventional {@link Image_Graph_Plot_Line}. Smoothed charts are only supported
- * with non-stacked types
+ * Smoothed radar chart.
  *               
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Plot
+ * @since 0.3.0dev2
  */
-class Image_Graph_Plot_Smoothed_Line extends Image_Graph_Plot_Smoothed_Bezier 
+class Image_Graph_Plot_Smoothed_Radar extends Image_Graph_Plot_Smoothed_Bezier 
 {
-
-    /**
-     * Gets the fill style of the element         
-     * @return int A GD filestyle representing the fill style 
-     * @see Image_Graph_Fill
-     * @access private
-     */
-    function _getFillStyle($ID = false)
-    {
-        return IMG_COLOR_TRANSPARENT;
-    }
-
-    /**
-     * Perform the actual drawing on the legend.
-     * @param int $x0 The top-left x-coordinate
-     * @param int $y0 The top-left y-coordinate
-     * @param int $x1 The bottom-right x-coordinate
-     * @param int $y1 The bottom-right y-coordinate
-     */
-    function _drawLegendSample($x0, $y0, $x1, $y1)
-    {
-        $this->_addSamplePoints($x0, $y0, $x1, $y1);
-        $this->_driver->polygonEnd(false);
-    }
+    
+    // TODO Create legend sample for smoothed radar chart
     
     /**
-     * Output the Bezier smoothed plot as an Line Chart
+     * Output the plot
      * @access private
      */
     function _done()
-    {
-        if (parent::_done() === false) {
-            return false;
-        }
-
-        $keys = array_keys($this->_dataset);
-        foreach ($keys as $key) {
-            $dataset = & $this->_dataset[$key];
-            $dataset->_reset();
-            while ($p1 = $dataset->_next()) {
-                $p0 = $dataset->_nearby(-2);
-                $p2 = $dataset->_nearby(0);
-                $p3 = $dataset->_nearby(1);
-                if ($p2) {                            
-                    $cp = $this->_getControlPoints($p1, $p0, $p2, $p3);
+    {        
+        if (is_a($this->_parent, 'Image_Graph_Plotarea_Radar')) {
+            $keys = array_keys($this->_dataset);
+            foreach ($keys as $key) {
+                $dataset = & $this->_dataset[$key];
+                if ($dataset->count() >= 3) {
+                    $dataset->_reset();                
+                    $p1_ = $dataset->_next();
+                    $p2_ = $dataset->_next();
+                    $p3_ = $dataset->_next();
+                    $plast_ = false;
+                    if ($p3_) {
+                        while ($p = $dataset->_next()) {
+                            $plast_ = $p;
+                        }
+                    }
+                    
+                    if ($plast_ === false) {
+                        $plast_ = $p3_;
+                    }                
+                    $dataset->_reset();
+                    while ($p1 = $dataset->_next()) {
+                        $p0 = $dataset->_nearby(-2);                    
+                        $p2 = $dataset->_nearby(0);
+                        $p3 = $dataset->_nearby(1);
+                        
+                        if ($p0 === false) {
+                            $p0 = $plast_;
+                        }
+                        
+                        if ($p2 === false) {
+                            $p2 = $p1_;
+                            $p3 = $p2_;
+                        } elseif ($p3 === false) {
+                            $p3 = $p1_;
+                        }
+    
+                                                
+                        $cp = $this->_getControlPoints($p1, $p0, $p2, $p3);
+                        $this->_driver->splineAdd(
+                            $cp['X'], 
+                            $cp['Y'], 
+                            $cp['P1X'], 
+                            $cp['P1Y'], 
+                            $cp['P2X'], 
+                            $cp['P2Y']
+                        );
+                        
+                        $next2last = $p0;
+                        $last = $p1;
+                    }
+                    
+                    $cp = $this->_getControlPoints($p1_, $plast_, $p2_, $p3_);
                     $this->_driver->splineAdd(
                         $cp['X'], 
                         $cp['Y'], 
@@ -106,19 +118,18 @@ class Image_Graph_Plot_Smoothed_Line extends Image_Graph_Plot_Smoothed_Bezier
                         $cp['P1Y'], 
                         $cp['P2X'], 
                         $cp['P2Y']
-                    );
-                } else {
-                    $x = $this->_pointX($p1);
-                    $y = $this->_pointY($p1);
-                    $this->_driver->polygonAdd($x, $y);
+                    );                
+                    $this->_getFillStyle($key);
+                    $this->_getLineStyle($key);
+                    $this->_driver->splineEnd(true);
                 }
             }
-            $this->_getLineStyle();
-            $this->_driver->splineEnd(false);            
+            unset($keys);
         }
-        unset($keys);
-        $this->_drawMarker();
+        $this->_drawMarker();                 
+        return parent::_done();
     }
 
 }
+
 ?>

@@ -42,12 +42,6 @@ require_once 'Image/Graph/Font.php';
  */
 require_once 'Image/Graph/Font/Vertical.php';
 
-/**
- * Set the globals variable GD2 to true if GD 2.x is detected
- * @global bool $_Image_Graph_gd2
- */
-$GLOBALS['_Image_Graph_gd2'] = (Image_Graph_gd_version() == 2);
-
 // Constant declarations
 
 /**
@@ -159,6 +153,11 @@ define('IMAGE_GRAPH_PCT_Y_MIN', 4);
  * Defines a max Y% value should be used
  */
 define('IMAGE_GRAPH_PCT_Y_MAX', 5);
+
+/**
+ * Defines a total Y% value should be used
+ */
+define('IMAGE_GRAPH_PCT_Y_TOTAL', 6);
 
 /**
  * Defines a ID value should be used

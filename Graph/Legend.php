@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Legend     
  * @category images
@@ -40,9 +41,16 @@ require_once 'Image/Graph/Layout.php';
 
 /**
  * Displays a legend for a plotarea.
+ * 
  * A legend can be displayed in two ways:
- * 1. As an overlayed box within the plotarea.
- * 2. Layout'ed on the canvas somewhere next to the plotarea.
+ * 
+ * 1 As an overlayed box within the plotarea
+ * 
+ * 2 Layout'ed on the canvas smewhere next to the plotarea.
+ *  
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Legend
  */
 class Image_Graph_Legend extends Image_Graph_Layout 
 {
@@ -62,6 +70,13 @@ class Image_Graph_Legend extends Image_Graph_Layout
     var $_plotarea = false;
 
     /**
+     * Should markers be shown or not on this legend
+     * @var bool
+     * @access private
+     */
+    var $_showMarker = false;
+
+    /**
      * Image_Graph_Legend [Constructor]
      */
     function &Image_Graph_Legend()
@@ -79,17 +94,17 @@ class Image_Graph_Legend extends Image_Graph_Layout
     {
         if (is_a($this->_plotarea, 'Image_Graph_Plotarea')) {
             $elements = $this->_plotarea->_elements;
-            reset($elements);
-            $keys = array_keys($elements);
 
             $maxSize = 0;
             $count = 0;
-            while (list ($ID, $key) = each($keys)) {
-                $element = $elements[$key];
+            $keys = array_keys($elements);
+            foreach ($keys as $key) {
+                $element =& $elements[$key];
                 if (is_a($element, 'Image_Graph_Plot')) {
                     $count ++;
                 }
             }
+            unset($keys);
             return $count;
         }
     }
@@ -124,20 +139,18 @@ class Image_Graph_Legend extends Image_Graph_Layout
 
         if (strtolower($parent) == 'Image_Graph_plotarea') {
             $elements = $this->_plotarea->_elements;
-            reset($elements);
-            $keys = array_keys($elements);
 
-            if (!$this->_font) {
-                $this->_font = $GLOBALS['_Image_Graph_font'];
-            }
+            $this->_driver->setFont($this->_getFont());
 
             $maxSize = 0;
-            while (list ($ID, $key) = each($keys)) {
-                $element = $elements[$key];
+            $keys = array_keys($elements);
+            foreach ($keys as $key) {
+                $element =& $elements[$key];
                 if (is_a($element, 'Image_Graph_Plot')) {
-                    $maxSize = max($maxSize, $this->_font->width($element->Title));
+                    $maxSize = max($maxSize, $this->_driver->textWidth($element->Title));
                 }
             }
+            unset($keys);
             return $maxSize + // The width of the text
             10 + // Spacing between legend and text
             10 + // The width of the legend
@@ -183,7 +196,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
                 $x = $this->_parent->_fillRight() - 5;
             }
 
-            $this->_setCoords($x, $y, $x, $y);
+            $this->_setCoords($x, $y, $x + $this->_width(), $y + $this->_height());
         }
     }
 
@@ -209,6 +222,15 @@ class Image_Graph_Legend extends Image_Graph_Layout
             $this->_plotarea = & $parent;
         }
     }
+    
+    /**
+     * Set if this legends should show markers
+     * @param bool $showMarker True if markers are to be shown, false is not
+     */
+    function setShowMarker($showMarker) {
+        $this->_showMarker = $showMarker;
+    }
+     
 
     /**
      * Output the plot
@@ -220,68 +242,97 @@ class Image_Graph_Legend extends Image_Graph_Layout
         $shadow = $this->_shadow;
         $this->_shadow = false;
         
-        Image_Graph_Element::_done();
+        if (Image_Graph_Element::_done() === false) {
+            return false;
+        }
+        
+        $param['left'] = $this->_left + $this->_padding;
+        $param['top'] = $this->_top + $this->_padding;
+        $param['right'] = $this->_right - $this->_padding;
+        $param['bottom'] = $this->_bottom - $this->_padding;
+        $param['align'] = $this->_alignment;
+        $param['x'] = $this->_left + $this->_padding;
+        $param['y'] = $this->_top + $this->_padding;
+        $param['width'] = 16;
+        $param['height'] = 16;
+        $param['show_marker'] = $this->_showMarker;
 
         $legend = 0;
         if (is_a($this->_plotarea, 'Image_Graph_Plotarea')) {
             $elements = $this->_plotarea->_elements;
 
             if (is_array($elements)) {
-                reset($elements);
-                $keys = array_keys($elements);
+                $param['font'] = $this->_getFont();
 
-                if (!$this->_font) {
-                    $this->_font = $GLOBALS['_Image_Graph_font'];
-                }
-
-                $parent = (is_object($this->_parent) ? get_class($this->_parent) : $this->_parent);
+                $parent = (is_object($this->_parent) ? 
+                    get_class($this->_parent) : 
+                    $this->_parent
+                );
 
                 if (strtolower($parent) == 'image_graph_plotarea') {
-                    $this->_setCoords($this->_right - $this->_width(), $this->_top, $this->_right, $this->_top + $this->_height());
-
-                    ImageFilledRectangle($this->_canvas(), $this->_left, $this->_top, $this->_right, $this->_bottom, $this->_getFillStyle());
-                    ImageRectangle($this->_canvas(), $this->_left, $this->_top, $this->_right, $this->_bottom, $this->_getLineStyle());
+                    $this->_setCoords(
+                        $this->_right - $this->_width(), 
+                        $this->_top, 
+                        $this->_right, 
+                        $this->_top + $this->_height()
+                    );
+                    
+                    $this->_getFillStyle();
+                    $this->_getLineStyle();
+                    $this->_driver->rectangle(
+                        $this->_left, 
+                        $this->_top, 
+                        $this->_right, 
+                        $this->_bottom
+                    );
 
                     $y = 0;
-                    reset($keys);
-                    while (list ($ID, $key) = each($keys)) {
-                        $element = $elements[$key];
+                    $keys = array_keys($elements);
+                    foreach($keys as $key) {
+                        $element =& $elements[$key];
                         if (is_a($element, 'Image_Graph_Plot')) {
-                            $size = $element->legendSample($this->_left + $this->_padding + 5, $this->_top + $this->_padding + $y + 5, $this->_font, $this->_width(), (10 + $this->_padding));
-                            $y += $this->_padding+$size['Height'];
+                            $element->_legendSample($param);
                         }
                     }
+                    unset($keys);
                 } else {
-                    reset($keys);
+                    $param0 = $param;
+                    $param0['simulate'] = true;                   
+                    $keys = array_keys($elements);
+                    foreach($keys as $key) {
+                        $element =& $elements[$key];
+                        if (is_a($element, 'Image_Graph_Plot')) {
+                            $element->_legendSample($param0);                            
+                        }
+                    }
+                    unset($keys);
+                    if (($this->_alignment & IMAGE_GRAPH_ALIGN_VERTICAL) != 0) {
+                        if ($param0['x'] == $param['x']) {
+                            $param['y'] = $param['y'] + ($this->_height() - ($param0['y'] - $param['y']))/2;
+                        }
+                    } else {
+                        if ($param0['y'] == $param['y']) {
+                            $param['x'] = $param['x'] + ($this->_width() - ($param0['x'] - $param['x']))/2;
+                        }
+                    }
+                    
                     if ($plotCount = $this->_plotCount()) {
                         $legendWidth = $this->_width() / $plotCount;
                     }
-                    $posX = $this->_left + $this->_padding;
-                    if (($this->_alignment & IMAGE_GRAPH_ALIGN_VERTICAL) != 0) {
-                        $posY = $this->_top + $this->_padding + 5;
-                    } else {
-                        $posY = $this->_top + $this->_height() / 2;
-                    }
-
-                    $width = 0;
-                    $height = 0;
-                    while (list ($ID, $key) = each($keys)) {
-                        $element = $elements[$key];
+                    $keys = array_keys($elements);
+                    foreach ($keys as $key) {
+                        $element =& $elements[$key];
                         if (is_a($element, 'Image_Graph_Plot')) {
-                            $size = $element->_legendSample($posX + 5, $posY, $this->_font, $width, $height);                            
-                            if (($this->_alignment & IMAGE_GRAPH_ALIGN_VERTICAL) != 0) {                                
-                                $posY += $size['Height']+$this->_padding+20;                                
-                            } else {
-                                $posX += $size['Width']+$this->_padding+20;
-                            }
-                        }
+                            $element->_legendSample($param);                            
+                        }                       
                     }
+                    unset($keys);
                 }
             }
         }
-        if ($shadow) {
+/*        if ($shadow) {
             $this->displayShadow();
-        }
+        }*/
     }
 }
 ?>

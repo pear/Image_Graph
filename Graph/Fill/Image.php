@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Fill     
  * @category images
@@ -40,6 +41,10 @@ require_once 'Image/Graph/Fill.php';
 
 /**
  * Fill using an image.
+ *         
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Fill
  */
 class Image_Graph_Fill_Image extends Image_Graph_Fill 
 {
@@ -72,18 +77,7 @@ class Image_Graph_Fill_Image extends Image_Graph_Fill
     function &Image_Graph_Fill_Image($fileName)
     {
         parent::Image_Graph_Fill();
-        if (file_exists($fileName)) {
-            if (strtolower(substr($fileName, -4)) == '.png') {
-                $this->_image = ImageCreateFromPNG($this->_fileName = $fileName);
-            } else {
-                $this->_image = ImageCreateFromJPEG($this->_fileName = $fileName);
-            }
-        } else {
-            $this->_image = false;
-        }
-        if (($this->_image) and (isset($GLOBALS['_Image_Graph_gd2']))) {
-            ImageAlphaBlending($this->_image, true);
-        }
+        $this->_fileName = $fileName;
     }
 
     /**
@@ -93,48 +87,9 @@ class Image_Graph_Fill_Image extends Image_Graph_Fill
      */
     function _getFillStyle($ID = false)
     {
-        if (!$this->_image) {
-            return $this->_color->_index;
-        }
-
-        if (($this->_resize) and ((ImageSX($this->_image) != $this->_graphWidth()) or (ImageSY($this->_image) != $this->_graphHeight()))) {
-            if (isset($GLOBALS['_Image_Graph_gd2'])) {
-                $image = ImageCreateTrueColor($this->_graphWidth(), $this->_graphHeight());
-                ImageCopyResampled($image, $this->_image, $this->_left, $this->_top, 0, 0, $this->width() + 1, $this->height() + 1, ImageSX($this->_image), ImageSY($this->_image));
-            } else {
-                $image = ImageCreate($this->_graphWidth(), $this->_graphHeight());
-                ImageCopyResized($image, $this->_image, $this->_left, $this->_top, 0, 0, $this->width() + 1, $this->height() + 1, ImageSX($this->_image), ImageSY($this->_image));
-            }
-
-            ImageDestroy($this->_image);
-            $this->_image = $image;
-        }
-
-        ImageSetTile($this->_canvas(), $this->_image);
-        return IMG_COLOR_TILED;
+        return $this->_fileName;
     }
 
-    /**
-    * Return the fillstyle at positions X, Y 
-    * @param int $x The X position
-    * @param int $y The Y position
-    * @param int $w The Width
-    * @param int $h The Height
-    * @return int A GD fillstyle 
-    * @access private
-    */
-    function _getFillStyleAt($x, $y, $w, $h)
-    {
-        $this->_getFillStyle();
-        if (isset($GLOBALS['_Image_Graph_gd2'])) {
-            ImageCopyResampled($this->_image, $this->_image, $x, $y, $this->_left, $this->_top, $w, $h, $this->width() + 1, $this->height() + 1);
-        } else {
-            ImageCopyResized($this->_image, $this->_image, $x, $y, $this->_left, $this->_top, $w, $h, $this->width() + 1, $this->height() + 1);
-        }
-
-        ImageSetTile($this->_canvas(), $this->_image);
-        return IMG_COLOR_TILED;
-    }
 }
 
 ?>

@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Text     
  * @category images
@@ -40,7 +41,11 @@ require_once 'Image/Graph/Common.php';
 
 /**
  * A font.
- */
+ *  
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Text
+ */ 
 class Image_Graph_Font extends Image_Graph_Common 
 {
 
@@ -67,70 +72,23 @@ class Image_Graph_Font extends Image_Graph_Common
     {
         $this->_color = $color;
     }
-
+    
     /**
-     * Get the color of the font
-     * @return int The color of the Font 
+     * Get the font 'array'
+     * @return array The font 'summary' to pass to the driver 
      * @access private 
      */
-    function _getColor()
-    {
-        return $this->_color($this->_color);
-    }
-
-    /**
-     * Get the width of the text specified in pixels
-     * @param string $text The text to calc the width for 
-     * @return int The width of the text using the specified font 
-     */
-    function width($text)
-    {
-        return ImageFontWidth(IMAGE_GRAPH_FONT) * strlen($text);
-    }
-
-    /**
-     * Get the height of the text specified in pixels
-     * @param string $text The text to calc the height for 
-     * @return int The height of the text using the specified font 
-     */
-    function height($text)
-    {
-        return ImageFontHeight(IMAGE_GRAPH_FONT);
-    }
-
-    /**
-     * Get the center width of the text specified in pixels
-     * @param string $text The text to calc the width for 
-     * @return int The center width of the text using the specified font 
-     * @access private 
-     */
-    function _centerWidth($text)
-    {
-        return (int) ($this->width($text) / 2);
-    }
-
-    /**
-     * Get the center height of the text specified in pixels
-     * @param string $text The text to calc the height for 
-     * @return int The center height of the text using the specified font
-     * @access private 
-     */
-    function _centerHeight($text)
-    {
-        return (int) ($this->height($text) / 2);
-    }
-
-    /**
-     * Write a text on the canvas
-     * @param int $x The X (horizontal) position of the text 
-     * @param int $y The Y (vertical) position of the text 
-     * @param string $text The text to write on the canvas 
-     * @access private 
-     */
-    function _write($x, $y, $text)
-    {
-        ImageString($this->_canvas(), IMAGE_GRAPH_FONT, $x, $y, $text, $this->_getColor());
-    }
+    function _getFont($options = false)
+    {    
+        if ($options === false) {
+            $options = array();
+        }    
+        $options['font'] = 1;
+        if (!isset($options['color'])) {        
+            $options['color'] = $this->_color;
+        }        
+        return $options;
+    }    
 
 }
 
