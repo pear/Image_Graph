@@ -1,25 +1,53 @@
 <?php
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
+// +----------------------------------------------------------------------+
+// | PHP Version 4                                                        |
+// +----------------------------------------------------------------------+
+// | Copyright (c) 1997-2003 The PHP Group                                |
+// +----------------------------------------------------------------------+
+// | This source file is subject to version 2.0 of the PHP license,       |
+// | that is bundled with this package in the file LICENSE, and is        |
+// | available at through the world-wide-web at                           |
+// | http://www.php.net/license/2_02.txt.                                 |
+// | If you did not receive a copy of the PHP license and are unable to   |
+// | obtain it through the world-wide-web, please send a note to          |
+// | license@php.net so we can mail you a copy immediately.               |
+// +----------------------------------------------------------------------+
+// | Author: Stefan Neufeind <pear.neufeind@speedpartner.de>              |
+// +----------------------------------------------------------------------+
+//
 // $Id$
+
 /**
-* Bar data-element for a Image_Graph diagram
+* Bar data-element
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
-* @access   private
 */
 
+/**
+* The parent class
+*/
 require_once("Image/Graph/Data/Common.php");
 
+/**
+* Bar data-element
+*
+* @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
+* @package  Image_Graph
+* @access   public
+*/
 class Image_Graph_Data_Bar extends Image_Graph_Data_Common
 {
     /**
-    * Constructor for the class
+    * Constructor
     *
-    * @param  object  parent object (of type Image_Graph)
-    * @param  array   numerical data to be drawn
+    * @param  object Image_Graph    parent object
+    * @param  array                 numerical data to be drawn
+    * @param  array                 attributes like color
     * @access public
     */
-    function Image_Graph_Data_Bar(&$parent, $data, $attributes)
+    function Image_Graph_Data_Bar(&$parent, $data, $attributes=array())
     {
         if (!isset($attributes['width'])) {
             $attributes['width'] = 0.5;
@@ -35,7 +63,7 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
     * Prepare given dataElements of this type for stacking
     *
     * @param array    references to dataElements (objects of this type)
-    * @access private
+    * @access public
     * @static
     */
     function stackingPrepare(&$dataElements)
@@ -78,7 +106,7 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
     *
     * @param gd-resource  image-resource to draw to
     * @param int          choose what to draw; use constants IMAGE_GRAPH_DRAW_FILLANDBORDER, IMAGE_GRAPH_DRAW_JUSTFILL or IMAGE_GRAPH_DRAW_JUSTBORDER
-    * @access private
+    * @access public
     */
     function drawGD(&$img, $drawWhat=IMAGE_GRAPH_DRAW_FILLANDBORDER)
     {

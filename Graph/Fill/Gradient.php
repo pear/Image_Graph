@@ -1,21 +1,54 @@
 <?php
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
+// +----------------------------------------------------------------------+
+// | PHP Version 4                                                        |
+// +----------------------------------------------------------------------+
+// | Copyright (c) 1997-2003 The PHP Group                                |
+// +----------------------------------------------------------------------+
+// | This source file is subject to version 2.0 of the PHP license,       |
+// | that is bundled with this package in the file LICENSE, and is        |
+// | available at through the world-wide-web at                           |
+// | http://www.php.net/license/2_02.txt.                                 |
+// | If you did not receive a copy of the PHP license and are unable to   |
+// | obtain it through the world-wide-web, please send a note to          |
+// | license@php.net so we can mail you a copy immediately.               |
+// +----------------------------------------------------------------------+
+// | Author: Stefan Neufeind <pear.neufeind@speedpartner.de>              |
+// +----------------------------------------------------------------------+
+//
 // $Id$
+
 /**
-* Gradient fill-element for a Image_Graph diagram
+* Gradient fill-element
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
-* @access   private
 */
 
+/**
+* The parent class
+*/
 require_once("Image/Graph/Fill/Common.php");
 
+/**
+* Gradient fill-element
+*
+* This class is used throughout Image_Graph to perform gradient fills of a box
+* (rectangle) or a polygon. It is mainly used for diagram-data-elements (like
+* a bar or a line) and the diagram-grid.
+* Please note that also more than 2 colors can be provided which will result in
+* a gradient-fill from one color to the next [...] to the last one (multiple
+* gradients).
+*
+* @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
+* @package  Image_Graph
+*/
 class Image_Graph_Fill_Gradient extends Image_Graph_Fill_Common
 {
     /**
     * Constructor for the class
     *
-    * @param  array   attributes like color
+    * @param  array           attributes, e.g. "color"
     * @access public
     */
     function Image_Graph_Fill_Gradient($attributes)
@@ -30,7 +63,8 @@ class Image_Graph_Fill_Gradient extends Image_Graph_Fill_Common
     /**
     * Set color
     *
-    * @param  array   array 2 colors (one color each; RGBA-represntation)
+    * @param  array           array of colors
+    * @see    Image_Graph_Color::color2RGB()
     * @access public
     */
     function setColor($color)
@@ -45,9 +79,9 @@ class Image_Graph_Fill_Gradient extends Image_Graph_Fill_Common
     /**
     * Draws fill element, shape: box
     *
-    * @param  gd-resource              image-resource to draw to
-    * @param  array of array of int    absolute position for upper left and lower right edge
-    * @access private
+    * @param  gd-resource     image-resource to draw to
+    * @param  array           array of array of int; absolute position for upper left and lower right edge
+    * @access public
     */
     function drawGDBox(&$img, $pos)
     {
@@ -75,7 +109,7 @@ class Image_Graph_Fill_Gradient extends Image_Graph_Fill_Common
     *
     * @param  gd-resource              image-resource to draw to
     * @param  array of array of int    absolute positions of polygon-coordinates
-    * @access private
+    * @access public
     */
     function drawGDPolygon(&$img, $pos)
     {
@@ -146,24 +180,26 @@ class Image_Graph_Fill_Gradient extends Image_Graph_Fill_Common
             } else {
                 $lowerSlope = ($lowerRight[0]-$lowerLeft[0]) / ($lowerLeft[1]-$lowerRight[1]);
             }
-            for ($upDownCounter=$tempMinY; $upDownCounter<$tempMaxY; $upDownCounter++)
+            for ($lineCounter=$tempMinY; $lineCounter<$tempMaxY; $lineCounter++)
             {
                 $tempLeft = $upperLeft[0];
                 $tempRight = $upperRight[0];
 
-                $boundLeft = $upperLeft[0] +($upperSlope*($upperLeft[1] -$upDownCounter));
+                $boundLeft = $upperLeft[0] +($upperSlope*($upperLeft[1] -$lineCounter));
                 if ($upperSlope>0) {
                     $tempLeft  = max($tempLeft, $boundLeft);
                 } elseif ($upperSlope<0) {
                     $tempRight = min($boundLeft, $tempRight);
                 }
-                $boundRight=$lowerRight[0]+($lowerSlope*($lowerRight[1]-$upDownCounter));
+                $boundRight=$lowerRight[0]+($lowerSlope*($lowerRight[1]-$lineCounter));
                 if ($lowerSlope>0) {
                     $tempRight = min($boundRight, $tempRight);
                 } elseif ($lowerSlope<0) {
                     $tempLeft = max($tempLeft, $boundRight);
                 }
-                imageline ($img, round($tempLeft), $upDownCounter, round($tempRight), $upDownCounter, $colorsAllocated[$upDownCounter-$minY]);
+                imageline ($img, round($tempLeft),  $lineCounter,
+                                 round($tempRight), $lineCounter,
+                                 $colorsAllocated[$lineCounter-$minY]);
             }
         }
     }

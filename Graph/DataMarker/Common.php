@@ -1,14 +1,41 @@
 <?php
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
+// +----------------------------------------------------------------------+
+// | PHP Version 4                                                        |
+// +----------------------------------------------------------------------+
+// | Copyright (c) 1997-2003 The PHP Group                                |
+// +----------------------------------------------------------------------+
+// | This source file is subject to version 2.0 of the PHP license,       |
+// | that is bundled with this package in the file LICENSE, and is        |
+// | available at through the world-wide-web at                           |
+// | http://www.php.net/license/2_02.txt.                                 |
+// | If you did not receive a copy of the PHP license and are unable to   |
+// | obtain it through the world-wide-web, please send a note to          |
+// | license@php.net so we can mail you a copy immediately.               |
+// +----------------------------------------------------------------------+
+// | Author: Stefan Neufeind <pear.neufeind@speedpartner.de>              |
+// +----------------------------------------------------------------------+
+//
 // $Id$
 
-require_once("Image/Graph/Color.php"); // extended version of package: PEAR::Image_Color
-
 /**
-* Class template for a Image_Graph diagram data marker (e.g. a "square" or a "rhomb")
+* Basic datamarker-element
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
-* @access   private
+*/
+
+/**
+* Class for color handling (extended version of package: PEAR::Image_Color)
+*/
+require_once("Image/Graph/Color.php");
+
+/**
+* Class template for a datamarker-element (e.g. "diamond", "square" or "triangle")
+*
+* @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
+* @package  Image_Graph
+* @access   public
 */
 class Image_Graph_DataMarker_Common
 {
@@ -46,7 +73,8 @@ class Image_Graph_DataMarker_Common
     /**
     * Set color
     *
-    * @param  array (3 ints for R,G,B)
+    * @param  mixed           any color representation supported by Image_Graph_Color::color2RGB()
+    * @see    Image_Graph_Color::color2RGB()
     * @access public
     */
     function setColor($color)
@@ -57,8 +85,8 @@ class Image_Graph_DataMarker_Common
     /**
     * Draws data marker
     *
-    * @param gd-resource    image-resource to draw to
-    * @param array of int   absolute position, where to draw the marker
+    * @param gd-resource      GD-resource to draw to
+    * @param array            (array of int) absolute position (x/y), where to draw the marker
     * @access private
     */
     function drawGD(&$img, $pos)

@@ -1,25 +1,53 @@
 <?php
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
+// +----------------------------------------------------------------------+
+// | PHP Version 4                                                        |
+// +----------------------------------------------------------------------+
+// | Copyright (c) 1997-2003 The PHP Group                                |
+// +----------------------------------------------------------------------+
+// | This source file is subject to version 2.0 of the PHP license,       |
+// | that is bundled with this package in the file LICENSE, and is        |
+// | available at through the world-wide-web at                           |
+// | http://www.php.net/license/2_02.txt.                                 |
+// | If you did not receive a copy of the PHP license and are unable to   |
+// | obtain it through the world-wide-web, please send a note to          |
+// | license@php.net so we can mail you a copy immediately.               |
+// +----------------------------------------------------------------------+
+// | Author: Stefan Neufeind <pear.neufeind@speedpartner.de>              |
+// +----------------------------------------------------------------------+
+//
 // $Id$
+
 /**
 * Line data-element for a Image_Graph diagram
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
-* @access   private
 */
 
+/**
+* The parent class
+*/
 require_once("Image/Graph/Data/Common.php");
 
+/**
+* Line data-element for a Image_Graph diagram
+*
+* @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
+* @package  Image_Graph
+* @access   public
+*/
 class Image_Graph_Data_Line extends Image_Graph_Data_Common
 {
     /**
-    * Constructor for the class
+    * Constructor
     *
-    * @param  object  parent object (of type Image_Graph)
-    * @param  array   numerical data to be drawn
+    * @param  object Image_Graph    parent object
+    * @param  array                 numerical data to be drawn
+    * @param  array                 attributes like color
     * @access public
     */
-    function Image_Graph_Data_Line(&$parent, $data, $attributes)
+    function Image_Graph_Data_Line(&$parent, $data, $attributes=array())
     {
         parent::Image_Graph_Data_Common($parent, $data, $attributes);
     }
@@ -27,8 +55,16 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
     /**
     * Prepare given dataElements of this type for stacking
     *
-    * @param array    references to dataElements (objects of this type)
-    * @access private
+    * This function is called from inside the Image_Graph-baseinstance to stack
+    * elements of this data-type. This is done for every data-type in it's
+    * respective classes separately because stacking might depend on the type
+    * of data-representation.
+    * This method is called statically and receives a list of references to
+    * objects of this data-type. Using the references it can directly access
+    * all methods and attributes of each object.
+    *
+    * @param  array           references to dataElements (objects of this type)
+    * @access public
     * @static
     */
     function stackingPrepare(&$dataElements)
@@ -50,8 +86,15 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
     /**
     * Draw all diagram elements in this stacking-group
     *
-    * @param array    references to dataElements (objects of this type)
-    * @access private
+    * The specific data-type-class knows best how to draw the data-elements
+    * of this type. If stacking is used this function will be called instead
+    * of drawGD().
+    * The best results for drawing lines are achieved by first drawing the
+    * fill of each element and afterwards drawing the lines. This is the best
+    * solution for the resulting image.
+    *
+    * @param  array           references to dataElements (objects of this type)
+    * @access public
     * @static
     */
     function stackingDrawGD(&$dataElements, &$img)
@@ -69,7 +112,7 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
     *
     * @param gd-resource  image-resource to draw to
     * @param int          choose what to draw; use constants IMAGE_GRAPH_DRAW_FILLANDBORDER, IMAGE_GRAPH_DRAW_JUSTFILL or IMAGE_GRAPH_DRAW_JUSTBORDER
-    * @access private
+    * @access public
     */
     function drawGD(&$img, $drawWhat=IMAGE_GRAPH_DRAW_FILLANDBORDER)
     {
@@ -100,7 +143,6 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
                         $xValue = $axisX->valueToPixelAbsolute($counter);
                         // prepend lower point to array
                         $temppoint = array($xValue, $axisY->valueToPixelAbsolute(0));
-//                        var_dump ($temppoint);exit();
                         array_unshift($polygon, $temppoint);
                         // append higher point to array
                         $temppoint = array($xValue, $axisY->valueToPixelAbsolute($datapoint));

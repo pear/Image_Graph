@@ -18,22 +18,64 @@
 //
 // $Id$
 
-/**************************TODO*******************************************/
-/*
- * - add a grid (horizontal / vertical)
- * - add images (background, ...)
- * - add alpha-channel functionality (for half-transparent bars etc.)
- */
+/**
+* Package for drawing graphs (bars, lines, ...)
+*
+* This package offers you many ways to generate a graphical view from
+* numerical data.
+*
+* @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
+* @package  Image_Graph
+*/
 
+/**
+* Show ticks on inside of the axis
+*
+* For usage with class Image_Graph_Axis_X and Image_Graph_Axis_Y
+*
+* @see Image_Graph_Axis_X
+* @see Image_Graph_Axis_Y
+*/
 define('IMAGE_GRAPH_TICKS_INSIDE',  1);
+/**
+* Show ticks on outside of the axis
+*
+* For usage with class Image_Graph_Axis_X and Image_Graph_Axis_Y
+*
+* @see Image_Graph_Axis_X
+* @see Image_Graph_Axis_Y
+*/
 define('IMAGE_GRAPH_TICKS_OUTSIDE', 2);
+/**
+* Show ticks on inside and outside of the axis
+*
+* For usage with class Image_Graph_Axis_X and Image_Graph_Axis_Y
+*
+* @see Image_Graph_Axis_X
+* @see Image_Graph_Axis_Y
+*/
 define('IMAGE_GRAPH_TICKS_BOTH',    3);
 
+/**
+* Axe is textual
+*
+* Only supported on axisX.
+*
+* @see Image_Graph_Axis_X
+*/
 define('IMAGE_GRAPH_AXISTYPE_TEXT',   'text');
+/**
+* Axe is linear
+*
+* Only supported on axisY0/axisY1.
+*
+* @see Image_Graph_Axis_Y
+*/
 define('IMAGE_GRAPH_AXISTYPE_LINEAR', 'linear');
 
 require_once 'Image/Graph/Elements.php';
 require_once 'Image/Graph/Data/Common.php';  // include to have IMAGE_GRAPH_DRAW_*-constants
+require_once("Image/Graph/Color.php");       // extended version of package: PEAR::Image_Color
 
 /**
 * Class for drawing graphs out of numerical data
@@ -47,7 +89,7 @@ class Image_Graph
     /**
     * X-axis of diagram
     *
-    * @var object
+    * @var object Image_Graph_Axis_X
     * @access public
     */
     var $axisX = null;
@@ -55,7 +97,7 @@ class Image_Graph
     /**
     * first Y-axis of diagram
     *
-    * @var object
+    * @var object Image_Graph_Axis_Y
     * @access public
     */
     var $axisY0 = null;
@@ -63,7 +105,7 @@ class Image_Graph
     /**
     * second Y-axis of diagram
     *
-    * @var object
+    * @var object Image_Graph_Axis_Y
     * @access public
     */
     var $axisY1 = null;
@@ -71,7 +113,7 @@ class Image_Graph
     /**
     * Title of diagram
     *
-    * @var object
+    * @var object Image_Graph_Title
     * @access public
     */
     var $diagramTitle = null;
@@ -79,7 +121,7 @@ class Image_Graph
     /**
     * Width and height of graph canvas
     *
-    * @var array; initially 0, 0
+    * @var array        width/height; initially 0, 0
     * @access private
     */
     var $_size = array(0, 0);
@@ -87,7 +129,7 @@ class Image_Graph
     /**
     * X/Y-position of diagram (from upper left corner)
     *
-    * @var array; initially 0, 0
+    * @var array        x/y-position; initially 0, 0
     * @access private
     */
     var $_pos = array(0, 0);
@@ -95,7 +137,7 @@ class Image_Graph
     /**
     * Width and height of drawingarea of diagram
     *
-    * @var array; initially 0, 0
+    * @var array        width/height; initially 0, 0
     * @access private
     */
     var $_drawingareaSize = array(0, 0);
@@ -103,7 +145,7 @@ class Image_Graph
     /**
     * X/Y-position of drawingarea of diagram on graph canvas
     *
-    * @var array; initially 0, 0
+    * @var array        x/y-position; initially 0, 0
     * @access private
     */
     var $_drawingareaPos = array(0, 0);
@@ -111,7 +153,7 @@ class Image_Graph
     /**
     * Extra borderspace that should be added
     *
-    * @var int  space in pixels; initially all 0
+    * @var int          space in pixels; initially 0
     * @access private
     */
     var $_borderspace = 0;
@@ -119,15 +161,18 @@ class Image_Graph
     /**
     * Background color
     *
-    * @var array (3 ints for R,G,B); initially white
+    * @var array              (4 ints for R,G,B,A); initially white, full intensity
     * @access private
     */
-    var $_bgcolor = array(255, 255, 255);
+    var $_bgcolor = array(255, 255, 255, 255);
 
     /**
-    * normally 0; if set to 1 the data-elements don't start on the y-axis but a bit further right - needed for bar-graphs
+    * Shows if additional space should be added on the left/right side of the graph
     *
-    * @var array
+    * Normally 0; if set to 1 the data-elements don't start on the y-axis but a bit further right
+    * needed for bar-graphs
+    *
+    * @var int
     * @see addData()
     * @access private
     */
@@ -136,16 +181,16 @@ class Image_Graph
     /**
     * Default color for new data; used by addData
     *
-    * @var array (3 ints for R,G,B); initially black
+    * @var array              (4 ints for R,G,B,A); initially black, full intensity
     * @see addData()
     * @access private
     */
-    var $_dataDefaultColor = array(0, 0, 0);
+    var $_dataDefaultColor = array(0, 0, 0, 255);
 
     /**
     * Data elements of the diagram (e.g. a "line")
     *
-    * @var array      contains references to objects
+    * @var array              contains references to data-element-objects (Image_Graph_Data_Common and derived)
     * @see addData()
     * @see $_dataElementsEffective
     * @access private
@@ -155,11 +200,10 @@ class Image_Graph
     /**
     * Data elements of the diagram (e.g. a "line")
     *
-    * @TO DO: add function name here!
-    * To be filled by function [...] based on data found in _dataElements
+    * To be filled by function _prepareDataElements() based on data found in _dataElements
     * Will contain objects (like $_dataElements) or, if data is to be stacked, arrays of objects of same type
     *
-    * @var array      contains references to objects or arrays containing references to objects
+    * @var array              contains references to objects or arrays containing references to objects
     * @see $_dataElements
     * @access private
     */
@@ -168,7 +212,7 @@ class Image_Graph
     /**
     * Default options for fonts
     *
-    * @var array      stores information like fontPath, fontFile, fontSize, antiAliasing etc.
+    * @var array              stores information like fontPath, fontFile, fontSize, antiAliasing etc.
     * @access private
     */
     var $_defaultFontOptions = array();
@@ -176,7 +220,7 @@ class Image_Graph
     /**
     * Data types to be stacked
     *
-    * @var string / array      string "all" allowed for "every data-type"; otherwise an array of strings representing type
+    * @var string/array       string "all" allowed for "every data-type"; otherwise an array of strings representing type
     * @access private
     */
     var $_stackData = array();
@@ -184,10 +228,10 @@ class Image_Graph
     /**
     * Constructor for the class
     *
-    * @param  int     width of graph-image
-    * @param  int     height of graph-image
-    * @param  int     x-position of graph-image
-    * @param  int     y-position of graph-image
+    * @param  int             width of graph-image
+    * @param  int             height of graph-image
+    * @param  int             x-position of graph-image
+    * @param  int             y-position of graph-image
     * @access public
     */
     function &Image_Graph($width, $height, $pos_x=0, $pox_y=0)
@@ -206,7 +250,7 @@ class Image_Graph
         $this->_size = array($width, $height);
         $this->_pos  = array($pos_x, $pox_y);
         $this->setSpaceFromBorder(10);
-        $this->setAxesColor(array(0, 0, 0)); // set default color to black, all axes
+        $this->setAxesColor("black"); // set default color to black, all axes
 
         $this->_drawingareaSize = $this->_size;
         $this->_drawingareaPos  = $this->_pos;
@@ -215,18 +259,19 @@ class Image_Graph
     /**
     * Sets background color of canvas
     *
-    * @param  array (3 ints for R,G,B)
+    * @param  mixed           any color representation supported by Image_Graph_Color::color2RGB()
+    * @see    Image_Graph_Color::color2RGB()
     * @access public
     */
     function setBackgroundColor($color)
     {
-        $this->_bgcolor = $color;
+        $this->_bgcolor = Image_Graph_Color::color2RGB($color);
     }
 
     /**
-    * Sets space of graph from each border
+    * Sets space of graph from each border (of the whole image)
     *
-    * @param  int     space (in pixel) from each border
+    * @param  int             space (in pixel) from each border
     * @access public
     */
     function setSpaceFromBorder($space)
@@ -237,7 +282,13 @@ class Image_Graph
     /**
     * Set color of axes
     *
-    * @param  array (3 ints for R,G,B)
+    * This function allows you to set the color of all axis (axisX, axisY0 and axisY1) all
+    * to the same value. It does the same as setting the color for each of those axes
+    * manually. It was added solely for convenience since often you will need to give all
+    * axes the same new color.
+    *
+    * @param  mixed           any color representation supported by Image_Graph_Color::color2RGB()
+    * @see    Image_Graph_Color::color2RGB()
     * @access public
     */
     function setAxesColor($axesColor)
@@ -250,11 +301,19 @@ class Image_Graph
     /**
     * Set default options for fonts
     *
-    * @param  array   stores information like fontPath, fontFile, fontSize, antiAliasing etc.
+    * @param  array           stores information like fontType, fontPath, fontFile, fontSize, antiAliasing etc.
     * @access public
     */
     function setDefaultFontOptions($options = array())
     {
+        // !! PLEASE NOTE !! As soon as PHP-internal
+        // (bitmap) fonts are also supported by Image_Text
+        // this will default to those internal fonts
+        // instead of TTF
+        if (!isset($options['fontType'])) {
+            $options['fontType'] = 'TTF';
+        }
+        
         if (!isset($options['fontPath'])) {
             $options['fontPath'] = './';
         }
@@ -262,7 +321,7 @@ class Image_Graph
             $options['fontSize'] = 10;
         }
         if (!isset($options['color'])) {
-            $options['color'] = array(0, 0, 0); // black
+            $options['color'] = array(0, 0, 0, 255); // black
         }
         if (!isset($options['antiAliasing'])) {
             $options['antiAliasing'] = false;
@@ -271,24 +330,43 @@ class Image_Graph
     }
 
     /**
-    * Set default color for new data; used by addData
+    * Set default color for new data; used by addData()
     *
-    * @param  array (3 ints for R,G,B)
+    * You can set a new dataDefaultColor using this function. It will be
+    * used for all *following* calls to addData if you don't explicitly
+    * supply a color.
+    *
+    * @param  mixed           any color representation supported by Image_Graph_Color::color2RGB()
+    * @see    Image_Graph_Color::color2RGB()
     * @see    addData()
     * @access public
     */
     function setDataDefaultColor($dataDefaultColor)
     {
-        $this->_dataDefaultColor = $dataDefaultColor;
+        $this->_dataDefaultColor = Image_Graph_Color::color2RGB($dataDefaultColor);
     }
 
     /**
     * Add new data to the graph
     *
-    * @param  array   data to draw
-    * @param  string  data representation (e.g. "line")
-    * @param  array   attributes like color (to be extended to also include shading etc.)
-    * @return object  data-object
+    * This function generate an instance of the given data representation-type (e.g.
+    * it will generate an instance of Image_Graph_Data_Line if you supply "line" for
+    * $representation). The new object will automatically be added to an internal list
+    * of data-objects.
+    * A reference to the object which you just added to the graph will also be returned
+    * by this function. Using that reference you can e.g. call functions like setColor(),
+    * or whatever the specific data-element might support, to customize the data-element.
+    * You can use the array $attributes to supply attribute-data to the data-element upon
+    * creation. This might be quite handy if you add several data and don't want to call
+    * e.g. setColor() on each one separately. But this is up to you ...
+    * If no "color" is specified in the attributes-array, the "dataDefaultColor" will be
+    * used, which can be set using setDataDefaultColor().
+    *
+    * @param  array           data to draw
+    * @param  string          data representation (e.g. "line")
+    * @param  array           attributes like color
+    * @return object Image_Graph_Data_Common
+    * @see    setDataDefaultColor()
     * @access public
     */
     function &addData($data, $representation = "line", $attributes = array())
@@ -321,12 +399,18 @@ class Image_Graph
     /**
     * Set option that data should be stacked
     *
+    * Use this function to turn on data-stacking. If $stackWhat is supplied only specific data-types
+    * will be stacked.
+    * Please note that possibly not all data-types might support stacking, in which case they will
+    * simply be left unstacked. But the base-types "bar" and "line" do support it!
+    * If you use both Y-axes then only data on the same axis can be stacked (sure!). So if you have
+    * e.g. line-data on both axes they will be stacked independently.
+    *
+    * @param  string/array    name or array of names of data-types you want to be stacked
     * @access public
     */
     function stackData($stackWhat = "all")
     {
-        // @TO DO: add some checks which, if $stackWhat is array that, will verify that
-        //         all datatypes given here support stacking
         if ($stackWhat == "all") {
             $this->_stackData = "all";
         } elseif (is_array($stackWhat)) { // array of strings, representing data-types like "bar" or "line"
@@ -612,7 +696,7 @@ class Image_Graph
                         $currLabel = null;
                     }
                     if (!empty($currLabel)) {
-                        // TO DO: remove this dirty little hack :-) we shouldn't access the lines directly, should we?
+                        // @todo: remove this dirty little hack :-) we shouldn't access the lines directly, should we?
                         if (is_string($currLabel)) {
                             $tempText->lines = array(new Image_Text_Line($currLabel, $tempText->options));
                         } else {
@@ -645,7 +729,7 @@ class Image_Graph
 
                     $maxWidth = 0;
                     foreach ($this->{$currAxis}->_ticksMajorEffective as $currTick) {
-                        // TO DO: remove this dirty little hack :-) we shouldn't access the lines directly, should we?
+                        // @todo: remove this dirty little hack :-) we shouldn't access the lines directly, should we?
                         $tempText->lines = array(new Image_Text_Line(sprintf($this->{$currAxis}->_numberformat, $currTick), $tempText->options));
                         $textSize = $tempText->getSize();
                         $maxWidth = max ($maxWidth, $textSize['width']);
@@ -766,7 +850,7 @@ class Image_Graph
     */
     function _drawGDAxes(&$img)
     {
-        $drawColor = imagecolorallocate($img, $this->axisX->_color[0], $this->axisX->_color[1], $this->axisX->_color[2]);
+        $drawColor = Image_Graph_Color::allocateColor($img, $this->axisX->_color);
         // draw X-axis
         imageline    ($img, $this->_drawingareaPos[0],                              $this->_drawingareaPos[1]+$this->_drawingareaSize[1]-1,
                             $this->_drawingareaPos[0]+$this->_drawingareaSize[0]-1, $this->_drawingareaPos[1]+$this->_drawingareaSize[1]-1, $drawColor);
@@ -814,7 +898,7 @@ class Image_Graph
                     $currLabel = null;
                 }
                 if (!empty($currLabel)) {
-                    // TO DO: remove this dirty little hack :-) we shouldn't access the lines directly, should we?
+                    // @todo: remove this dirty little hack :-) we shouldn't access the lines directly, should we?
                     if (is_string($currLabel)) {
                         $tempText->lines = array(new Image_Text_Line($currLabel, $tempText->options));
                     } else {
@@ -913,7 +997,7 @@ class Image_Graph
                     }
 
                     foreach ($this->{$currAxis}->_ticksMajorEffective as $currTick) {
-                        // TO DO: remove this dirty little hack :-) we shouldn't access the lines directly, should we?
+                        // @todo: remove this dirty little hack :-) we shouldn't access the lines directly, should we?
                         $tempText->lines = array(new Image_Text_Line(sprintf($this->{$currAxis}->_numberformat, $currTick), $tempText->options));
 
                         $tempText->align(IMAGE_TEXT_ALIGN_RIGHT);
@@ -936,15 +1020,23 @@ class Image_Graph
                 }
             }
         } // if (!empty($this->_defaultFontOptions))
-
-        // TO DO: add possibility to turn on a "grid"
     }
 
     /**
     * Create a GD-image-resource for the graph
     *
-    * @param  gd-resource   if supplied this existing gd-resource will for drawing
-    * @return gd-resource   true color GD-resource containing image of graph
+    * This function will return a truecolor GD-resource. The GD-resource will have the
+    * size you supplied when creating the Image_Graph-instance.
+    * If you need a palette GD-resource (e.g. for writing of GIF-images) please be sure
+    * to downsample the truecolor GD-resource returned by this function yourself.
+    * A truecolor-resource is needed for all alpha-channel-features etc. to receive
+    * best possible image-quality.
+    * It's possible to optionally give this function an already existing gd-resource. It
+    * will then be used for drawing. Please note that (at the moment) no solid standard
+    * background-fill will be done.
+    *
+    * @param  gd-resource   if supplied an existing gd-resource will be used for drawing
+    * @return gd-resource   truecolor GD-resource containing image of graph
     * @access public
     */
     function getGDImage($gdResource = null)
@@ -954,7 +1046,7 @@ class Image_Graph
         // GD-specific part
         if (!is_resource($gdResource)) {
             $img = imagecreatetruecolor($this->_size[0], $this->_size[1]);
-            $bgcolor = imagecolorallocate($img, $this->_bgcolor[0], $this->_bgcolor[1], $this->_bgcolor[2]);
+            $bgcolor = Image_Graph_Color::allocateColor($img, $this->_bgcolor);
             imagefill($img, 0, 0, $bgcolor);
         } else {
             $img = &$gdResource;

@@ -1,9 +1,34 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
+// +----------------------------------------------------------------------+
+// | PHP Version 4                                                        |
+// +----------------------------------------------------------------------+
+// | Copyright (c) 1997-2003 The PHP Group                                |
+// +----------------------------------------------------------------------+
+// | This source file is subject to version 2.0 of the PHP license,       |
+// | that is bundled with this package in the file LICENSE, and is        |
+// | available at through the world-wide-web at                           |
+// | http://www.php.net/license/2_02.txt.                                 |
+// | If you did not receive a copy of the PHP license and are unable to   |
+// | obtain it through the world-wide-web, please send a note to          |
+// | license@php.net so we can mail you a copy immediately.               |
+// +----------------------------------------------------------------------+
+// | Author: Stefan Neufeind <pear.neufeind@speedpartner.de>              |
+// +----------------------------------------------------------------------+
 //
 // $Id$
 
-require_once("Image/Color.php"); // package: PEAR::Image_Color
+/**
+* Class for color-handling
+*
+* @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
+* @package  Image_Graph
+*/
+
+/**
+* Color class to be extended; from package PEAR::Image_Color
+*/
+require_once("Image/Color.php");
 
 /**
 * Class for color-handling
@@ -23,9 +48,9 @@ class Image_Graph_Color extends Image_Color
     * Userdefined color specifications get translated into 
     * an array of rgb values.
     *
-    * @param    resource    Image handle
-    * @param    mixed       (Userdefined) color specification
-    * @return   resource    Image color handle
+    * @param    gd-resource     Image handle
+    * @param    mixed           any color representation supported by color2RGB()
+    * @return   resource        Image color handle
     * @see      color2RGB()
     * @access   public
     * @static
@@ -46,8 +71,8 @@ class Image_Graph_Color extends Image_Color
     * Userdefined color specifications get translated into 
     * an array of rgb values.
     *
-    * @param    mixed       (Userdefined) color specification
-    * @return   array       Array of 4 ints (RGBA-representation)
+    * @param    mixed         any color representation supported by Image_Graph_Color::color2RGB()
+    * @return   array         Array of 4 ints (RGBA-representation)
     * @access   public
     * @static
     */  
@@ -116,9 +141,8 @@ class Image_Graph_Color extends Image_Color
     *   another color.
     *
     *   @access     public
-    *   @param      string  $degrees How much each 'step' between the colors we should take.
-    *   @return     array   Returns an array of all the colors, one element for each color.
-    *   @author     Jason Lotito <jason@lehighweb.com>
+    *   @param      string    How much each 'step' between the colors we should take.
+    *   @return     array     Returns an array of all the colors, one element for each color.
     */
     function getRange ($degrees)
     {
@@ -142,8 +166,8 @@ class Image_Graph_Color extends Image_Color
     /**
     * Internal method to correctly set the colors.
     *
-    * @param    mixed     color 1
-    * @param    mixed     color 2
+    * @param    mixed         color 1
+    * @param    mixed         color 2
     * @access   private
     */
     function _setColors ( $col1, $col2 )

@@ -1,21 +1,66 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
+// +----------------------------------------------------------------------+
+// | PHP Version 4                                                        |
+// +----------------------------------------------------------------------+
+// | Copyright (c) 1997-2003 The PHP Group                                |
+// +----------------------------------------------------------------------+
+// | This source file is subject to version 2.0 of the PHP license,       |
+// | that is bundled with this package in the file LICENSE, and is        |
+// | available at through the world-wide-web at                           |
+// | http://www.php.net/license/2_02.txt.                                 |
+// | If you did not receive a copy of the PHP license and are unable to   |
+// | obtain it through the world-wide-web, please send a note to          |
+// | license@php.net so we can mail you a copy immediately.               |
+// +----------------------------------------------------------------------+
+// | Author: Stefan Neufeind <pear.neufeind@speedpartner.de>              |
+// +----------------------------------------------------------------------+
 //
 // $Id$
 
-// This file includes several classes used in Image_Graph. We decided to have just one file with
-// various classes in it for performance reasons (including and opening only one file is much faster).
+/**
+* Contains various classes for elements of a graph
+*
+* This file includes several classes used in Image_Graph. We decided to have just one file with
+* various classes in it for performance reasons (including and opening only one file is much faster).
+*
+* @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
+* @package  Image_Graph
+*/
 
+/**
+* Don't show any grid
+*
+* For usage with class Image_Graph_Grid
+*
+* @see Image_Graph_Grid
+*/
 define('IMAGE_GRAPH_GRID_NONE' ,'none');
+/**
+* Only show grid at major ticks of axis
+*
+* For usage with class Image_Graph_Grid
+*
+* @see Image_Graph_Grid
+*/
 define('IMAGE_GRAPH_GRID_MAJOR','major');
+/**
+* Show grid at minor (and major) ticks of axis
+*
+* For usage with class Image_Graph_Grid
+*
+* @see Image_Graph_Grid
+*/
 define('IMAGE_GRAPH_GRID_MINOR','minor');
+
+/**
+* Class for color handling (extended version of package: PEAR::Image_Color)
+*/
+require_once("Image/Graph/Color.php");
 
 /**
 * Base class for data-storage in common objects
 *
-* Please note that some functions may not be needed in all derived classes and will
-* explicitly be marked "(optional)" in those places. This layout was chosen to
-* prevent from having too much classes, which would be bad for PHP.
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
@@ -26,7 +71,7 @@ class Image_Graph_Base
     /**
     * Color for element
     *
-    * @var array (3 ints for R,G,B); initially null
+    * @var    array           (4 ints for R,G,B,A); initially null
     * @access private
     */
     var $_color = null;
@@ -34,7 +79,7 @@ class Image_Graph_Base
     /**
     * Options for fonts
     *
-    * @var array      stores information like fontPath, fontFile, fontSize, antiAliasing etc.; initially empty
+    * @var    array           stores information like fontPath, fontFile, fontSize, antiAliasing etc.; initially empty
     * @access private
     */
     var $_fontOptions = array();
@@ -42,7 +87,7 @@ class Image_Graph_Base
     /**
     * Text
     *
-    * @var string     text to be displayed
+    * @var    string          text to be displayed
     * @access private
     */
     var $_text = "";
@@ -52,12 +97,13 @@ class Image_Graph_Base
     *
     * If the color-value is "null" instead of an array default values will be taken
     *
-    * @param  array (3 ints for R,G,B)
+    * @param  mixed           any color representation supported by Image_Graph_Color::color2RGB()
+    * @see    Image_Graph_Color::color2RGB()
     * @access public
     */
     function setColor($color)
     {
-        $this->_color = $color;
+        $this->_color = Image_Graph_Color::color2RGB($color);
     }
 
     /**
@@ -65,7 +111,7 @@ class Image_Graph_Base
     *
     * All information not given in this array (e.g. fontPath) will be taken from the default font-options set in the Image_Graph-object
     *
-    * @param  array   stores information like fontPath, fontFile, fontSize, antiAliasing etc.
+    * @param  array           stores information like fontPath, fontFile, fontSize, antiAliasing etc.
     * @access public
     */
     function setFontOptions($options = array())
@@ -76,7 +122,7 @@ class Image_Graph_Base
     /**
     * Set text
     *
-    * @param  array/string   lines of title; lines can also be separated by "\n" and will automatically be converted into an array
+    * @param  array/string    lines of title; lines can also be separated by "\n" and will automatically be converted into an array
     * @access public
     */
     function setText($text)
@@ -100,7 +146,7 @@ class Image_Graph_Axis extends Image_Graph_Base
     /**
     * Title for axis
     *
-    * @var object
+    * @var    object Image_Graph_Title
     * @access public
     */
     var $title = null;
@@ -108,9 +154,9 @@ class Image_Graph_Axis extends Image_Graph_Base
     /**
     * Bounds for axis (min/max value)
     *
-    * @var array (2 ints/floats/nulls)     null results in automatic detection of bounds
+    * @var    array (2 ints/floats/nulls)   null results in automatic detection of bounds
     * @access private
-    * @see $_boundsEffective
+    * @see    $_boundsEffective
     */
     var $_bounds = array('min' => null, 'max' => null);
     
@@ -121,9 +167,9 @@ class Image_Graph_Axis extends Image_Graph_Base
     * for storing values that will be used for drawing; where $_bounds may contain null-values,
     * this array will store the automatically detected min/max-values that will be used for drawing
     *
-    * @var array (2 ints/floats)           contains min and max value for the bounds
+    * @var    array (2 ints/floats)         contains min and max value for the bounds
     * @access private
-    * @see $_bounds
+    * @see    $_bounds
     */
     var $_boundsEffective = array('min' => null, 'max' => null);
 
@@ -138,7 +184,7 @@ class Image_Graph_Axis extends Image_Graph_Base
     /**
     * Size for ticks on the axis
     *
-    * @var int     tick-size
+    * @var    int             tick-size
     * @access private
     */
     var $_tickSize = 10;
@@ -146,9 +192,9 @@ class Image_Graph_Axis extends Image_Graph_Base
     /**
     * Major ticks on axis
     *
-    * @var array (ints/floats)     null results in automatic detection of ticks (!to be implemented!)
+    * @var    array (ints/floats)     null results in automatic detection of ticks (!to be implemented!)
     * @access private
-    * @see $_ticksMajorEffective
+    * @see    $_ticksMajorEffective
     */
     var $_ticksMajor = null;
 
@@ -159,18 +205,18 @@ class Image_Graph_Axis extends Image_Graph_Base
     * for storing values that will be used for drawing; where $_ticksMajor may contain null-values,
     * this array will store the automatically determined ticks that will be used for drawing
     *
-    * @var array (ints/floats)     contains the ticks that will be drawn
+    * @var    array (ints/floats)     contains the ticks that will be drawn
     * @access private
-    * @see $_ticksMajor
+    * @see    $_ticksMajor
     */
     var $_ticksMajorEffective = array();
 
     /**
     * Minor ticks on axis
     *
-    * @var array (ints/floats)     null results in automatic detection of ticks (!to be implemented!)
+    * @var    array (ints/floats)     null results in automatic detection of ticks (!to be implemented!)
     * @access private
-    * @see $_ticksMinorEffective
+    * @see    $_ticksMinorEffective
     */
     var $_ticksMinor = null;
 
@@ -181,27 +227,27 @@ class Image_Graph_Axis extends Image_Graph_Base
     * for storing values that will be used for drawing; where $_ticksMinor may contain null-values,
     * this array will store the automatically determined ticks that will be used for drawing
     *
-    * @var array (ints/floats)     contains the ticks that will be drawn
+    * @var    array (ints/floats)     contains the ticks that will be drawn
     * @access private
-    * @see $_ticksMinor
+    * @see    $_ticksMinor
     */
     var $_ticksMinorEffective = array();
 
     /**
     * maximum steps for automatic creation of ticksMajor / ticksMinor
     *
-    * @var array (2 ints)          contains "major" and "minor" value (max steps) for the ticks
+    * @var    array           (array of 2 ints) contains "major" and "minor" value (max steps) for the ticks
     * @access private
-    * @see $_ticksMajor
-    * @see $_ticksMinor
-    * @see setTicksAutoSteps
+    * @see    $_ticksMajor
+    * @see    $_ticksMinor
+    * @see    setTicksAutoSteps()
     */
     var $_ticksAutoSteps = array("major" => 5, "minor" => 25);
 
     /**
     * Numberformat
     *
-    * @var string     format-string in printf-syntax
+    * @var    string          format-string in printf-syntax
     * @access private
     */
     var $_numberformat = "%.02f";
@@ -209,7 +255,7 @@ class Image_Graph_Axis extends Image_Graph_Base
     /**
     * Color for numbers
     *
-    * @var array      (3 ints for R,G,B); initially null
+    * @var    array           (4 ints for R,G,B,A); initially null
     * @access private
     */
     var $_numbercolor = null;
@@ -220,7 +266,7 @@ class Image_Graph_Axis extends Image_Graph_Base
     * The variable is defined/used here as a "virtual" variable.
     * It will receive it's initial values in the derived classes for x-/y-axes
     *
-    * @var const       use constants IMAGE_GRAPH_AXISTYPE_* to evaluate/set this variable
+    * @var    const           use constants IMAGE_GRAPH_AXISTYPE_* to evaluate/set this variable
     * @access private
     */
     var $_axistype = IMAGE_GRAPH_AXISTYPE_LINEAR;
@@ -228,24 +274,26 @@ class Image_Graph_Axis extends Image_Graph_Base
     /**
     * Space for storing internal temporary values
     *
-    * stores information / calculations between different function calls; introduced for performance
+    * Stores information/calculations between different function calls; introduced for performance
     * directly set internally by functions of package Image_Graph
+    * For sure this is somehow a "dirty trick" but it saves us from calculating a few things
+    * several times.
     *
-    * @var boolean
+    * @var    boolean
     * @access private
     */
     var $_internalTempValues = array();
 
     /**
-    * graph object (of type Image_Graph)
+    * graph object
     *
-    * @var object
+    * @var    object Image_Graph
     * @access private
     */
     var $_graph = null;
 
     /**
-    * Constructor for the class
+    * Constructor
     *
     * @access public
     */
@@ -257,8 +305,10 @@ class Image_Graph_Axis extends Image_Graph_Base
     /**
     * Set bounds
     *
-    * @param  int/float     min-value; null results in automatic detection
-    * @param  int/float     max-value; null results in automatic detection
+    * Minimum and maximum value on the axis. Autodetection possible and enabled by default.
+    *
+    * @param  float           min-value; null results in automatic detection
+    * @param  float           max-value; null results in automatic detection
     * @access public
     */
     function setBounds($min, $max)
@@ -267,10 +317,10 @@ class Image_Graph_Axis extends Image_Graph_Base
     }
     
     /**
-    * Set maximum steps for automatic creation of ticksMinor / ticksMajor
+    * Set maximum steps for automatic creation of ticksMinor/ticksMajor
     *
-    * @param  int           value for steps of ticksMajor (null results in fallback to default of 5)
-    * @param  int           value for steps of ticksMinor (null results in fallback to default of 25, at least the minor)
+    * @param  int             value for steps of ticksMajor (null results in fallback to default of 5)
+    * @param  int             value for steps of ticksMinor (null results in fallback to default of 25, at least the minor)
     * @access public
     * @see    $_ticksAutoSteps
     */
@@ -291,7 +341,7 @@ class Image_Graph_Axis extends Image_Graph_Base
     /**
     * Set tick-style for ticks on a axis
     *
-    * @param  const     use constants IMAGE_GRAPH_TICKS_INSIDE, IMAGE_GRAPH_TICKS_OUTSIDE or IMAGE_GRAPH_TICKS_BOTH
+    * @param  const           use constants IMAGE_GRAPH_TICKS_INSIDE, IMAGE_GRAPH_TICKS_OUTSIDE or IMAGE_GRAPH_TICKS_BOTH
     * @access public
     */
     function setTickStyle($style)
@@ -304,7 +354,7 @@ class Image_Graph_Axis extends Image_Graph_Base
     *
     * size is for the "major ticks"; all minor ticks will be half that size
     *
-    * @param  int     size in pixels
+    * @param  int             size in pixels
     * @access public
     */
     function setTickSize($size)
@@ -315,7 +365,7 @@ class Image_Graph_Axis extends Image_Graph_Base
     /**
     * Set major ticks on axis
     *
-    * @param  array   list of values on the axis which should be "major ticks"; null results in automatic detection of bounds (!to be implemented!)
+    * @param  array           list of values on the axis which should be "major ticks"; null results in automatic detection of bounds (!to be implemented!)
     * @access public
     */
     function setTicksMajor($ticks)
@@ -326,7 +376,7 @@ class Image_Graph_Axis extends Image_Graph_Base
     /**
     * Set minor ticks on axis
     *
-    * @param  array   list of values on the axis which should be "minor ticks"; null results in automatic detection of bounds (!to be implemented!)
+    * @param  array           list of values on the axis which should be "minor ticks"; null results in automatic detection of bounds (!to be implemented!)
     * @access public
     */
     function setTicksMinor($ticks)
@@ -337,7 +387,7 @@ class Image_Graph_Axis extends Image_Graph_Base
     /**
     * Set numberformat for axis
     *
-    * @param  string  format in which numbers on the axis (major ticks) will be shown; sprintf-format
+    * @param  string          format in which numbers on the axis (major ticks) will be shown; sprintf-format
     * @access public
     */
     function setNumberformat($format)
@@ -351,12 +401,13 @@ class Image_Graph_Axis extends Image_Graph_Base
     *
     * If the color-value is "null" instead of an array default values will be taken
     *
-    * @param  array (3 ints for R,G,B)
+    * @param  mixed           any color representation supported by Image_Graph_Color::color2RGB()
+    * @see    Image_Graph_Color::color2RGB()
     * @access public
     */
     function setNumbercolor($color)
     {
-        $this->_numbercolor = $color;
+        $this->_numbercolor = Image_Graph_Color::color2RGB($color);
     }
 }
 
@@ -372,7 +423,7 @@ class Image_Graph_Axis_X extends Image_Graph_Axis
     /**
     * Type of the axis
     *
-    * @var const        use constants IMAGE_GRAPH_AXISTYPE_*; currently only IMAGE_GRAPH_AXISTYPE_TEXT allowed
+    * @var    const           use constants IMAGE_GRAPH_AXISTYPE_*; currently only IMAGE_GRAPH_AXISTYPE_TEXT allowed
     * @access private
     */
     var $_axistype = IMAGE_GRAPH_AXISTYPE_TEXT;
@@ -382,13 +433,13 @@ class Image_Graph_Axis_X extends Image_Graph_Axis
     *
     * Will be used (shown) when axis has $_axistype of IMAGE_GRAPH_AXISTYPE_TEXT
     *
-    * @var array      one string per data-column
+    * @var    array           one string per data-column
     * @access private
     */
     var $_labels = array();
 
     /**
-    * Constructor for the class
+    * Constructor
     *
     * @access public
     */
@@ -400,7 +451,7 @@ class Image_Graph_Axis_X extends Image_Graph_Axis
     /**
     * Set type of axis
     *
-    * @param  const      only IMAGE_GRAPH_AXISTYPE_TEXT allowed
+    * @param  const           only IMAGE_GRAPH_AXISTYPE_TEXT allowed
     * @access public
     * @see    $_axistype
     */
@@ -454,7 +505,7 @@ class Image_Graph_Axis_X extends Image_Graph_Axis
     /**
     * Calculate relative position (in pixel-coordinates) for a certain value on the axis
     *
-    * @param  int/float   data value
+    * @param  float           data value
     * @access public
     */
     function valueToPixelRelative($value)
@@ -467,7 +518,7 @@ class Image_Graph_Axis_X extends Image_Graph_Axis
     /**
     * Calculate absolute position (in pixel-coordinates) for a certain value on the axis
     *
-    * @param  int/float   data value
+    * @param  float           data value
     * @access public
     */
     function valueToPixelAbsolute($value)
@@ -490,7 +541,7 @@ class Image_Graph_Axis_Y extends Image_Graph_Axis
     *
     * always use the constants IMAGE_GRAPH_AXISTYPE_* to evaluate / set this variable
     *
-    * @var mixed      only IMAGE_GRAPH_AXISTYPE_LINEAR allowed
+    * @var    mixed           only IMAGE_GRAPH_AXISTYPE_LINEAR allowed
     * @access private
     */
     var $_axistype = IMAGE_GRAPH_AXISTYPE_LINEAR;
@@ -500,7 +551,7 @@ class Image_Graph_Axis_Y extends Image_Graph_Axis
     *
     * this variable is only used on the Y-axis; directly set internally by functions of package Image_Graph
     *
-    * @var boolean
+    * @var    boolean
     * @access private
     */
     var $_containsData = false;
@@ -518,7 +569,7 @@ class Image_Graph_Axis_Y extends Image_Graph_Axis
     /**
     * Set type of axis
     *
-    * @param  mixed   only IMAGE_GRAPH_AXISTYPE_LINEAR allowed
+    * @param  mixed           only IMAGE_GRAPH_AXISTYPE_LINEAR allowed
     * @access public
     * @see    $_axistype
     */
@@ -533,7 +584,7 @@ class Image_Graph_Axis_Y extends Image_Graph_Axis
     /**
     * Calculate relative position (in pixel-coordinates) for a certain value on the axis
     *
-    * @param  int/float   data value
+    * @param  float           data value
     * @access public
     */
     function valueToPixelRelative($value)
@@ -557,7 +608,7 @@ class Image_Graph_Axis_Y extends Image_Graph_Axis
     /**
     * Calculate absolute position (in pixel-coordinates) for a certain value on the axis
     *
-    * @param  int/float   data value
+    * @param  int/float       data value
     * @access public
     */
     function valueToPixelAbsolute($value)
@@ -673,7 +724,6 @@ class Image_Graph_Axis_Y extends Image_Graph_Axis
         $this->_ticksMajorEffective = $stepsMajor;
         $this->_ticksMinorEffective = $stepsMinor;
     }
-
 }
 
 /**
@@ -688,7 +738,7 @@ class Image_Graph_Title extends Image_Graph_Base
     /**
     * Spacer
     *
-    * @var array (4 ints)     array with keys "top, bottom, left, right"; describes extra-space to add beside this title
+    * @var    array           (array of 4 ints) array with keys "top, bottom, left, right"; describes extra-space to add beside this title
     * @access private
     */
     var $_spacer = array("top" => 0, "bottom" => 0, "left" => 0, "right" => 0);
@@ -700,7 +750,7 @@ class Image_Graph_Title extends Image_Graph_Base
     */
     function Image_Graph_Title()
     {
-        $this->setColor(array(0, 0, 0)); // black
+        $this->setColor("black"); // black
     }
 
     /**
@@ -708,7 +758,7 @@ class Image_Graph_Title extends Image_Graph_Base
     *
     * extra-space to add beside this title
     *
-    * @param  array (ints)    array with keys "top, bottom, left, right"; if some elements are omitted current values are left in place
+    * @param  array           (array of 4 ints) array with keys "top, bottom, left, right"; if some elements are omitted current values are left in place
     * @access public
     */
     function setSpacer($spacer)
@@ -731,9 +781,9 @@ class Image_Graph_Title extends Image_Graph_Base
 class Image_Graph_Grid extends Image_Graph_Base
 {
     /**
-    * Reference to parent axis (of type IMAGE_GRAPH_AXIS_*)
+    * Reference (!) to parent axis
     *
-    * @var object-reference
+    * @var    object Image_Graph_Axis_Common
     * @access private
     */
     var $_axis = null;
@@ -741,7 +791,7 @@ class Image_Graph_Grid extends Image_Graph_Base
     /**
     * Line color
     *
-    * @var array        (4 ints for R,G,B,A); initialised by constructor
+    * @var    array           (array of 4 ints for R,G,B,A); initialised by constructor
     * @access private
     */
     var $_lineColor = null;
@@ -749,7 +799,7 @@ class Image_Graph_Grid extends Image_Graph_Base
     /**
     * Fill color
     *
-    * @var array        (array of array of 4 ints for R,G,B,A); initialised by constructor
+    * @var    array           (array of array of 4 ints for R,G,B,A); initialised by constructor
     * @access private
     */
     var $_fillColor = null;
@@ -757,7 +807,7 @@ class Image_Graph_Grid extends Image_Graph_Base
     /**
     * Type of grid-lines
     *
-    * @var const        use constants IMAGE_GRAPH_GRID_NONE, IMAGE_GRAPH_GRID_MAJOR, IMAGE_GRAPH_GRID_MINOR
+    * @var    const           use constants IMAGE_GRAPH_GRID_NONE, IMAGE_GRAPH_GRID_MAJOR, IMAGE_GRAPH_GRID_MINOR
     * @access private
     */
     var $_lineType = IMAGE_GRAPH_GRID_NONE;
@@ -765,7 +815,7 @@ class Image_Graph_Grid extends Image_Graph_Base
     /**
     * Type of grid-fill
     *
-    * @var const        use constants IMAGE_GRAPH_GRID_NONE, IMAGE_GRAPH_GRID_MAJOR, IMAGE_GRAPH_GRID_MINOR
+    * @var    const           use constants IMAGE_GRAPH_GRID_NONE, IMAGE_GRAPH_GRID_MAJOR, IMAGE_GRAPH_GRID_MINOR
     * @access private
     */
     var $_fillType = IMAGE_GRAPH_GRID_NONE;
@@ -773,7 +823,7 @@ class Image_Graph_Grid extends Image_Graph_Base
     /**
     * array of fill objects
     *
-    * @var array        array of type Image_Graph_Fill_...
+    * @var    array           array of type Image_Graph_Fill_...
     * @access private
     */
     var $_fill = array();
@@ -801,7 +851,7 @@ class Image_Graph_Grid extends Image_Graph_Base
     /**
     * Set type of grid-lines
     *
-    * @param  const     use constants IMAGE_GRAPH_GRID_NONE, IMAGE_GRAPH_GRID_MAJOR, IMAGE_GRAPH_GRID_MINOR
+    * @param  const           use constants IMAGE_GRAPH_GRID_NONE, IMAGE_GRAPH_GRID_MAJOR, IMAGE_GRAPH_GRID_MINOR
     * @access public
     */
     function setLineType($type)
@@ -812,7 +862,7 @@ class Image_Graph_Grid extends Image_Graph_Base
     /**
     * Set type of grid-fill
     *
-    * @param  const     use constants IMAGE_GRAPH_GRID_NONE, IMAGE_GRAPH_GRID_MAJOR, IMAGE_GRAPH_GRID_MINOR
+    * @param  const           use constants IMAGE_GRAPH_GRID_NONE, IMAGE_GRAPH_GRID_MAJOR, IMAGE_GRAPH_GRID_MINOR
     * @access public
     */
     function setFillType($type)
@@ -823,7 +873,8 @@ class Image_Graph_Grid extends Image_Graph_Base
     /**
     * Set color
     *
-    * @param  mixed     any color representation supported by Image_Graph_Color::color2RGB
+    * @param  mixed           any color representation supported by Image_Graph_Color::color2RGB()
+    * @see    Image_Graph_Color::color2RGB()
     * @access public
     */
     function setColor($color)
@@ -834,12 +885,11 @@ class Image_Graph_Grid extends Image_Graph_Base
     /**
     * Set fill elements to be used
     *
-    * @param  array   each element consists of a fill element type (e.g. "solid") and an option array
-    * @param  array   ... please note that you can supply as many element-arrays as you like ...
+    * @param  array   $fillelements,...       each element consists of a fill element type (e.g. "solid") and an option array
     * @return array   array of fill-objects
     * @access public
     */
-    function &setFill()
+    function &setFill($fillelements)
     {
         // get the variable parameter-list supplied to this function
         $elements = func_get_args();
@@ -874,12 +924,11 @@ class Image_Graph_Grid extends Image_Graph_Base
         return $newFill;
     }
 
-
     /**
     * Draws diagram element
     *
-    * @param gd-resource  image-resource to draw to
-    * @param int          choose what to draw; use constants IMAGE_GRAPH_DRAW_FILLANDBORDER, IMAGE_GRAPH_DRAW_JUSTFILL or IMAGE_GRAPH_DRAW_JUSTBORDER; BORDER means "grid-line" in this context
+    * @param  gd-resource     image-resource to draw to
+    * @param  const           choose what to draw; use constants IMAGE_GRAPH_DRAW_FILLANDBORDER, IMAGE_GRAPH_DRAW_JUSTFILL or IMAGE_GRAPH_DRAW_JUSTBORDER; BORDER means "grid-line" in this context
     * @access private
     */
     function drawGD(&$img, $drawWhat=IMAGE_GRAPH_DRAW_FILLANDBORDER)
@@ -944,5 +993,4 @@ class Image_Graph_Grid extends Image_Graph_Base
         }
     }
 }
-
 php?>

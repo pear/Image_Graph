@@ -1,18 +1,57 @@
 <?php
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
+// +----------------------------------------------------------------------+
+// | PHP Version 4                                                        |
+// +----------------------------------------------------------------------+
+// | Copyright (c) 1997-2003 The PHP Group                                |
+// +----------------------------------------------------------------------+
+// | This source file is subject to version 2.0 of the PHP license,       |
+// | that is bundled with this package in the file LICENSE, and is        |
+// | available at through the world-wide-web at                           |
+// | http://www.php.net/license/2_02.txt.                                 |
+// | If you did not receive a copy of the PHP license and are unable to   |
+// | obtain it through the world-wide-web, please send a note to          |
+// | license@php.net so we can mail you a copy immediately.               |
+// +----------------------------------------------------------------------+
+// | Author: Stefan Neufeind <pear.neufeind@speedpartner.de>              |
+// +----------------------------------------------------------------------+
+//
 // $Id$
 
-require_once("Image/Graph/Color.php"); // extended version of package: PEAR::Image_Color
-
-define('IMAGE_GRAPH_DRAW_FILLANDBORDER',  1);
-define('IMAGE_GRAPH_DRAW_JUSTFILL',       2);
-define('IMAGE_GRAPH_DRAW_JUSTBORDER',     3);
-
 /**
-* Class template for a Image_Graph diagram data element (e.g. a "line")
+* Basic data-element
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
-* @access   private
+*/
+
+/**
+* Class for color handling (extended version of package: PEAR::Image_Color)
+*/
+require_once("Image/Graph/Color.php");
+
+/**
+* Draw the fill as well as the rest (border, ...) of the data-element
+* @access private
+*/
+define('IMAGE_GRAPH_DRAW_FILLANDBORDER',  1);
+/**
+* Draw just the fill of the data-element
+* @access private
+*/
+define('IMAGE_GRAPH_DRAW_JUSTFILL',       2);
+/**
+* Draw the rest (all except the fill) of the data-element
+* @access private
+*/
+define('IMAGE_GRAPH_DRAW_JUSTBORDER',     3);
+
+/**
+* Class template for a data-element (e.g. "line")
+*
+* @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
+* @package  Image_Graph
+* @access   public
 */
 class Image_Graph_Data_Common
 {
@@ -27,13 +66,16 @@ class Image_Graph_Data_Common
     /**
     * Color for element
     *
-    * @var array (3 ints for R,G,B); initially null
+    * @var array              (4 ints for R,G,B,A); initially black
+    * @see setColor()
     * @access private
     */
-    var $_color = array(0, 0, 0);
+    var $_color = array(0, 0, 0, 255);
 
     /**
-    * Attributes for drawing the data element
+    * Various attributes for the data-element
+    *
+    * axisID => axis to which this data-element belongs (0 or 1; for axisY0 or axisY1)
     *
     * @var array
     * @access private
@@ -41,37 +83,38 @@ class Image_Graph_Data_Common
     var $_attributes = array("axisId" => 0);
 
     /**
-    * graph object (of type Image_Graph)
+    * graph object
     *
-    * @var object
+    * @var object Image_Graph
     * @access private
     */
     var $_graph = null;
 
     /**
-    * data marker object (of type Image_Graph_DataMarker_...)
+    * data marker object
     *
-    * @var object
+    * @var object Image_Graph_DataMarker_Common
     * @access private
     */
     var $_datamarker = null;
 
     /**
-    * fill object (of type Image_Graph_Fill_...)
+    * fill object
     *
-    * @var object
+    * @var object Image_Graph_Fill_Common
     * @access private
     */
     var $_fill = null;
 
     /**
-    * Constructor for the class
+    * Constructor
     *
-    * @param  object  graph object (of type Image_Graph)
-    * @param  array   numerical data to be drawn
+    * @param  object Image_Graph    parent object
+    * @param  array                 numerical data to be drawn
+    * @param  array                 attributes like color
     * @access public
     */
-    function Image_Graph_Data_Common(&$graph, $data, $attributes)
+    function Image_Graph_Data_Common(&$graph, $data, $attributes=array())
     {
         $this->_graph       =& $graph;
         $this->_data        = $data;
@@ -85,7 +128,8 @@ class Image_Graph_Data_Common
     /**
     * Set color
     *
-    * @param  array (3 ints for R,G,B)
+    * @param  mixed           any color representation supported by Image_Graph_Color::color2RGB()
+    * @see    Image_Graph_Color::color2RGB()
     * @access public
     */
     function setColor($color)
@@ -97,7 +141,7 @@ class Image_Graph_Data_Common
     * Set a data marker to be used
     *
     * @param  string  data representation (e.g. "triangle")
-    * @param  array   attributes like color (to be extended to also include shading etc.)
+    * @param  array   attributes like color
     * @return object  data-marker-object
     * @access public
     */
@@ -161,7 +205,6 @@ class Image_Graph_Data_Common
     * @param gd-resource image-resource to draw to
     * @access private
     */
-
     function _drawDataMarkerGD(&$img)
     {
         if (is_object($this->_datamarker))
@@ -188,9 +231,11 @@ class Image_Graph_Data_Common
     * Calculates coordinates for a line in the drawing-area
     *
     * If one point is outside the drawingarea it recalculated to get a "clipped" line.
-    * Pleas note: Only line that exceed the Y-axis-limits are clipped; no direct clipping for the X-axis
+    * Pleas note: Only line that exceed the Y-axis-limits are clipped; no clipping for the X-axis (yet)
     *
-    * @param gd-resource image-resource to draw to
+    * @param array            (array of int) starting point of line
+    * @param array            (array of int) destination point of line
+    * @return array           (array of array of int) corrected from/to-points
     * @access private
     */
     function _calculateClippedLineCoords($from, $to)
@@ -252,7 +297,7 @@ class Image_Graph_Data_Common
     * Draw all diagram elements in this stacking-group
     *
     * @param array    references to dataElements (objects of this type)
-    * @access private
+    * @access public
     * @static
     */
     function stackingDrawGD(&$dataElements, &$img)
@@ -267,7 +312,7 @@ class Image_Graph_Data_Common
     *
     * @param gd-resource  image-resource to draw to
     * @param int          choose what to draw; use constants IMAGE_GRAPH_DRAW_FILLANDBORDER, IMAGE_GRAPH_DRAW_JUSTFILL or IMAGE_GRAPH_DRAW_JUSTBORDER
-    * @access private
+    * @access public
     */
     function drawGD(&$img, $drawWhat=IMAGE_GRAPH_DRAW_FILLANDBORDER)
     {
