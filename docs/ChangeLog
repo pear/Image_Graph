@@ -18,6 +18,7 @@ Version 0.x.y-state [2005-xxx-yy] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Fixed axis not displaying labels after resetting driver
     * Fixed problem in SVG driver with vertical texts
     * Fixed a problem with line axis marker on a secondary y-axis displaying vertically instead of horizontally
+    * Fixed problem with logarithmic axis not scaling properly
     * Changed the way coordinates are calculated when adding titles to non-layout objects
     * Changed which changes API causing minor BC breaks
         - Renamed Image_Graph_Plot_Bar::barWidth() to Image_Graph_Plot_Bar::setBarWidth()

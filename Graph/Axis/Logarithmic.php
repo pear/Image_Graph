@@ -102,7 +102,7 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
      */
     function _getMinimum()
     {
-        return 1;
+        return 0;
     }
 
     /**
