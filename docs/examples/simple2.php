@@ -23,7 +23,7 @@
 
     $graph->diagramTitle->setText("Downloads June 2003");
 
-    $graph->axisY0->setFontOptions(array("fontSize" => 8));
+    $graph->axisY0->setFontOptions(array("font_size" => 8));
     $graph->axisY0->setColor(array(0x40, 0x40, 0xFF));
 
     $data    = array( 15.8,

@@ -40,8 +40,8 @@
     $graph->axisY0->title->setColor (array(0xCC,0x29,0x29));
     $graph->axisY1->title->setColor (array(0x29,0xCC,0x29));
 
-    $graph->axisY0->title->setFontOptions (array("fontSize" => 8));
-    $graph->axisY1->title->setFontOptions (array("fontSize" => 8));
+    $graph->axisY0->title->setFontOptions (array("font_size" => 8));
+    $graph->axisY1->title->setFontOptions (array("font_size" => 8));
 
     $graph->setAxesColor(array(0x40, 0x40, 0xFF));
 

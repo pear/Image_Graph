@@ -85,7 +85,16 @@ class Image_Graph_Base
     /**
     * Options for fonts
     *
-    * @var    array           stores information like fontPath, fontFile, fontSize, antiAliasing etc.; initially empty
+    * These options are directly given to the class Image_Text which
+    * handles text-output. For a full list of necessary/available
+    * font-options please refer to the Image_Text-docs and/or have a
+    * look at the examples shipped with the Image_Graph-package.
+    * !! Note that the option "font_type" defaults to "ttf" (TrueType-fonts)
+    * at the moment. As soon as PHP-internal (bitmap) fonts are also
+    * supported by Image_Text this will default to those internal fonts
+    * instead. !!
+    *
+    * @var    array           stores information like font_type, font_path, font_file, font_size, antialiasing etc.; initially empty
     * @access private
     */
     var $_fontOptions = array();
@@ -126,9 +135,18 @@ class Image_Graph_Base
     /**
     * Set options for fonts
     *
-    * All information not given in this array (e.g. fontPath) will be taken from the default font-options set in the Image_Graph-object
+    * All information not given in this array (e.g. font_path) will be
+    * taken from the default font-options set in the Image_Graph-object.
+    * These options are directly given to the class Image_Text which
+    * handles text-output. For a full list of necessary/available
+    * font-options please refer to the Image_Text-docs and/or have a
+    * look at the examples shipped with the Image_Graph-package.
+    * !! Note that the option "font_type" defaults to "ttf" (TrueType-fonts)
+    * at the moment. As soon as PHP-internal (bitmap) fonts are also
+    * supported by Image_Text this will default to those internal fonts
+    * instead. !!
     *
-    * @param  array           stores information like fontPath, fontFile, fontSize, antiAliasing etc.
+    * @var    array           stores information like font_type, font_path, font_file, font_size, antialiasing etc.
     * @access public
     */
     function setFontOptions($options = array())
