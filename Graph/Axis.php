@@ -838,8 +838,8 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
         foreach ($this->_labelOptions as $level => $labelOptions) {
             if ((isset($labelOptions['showoffset'])) && ($labelOptions['showoffset'] === true)) {
-                $this->_labelOptions[$level]['offset'] = $totalMaxSize;
-            } else {
+                $this->_labelOptions[$level]['offset'] += $totalMaxSize;
+            } elseif (!isset($this->_labelOptions[$level]['offset'])) {
                 $this->_labelOptions[$level]['offset'] = 0;
             }
             if (
