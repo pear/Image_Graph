@@ -327,8 +327,8 @@ class Image_Graph
             $options['anti_aliasing'] = false;
         }
         $options['max_lines'] = 100;
-        $options['width'] = $this->_size[1];
-        $options['height'] = $this->_size[0];
+        $options['width'] = $this->_size[0];
+        $options['height'] = $this->_size[1];
         $this->_defaultFontOptions = $options;
     }
 
@@ -662,6 +662,18 @@ class Image_Graph
                 $borderspaceSum["bottom"] += $textSize['height'];
                 $borderspaceSum['bottom'] += $this->axisX->title->_spacer['top'];
                 $borderspaceSum['bottom'] += $this->axisX->title->_spacer['bottom'];
+                
+                $totalTitleWidth = $textSize['width'] +
+                                       $this->axisX->title->_spacer['left'] +
+                                       $this->axisX->title->_spacer['right'];
+                $this->axisX->_internalTempValues['totalTitleWidth'] = $totalTitleWidth;
+
+                $totalTitleHeight = $textSize['height'] +
+                                       $this->axisX->title->_spacer['top'] +
+                                       $this->axisX->title->_spacer['bottom'];
+                $this->axisX->_internalTempValues['totalTitleHeight'] = $totalTitleHeight;
+
+            
             }
 
             for ($axisCount=0; $axisCount<=1; $axisCount++) {
@@ -684,6 +696,11 @@ class Image_Graph
                                        $this->{$currAxis}->title->_spacer['right'];
                     $this->{$currAxis}->_internalTempValues['totalTitleWidth'] = $totalTitleWidth;
 
+                    $totalTitleHeight = $textSize['width'] +
+                                       $this->{$currAxis}->title->_spacer['top'] +
+                                       $this->{$currAxis}->title->_spacer['bottom'];
+                    $this->{$currAxis}->_internalTempValues['totalTitleHeight'] = $totalTitleHeight;
+                    
                     if ($axisCount == 0)
                     {
                         $borderspaceSum['left'] += $totalTitleWidth;
@@ -796,15 +813,16 @@ class Image_Graph
             // draw title text
             if (!empty($this->diagramTitle->_text)) {
                 require_once 'Image/Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
-                $textX = $this->_pos[0] + ($this->_size[0] / 2);
-                $textY = $this->_pos[1] + $this->_borderspace + 30;
-                $options = array_merge($this->diagramTitle->_fontOptions, array('cx' => $textX, 'cy' => $textY));
+                $textY = $this->_pos[1] + $this->_borderspace;
+                $textX = 0;
+                $options = array_merge($this->diagramTitle->_fontOptions, array('x' => $textX, 'y' => $textY));
                 
                 /***********************************************************
                 
                 //Why is diagramTitle->_text an array???
                 
                 ***********************************************************/
+                
                 $text = (is_array($this->diagramTitle->_text)) ? implode("\n", $this->diagramTitle->_text) : $this->diagramTitle->_text;
                 $tempText = new Image_Text($text, $options);
                 $tempText->set('halign', IMAGE_TEXT_ALIGN_CENTER);
@@ -815,30 +833,33 @@ class Image_Graph
                                            "g" => $this->diagramTitle->_color[1],
                                            "b" => $this->diagramTitle->_color[2]));
                 $tempText->measurize();
-                $tempText->set(array('width' => $tempText->_realTextSize['width'], 'height' => $tempText->_realTextSize['height']));
-                $tempText->init();
-                $tempText->measurize();
-                $tempText->render(true);
-                var_dump($tempText);
+                // var_dump($tempText);
+                $tempText->render();
+                //var_dump($tempText);
             }
 
             // draw x-axis text
             if (!empty($this->axisX->title->_text)) {
                 require_once 'Image/Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
                 $textX = $this->_pos[0] + ($this->_size[0] / 2);
-                $textY = $this->_pos[1] + $this->_borderspace;
-                $options = array_merge($this->axisX->_fontOptions, array('x' => $textX, 'y' => $textY));
+                $textY = $this->_pos[1] + $this->_size[1] - $this->axisX->_internalTempValues['totalTitleHeight'] - $this->_borderspace;
+                $width = $this->axisX->_internalTempValues['totalTitleWidth'];
+                $height = $this->axisX->_internalTempValues['totalTitleHeight'];
+                $options = array_merge($this->axisX->_fontOptions, array('cx' => $textX, 'cy' => $textY, 'width' => $width, 'height' => $height));
                 
                 /***********************************************************
                 
                 //Why is axisX->_text an array???
                 
                 ***********************************************************/
-                $text = (is_array($this->axisX->_text)) ? implode("\n", $this->axisX->_text) : $this->axisX->_text;
+                $text = (is_array($this->axisX->title->_text)) ? implode("\n", $this->axisX->title->_text) : $this->axisX->_text;
                 $tempText = new Image_Text($text, $options);
                 $tempText->set('halign', IMAGE_TEXT_ALIGN_CENTER);
                 $tempText->set('canvas', $img);
                 $tempText->init();
+                $tempText->measurize();
+                
+                // var_dump($tempText);
 
                 $tempText->setColor(array ("r" => $this->axisX->_color[0],
                                            "g" => $this->axisX->_color[1],
@@ -859,7 +880,7 @@ class Image_Graph
                     $tempText->measurize();
                     $textSize = $tempText->_realTextSize;
                     if ($axisCount == 0) {
-                        $textX = $this->_pos[0] + $this->_borderspace + $this->{$currAxis}->title->_spacer['left'] + $textSize['height'];
+                        $textX = $this->_pos[0] + $this->_borderspace + $this->{$currAxis}->title->_spacer['left'];
                     } else {
                         $textX = $this->_pos[0] + $this->_size[0] - $this->_borderspace - $this->{$currAxis}->title->_spacer['right'];
                     }
@@ -948,6 +969,7 @@ class Image_Graph
                     $tempText->set('align', IMAGE_TEXT_ALIGN_CENTER);
                     $tempText->init();
                     $tempText->measurize();
+                    // var_dump($tempText);
                     $textSize = $tempText->_realTextSize;
                     $textX = $this->axisX->valueToPixelAbsolute($labelCount);
 
@@ -962,6 +984,7 @@ class Image_Graph
                     $tempText->set($opts);
                     $tempText->init();
                     $tempText->measurize();
+                    // var_dump($tempText);
                     $tempText->render();
                 }
             }
@@ -1034,7 +1057,6 @@ class Image_Graph
                     require_once 'Image/Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
                     $textoptions = $this->{$currAxis}->_fontOptions;
                     $textoptions['width'] = $this->{$currAxis}->_internalTempValues['maxNumWidth'];
-                    $textoptions['canvas'] = $img;
                     $tempText = new Image_Text("", $textoptions);
 
                     if ($axisCount == 0) { // axis 0 (left axis)
@@ -1046,7 +1068,8 @@ class Image_Graph
                     foreach ($this->{$currAxis}->_ticksMajorEffective as $currTick) {
                         // @todo: remove this dirty little hack :-) we shouldn't access the lines directly, should we?
                         $tempText->set('text', sprintf($this->{$currAxis}->_numberformat, $currTick));
-                        $tempText->set('align', IMAGE_TEXT_ALIGN_RIGHT);
+                        $tempText->set('align', IMAGE_TEXT_ALIGN_LEFT);
+                        $tempText->set('canvas', $img);
                         $tempText->init();
                         $tempText->measurize();
                         $textSize = $tempText->_realTextSize;
@@ -1062,8 +1085,8 @@ class Image_Graph
 
                         $tempText->setColor(array ("r" => $this->{$currAxis}->_numbercolor[0],
                                                    "g" => $this->{$currAxis}->_numbercolor[1],
-                                                   "b" => $this->{$currAxis}->_numbercolor[2]));
-                        $opts = array('x' => $textX, 'y' => $textY);
+                                                   "b" => $this->{$currAxis}->_numbercolor[2]), 0);
+                        $opts = array('x' => (int)$textX, 'y' => (int)$textY, 'canvas' => $img);
                         $tempText->set($opts);
                         $tempText->init();
                         $tempText->measurize();
