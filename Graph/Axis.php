@@ -48,7 +48,6 @@ require_once 'Image/Graph/Plotarea/Element.php';
  */
 class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 {
-    // TODO Create an option to make it user specified at which point/value the axis intersects (i.e. 0, min, max)
 
     /**
      * The type of the axis, possible values are:
@@ -834,7 +833,6 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      */
     function setAxisIntersection($intersection, $axis = 'default')
     {
-        // TODO Ensure that the intersection is within the other axis range, otherwise expand range
         $this->_intersect = array(
             'value' => $intersection,
             'axis' => $axis

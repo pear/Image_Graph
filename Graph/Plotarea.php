@@ -523,9 +523,6 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
     function _updateCoords()
     {
         
-        // TODO There is an issue when the axis partly exceeds the boundaries of the plot
-        // TODO There is an issue when secondary axis minimum value is greater that zero
-        
         if (is_array($this->_elements)) {
             $keys = array_keys($this->_elements);
             foreach ($keys as $key) {
@@ -606,7 +603,6 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
         }      
 
         if ($this->_axisYSecondary != null) {
-            // TODO There seems to be some kind of problem here - see tests/plotarea_secondary_axis_intersect.php            
             if ($this->_axisX != null) {
                 $pos = $this->_axisX->_intersectPoint($intersectYsec['value']);
             } else {

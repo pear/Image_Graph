@@ -691,9 +691,9 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
 
             $x = $x0 = $param['x'];
             $y = $param['y'];
-            $y0 = $param['y'] - $param['height']/2;
+            $y0 = $param['y'];
             $x1 = $param['x'] + $param['width'];
-            $y1 = $param['y'] + $param['height']/2;
+            $y1 = $param['y'] + $param['height'];
 
             if (!isset($param['simulate'])) {
                 $this->_getFillStyle($key);
@@ -714,7 +714,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
                         $this->_marker->_drawMarker($point['MARKER_X'], $point['MARKER_Y'], $point);
                     }
                 }
-                $this->write($x + $param['width'] + 10, $y, $caption, IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_LEFT, $param['font']);
+                $this->write($x + $param['width'] + 10, $y + $param['height'] / 2, $caption, IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_LEFT, $param['font']);
             }
 
             if (($param['align'] & IMAGE_GRAPH_ALIGN_VERTICAL) != 0) {
