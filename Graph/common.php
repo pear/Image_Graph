@@ -1,4 +1,5 @@
 <?
+// $Id$
 /**
 * Class template for a Image_Graph diagram data element (e.g. a "line")
 *

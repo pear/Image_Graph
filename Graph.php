@@ -20,7 +20,10 @@
 
 /**************************TODO*******************************************/
 /*
- * - ...
+ * - automated creation of "ticks" (major and minor)
+ * - add a grid (horizontal / vertical)
+ * - add images (background, ...)
+ * - add alpha-channel functionality (for half-transparent bars etc.)
  */
 
 define('IMAGE_GRAPH_TICKS_INSIDE',  1);

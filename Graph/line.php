@@ -1,4 +1,5 @@
 <?
+// $Id$
 /**
 * Line data-element for a Image_Graph diagram
 *
