@@ -93,4 +93,4 @@ class Image_Graph_DataMarker_Square extends Image_Graph_DataMarker_Common
                               $drawColor);
     }
 }
-php?>
+?>

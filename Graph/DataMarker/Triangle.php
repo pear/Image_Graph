@@ -94,4 +94,4 @@ class Image_Graph_DataMarker_Triangle extends Image_Graph_DataMarker_Common
         imagefilledpolygon ($img, $points, 3, $drawColor);
     }
 }
-php?>
+?>

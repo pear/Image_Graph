@@ -204,4 +204,4 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
         }
     }
 }
-php?>
+?>

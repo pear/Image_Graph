@@ -94,4 +94,4 @@ class Image_Graph_DataMarker_Diamond extends Image_Graph_DataMarker_Common
         imagefilledpolygon ($img, $points, 4, $drawColor);
     }
 }
-php?>
+?>

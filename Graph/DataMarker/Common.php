@@ -94,4 +94,4 @@ class Image_Graph_DataMarker_Common
         // implementation of this function in the derived datamarker-element-classes
     }
 }
-php?>
+?>

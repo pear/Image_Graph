@@ -176,4 +176,4 @@ class Image_Graph_Color extends Image_Color
         $this->color2 = Image_Graph_Color::color2RGB($col2);
     }
 }
-php?>
+?>

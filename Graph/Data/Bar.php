@@ -165,4 +165,4 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
         }
     }
 }
-php?>
+?>

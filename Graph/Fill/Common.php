@@ -116,4 +116,4 @@ class Image_Graph_Fill_Common
         // implementation of this function in the derived fill-element-classes
     }
 }
-php?>
+?>

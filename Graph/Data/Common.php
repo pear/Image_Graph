@@ -319,4 +319,4 @@ class Image_Graph_Data_Common
         // implementation of this function in the derived diagram-element-classes
     }
 }
-php?>
+?>

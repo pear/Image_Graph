@@ -204,4 +204,4 @@ class Image_Graph_Fill_Gradient extends Image_Graph_Fill_Common
         }
     }
 }
-php?>
+?>

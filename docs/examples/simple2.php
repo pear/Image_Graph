@@ -39,4 +39,4 @@
 
     Header ("Content-Type: image/png");
     imagepng($image);
-php?>
+?>

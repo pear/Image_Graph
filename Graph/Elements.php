@@ -993,4 +993,4 @@ class Image_Graph_Grid extends Image_Graph_Base
         }
     }
 }
-php?>
+?>
