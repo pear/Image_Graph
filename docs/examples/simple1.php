@@ -27,8 +27,6 @@
     $graph->addData($data, "line", array("axeId" => 0));
 
     $graph->axeY0->setBounds(10,50);
-    $graph->axeY0->setTicksMajor(array(0, 10, 20, 30, 40, 50), 0);
-    $graph->axeY0->setTicksMinor(array(5, 15, 25, 35, 45), 0);
 
     $image = $graph->getGDImage();
 

@@ -65,7 +65,7 @@ class Image_Graph_Base
     {
         $this->_fontOptions = $options;
     }
-    
+
     /**
     * Set text
     *
@@ -101,15 +101,29 @@ class Image_Graph_Axe extends Image_Graph_Base
     * @access public
     */
     var $title = null;
-  
+
     /**
     * Bounds for axe (min/max value)
     *
     * @var array (2 ints/floats/nulls)     null results in automatic detection of bounds
     * @access private
+    * @see $_boundsEffective
     */
     var $_bounds = array('min' => null, 'max' => null);
-  
+
+    /**
+    * effective bounds for axe (min/max value)
+    *
+    * in contrast to $_bounds these values are not to be influenced by the user but used internally
+    * for storing values that will be used for drawing; where $_bounds may contain null-values,
+    * this array will store the automatically detected min/max-values that will be used for drawing
+    *
+    * @var array (2 ints/floats)           contains min and max value for the bounds
+    * @access private
+    * @see $_bounds
+    */
+    var $_boundsEffective = array('min' => null, 'max' => null);
+
     /**
     * Style for ticks on the axe
     *
@@ -117,7 +131,7 @@ class Image_Graph_Axe extends Image_Graph_Base
     * @access private
     */
     var $_tickStyle = IMAGE_GRAPH_TICKS_OUTSIDE;
-  
+
     /**
     * Size for ticks on the axe
     *
@@ -125,22 +139,61 @@ class Image_Graph_Axe extends Image_Graph_Base
     * @access private
     */
     var $_tickSize = 10;
-  
+
     /**
     * Major ticks on axe
     *
     * @var array (ints/floats)     null results in automatic detection of ticks (!to be implemented!)
     * @access private
+    * @see $_ticksMajorEffective
     */
     var $_ticksMajor = null;
-  
+
+    /**
+    * effective major ticks on axe
+    *
+    * in contrast to $_ticksMajor these values are not to be influenced by the user but used internally
+    * for storing values that will be used for drawing; where $_ticksMajor may contain null-values,
+    * this array will store the automatically determined ticks that will be used for drawing
+    *
+    * @var array (ints/floats)     contains the ticks that will be drawn
+    * @access private
+    * @see $_ticksMajor
+    */
+    var $_ticksMajorEffective = array();
+
     /**
     * Minor ticks on axe
     *
     * @var array (ints/floats)     null results in automatic detection of ticks (!to be implemented!)
     * @access private
+    * @see $_ticksMinorEffective
     */
     var $_ticksMinor = null;
+
+    /**
+    * effective minor ticks on axe
+    *
+    * in contrast to $_ticksMinor these values are not to be influenced by the user but used internally
+    * for storing values that will be used for drawing; where $_ticksMinor may contain null-values,
+    * this array will store the automatically determined ticks that will be used for drawing
+    *
+    * @var array (ints/floats)     contains the ticks that will be drawn
+    * @access private
+    * @see $_ticksMinor
+    */
+    var $_ticksMinorEffective = array();
+
+    /**
+    * maximum steps for automatic creation of ticksMajor / ticksMinor
+    *
+    * @var array (2 ints)          contains "major" and "minor" value (max steps) for the ticks
+    * @access private
+    * @see $_ticksMajor
+    * @see $_ticksMinor
+    * @see setTicksAutoSteps
+    */
+    var $_ticksAutoSteps = array("major" => 5, "minor" => 25);
 
     /**
     * Numberformat
@@ -199,6 +252,28 @@ class Image_Graph_Axe extends Image_Graph_Base
     function setBounds($min, $max)
     {
         $this->_bounds = array('min' => $min, 'max' => $max);
+    }
+    
+    /**
+    * Set maximum steps for automatic creation of ticksMinor / ticksMajor
+    *
+    * @param  int           value for steps of ticksMajor (null results in fallback to default of 5)
+    * @param  int           value for steps of ticksMinor (null results in fallback to default of 25, at least the minor)
+    * @access public
+    * @see    $_ticksAutoSteps
+    */
+    function setTicksAutoSteps($major = null, $minor = null)
+    {
+        if ($major == null) {
+            $major = 5;
+        }
+        if ($minor == null) {
+            $minor = 25;
+        }
+        if ($minor < $major) {
+            $minor = $major;
+        }
+        $this->_ticksAutoSteps = array("major" => $major, "minor" => $minor);
     }
 
     /**
