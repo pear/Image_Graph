@@ -162,6 +162,13 @@ require_once 'Image/Graph/Plotarea/Element.php';
      * @access private
      */
     var $_intersect = array('value' => 'default', 'axis' => 'default');
+
+    /**
+     * The fixed size of the axis (i.e. width for y-axis, height for x-axis)
+     * @var mixed
+     * @access private
+     */
+    var $_fixedSize = false;
     
     /**
      * The label options
@@ -555,6 +562,20 @@ require_once 'Image/Graph/Plotarea/Element.php';
     }
 
     /**
+     * Sets a fixed "size" for the axis.
+     * 
+     * If the axis is any type of y-axis the size relates to the width of the
+     * axis, if an x-axis is concerned the size is the height.
+     *
+     * @param int $size The fixed size of the axis
+     * @since 0.3.0dev5
+     */
+    function setFixedSize($size)
+    {
+        $this->_fixedSize = $size;
+    }
+
+    /**
      * Preprocessor for values, ie for using logarithmic axis
      *
      * @param double $value The value to preprocess
@@ -831,6 +852,10 @@ require_once 'Image/Graph/Plotarea/Element.php';
      */
     function _size()
     {
+        if ($this->_fixedSize !== false) {
+            return $this->_fixedSize;
+        }
+         
         krsort($this->_labelOptions);
 
         $totalMaxSize = 0;
