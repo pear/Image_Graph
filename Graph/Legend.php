@@ -233,15 +233,15 @@ class Image_Graph_Legend extends Image_Graph_Layout
             }
 
             if (($this->_alignment & IMAGE_GRAPH_ALIGN_BOTTOM) != 0) {
-                $y = $this->_parent->_fillBottom() - $h;
+                $y = $this->_parent->_fillBottom() - $h - $this->_padding;
             } else {
-                $y = $this->_parent->_fillTop();
+                $y = $this->_parent->_fillTop() + $this->_padding;
             }
 
             if (($this->_alignment & IMAGE_GRAPH_ALIGN_LEFT) != 0) {
-                $x = $this->_parent->_fillLeft();
+                $x = $this->_parent->_fillLeft() + $this->_padding;
             } else {
-                $x = $this->_parent->_fillRight() - $w;
+                $x = $this->_parent->_fillRight() - $w - $this->_padding;
             }
 
             $this->_setCoords($x, $y, $x + $w, $y + $h);
