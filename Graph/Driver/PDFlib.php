@@ -338,6 +338,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
         if ($addPage) {
             pdf_begin_page($this->_pdf, $this->_pageWidth, $this->_pageHeight);
         }
+        $this->_reset();
     }
 
     /**
@@ -401,6 +402,12 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
         if (($lineStyle == 'transparent') || ($lineStyle === false)) {
             return false;
         }
+        
+        if (is_array($lineStyle)) {
+            // TODO Check if it is possible to configure linestyle in PDF
+            reset($lineStyle);
+            $lineStyle = current($lineStyle);
+        } 
 
         $color = $this->_color($lineStyle);
 
@@ -855,14 +862,16 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
      *   possible)
      */
     function overlayImage($x, $y, $filename, $width = false, $height = false, $alignment = false)
-    {
+    {       
+        // TODO Something seems to be wrong with Y-alignment 
+        
         if (substr($filename, -4) == '.png') {
             $type = 'png';
         } elseif (substr($filename, -4) == '.jpg') {
             $type = 'jpeg';
         }
 
-        $image = pdf_load_image($this->_pdf, $type, $filename, '');
+        $image = pdf_load_image($this->_pdf, $type, realpath($filename), '');
         $width_ = pdf_get_value($this->_pdf, 'imagewidth', $image);
         $height_ = pdf_get_value($this->_pdf, 'imageheight', $image);
 

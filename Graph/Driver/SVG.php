@@ -89,6 +89,7 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
     function &Image_Graph_Driver_SVG($param)
     {
         parent::Image_Graph_Driver($param);
+        $this->_reset();        
     }
 
     /**
@@ -491,6 +492,9 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
      */
     function pieSlice($x, $y, $rx, $ry, $v1, $v2, $fillColor = false, $lineColor = false)
     {
+        
+        // TODO Pieslices with v2-v1 < 90 "curl" the wrong way
+        
         $style = $this->_getLineStyle($lineColor) . $this->_getFillStyle($fillColor);
         if ($style != '') {
             $x1 = ($x + $rx * cos(deg2rad(min($v1, $v2) % 360)));

@@ -94,9 +94,20 @@ class Image_Graph extends Image_Graph_Element
     /**
      * Image_Graph [Constructor].
      *
-     * If passing the 3 parameters they are defined as below, and a 'gd'
-     * driver is created by default. Otherwise use a single parameter either as
-     * an associated array or passing the driver along to the constructor:
+     * If passing the 3 parameters they are defined as follows:'
+     * 
+     * Fx.:
+     * 
+     * $Graph =& new Image_Graph(400, 300);
+     * 
+     * or using the factory method:
+     * 
+     * $Graph =& Image_Graph::factory('graph', array(400, 300));
+     * 
+     * This causes a 'png' driver to be created by default. 
+     * 
+     * Otherwise use a single parameter either as an associated array or passing
+     * the driver along to the constructor:
      *
      * 1) Create a new driver with the following parameters:
      *
@@ -106,7 +117,15 @@ class Image_Graph extends Image_Graph_Element
      * 'width' - The width of the graph
      *
      * 'height' - The height of the graph
-     *
+     * 
+     * An example of this usage:
+     * 
+     * $Graph =& Image_Graph::factory('graph', arrray(array('width' => 400,
+     * 'height' => 300, 'driver' => 'jpg')));
+     * 
+     * NB! In thïs case remember the "double" array (see {@link Image_Graph::
+     * factory()})
+     * 
      * 2) Use the driver specified, pass a valid Image_Graph_Driver as
      * parameter. Remember to pass by reference, i. e. &amp;$driver, fx.:
      *

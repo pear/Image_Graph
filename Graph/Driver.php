@@ -110,10 +110,17 @@ class Image_Graph_Driver
      * @var array
      * @access private
      */
-    var $_font = array('font' => 1, 'color' => 'black');
+    var $_font = array();
 
     /**
-     * Create the PDF driver.
+     * The default font
+     * @var array
+     * @access private
+     */
+    var $_defaultFont = array('file' => 'Courier', 'color' => 'black', 'size' => 9);
+
+    /**
+     * Create the driver.
      *
      * Parameters available:
      *
@@ -144,7 +151,7 @@ class Image_Graph_Driver
 
         if (isset($param['height'])) {
             $this->_height = $param['height'];
-        }
+        }        
     }
 
     /**
@@ -271,11 +278,31 @@ class Image_Graph_Driver
      *
      * 'angle' = the angle with which to write the text
      *
-     * @param array $font The font options.
+     * @param array $fontOptions The font options.
      */
     function setFont($fontOptions)
     {
         $this->_font = $fontOptions;
+    }
+
+    /**
+     * Sets the default font options.
+     *
+     * The $font array may have the following entries:
+     *
+     * 'ttf' = the .ttf file (either the basename, filename or full path)
+     * If 'ttf' is specified, then the following can be specified
+     *
+     * 'size' = size in pixels
+     *
+     * 'angle' = the angle with which to write the text
+     *
+     * @param array $fontOptions The font options.
+     */
+    function setDefaultFont($fontOptions)
+    {
+        $this->setFont($fontOptions);
+        $this->_defaultFont = $this->_font;
     }
 
     /**
@@ -291,9 +318,8 @@ class Image_Graph_Driver
         $this->_fillStyle = false;
         $this->_thickness = 1;
         $this->_polygon = array();
-        //$this->_font = array('font' => 1, 'color' => 'black');
+        $this->_font = $this->_defaultFont;
     }
-
 
     /**
      * Draw a line
@@ -513,6 +539,12 @@ class Image_Graph_Driver
         $driver = strtoupper($driver);
         if (($driver == 'PNG') || ($driver == 'GD')) {
             $driver = 'GD_PNG';
+        }
+        if ($driver == 'GIF') {
+            $driver = 'GD_GIF';
+        }
+        if ($driver == 'WBMP') {
+            $driver = 'GD_WBMP';
         }
         if (($driver == 'JPG') || ($driver == 'JPEG')) {
             $driver = 'GD_JPG';

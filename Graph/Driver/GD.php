@@ -1199,6 +1199,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
             ImageSetThickness($this->_canvas, 1);
         }
         parent::_reset();
+        $this->_font = array('font' => 1, 'color' => 'black');
     }
 
     /**

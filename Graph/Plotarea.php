@@ -231,8 +231,10 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
                 break;
 
             }
-            $element->_setMinimum(0);
-            $element->_setMaximum(1);
+            if ($element->_getMinimum() == $element->_getMaximum()) {
+                $element->_setMinimum(0);
+                $element->_setMaximum(1);
+            }
         }
         return $element;
     }

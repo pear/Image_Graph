@@ -233,6 +233,26 @@ class Image_Graph_Dataset
     }
 
     /**
+     * The first point
+     *
+     * @return array The last point
+     */
+    function first()
+    {
+        return array('X' => $this->minimumX(), 'Y' => $this->minimumY());
+    }
+
+    /**
+     * The last point
+     *
+     * @return array The first point
+     */
+    function last()
+    {
+        return array('X' => $this->maximumX(), 'Y' => $this->maximumY());
+    }
+    
+    /**
      * The minimum X value
      *
      * @param var $value The minimum X value

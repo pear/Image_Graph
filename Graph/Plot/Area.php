@@ -93,21 +93,17 @@ class Image_Graph_Plot_Area extends Image_Graph_Plot
             $key = key($this->_dataset);
             $dataset = & $this->_dataset[$key];
 
-            $dataset->_reset();
-            $first = true;
-            while ($point = $dataset->_next()) {
-                if ($first) {
-                    $point['Y'] = '#min_pos#';
-                    $base[] = $this->_pointY($point);
-                    $base[] = $this->_pointX($point);
-                    $first = false;
-                }
-                $lastpoint = $point;
-            }
-
-            $lastpoint['Y'] = '#min_pos#';
-            $base[] = $this->_pointY($lastpoint);
-            $base[] = $this->_pointX($lastpoint);
+            $first = $dataset->first();
+            $point = array ('X' => $first['X'], 'Y' => '#min_pos#');
+            $base[] = $this->_pointY($point);
+            $first = $this->_pointX($point);
+            $base[] = $first;
+    
+            $last = $dataset->last();
+            $point = array ('X' => $last['X'], 'Y' => '#min_pos#');
+            $base[] = $this->_pointY($point);
+            $base[] = $this->_pointX($point);
+                    
             $current = array();
         }
 

@@ -73,6 +73,7 @@ class Image_Graph_Driver_PDF extends Image_Graph_Driver
         parent::Image_Graph_Driver($param);
 
         $this->_pdf =& File_PDF::factory();
+        $this->_reset();
         $this->_pdf->open();
         $this->_pdf->addPage();
     }

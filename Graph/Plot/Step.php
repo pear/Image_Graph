@@ -117,12 +117,14 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
         $key = key($this->_dataset);
         $dataset = & $this->_dataset[$key];
 
-        $point = array ('X' => $dataset->minimumX(), 'Y' => '#min_pos#');
+        $first = $dataset->first();
+        $point = array ('X' => $first['X'], 'Y' => '#min_pos#');
         $base[] = $this->_pointY($point);
         $first = $this->_pointX($point) - $width;
         $base[] = $first;
 
-        $point = array ('X' => $dataset->maximumX(), 'Y' => '#min_pos#');
+        $last = $dataset->last();
+        $point = array ('X' => $last['X'], 'Y' => '#min_pos#');
         $base[] = $this->_pointY($point);
         $base[] = $this->_pointX($point) + $width;
 

@@ -98,6 +98,27 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
     }
 
     /**
+     * The first point
+     *
+     * @return array The last point
+     */
+    function first()
+    {
+        reset($this->_data);
+        return current($this->_data);
+    }
+
+    /**
+     * The last point
+     *
+     * @return array The first point
+     */
+    function last()
+    {
+        return end($this->_data);
+    }
+
+    /**
      * Gets a X point from the dataset
      *
      * @param var $x The variable to return an X value from, fx in a

@@ -51,14 +51,32 @@ require_once 'Image/Graph/Driver/GD.php';
  */
 class Image_Graph_Driver_GD_JPG extends Image_Graph_Driver_GD
 {
+    
+    /**
+     * The JPEG quality
+     * @var int
+     * @access private
+     */
+    var $_quality = 75;
+    
     /**
      * Create the JPEG driver
+     * 
+     * Additional parameters other than those available for common {@link
+     * Image_Graph_Driver_GD} class are:
+     * 
+     * 'quality' The JPEG quality in as a percentage value from 0 (lowest
+     * quality, smallest file) to 100 (highest quality, biggest file)
      *
      * @param array $param Parameter array
      */
     function &Image_Graph_Driver_GD_JPG($param)
     {
         parent::Image_Graph_Driver_GD($param);
+        
+        if (isset($param['quality'])) {
+            $this->_quality = max(0, min(100, $param['quality']));
+        } 
 
         $this->rectangle(
             $this->_left,
@@ -82,9 +100,9 @@ class Image_Graph_Driver_GD_JPG extends Image_Graph_Driver_GD
         if (($param === false) || (!isset($param['filename']))) {
             header('Content-type: image/jpg');
             header('Content-Disposition: inline; filename = \"'. basename($_SERVER['PHP_SELF'], '.php') . '.jpg\"');
-            ImageJPEG($this->_canvas);
+            ImageJPEG($this->_canvas, '', $this->_quality);
         } elseif (isset($param['filename'])) {
-            ImageJPEG($this->_canvas, $param['filename']);
+            ImageJPEG($this->_canvas, $param['filename'], $this->_quality);
         }
     }
 
