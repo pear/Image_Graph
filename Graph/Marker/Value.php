@@ -66,8 +66,9 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
     /**
      * Create a value marker, ie a box containing the value of the 'pointing
      * data'
-     * @param int $useValue Defines which value to use from the dataset, ie the
-     * X or Y value
+     *
+     * @param int $useValue Defines which value to use from the dataset, i.e. the
+     *   X or Y value
      */
     function &Image_Graph_Marker_Value($useValue = IMAGE_GRAPH_VALUE_X)
     {
@@ -80,6 +81,7 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
 
     /**
      * Sets the background fill style of the element	 
+     *
      * @param Image_Graph_Fill $background The background 
      * @see Image_Graph_Fill
      */
@@ -90,6 +92,7 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
 
     /**
      * Sets the background color of the element    
+     *
      * @param mixed $color The color
      */
     function setBackgroundColor($color)
@@ -99,6 +102,7 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
 
     /**
      * Sets a data preprocessor for formatting the values
+     *
      * @param DataPreprocessor $dataPreprocessor The data preprocessor
      * @return Image_Graph_DataPreprocessor The data preprocessor
      */
@@ -110,10 +114,11 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
 
     /**
      * Get the value to display
+     *
      * @param array $values The values representing the data the marker 'points'
-     * to
+     *   to
      * @return string The display value, this is the pre-preprocessor value, to
-     * support for customized with multiple values. i.e show 'x = y' or '(x, y)'
+     *   support for customized with multiple values. i.e show 'x = y' or '(x, y)'
      * @access private
      */
     function _getDisplayValue($values)
@@ -156,12 +161,13 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
 
     /**
      * Draw the marker on the canvas
+     *
      * @param int $x The X (horizontal) position (in pixels) of the marker on
-     * the canvas
+     *   the canvas
      * @param int $y The Y (vertical) position (in pixels) of the marker on the
-     * canvas
+     *   canvas
      * @param array $values The values representing the data the marker 'points'
-     * to
+     *   to
      * @access private
      */
     function _drawMarker($x, $y, $values = false)

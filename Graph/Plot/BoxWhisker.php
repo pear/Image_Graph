@@ -53,6 +53,7 @@ class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
     
     /**
      * Draws a box & whisker
+     *
      * @param int $x The x position
      * @param int $w The width of the box
      * @param int $r The radius of the circle markers
@@ -104,6 +105,7 @@ class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
 
     /**
      * Perform the actual drawing on the legend.
+     *
      * @param int $x0 The top-left x-coordinate
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
@@ -121,6 +123,7 @@ class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
 
     /**
      * Output the plot
+     *
      * @access private
      */
     function _done()

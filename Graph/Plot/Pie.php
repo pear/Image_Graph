@@ -65,6 +65,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
 
     /**
      * Perform the actual drawing on the legend.
+     *
      * @param int $x0 The top-left x-coordinate
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
@@ -79,6 +80,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
     
     /**
      * Calculate marker point data
+     *
      * @param Array Point The point to calculate data for
      * @param Array NextPoint The next point
      * @param Array PrevPoint The previous point
@@ -127,6 +129,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
 
     /**
      * Draws markers on the canvas
+     *
      * @access private
      */
     function _drawMarker()
@@ -191,6 +194,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
     
     /**
      * Explodes a piece of this pie chart
+     *
      * @param int $explode Radius to explode with (or an array)
      * @param string $x The 'x' value to explode or omitted 
      */
@@ -204,6 +208,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
 
     /**
      * Output the plot
+     *
      * @access private
      */
     function _done()
@@ -279,10 +284,11 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
     }
 
     /**
-      * Draw a sample for use with legend
-      * @param array $param The parameters for the legend
-      * @access private
-      */
+     * Draw a sample for use with legend
+     *
+     * @param array $param The parameters for the legend
+     * @access private
+     */
     function _legendSample(&$param)
     {
        

@@ -89,8 +89,9 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
 
     /**
      * PlotareaMap [Constructor]
+     *
      * @param string $map The name of the map, i.e. the [name].png and  [name].
-     * txt files located in the Images/maps folder
+     *   txt files located in the Images/maps folder
      */
     function &Image_Graph_Plotarea_Map($map)
     {
@@ -113,6 +114,7 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
 
     /**
      * Left boundary of the background fill area 
+     *
      * @return int Leftmost position on the canvas
      * @access private
      */
@@ -123,6 +125,7 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
 
     /**
      * Top boundary of the background fill area 
+     *
      * @return int Topmost position on the canvas
      * @access private
      */
@@ -133,6 +136,7 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
 
     /**
      * Right boundary of the background fill area 
+     *
      * @return int Rightmost position on the canvas
      * @access private
      */
@@ -143,6 +147,7 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
 
     /**
      * Bottom boundary of the background fill area 
+     *
      * @return int Bottommost position on the canvas
      * @access private
      */
@@ -153,6 +158,7 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
 
     /**
      * Set the extrema of the axis   
+     *
      * @param Image_Graph_Plot $plot The plot that 'hold' the values 
      * @access private
      */
@@ -162,7 +168,8 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
     
     /**
      * Get the X pixel position represented by a value
-     * @param double Value the value to get the pixel-point for	 
+     *
+     * @param double $value The value to get the pixel-point for	 
      * @return double The pixel position along the axis
      * @access private
      */
@@ -174,7 +181,8 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
 
     /**
      * Get the Y pixel position represented by a value
-     * @param double Value the value to get the pixel-point for	 
+     *
+     * @param double $value The value to get the pixel-point for	 
      * @return double The pixel position along the axis
      * @access private
      */
@@ -193,6 +201,7 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
     
     /**
      * Add a point to the maps
+     *
      * @param int $latitude The latitude of the point
      * @param int $longiude The longitude of the point
      * @param string $name The name of the plot
@@ -206,6 +215,7 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
     
     /**
      * Add a point to the maps
+     *
      * @param int $x The latitude of the point
      * @param int $y The longitude of the point
      * @param string $name The name of the plot
@@ -217,6 +227,7 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
     
     /**
      * Update coordinates
+     *
      * @access private
      */
     function _updateCoords()
@@ -257,6 +268,7 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
     
     /**
      * Output the plotarea to the canvas
+     *
      * @access private
      */
     function _done()

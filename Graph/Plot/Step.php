@@ -51,6 +51,7 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
 
     /**
      * Perform the actual drawing on the legend.
+     *
      * @param int $x0 The top-left x-coordinate
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
@@ -77,7 +78,9 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
     
     /**
      * PlotType [Constructor]
+     *
      * A 'normal' step chart is 'stacked'     
+     *
      * @param Dataset $dataset The data set (value containter) to plot
      * @param string $multiType The type of the plot
      * @param string $title The title of the plot (used for legends,
@@ -94,6 +97,7 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
         
     /**
      * Output the plot
+     *
      * @access private
      */
     function _done()

@@ -51,6 +51,7 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
 
     /**
      * Gets the fill style of the element    
+     *
      * @return int A GD filestyle representing the fill style 
      * @see Image_Graph_Fill
      * @access private
@@ -62,6 +63,7 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
 
     /**
      * Perform the actual drawing on the legend.
+     *
      * @param int $x0 The top-left x-coordinate
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
@@ -83,6 +85,7 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
     
     /**
      * Output the plot
+     *
      * @access private
      */
     function _done()

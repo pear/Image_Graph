@@ -65,6 +65,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
 
     /**
      * Get the width of the 'real' plotarea	 
+     *
      * @return int The width of the 'real' plotarea, ie not including space occupied by padding and axis 
      * @access private
      */
@@ -75,6 +76,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
 
     /**
      * Get the height of the 'real' plotarea	 
+     *
      * @return int The height of the 'real' plotarea, ie not including space occupied by padding and axis 
      * @access private
      */
@@ -85,6 +87,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
 
     /**
      * Left boundary of the background fill area 
+     *
      * @return int Leftmost position on the canvas
      * @access private
      */
@@ -95,6 +98,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
 
     /**
      * Top boundary of the background fill area 
+     *
      * @return int Topmost position on the canvas
      * @access private
      */
@@ -105,6 +109,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
 
     /**
      * Right boundary of the background fill area 
+     *
      * @return int Rightmost position on the canvas
      * @access private
      */
@@ -115,6 +120,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
 
     /**
      * Bottom boundary of the background fill area 
+     *
      * @return int Bottommost position on the canvas
      * @access private
      */
@@ -125,7 +131,8 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
 
     /**
      * Get the X pixel position represented by a value
-     * @param double Value the value to get the pixel-point for	 
+     *
+     * @param double $value The value to get the pixel-point for	 
      * @return double The pixel position along the axis
      * @access private
      */
@@ -149,7 +156,8 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
 
     /**
      * Get the Y pixel position represented by a value
-     * @param double Value the value to get the pixel-point for	 
+     *
+     * @param double $value The value to get the pixel-point for	 
      * @return double The pixel position along the axis
      * @access private
      */
@@ -174,6 +182,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
 
     /**
      * Update coordinates
+     *
      * @access private
      */
     function _updateCoords()

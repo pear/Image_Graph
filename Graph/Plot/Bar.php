@@ -65,6 +65,7 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
     
     /**
      * Perform the actual drawing on the legend.
+     *
      * @param int $x0 The top-left x-coordinate
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
@@ -79,6 +80,7 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
     
     /**
      * Set the spacing between 2 neighbouring bars
+     *
      * @param int $space The number of pixels between 2 bars, should be a
      *   multipla of 2 (ie an even number)
      */
@@ -116,6 +118,7 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
 
     /**
      * Output the plot
+     *
      * @access private
      */
     function _done()

@@ -55,6 +55,7 @@ class Image_Graph_Plot_Smoothed_Radar extends Image_Graph_Plot_Smoothed_Bezier
     
     /**
      * Output the plot
+     *
      * @access private
      */
     function _done()

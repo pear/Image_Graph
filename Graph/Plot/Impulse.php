@@ -51,6 +51,7 @@ class Image_Graph_Plot_Impulse extends Image_Graph_Plot
 
     /**
      * Perform the actual drawing on the legend.
+     *
      * @param int $x0 The top-left x-coordinate
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
@@ -65,6 +66,7 @@ class Image_Graph_Plot_Impulse extends Image_Graph_Plot
 
     /**
      * Output the plot
+     *
      * @access private
      */
     function _done()

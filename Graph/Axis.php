@@ -242,6 +242,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     
     /**
      * Shows a label for the the specified values.
+     *
      * Allowed values are  combinations of:
      * <ul>
      * <li>IMAGE_GRAPH_LABEL_MINIMUM

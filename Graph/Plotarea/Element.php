@@ -50,6 +50,7 @@ class Image_Graph_Plotarea_Element extends Image_Graph_Element
 
     /**
      * Get the X pixel position represented by a value
+     *
      * @param double $point the value to get the pixel-point for  
      * @return double The pixel position along the axis
      * @access private
@@ -61,6 +62,7 @@ class Image_Graph_Plotarea_Element extends Image_Graph_Element
 
     /**
      * Get the Y pixel position represented by a value
+     *
      * @param double $point the value to get the pixel-point for  
      * @return double The pixel position along the axis
      * @access private
@@ -72,6 +74,7 @@ class Image_Graph_Plotarea_Element extends Image_Graph_Element
 
     /**
      * Get the X and Y pixel position represented by a value
+     *
      * @param array $point the values to get the pixel-point for  
      * @return array The (x, y) pixel position along the axis
      * @access private

@@ -57,6 +57,7 @@ class Image_Graph_Plot_Smoothed_Line extends Image_Graph_Plot_Smoothed_Bezier
 
     /**
      * Gets the fill style of the element         
+     *
      * @return int A GD filestyle representing the fill style 
      * @see Image_Graph_Fill
      * @access private
@@ -68,6 +69,7 @@ class Image_Graph_Plot_Smoothed_Line extends Image_Graph_Plot_Smoothed_Bezier
 
     /**
      * Perform the actual drawing on the legend.
+     *
      * @param int $x0 The top-left x-coordinate
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
@@ -82,6 +84,7 @@ class Image_Graph_Plot_Smoothed_Line extends Image_Graph_Plot_Smoothed_Bezier
     
     /**
      * Output the Bezier smoothed plot as an Line Chart
+     *
      * @access private
      */
     function _done()

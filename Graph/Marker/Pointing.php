@@ -81,10 +81,11 @@ class Image_Graph_Marker_Pointing extends Image_Graph_Marker
 
     /**
      * Create an pointing marker, ie a pin on a board
+     *
      * @param int $deltaX The the X offset from the real 'data' point
      * @param int $deltaY The the Y offset from the real 'data' point
      * @param Marker $markerEnd The ending marker that represents 'the head of
-     * the pin'
+     *   the pin'
      */
     function &Image_Graph_Marker_Pointing($deltaX, $deltaY, & $markerEnd)
     {
@@ -97,8 +98,9 @@ class Image_Graph_Marker_Pointing extends Image_Graph_Marker
 
     /**
      * Sets the starting marker, ie the tip of the pin on a board
+     *
      * @param Marker $markerStart The starting marker that represents 'the tip
-     * of the pin'
+     *   of the pin'
      */
     function setMarkerStart(& $markerStart)
     {
@@ -108,12 +110,13 @@ class Image_Graph_Marker_Pointing extends Image_Graph_Marker
 
     /**
      * Draw the marker on the canvas
+     *
      * @param int $x The X (horizontal) position (in pixels) of the marker on
-     * the canvas
+     *   the canvas
      * @param int $y The Y (vertical) position (in pixels) of the marker on the
-     * canvas
+     *   canvas
      * @param array $values The values representing the data the marker 'points'
-     * to
+     *   to
      * @access private
      */
     function _drawMarker($x, $y, $values = false)

@@ -75,10 +75,12 @@ class Image_Graph_Plot_Smoothed_Bezier extends Image_Graph_Plot
 
     /**
      * Image_Graph_Plot_Smoothed_Bezier [Constructor]
+     *
      * Only 'normal' multitype supported     
+     *
      * @param Dataset $dataset The data set (value containter) to plot
      * @param string $title The title of the plot (used for legends, {@link
-     * Image_Graph_Legend})
+     *   Image_Graph_Legend})
      */
     function &Image_Graph_Plot_Smoothed_Bezier(& $dataset, $title = '')
     {
@@ -87,6 +89,7 @@ class Image_Graph_Plot_Smoothed_Bezier extends Image_Graph_Plot
 
     /**
      * Return the minimum Y point
+     *
      * @return double The minumum Y point
      * @access private 
      */
@@ -97,6 +100,7 @@ class Image_Graph_Plot_Smoothed_Bezier extends Image_Graph_Plot
 
     /**
      * Return the maximum Y point
+     *
      * @return double The maximum Y point
      * @access private 
      */
@@ -107,6 +111,7 @@ class Image_Graph_Plot_Smoothed_Bezier extends Image_Graph_Plot
 
     /**
      * Return the average of 2 points
+     *
      * @param double P1 1st point
      * @param double P2 2nd point
      * @return double The average of P1 and P2
@@ -119,10 +124,11 @@ class Image_Graph_Plot_Smoothed_Bezier extends Image_Graph_Plot
 
     /**
      * Mirrors P1 in P2 by a amount of Factor
+     *
      * @param double P1 1st point, point to mirror
      * @param double P2 2nd point, mirror point
      * @param double Factor Mirror factor, 0 returns P2, 1 returns a pure
-     * mirror, ie P1 on the exact other side of P2
+     *   mirror, ie P1 on the exact other side of P2
      * @return double P1 mirrored in P2 by Factor 
      * @access private 
      */
@@ -134,19 +140,20 @@ class Image_Graph_Plot_Smoothed_Bezier extends Image_Graph_Plot
     /**
      * Calculates a Bezier control point, this function must be called for BOTH
      * X and Y coordinates (will it work for 3D coordinates!?)
-     * @param double P1 1st point
-     * @param double P2 Point to
-     * @param double Factor Mirror factor, 0 returns P2, 1 returns a pure
-     * mirror, ie P1 on the exact other side of P2
+     *
+     * @param double $p1 1st point
+     * @param double $p2 Point to
+     * @param double $factor Mirror factor, 0 returns P2, 1 returns a pure
+     *   mirror, i.e. P1 on the exact other side of P2
      * @return double P1 mirrored in P2 by Factor 
      * @access private 
      */
-    function _controlPoint($p1, $p2, $p3)
+    function _controlPoint($p1, $p2, $factor)
     {
         $sa = $this->_mirror($p1, $p2, $this->_smoothFactor);
         $sb = $this->_mid($p2, $sa);
 
-        $m = $this->_mid($p2, $p3);
+        $m = $this->_mid($p2, $factor);
 
         $pC = $this->_mid($sb, $m);
 
@@ -156,13 +163,14 @@ class Image_Graph_Plot_Smoothed_Bezier extends Image_Graph_Plot
     /**
      * Calculates a Bezier point, this function must be called for BOTH X and Y
      * coordinates (will it work for 3D coordinates!?)
+     *
      * @param double t A position between P2 and P3, value between 0 and 1
      * @param double P1 Point to use for calculating control points
      * @param double P2 Point 1 to calculate bezier curve between
      * @param double P3 Point 2 to calculate bezier curve between
      * @param double P4 Point to use for calculating control points
      * @return double The bezier value of the point t between P2 and P3 using P1
-     * and P4 to calculate control points
+     *   and P4 to calculate control points
      * @access private 
      */
     function _bezier($t, $p1, $p2, $p3, $p4)
@@ -175,8 +183,9 @@ class Image_Graph_Plot_Smoothed_Bezier extends Image_Graph_Plot
 
     /**
      * Calculates all Bezier points, for the curve
+     *
      * @param bool IncludeEdges Specifies if the edges should be calculated as
-     * well, default: false
+     *   well, default: false
      * @return array Array of Bezier points 
      * @access private 
      */
@@ -270,8 +279,9 @@ class Image_Graph_Plot_Smoothed_Bezier extends Image_Graph_Plot
 
     /**
      * Calculates all Bezier points, for the curve
+     *
      * @param bool IncludeEdges Specifies if the edges should be calculated as
-     * well, default: false
+     *   well, default: false
      * @return array Array of Bezier points 
      * @access private 
      */
@@ -316,7 +326,9 @@ class Image_Graph_Plot_Smoothed_Bezier extends Image_Graph_Plot
     
     /**
      * Create legend sample data for the driver.
+     *
      * Common for all smoothed plots
+     *
      * @access private
      */
     function _addSamplePoints($x0, $y0, $x1, $y1)

@@ -86,6 +86,7 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
 
     /**
      * Output the plot
+     *
      * @access private
      */
     function _done()
