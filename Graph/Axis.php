@@ -423,6 +423,10 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      *
      * This is used as an alternative (maybe better) method, that using layout's
      * for axis-title generation.
+     * 
+     * To use the current propagated font, but just set it vertically, simply
+     * pass 'vertical' as second parameter for vertical alignment down-to-up or
+     * 'vertical2' for up-to-down alignment.
      *
      * @param string $title The title of this axis
      * @param Image_Graph_Font $font The font used for the title
@@ -431,7 +435,13 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     function setTitle($title, $font = false)
     {
         $this->_title = $title;
-        $this->_titleFont =& $font;
+        if ($font === 'vertical') {
+            $this->_titleFont = array('vertical' => true, 'angle' => 90);
+        } elseif ($font === 'vertical2') {
+            $this->_titleFont = array('vertical' => true, 'angle' => 270);
+        } else {
+            $this->_titleFont =& $font;
+        }
     }
 
     /**
@@ -544,15 +554,31 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
         if (($value === 'min') || ($value < $this->_getMinimum())) {
             if ($this->_type == IMAGE_GRAPH_AXIS_X) {
-                return $this->_left;
+                if ($this->_invert) {
+                    return $this->_right;
+                } else {
+                    return $this->_left;
+                }
             } else {
-                return $this->_bottom;
+                if ($this->_invert) {
+                    return $this->_top;
+                } else {
+                    return $this->_bottom;
+                }
             }
         } elseif (($value === 'max') || ($value > $this->_getMaximum())) {
             if ($this->_type == IMAGE_GRAPH_AXIS_X) {
-                return $this->_right;
+                if ($this->_invert) {
+                    return $this->_left;
+                } else {
+                    return $this->_right;
+                }
             } else {
-                return $this->_top;
+                if ($this->_invert) {
+                    return $this->_bottom;
+                } else {
+                    return $this->_top;
+                }
             }
         } 
         
