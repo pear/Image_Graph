@@ -137,8 +137,13 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
             $base = floor($value);
             $frac = $value - $base;
             for ($i = 2; $i < 10; $i++) {
-                if ($frac <= (log10($i)-0.01)) {
-                    return pow(10, $base)*$i;
+                if ($frac <= (log10($i)-0.01)) {                    
+                    $label = pow(10, $base)*$i;
+                    if ($label > $this->_getMaximum()) {
+                        return false;
+                    } else {
+                        return $label;
+                    }
                 }
             }
             return pow(10, $base+1);
