@@ -5,6 +5,8 @@
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
+* @category images
+* @license  The PHP License, version 2.02
 */
 
     require_once("Image/Graph.php");
