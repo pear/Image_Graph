@@ -1,7 +1,7 @@
 *************************
  Image_Graph - Changelog
 *************************
-Version 0.x.y-state [2005-xxx-yy] - Jesper Veggerby <pear.nosey@veggerby.dk>
+Version 0.3.0-alpha [2005-Feb-25] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Added possibility to use arrays of the type $data[$id] = array('x' => $x, 'y' => $y) for easy data addition to a dataset
     * Added use of 'null' y-values in line plots (normal and smoothed) causing a break in the line (instead of dropping to zero)
     * Added possibility to make one legend use multiple plotareas
