@@ -144,6 +144,14 @@ class Image_Graph_Base
 class Image_Graph_Axis extends Image_Graph_Base
 {
     /**
+    * Spacer
+    *
+    * @var    array           (array of 4 ints) array with keys "top, bottom, left, right"; describes extra-space to add
+    * @access private
+    */
+    var $_spacer = array("top" => 2, "bottom" => 2, "left" => 2, "right" => 2);
+
+    /**
     * Title for axis
     *
     * @var    object Image_Graph_Title
@@ -741,7 +749,7 @@ class Image_Graph_Title extends Image_Graph_Base
     * @var    array           (array of 4 ints) array with keys "top, bottom, left, right"; describes extra-space to add beside this title
     * @access private
     */
-    var $_spacer = array("top" => 0, "bottom" => 0, "left" => 0, "right" => 0);
+    var $_spacer = array("top" => 2, "bottom" => 2, "left" => 2, "right" => 2);
 
     /**
     * Constructor for the class
