@@ -9,6 +9,7 @@ Version 0.x.y-state [2005-xxx-yy] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Added axis padding (padding inside the plotarea)
     * Added Image_Graph_Axis::setFixedSize() to allow for alignment of axis on different plotareas when in a layout
     * Added possibility to use padding with overlayed legends to make legend _not_ display fx. on-top of y-axis
+    * Added/improved support for multi line text using GD drivers
     * Implemented simple shadows (and removed shadow images from distribution)
     * Fixed bug #3346 "double as data"
     * Fixed a problem with normal multi-data bar charts not displaying expected bar width

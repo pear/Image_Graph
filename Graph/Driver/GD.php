@@ -999,20 +999,21 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
      * @return int The height of the text
      */
     function textHeight($text)
-    {
+    {       
         if (isset($this->_font['ttf_file'])) {
             $angle = 0;
             if (isset($this->_font['angle'])) {
                 $angle = $this->_font['angle'];
             }
-            
-            if ($angle == 0) {
+
+            $linebreaks = substr_count($text, "\n");            
+            if (($angle == 0) && ($linebreaks == 0)) {
                 /*
                  * if the angle is 0 simply return the size, due to different
                  * heights for example for x-axis labels, making the labels
                  * _not_ appear as written on the same baseline
-                 */ 
-                return $this->_font['size'] + 2;
+                 */
+                return $this->_font['size'] + 2;               
             }
             
             $bounds = ImageTTFBBox(
@@ -1023,7 +1024,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
             );
 
             $y0 = min($bounds[1], $bounds[3], $bounds[5], $bounds[7]);
-            $y1 = max($bounds[1], $bounds[3], $bounds[5], $bounds[7]);
+            $y1 = max($bounds[1], $bounds[3], $bounds[5], $bounds[7]);;
             return abs($y0 - $y1);
         } else {
             if ((isset($this->_font['vertical'])) && ($this->_font['vertical'])) {
@@ -1045,67 +1046,80 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
      */
     function write($x, $y, $text, $alignment, $color = false)
     {
-        $x = $this->_getX($x);
-        $y = $this->_getY($y);
+        // TODO Make a better method for "baseline" adjustment
+        
+        $text = str_replace("\r", '', $text);
+        $lines = explode("\n", $text);
 
-        $textWidth = $this->textWidth($text);
-        $textHeight = $this->textHeight($text);
-
-        if ($alignment & IMAGE_GRAPH_ALIGN_RIGHT) {
-            $x = $x - $textWidth;
-        } elseif ($alignment & IMAGE_GRAPH_ALIGN_CENTER_X) {
-            $x = $x - ($textWidth / 2);
-        }
-
-        if ($alignment & IMAGE_GRAPH_ALIGN_BOTTOM) {
-            $y = $y - $textHeight;
-        } elseif ($alignment & IMAGE_GRAPH_ALIGN_CENTER_Y) {
-            $y = $y - ($textHeight / 2);
-        }
-
-        if (($color === false) && (isset($this->_font['color']))) {
-            $color = $this->_font['color'];
-        }
-
-        if ($color != 'transparent') {
-            if (isset($this->_font['ttf_file'])) {
-                if (($this->_font['angle'] < 180) && ($this->_font['angle'] >= 0)) {
-                    $y += $textHeight;
-                }
-                if (($this->_font['angle'] >= 90) && ($this->_font['angle'] < 270)) {
-                    $x += $textWidth;
-                }
-
-                ImageTTFText(
-                    $this->_canvas,
-                    $this->_font['size'],
-                    $this->_font['angle'],
-                    $x,
-                    $y,
-                    $this->_color($color),
-                    $this->_font['ttf_file'],
-                    $text
-                );
-
-            } else {
-                if ((isset($this->_font['vertical'])) && ($this->_font['vertical'])) {
-                    ImageStringUp(
+        $x0 = $this->_getX($x);
+        $y0 = $this->_getY($y);
+        
+        foreach ($lines as $line) {                    
+    
+            $textWidth = $this->textWidth($line);
+            $textHeight = $this->textHeight($line);
+            
+            $x = $x0; 
+            $y = $y0;
+            
+            $y0 += $textHeight + 2;
+   
+            if ($alignment & IMAGE_GRAPH_ALIGN_RIGHT) {
+                $x = $x - $textWidth;
+            } elseif ($alignment & IMAGE_GRAPH_ALIGN_CENTER_X) {
+                $x = $x - ($textWidth / 2);
+            }
+    
+            if ($alignment & IMAGE_GRAPH_ALIGN_BOTTOM) {
+                $y = $y - $textHeight;
+            } elseif ($alignment & IMAGE_GRAPH_ALIGN_CENTER_Y) {
+                $y = $y - ($textHeight / 2);
+            }
+            
+            if (($color === false) && (isset($this->_font['color']))) {
+                $color = $this->_font['color'];
+            }
+    
+            if ($color != 'transparent') {
+                if (isset($this->_font['ttf_file'])) {
+                    if (($this->_font['angle'] < 180) && ($this->_font['angle'] >= 0)) {
+                        $y += $textHeight;
+                    }
+                    if (($this->_font['angle'] >= 90) && ($this->_font['angle'] < 270)) {
+                        $x += $textWidth;
+                    }
+    
+                    ImageTTFText(
                         $this->_canvas,
-                        $this->_font['font'],
-                        $x,
-                        $y + $this->textHeight($text),
-                        $text,
-                        $this->_color($color)
-                    );
-                } else {
-                    ImageString(
-                        $this->_canvas,
-                        $this->_font['font'],
+                        $this->_font['size'],
+                        $this->_font['angle'],
                         $x,
                         $y,
-                        $text,
-                        $this->_color($color)
+                        $this->_color($color),
+                        $this->_font['ttf_file'],
+                        $line
                     );
+    
+                } else {
+                    if ((isset($this->_font['vertical'])) && ($this->_font['vertical'])) {
+                        ImageStringUp(
+                            $this->_canvas,
+                            $this->_font['font'],
+                            $x,
+                            $y + $this->textHeight($line),
+                            $line,
+                            $this->_color($color)
+                        );
+                    } else {
+                        ImageString(
+                            $this->_canvas,
+                            $this->_font['font'],
+                            $x,
+                            $y,
+                            $line,
+                            $this->_color($color)
+                        );
+                    }
                 }
             }
         }
