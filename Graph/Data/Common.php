@@ -26,15 +26,6 @@ class Image_Graph_Data_Common
     var $_data = array();
 
     /**
-    * Datapoints to be drawn (array of x/y-pixel values); filled by Image_Graph_Diagram::_calculateDatapoints()
-    *
-    * @var array  datapoints to be drawn
-    * @see Image_Graph_Diagram::_calculateDatapoints()
-    * @access private
-    */
-    var $_datapoints = array();
-
-    /**
     * Attributes for drawing the data element (color, shading, ...)
     *
     * @var array  initially contains only a color-definition of black
@@ -43,7 +34,7 @@ class Image_Graph_Data_Common
     var $_attributes = array("color" => array(0, 0, 0), "axeId" => 0);
 
     /**
-    * graph object (of type Image_Graph_Diagram)
+    * graph object (of type Image_Graph)
     *
     * @var object
     * @access private
@@ -61,7 +52,7 @@ class Image_Graph_Data_Common
     /**
     * Constructor for the class
     *
-    * @param  object  graph object (of type Image_Graph_Diagram)
+    * @param  object  graph object (of type Image_Graph)
     * @param  array   numerical data to be drawn
     * @access public
     */
@@ -110,15 +101,18 @@ class Image_Graph_Data_Common
         if (is_object($this->_datamarker))
         {
             $graph = &$this->_graph;
+            $xAxe  = &$graph->axeX;
             $yAxe  = &$graph->{"axeY".$this->_attributes['axeId']};
-            $dataKeys  = array_keys($this->_data);
-            $numDatapoints = count($this->_datapoints);
+            $numData = count($this->_data);
     
-            for ($counter=0; $counter<$numDatapoints; $counter++) {
-                if (!is_null($this->_datapoints[$counter]) &&
-                    ($yAxe->_boundsEffective['min'] <= $this->_data[ $dataKeys[$counter] ]) && ($this->_data[ $dataKeys[$counter] ] <= $yAxe->_boundsEffective['max'])
+            for ($counter=0; $counter<$numData; $counter++) {
+                if (!is_null($this->_data[$counter]) &&
+                    ($yAxe->_boundsEffective['min'] <= $this->_data[$counter]) && ($this->_data[$counter] <= $yAxe->_boundsEffective['max'])
                    ) { // otherwise do not draw
-                    $this->_datamarker->drawGD($img, $this->_datapoints[$counter]);
+                    $this->_datamarker->drawGD($img, array($xAxe->valueToPixelAbsolute($counter),
+                                                           $yAxe->valueToPixelAbsolute($this->_data[$counter])
+                                                          )
+                                               );
                 }
             }
         }

@@ -237,13 +237,22 @@ class Image_Graph_Axe extends Image_Graph_Base
     var $_internalTempValues = array();
 
     /**
+    * graph object (of type Image_Graph)
+    *
+    * @var object
+    * @access private
+    */
+    var $_graph = null;
+
+    /**
     * Constructor for the class
     *
+    * @param  object  graph object (of type Image_Graph)
     * @access public
     */
-    function Image_Graph_Axe()
+    function &Image_Graph_Axe()
     {
-      $this->title = new Image_Graph_Title();
+        $this->title  = new Image_Graph_Title();
     }
 
     /**
@@ -384,6 +393,17 @@ class Image_Graph_Axe_X extends Image_Graph_Axe
     var $_labels = array();
 
     /**
+    * Constructor for the class
+    *
+    * @param  object  graph object (of type Image_Graph)
+    * @access public
+    */
+    function Image_Graph_Axe_X()
+    {
+        parent::Image_Graph_Axe();
+    }
+
+    /**
     * Set type of axis
     *
     * @param  mixed   only IMAGE_GRAPH_AXETYPE_TEXT allowed
@@ -436,6 +456,30 @@ class Image_Graph_Axe_X extends Image_Graph_Axe
             }
         }
     }
+
+    /**
+    * Calculate relative position (in pixel-coordinates) for a certain value on the axis
+    *
+    * @param  int/float   data value
+    * @access public
+    */
+    function valueToPixelRelative($value)
+    {
+        // currently only implemented for text scale
+        $pixelPerColumn = (float) ($this->_graph->_drawingareaSize[0]-1) / ($this->_bounds['max']-1 + ($this->_graph->_addExtraSpace));
+        return (round(($value + ($this->_graph->_addExtraSpace*0.5)) * $pixelPerColumn));
+    }
+
+    /**
+    * Calculate absolute position (in pixel-coordinates) for a certain value on the axis
+    *
+    * @param  int/float   data value
+    * @access public
+    */
+    function valueToPixelAbsolute($value)
+    {
+        return $this->_graph->_drawingareaPos[0] + $this->valueToPixelRelative($value);
+    }
 }
 
 /**
@@ -468,6 +512,17 @@ class Image_Graph_Axe_Y extends Image_Graph_Axe
     var $_containsData = false;
     
     /**
+    * Constructor for the class
+    *
+    * @param  object  graph object (of type Image_Graph)
+    * @access public
+    */
+    function &Image_Graph_Axe_Y()
+    {
+        parent::Image_Graph_Axe();
+    }
+
+    /**
     * Set type of axis
     *
     * @param  mixed   only IMAGE_GRAPH_AXETYPE_LINEAR allowed
@@ -482,6 +537,35 @@ class Image_Graph_Axe_Y extends Image_Graph_Axe
         //@TO DO: add support for a logarithmic scale here someday :-)
     }
 
+    /**
+    * Calculate relative position (in pixel-coordinates) for a certain value on the axis
+    *
+    * @param  int/float   data value
+    * @access public
+    */
+    function valueToPixelRelative($value)
+    {
+        // currently only implemented for linear scale
+        return ($this->_graph->_drawingareaSize[1] - 1 -
+                floor(
+                      (float) ($this->_graph->_drawingareaSize[1]-1) /
+                      ($this->_boundsEffective['max'] - $this->_boundsEffective['min']) *
+                      ($value - $this->_boundsEffective['min'])
+                     )
+               );
+    }
+
+    /**
+    * Calculate absolute position (in pixel-coordinates) for a certain value on the axis
+    *
+    * @param  int/float   data value
+    * @access public
+    */
+    function valueToPixelAbsolute($value)
+    {
+        return $this->_graph->_drawingareaPos[1] + $this->valueToPixelRelative($value);
+    }
+    
     /**
     * automatically adjust all fields (bounds + ticks) where auto-detection of values is enabled
     *

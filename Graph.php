@@ -20,7 +20,6 @@
 
 /**************************TODO*******************************************/
 /*
- * - automated creation of "ticks" (major and minor)
  * - add a grid (horizontal / vertical)
  * - add images (background, ...)
  * - add alpha-channel functionality (for half-transparent bars etc.)
@@ -145,11 +144,25 @@ class Image_Graph
     /**
     * Data elements of the diagram (e.g. a "line")
     *
-    * @var array
+    * @var array      contains references to objects
     * @see addData()
+    * @see $_dataElementsEffective
     * @access private
     */
     var $_dataElements = array();
+
+    /**
+    * Data elements of the diagram (e.g. a "line")
+    *
+    * @TO DO: add function name here!
+    * To be filled by function [...] based on data found in _dataElements
+    * Will contain objects (like $_dataElements) or, if data is to be stacked, arrays of objects of same type
+    *
+    * @var array      contains references to objects or arrays containing references to objects
+    * @see $_dataElements
+    * @access private
+    */
+    var $_dataElementsEffective = array();
 
     /**
     * Default options for fonts
@@ -160,6 +173,14 @@ class Image_Graph
     var $_defaultFontOptions = array();
 
     /**
+    * Data types to be stacked
+    *
+    * @var string / array      string "all" allowed for "every data-type"; otherwise an array of strings representing type
+    * @access private
+    */
+    var $_stackData = array();
+
+    /**
     * Constructor for the class
     *
     * @param  int     width of graph-image
@@ -168,11 +189,11 @@ class Image_Graph
     * @param  int     y-position of graph-image
     * @access public
     */
-    function Image_Graph($width, $height, $pos_x=0, $pox_y=0)
+    function &Image_Graph($width, $height, $pos_x=0, $pox_y=0)
     {
-        $this->axeX = new Image_Graph_Axe_X();
-        $this->axeY0 = new Image_Graph_Axe_Y();
-        $this->axeY1 = new Image_Graph_Axe_Y();
+        $this->axeX  =& new Image_Graph_Axe_X();
+        $this->axeY0 =& new Image_Graph_Axe_Y();
+        $this->axeY1 =& new Image_Graph_Axe_Y();
         $this->axeY0->title->setSpacer(array("right" => 5));
         $this->axeY1->title->setSpacer(array("left"  => 5));
         $this->diagramTitle = new Image_Graph_Title();
@@ -271,10 +292,10 @@ class Image_Graph
         $dataElementFile  = "Image/Graph/Data/".ucfirst($representation).".php";
         $dataElementClass = "Image_Graph_Data_".ucfirst($representation);
 
-        if (!isset($attributes["color"])) {
-            $attributes["color"] = $this->_dataDefaultColor;
+        if (!isset($attributes['color'])) {
+            $attributes['color'] = $this->_dataDefaultColor;
         }
-        if (!isset($attributes["axeId"])) {
+        if (!isset($attributes['axeId'])) {
             $attributes["axeId"] = 0;
         }
 
@@ -292,6 +313,23 @@ class Image_Graph
         return $myNew;
     }
 
+    /**
+    * Set option that data should be stacked
+    *
+    * @access public
+    */
+    function stackData($stackWhat = "all")
+    {
+        // @TO DO: add some checks which, if $stackWhat is array that, will verify that
+        //         all datatypes given here support stacking
+        if ($stackWhat == "all") {
+            $this->_stackData = "all";
+        } elseif (is_array($stackWhat)) { // array of strings, representing data-types like "bar" or "line"
+            $this->_stackData = $stackWhat;
+        } else {
+            $this->_stackData = array($stackWhat); // assume it's just one string (e.g. "line"); transform to array
+        }
+    }
 
     /**
     * adjust the min/max-values and the ticks of the Y-axe;
@@ -384,7 +422,63 @@ class Image_Graph
         return $options;
     }
 
+    /**
+    * Prepare objects in $_dataElements and fill $_dataElementsEffective
+    *
+    * If data is to be stacked this function will summarize all objects that belong together in one array.
+    + All other references to data objects will be copied "as is" from $_dataElements to $_dataElementsEffective.
+    *
+    * @access private
+    */
+    function _prepareDataElements()
+    {
+        $tempDataElements = array();
+        
+        // if string, assume it's "all"
+        // everything else would have been converted into an array by stackData()
+        if (is_string($this->_stackData)) {
+            foreach ($this->_dataElements as $element) {
+                $class = get_class($element);
+                $internalName = $class."-".$element->_attributes['axeId'];
+                if (!isset($tempDataElements[$internalName])) {
+                    $tempDataElements[$internalName] = array();
+                }
+                $tempDataElements[$internalName][] = $element;
+            }
+        } else {
+            foreach ($this->_dataElements as $element) {
+                $class = get_class($element);
+                // use strtolower so that it will "hopefully" make this class a bit more PHP5-compatible :-)
+                $datatype = str_replace("image_graph_data_", "", strtolower($class));
+                if (in_array($datatype, $this->_stackData)) {
+                    $internalName = $class."-".$element->_attributes['axeId'];
+                    if (!isset($tempDataElements[$internalName])) {
+                        $tempDataElements[$internalName] = array();
+                    }
+                    $tempDataElements[$internalName][] = $element;
+                } else {
+                    $tempDataElements[] = $element;
+                }
+            }
+        }
 
+        // strip of all keys temporarily used inside this array to make it "clean"
+        // not really needed, but it's cleaner this way
+        // and while we're processing the elements also do some stacking-preparations
+        $this->_dataElementsEffective = array();
+        foreach ($tempDataElements as $element) {
+            // if element is a "stack-group" call static method of the class to prepare stacking
+            if (is_array($element)) {
+                $class = get_class($element[0]);
+                call_user_func(array($class, "stackingPrepare"), $element);
+            } else {
+                // reset any possible previously set stackingOptions
+                // not really needed, but it's cleaner this way
+                $element->_stackingData = null;
+            }
+            $this->_dataElementsEffective[] = $element;
+        }
+    }
 
     /**
     * Prepare some internal variables
@@ -396,6 +490,14 @@ class Image_Graph
     */
     function _prepareInternalVariables()
     {
+        // do initialisation of axes here
+        // can't be done in the constructor of Image_Graph because of problems with references in PHP4
+        
+        $this->axeX->_graph  = &$this;
+        $this->axeY0->_graph = &$this;
+        $this->axeY1->_graph = &$this;
+
+        $this->_prepareDataElements();
         $this->_calculateAxesYMinMaxTicks();
 
         $borderspaceSum=array("top"    => $this->_borderspace,
@@ -542,70 +644,6 @@ class Image_Graph
     }
 
     /**
-    * Calculate relative position (in pixel-coordinates) for a certain pixel-value
-    *
-    * @param  float   data value
-    * @param  int     optional; id of axe (0 = left axe, 1 = right axe)
-    * @access public
-    */
-    function _calculateValueToPixelLinear($currData, $axeId = 0)
-    {
-        $relativeYPosition = $this->_drawingareaSize[1] - 1 - floor(
-                                 (float) ($this->_drawingareaSize[1]-1) /
-                                 ($this->{"axeY".$axeId}->_boundsEffective['max'] - $this->{"axeY".$axeId}->_boundsEffective['min']) *
-                                 ($currData - $this->{"axeY".$axeId}->_boundsEffective['min'])
-                             );
-
-        return ($relativeYPosition);
-    }
-
-    /**
-    * Calculate the datapoints (x/y-positions of data) in the diagram for each diagram element
-    *
-    * @access private
-    */
-    function _calculateDatapoints()
-    {
-        $maxElements = 0;
-
-        // calculate max. number of elements
-        foreach ($this->_dataElements as $currDataElement) {
-            $numElement = count($currDataElement->_data);
-            if ($maxElements < $numElement) {
-                $maxElements = $numElement;
-            }
-        }
-
-        $relativeXPositions = array();
-        $pixelPerColumn = (float) ($this->_drawingareaSize[0]-1) / ($maxElements-1 + ($this->_addExtraSpace));
-        for ($counter=0; $counter<$maxElements; $counter++) {
-            $relativeXPositions[] = round(($counter + ($this->_addExtraSpace*0.5)) * $pixelPerColumn);
-        }
-// @TO DO: replace this hack (_relativeXPositions) by an official way to hand over the values between functions!
-$this->_relativeXPositions=$relativeXPositions;
-
-        // calculate linear position of datapoints
-        foreach ($this->_dataElements as $currDataElementKey => $currDataElementValue) {
-            $currDataElement = &$this->_dataElements[$currDataElementKey];
-            $currDataElement->_datapoints = array();
-            if (isset($currDataElement->_attributes["axeId"])) {
-                $axeId = $currDataElement->_attributes["axeId"];
-            } else {
-                $axeId = 0;
-            }
-
-            reset($relativeXPositions);
-            foreach ($currDataElement->_data as $currDataKey => $currDataValue) {
-                $currData = &$currDataElement->_data[$currDataKey];
-                $relativeYPosition = $this->_calculateValueToPixelLinear($currData, $axeId);
-                $currDataElement->_datapoints[] = array($this->_drawingareaPos[0] + current($relativeXPositions),
-                                                        $this->_drawingareaPos[1] + $relativeYPosition);
-                next($relativeXPositions);
-            }
-        }
-    }
-
-    /**
     * Draw titles for diagram
     *
     * @param  GD-resource image to draw to
@@ -691,7 +729,7 @@ $this->_relativeXPositions=$relativeXPositions;
                             $this->_drawingareaPos[0]+$this->_drawingareaSize[0]-1, $this->_drawingareaPos[1]+$this->_drawingareaSize[1]-1, $drawColor);
 
         for ($labelCount=0; $labelCount<$this->axeX->_bounds['max']; $labelCount++) {
-            $currPos = $this->_relativeXPositions[$labelCount] + $this->_drawingareaPos[0];
+            $currPos = $this->axeX->valueToPixelAbsolute($labelCount);
             $tickSize = $this->axeX->_tickSize;
             switch ($this->axeX->_tickStyle) {
                 case IMAGE_GRAPH_TICKS_INSIDE:
@@ -743,7 +781,8 @@ $this->_relativeXPositions=$relativeXPositions;
                     $tempText->align(IMAGE_TEXT_ALIGN_CENTER);
                     $textSize = $tempText->getSize();
 // @TO DO: replace this hack (_relativeXPositions) by an official way to hand over the values between functions!
-                    $textX = $this->_drawingareaPos[0] + $this->_relativeXPositions[$labelCount];
+//                    $textX = $this->_drawingareaPos[0] + $this->_relativeXPositions[$labelCount];
+                    $textX = $this->axeX->valueToPixelAbsolute($labelCount);
 
                     if (is_null($this->axeX->_numbercolor)) {
                         $this->axeX->_numbercolor = $this->axeX->_color;
@@ -770,7 +809,8 @@ $this->_relativeXPositions=$relativeXPositions;
                                     $axesXpositions[$axeCount], $this->_drawingareaPos[1], $drawColor);
 
                 foreach ($this->{$currAxe}->_ticksMajorEffective as $currTick) {
-                    $relativeYPosition = $this->_calculateValueToPixelLinear($currTick, $axeCount);
+                    $relativeYPosition = $this->{$currAxe}->valueToPixelRelative($currTick);
+
                     $tickSize = $this->{$currAxe}->_tickSize * $axesXfactors[$axeCount];
                     switch ($this->{$currAxe}->_tickStyle) {
                         case IMAGE_GRAPH_TICKS_INSIDE:
@@ -792,7 +832,7 @@ $this->_relativeXPositions=$relativeXPositions;
                 }
 
                 foreach ($this->{$currAxe}->_ticksMinorEffective as $currTick) {
-                    $relativeYPosition = $this->_calculateValueToPixelLinear($currTick, $axeCount);
+                    $relativeYPosition = $this->{$currAxe}->valueToPixelRelative($currTick);
                     $tickSize = ceil($this->{$currAxe}->_tickSize/2) * $axesXfactors[$axeCount];
                     switch ($this->{$currAxe}->_tickStyle) {
                         case IMAGE_GRAPH_TICKS_INSIDE:
@@ -837,7 +877,7 @@ $this->_relativeXPositions=$relativeXPositions;
 
                         $tempText->align(IMAGE_TEXT_ALIGN_RIGHT);
                         $textSize = $tempText->getSize();
-                        $relativeYPosition = $this->_calculateValueToPixelLinear($currTick, $axeCount);
+                        $relativeYPosition = $this->{$currAxe}->valueToPixelRelative($currTick);
                         $textY = $this->_drawingareaPos[1]+$relativeYPosition - ($textSize['height']/2);
                         // BEGIN: workaround for current Image_Text v0.2
                         $textY -= ($this->{$currAxe}->_fontOptions['fontSize'] / 4);
@@ -868,7 +908,6 @@ $this->_relativeXPositions=$relativeXPositions;
     function getGDImage()
     {
         $this->_prepareInternalVariables();
-        $this->_calculateDatapoints();
 
         // GD-specific part
         $img = imagecreatetruecolor($this->_size[0], $this->_size[1]);

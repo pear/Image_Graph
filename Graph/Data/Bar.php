@@ -23,7 +23,7 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
     /**
     * Constructor for the class
     *
-    * @param  object  parent object (of type Image_Graph_Diagram)
+    * @param  object  parent object (of type Image_Graph)
     * @param  array   numerical data to be drawn
     * @access public
     */
@@ -37,35 +37,70 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
     }
 
     /**
+    * !static function! Prepare given dataElements of this type for stacking
+    *
+    * @param array    references to dataElements (objects of this type)
+    * @access private
+    */
+    function stackingPrepare(&$dataElements)
+    {
+        $dataElements[0]->_stackingData = array();
+        foreach($dataElements[0]->_data as $tempData) {
+            $dataElements[0]->_stackingData[] = array(0, $tempData);
+        }
+        for($elementCount=1; $elementCount<count($dataElements); $elementCount++) {
+            $dataElements[$elementCount]->_stackingData = array();
+            for($dataCount=0; $dataCount<count($dataElements[$elementCount]->_data); $dataCount++) {
+                $lastDataPoint = $dataElements[$elementCount-1]->_stackingData[$dataCount][1];
+                $newDataPoint  = $lastDataPoint + $dataElements[$elementCount]->_data[$dataCount];
+                $dataElements[$elementCount]->_stackingData[] = array($lastDataPoint, $newDataPoint);
+            }
+        }
+    }
+
+    /**
+    * !static function! Draw all diagram elements in this stacking-group
+    *
+    * @param array    references to dataElements (objects of this type)
+    * @access private
+    */
+    function stackingDrawGD(&$dataElements, &$img)
+    {
+        foreach($dataElements as $element) {
+            $element->drawGD($img);
+        }
+    }
+
+    /**
     * Draws diagram element 
     *
     * @param gd-resource image-resource to draw to
     * @access private
     */
-
     function drawGD(&$img)
     {
         $graph = &$this->_graph;
+        $xAxe  = &$graph->axeX;
         $yAxe  = &$graph->{"axeY".$this->_attributes['axeId']};
         $drawColor = imagecolorallocate($img, $this->_attributes["color"][0], $this->_attributes["color"][1], $this->_attributes["color"][2]);
-        $dataKeys  = array_keys($this->_data);
-        $numDatapoints = count($this->_datapoints);
+        $numData = count($this->_data);
 
-        if ($numDatapoints < 2) {        
+        if ($numData < 2) {        
           $halfWidthPixel = floor($graph->_drawingareaSize[1] / 2);
         } else {
-          $halfWidthPixel = floor(($this->_datapoints[1][0]-$this->_datapoints[0][0]) / 2 * $this->_attributes['width']);
+          $halfWidthPixel = floor(($xAxe->valueToPixelRelative(1) - $xAxe->valueToPixelRelative(0)) / 2 * $this->_attributes['width']);
         }
 
-        for ($counter=0; $counter<$numDatapoints; $counter++) {
-            if (!is_null($this->_datapoints[$counter])) { // otherwise do not draw
-              if ($this->_data[ $dataKeys[$counter] ] > $yAxe->_boundsEffective['max']) { // clip big value to the drawingarea
-                imagefilledrectangle ($img, $this->_datapoints[$counter][0]-$halfWidthPixel, $graph->_drawingareaPos[1],
-                                            $this->_datapoints[$counter][0]+$halfWidthPixel, $graph->_drawingareaPos[1]+$graph->_drawingareaSize[1]-2,
+        for ($counter=0; $counter<$numData; $counter++) {
+            if (!is_null($this->_data[$counter])) { // otherwise do not draw
+              $xPos = $xAxe->valueToPixelAbsolute($counter);
+              if ($this->_data[$counter] > $yAxe->_boundsEffective['max']) { // clip big value to the drawingarea
+                imagefilledrectangle ($img, $xPos-$halfWidthPixel, $graph->_drawingareaPos[1],
+                                            $xPos+$halfWidthPixel, $graph->_drawingareaPos[1]+$graph->_drawingareaSize[1]-2,
                                       $drawColor);
-              } elseif ($this->_data[ $dataKeys[$counter] ] >= $yAxe->_boundsEffective['min']) {
-                imagefilledrectangle ($img, $this->_datapoints[$counter][0]-$halfWidthPixel, $this->_datapoints[$counter][1],
-                                            $this->_datapoints[$counter][0]+$halfWidthPixel, $graph->_drawingareaPos[1]+$graph->_drawingareaSize[1]-2,
+              } elseif ($this->_data[$counter] >= $yAxe->_boundsEffective['min']) {
+                imagefilledrectangle ($img, $xPos-$halfWidthPixel, $yAxe->valueToPixelAbsolute($this->_data[$counter]),
+                                            $xPos+$halfWidthPixel, $graph->_drawingareaPos[1]+$graph->_drawingareaSize[1]-2,
                                       $drawColor);
               }
             }
