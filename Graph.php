@@ -411,12 +411,13 @@ class Image_Graph
     * @param  array   data to draw
     * @param  string  data representation (e.g. "line")
     * @param  array   attributes like color (to be extended to also include shading etc.)
+    * @return object  data-object
     * @access public
     */
-    function addData($data, $representation = "line", $attributes = array())
+    function &addData($data, $representation = "line", $attributes = array())
     {
         $representation = strtolower($representation);
-        $dataElementFile  = "Image/Graph/".strtolower($representation).".php";
+        $dataElementFile  = "Image/Graph/Data/".strtolower($representation).".php";
         $dataElementClass = "Image_Graph_Data_".ucfirst($representation);
 
         if (!isset($attributes["color"])) {
@@ -429,8 +430,9 @@ class Image_Graph
         if (!class_exists($dataElementClass)) {
             require_once($dataElementFile);
         }
-        $myNew = new $dataElementClass($this, $data, $attributes);
-        $this->_dataElements[] = $myNew;
+        $myNew = &new $dataElementClass($this, $data, $attributes);
+        $this->_dataElements[count($this->_dataElements)] =& $myNew;
+        return $myNew;
     }
 
     /**
@@ -564,7 +566,7 @@ class Image_Graph
 
             // prepare drawing of numbers for the Y-axes
             for ($axeCount=0; $axeCount<=1; $axeCount++) {
-                if ($this->_axes['y'][$axeCount]['containsData']) {
+                if (isset($this->_axes['y'][$axeCount]['containsData'])) {
                     $this->_axes['y'][$axeCount]['fontOptions'] = $this->_getFontOptions($this->_axes['y'][$axeCount]['fontOptions']);
 
                     require_once 'Image/Text.php';
@@ -591,7 +593,7 @@ class Image_Graph
             }
         } // if (!empty($this->_defaultFontOptions))
 
-        if (( $this->_axes['y'][0]['containsData']) &&
+        if (( isset($this->_axes['y'][0]['containsData'])) &&
             (($this->_axes['y'][0]['tickStyle'] == IMAGE_GRAPH_TICKS_OUTSIDE) ||
              ($this->_axes['y'][0]['tickStyle'] == IMAGE_GRAPH_TICKS_BOTH)
             )
@@ -736,7 +738,7 @@ class Image_Graph
         $axesXfactors   = array (1, -1);
 
         for($axeCount=0; $axeCount<=1; $axeCount++) {
-            if ($this->_axes['y'][$axeCount]['containsData']) {
+            if (isset($this->_axes['y'][$axeCount]['containsData'])) {
                 imageline    ($img, $axesXpositions[$axeCount], $this->_drawingareaPos[1]+$this->_drawingareaSize[1]-1,
                                     $axesXpositions[$axeCount], $this->_drawingareaPos[1], $drawColor);
 
@@ -792,7 +794,7 @@ class Image_Graph
         // drawing of numbers for the Y-axes
         if (!empty($this->_defaultFontOptions)) { // otherwise we don't have correct settings for font-filename etc.
             for ($axeCount=0; $axeCount<=1; $axeCount++) {
-                if ($this->_axes['y'][$axeCount]['containsData']) {
+                if (isset($this->_axes['y'][$axeCount]['containsData'])) {
                     require_once 'Image/Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
                     $textoptions = $this->_axes['y'][$axeCount]['fontOptions'];
                     $textoptions['width'] = $this->_axes['y'][$axeCount]['_maxNumWidth'];

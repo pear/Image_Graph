@@ -19,38 +19,55 @@
     </maintainer>
   </maintainers>
   <release>
-    <version>0.1.1</version>
-    <date>2003-11-13</date>
+    <version>0.2-csv</version>
+    <date>2003-11-20</date>
     <license>PHP License</license>
     <state>alpha</state>
     <notes>
-- fixed filenames for the current Image_Text-package
-- did some minor bugfixes that came up when running with full
-error_reporting
+- splitted package into smaller classes to get a more intuitive API
+- renamed marker "rhomb" to "diamond"
+- applied new directory-structure for package (as defined by the core-group)
     </notes>
     <deps>
       <dep type="ext" rel="has" version="2">gd</dep>
-      <dep type="pkg" rel="ge" version="0.2" optional="yes">Image_Text</dep>
+      <dep type="pkg" rel="ge" version="0.2">Image_Text</dep>
     </deps> 
     <filelist>
       <dir name="/" baseinstalldir="Image">
         <file role="php">Graph.php</file>
         <dir name="Graph" role="php">
-          <file>bar.php</file>
-          <file>common.php</file>
-          <file>line.php</file>
-          <file>rhomb.php</file>
-          <file>square.php</file>
-          <file>triangle.php</file>
+          <dir name="Data" role="php">
+            <file>bar.php</file>
+            <file>common.php</file>
+            <file>line.php</file>
+          </dir> 
+          <dir name="DataMarker" role="php">
+            <file>common.php</file>
+            <file>diamond.php</file>
+            <file>square.php</file>
+            <file>triangle.php</file>
+          </dir> 
         </dir> 
         <dir name="docs" role="doc">
-          <file>sample_complex1.php</file>
-          <file>sample_simple1.php</file>
-        </dir> 
+          <dir name="examples" role="doc">
+            <file>complex1.php</file>
+            <file>simple1.php</file>
+          </dir>
+        </dir>
       </dir>
     </filelist>
   </release>
   <changelog>
+    <release>
+      <version>0.1.1</version>
+      <date>2003-11-13</date>
+      <license>PHP License</license>
+      <state>alpha</state>
+      <notes>
+- fixed filenames for the current Image_Text-package
+- did some minor bugfixes that came up when running with full error_reporting
+      </notes>
+    </release>
     <release>
       <version>0.1</version>
       <date>2003-11-01</date>

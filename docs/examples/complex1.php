@@ -32,13 +32,13 @@
                       "Di.\n9.9." => 37.2,
                       "Mi.\n10.9." => 50.0
                     );
-
     $graph->setDataDefaultColor(array(0xCC,0x29,0x29));
     $graph->addData($data, "line", array("axeId" => 0));
     $data["Di.\n9.9."] = 20;
     $graph->addData($data, "bar",  array("axeId" => 1, "color" => array(0xBF,0xBF,0x30)));
-    $graph->addData($data, "line", array("axeId" => 1, "color" => array(0x29,0xCC,0x29)));
-    $graph->addData($data, "triangle",  array("axeId" => 1, "color" => array(0xBF,0xBF,0xBF)));
+    $dataObj = &$graph->addData($data, "line", array("axeId" => 1, "color" => array(0x29,0xCC,0x29)));
+    $marker =& $dataObj->setDataMarker("diamond", array("color" => array(0xBF,0xBF,0xBF)));
+    $marker->setSize(7);
 
     $graph->setAxesYMin(10,0);
     $graph->setAxesYMax(50,0);

@@ -8,7 +8,7 @@
 * @access   private
 */
 
-require_once("Image/Graph/common.php");
+require_once("Image/Graph/Data/common.php");
 
 class Image_Graph_Data_Bar extends Image_Graph_Data_Common
 {
@@ -45,8 +45,8 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
 
     function drawGD(&$img)
     {
-        $graph = &$this->_parent;
-        $yAxe  = &$this->_parent->_axes['y'][ $this->_attributes['axeId'] ];
+        $graph = &$this->_graph;
+        $yAxe  = &$this->_graph->_axes['y'][ $this->_attributes['axeId'] ];
         $drawColor = imagecolorallocate($img, $this->_attributes["color"][0], $this->_attributes["color"][1], $this->_attributes["color"][2]);
         $dataKeys  = array_keys($this->_data);
         $numDatapoints = count($this->_datapoints);

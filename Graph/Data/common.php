@@ -43,29 +43,88 @@ class Image_Graph_Data_Common
     var $_attributes = array("color" => array(0, 0, 0), "axeId" => 0);
 
     /**
-    * parent object (of type Image_Graph_Diagram)
+    * graph object (of type Image_Graph_Diagram)
     *
     * @var object
     * @access private
     */
-    var $_parent = null;
+    var $_graph = null;
+
+    /**
+    * data marker object (of type Image_Graph_DataMarker_...)
+    *
+    * @var object
+    * @access private
+    */
+    var $_datamarker = null;
 
     /**
     * Constructor for the class
     *
-    * @param  object  parent object (of type Image_Graph_Diagram)
+    * @param  object  graph object (of type Image_Graph_Diagram)
     * @param  array   numerical data to be drawn
     * @access public
     */
-    function Image_Graph_Data_Common(&$parent, $data, $attributes)
+    function Image_Graph_Data_Common(&$graph, $data, $attributes)
     {
-        $this->_parent      = &$parent;
+        $this->_graph       =& $graph;
         $this->_data        = $data;
         $this->_attributes  = $attributes;
         
-        $parent->_axes['y'][ $attributes['axeId'] ]['containsData'] = true;
+        $graph->_axes['y'][ $attributes['axeId'] ]['containsData'] = true;
     }
     
+    /**
+    * Set a data marker to be used
+    *
+    * @param  string  data representation (e.g. "triangle")
+    * @param  array   attributes like color (to be extended to also include shading etc.)
+    * @return object  data-marker-object
+    * @access public
+    */
+    function &setDataMarker($representation = "line", $attributes = array())
+    {
+        $representation = strtolower($representation);
+        $dataElementFile  = "Image/Graph/DataMarker/".strtolower($representation).".php";
+        $dataElementClass = "Image_Graph_DataMarker_".ucfirst($representation);
+
+        if (!isset($attributes["color"])) {
+            $attributes["color"] = $this->_dataDefaultColor;
+        }
+
+        if (!class_exists($dataElementClass)) {
+            require_once($dataElementFile);
+        }
+        $newMarker =& new $dataElementClass($attributes);
+        $this->_datamarker =& $newMarker;
+        return $newMarker;
+    }
+
+    /**
+    * Draws the data marker (if set)
+    *
+    * @param gd-resource image-resource to draw to
+    * @access private
+    */
+
+    function _drawDataMarkerGD(&$img)
+    {
+        if (is_object($this->_datamarker))
+        {
+            $yAxe = &$this->_graph->_axes['y'][ $this->_attributes['axeId'] ];
+            $dataKeys  = array_keys($this->_data);
+            $numDatapoints = count($this->_datapoints);
+    
+            for ($counter=0; $counter<$numDatapoints; $counter++) {
+                if (!is_null($this->_datapoints[$counter]) &&
+                    ($yAxe['min'] <= $this->_data[ $dataKeys[$counter] ]) && ($this->_data[ $dataKeys[$counter] ] <= $yAxe['max'])
+                   ) { // otherwise do not draw
+                    $this->_datamarker->drawGD($img, $this->_datapoints[$counter]);
+                }
+            }
+        }
+    }
+
     /**
     * Calculates coordinates for a line in the drawing-area
     *
@@ -77,7 +136,7 @@ class Image_Graph_Data_Common
     */
     function _calculateClippedLineCoords($from, $to)
     {
-        $graph = &$this->_parent;
+        $graph = &$this->_graph;
         $upperLimit = $graph->_drawingareaPos[1];
         $lowerLimit = $graph->_drawingareaPos[1]+$graph->_drawingareaSize[1]-1;
         
