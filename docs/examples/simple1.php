@@ -15,8 +15,8 @@
 
     $graph->diagramTitle->setText("Downloads June 2003");
 
-    $graph->axeY0->setFontOptions(array("fontSize" => 8));
-    $graph->axeY0->setColor(array(0x40, 0x40, 0xFF));
+    $graph->axisY0->setFontOptions(array("fontSize" => 8));
+    $graph->axisY0->setColor(array(0x40, 0x40, 0xFF));
 
     $data    = array( 15.8,
                       37.2,
@@ -24,9 +24,9 @@
                     );
 
     $graph->setDataDefaultColor(array(0xCC,0x29,0x29));
-    $graph->addData($data, "line", array("axeId" => 0));
+    $graph->addData($data, "line", array("axisId" => 0));
 
-    $graph->axeY0->setBounds(10,50);
+    $graph->axisY0->setBounds(10,50);
 
     $image = $graph->getGDImage();
 

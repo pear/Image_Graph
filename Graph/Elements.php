@@ -95,10 +95,10 @@ class Image_Graph_Base
 * @package  Image_Graph
 * @access   public
 */
-class Image_Graph_Axe extends Image_Graph_Base
+class Image_Graph_Axis extends Image_Graph_Base
 {
     /**
-    * Title for axe
+    * Title for axis
     *
     * @var object
     * @access public
@@ -106,7 +106,7 @@ class Image_Graph_Axe extends Image_Graph_Base
     var $title = null;
 
     /**
-    * Bounds for axe (min/max value)
+    * Bounds for axis (min/max value)
     *
     * @var array (2 ints/floats/nulls)     null results in automatic detection of bounds
     * @access private
@@ -115,7 +115,7 @@ class Image_Graph_Axe extends Image_Graph_Base
     var $_bounds = array('min' => null, 'max' => null);
     
     /**
-    * effective bounds for axe (min/max value)
+    * effective bounds for axis (min/max value)
     *
     * in contrast to $_bounds these values are not to be influenced by the user but used internally
     * for storing values that will be used for drawing; where $_bounds may contain null-values,
@@ -128,7 +128,7 @@ class Image_Graph_Axe extends Image_Graph_Base
     var $_boundsEffective = array('min' => null, 'max' => null);
 
     /**
-    * Style for ticks on the axe
+    * Style for ticks on the axis
     *
     * @var int     tick-style
     * @access private
@@ -136,7 +136,7 @@ class Image_Graph_Axe extends Image_Graph_Base
     var $_tickStyle = IMAGE_GRAPH_TICKS_OUTSIDE;
 
     /**
-    * Size for ticks on the axe
+    * Size for ticks on the axis
     *
     * @var int     tick-size
     * @access private
@@ -144,7 +144,7 @@ class Image_Graph_Axe extends Image_Graph_Base
     var $_tickSize = 10;
 
     /**
-    * Major ticks on axe
+    * Major ticks on axis
     *
     * @var array (ints/floats)     null results in automatic detection of ticks (!to be implemented!)
     * @access private
@@ -153,7 +153,7 @@ class Image_Graph_Axe extends Image_Graph_Base
     var $_ticksMajor = null;
 
     /**
-    * effective major ticks on axe
+    * effective major ticks on axis
     *
     * in contrast to $_ticksMajor these values are not to be influenced by the user but used internally
     * for storing values that will be used for drawing; where $_ticksMajor may contain null-values,
@@ -166,7 +166,7 @@ class Image_Graph_Axe extends Image_Graph_Base
     var $_ticksMajorEffective = array();
 
     /**
-    * Minor ticks on axe
+    * Minor ticks on axis
     *
     * @var array (ints/floats)     null results in automatic detection of ticks (!to be implemented!)
     * @access private
@@ -175,7 +175,7 @@ class Image_Graph_Axe extends Image_Graph_Base
     var $_ticksMinor = null;
 
     /**
-    * effective minor ticks on axe
+    * effective minor ticks on axis
     *
     * in contrast to $_ticksMinor these values are not to be influenced by the user but used internally
     * for storing values that will be used for drawing; where $_ticksMinor may contain null-values,
@@ -215,15 +215,15 @@ class Image_Graph_Axe extends Image_Graph_Base
     var $_numbercolor = null;
 
     /**
-    * Type of the axe
+    * Type of the axis
     *
     * The variable is defined/used here as a "virtual" variable.
     * It will receive it's initial values in the derived classes for x-/y-axes
     *
-    * @var mixed      always use the constants IMAGE_GRAPH_AXETYPE_* to evaluate / set this variable
+    * @var mixed      always use the constants IMAGE_GRAPH_AXISTYPE_* to evaluate / set this variable
     * @access private
     */
-    var $_axetype = IMAGE_GRAPH_AXETYPE_LINEAR;
+    var $_axistype = IMAGE_GRAPH_AXISTYPE_LINEAR;
 
     /**
     * Space for storing internal temporary values
@@ -250,7 +250,7 @@ class Image_Graph_Axe extends Image_Graph_Base
     * @param  object  graph object (of type Image_Graph)
     * @access public
     */
-    function &Image_Graph_Axe()
+    function &Image_Graph_Axis()
     {
         $this->title  = new Image_Graph_Title();
     }
@@ -290,7 +290,7 @@ class Image_Graph_Axe extends Image_Graph_Base
     }
 
     /**
-    * Set tick-style for ticks on a axe
+    * Set tick-style for ticks on a axis
     *
     * use constants IMAGE_GRAPH_TICKS_INSIDE, IMAGE_GRAPH_TICKS_OUTSIDE or IMAGE_GRAPH_TICKS_BOTH
     *
@@ -303,7 +303,7 @@ class Image_Graph_Axe extends Image_Graph_Base
     }
 
     /**
-    * Set size for (major) ticks on axe
+    * Set size for (major) ticks on axis
     *
     * size is for the "major ticks"; all minor ticks will be half that size
     *
@@ -316,9 +316,9 @@ class Image_Graph_Axe extends Image_Graph_Base
     }
 
     /**
-    * Set major ticks on axe
+    * Set major ticks on axis
     *
-    * @param  array   list of values on the axe which should be "major ticks"; null results in automatic detection of bounds (!to be implemented!)
+    * @param  array   list of values on the axis which should be "major ticks"; null results in automatic detection of bounds (!to be implemented!)
     * @access public
     */
     function setTicksMajor($ticks)
@@ -327,9 +327,9 @@ class Image_Graph_Axe extends Image_Graph_Base
     }
 
     /**
-    * Set minor ticks on axe
+    * Set minor ticks on axis
     *
-    * @param  array   list of values on the axe which should be "minor ticks"; null results in automatic detection of bounds (!to be implemented!)
+    * @param  array   list of values on the axis which should be "minor ticks"; null results in automatic detection of bounds (!to be implemented!)
     * @access public
     */
     function setTicksMinor($ticks)
@@ -338,9 +338,9 @@ class Image_Graph_Axe extends Image_Graph_Base
     }
 
     /**
-    * Set numberformat for axe
+    * Set numberformat for axis
     *
-    * @param  string  format in which numbers on the axe (major ticks) will be shown; sprintf-format
+    * @param  string  format in which numbers on the axis (major ticks) will be shown; sprintf-format
     * @access public
     */
     function setNumberformat($format)
@@ -350,7 +350,7 @@ class Image_Graph_Axe extends Image_Graph_Base
 
 
     /**
-    * Set numbercolor for axe
+    * Set numbercolor for axis
     *
     * If the color-value is "null" instead of an array default values will be taken
     *
@@ -370,22 +370,22 @@ class Image_Graph_Axe extends Image_Graph_Base
 * @package  Image_Graph
 * @access   public
 */
-class Image_Graph_Axe_X extends Image_Graph_Axe
+class Image_Graph_Axis_X extends Image_Graph_Axis
 {
     /**
-    * Type of the axe
+    * Type of the axis
     *
-    * always use the constants IMAGE_GRAPH_AXETYPE_* to evaluate / set this variable
+    * always use the constants IMAGE_GRAPH_AXISTYPE_* to evaluate / set this variable
     *
-    * @var mixed      only IMAGE_GRAPH_AXETYPE_TEXT allowed
+    * @var mixed      only IMAGE_GRAPH_AXISTYPE_TEXT allowed
     * @access private
     */
-    var $_axetype = IMAGE_GRAPH_AXETYPE_TEXT;
+    var $_axistype = IMAGE_GRAPH_AXISTYPE_TEXT;
 
     /**
-    * Labels for data on this axe
+    * Labels for data on this axis
     *
-    * Will be used (shown) when axe has $_axetype of IMAGE_GRAPH_AXETYPE_TEXT
+    * Will be used (shown) when axis has $_axistype of IMAGE_GRAPH_AXISTYPE_TEXT
     *
     * @var array      one string per data-column
     * @access private
@@ -398,31 +398,31 @@ class Image_Graph_Axe_X extends Image_Graph_Axe
     * @param  object  graph object (of type Image_Graph)
     * @access public
     */
-    function Image_Graph_Axe_X()
+    function Image_Graph_Axis_X()
     {
-        parent::Image_Graph_Axe();
+        parent::Image_Graph_Axis();
     }
 
     /**
     * Set type of axis
     *
-    * @param  mixed   only IMAGE_GRAPH_AXETYPE_TEXT allowed
+    * @param  mixed   only IMAGE_GRAPH_AXISTYPE_TEXT allowed
     * @access public
-    * @see    $_axetype
+    * @see    $_axistype
     */
-    function setAxetype($type)
+    function setAxistype($type)
     {
-        if ($type == IMAGE_GRAPH_AXETYPE_TEXT) {
-            $this->_axetype = IMAGE_GRAPH_AXETYPE_TEXT;
+        if ($type == IMAGE_GRAPH_AXISTYPE_TEXT) {
+            $this->_axistype = IMAGE_GRAPH_AXISTYPE_TEXT;
         }
         
         /*
-         elseif ($type == IMAGE_GRAPH_AXETYPE_LINEAR) {
-            if ($this->_axetype == IMAGE_GRAPH_AXETYPE_TEXT) {
-                //@TO DO: add conversion-functions here to transform axe from text to linear
+         elseif ($type == IMAGE_GRAPH_AXISTYPE_LINEAR) {
+            if ($this->_axistype == IMAGE_GRAPH_AXISTYPE_TEXT) {
+                //@TO DO: add conversion-functions here to transform axis from text to linear
                 //        if this is not possible, throw an error
             }
-            $this->_axetype = IMAGE_GRAPH_AXETYPE_LINEAR;
+            $this->_axistype = IMAGE_GRAPH_AXISTYPE_LINEAR;
         }
         */
         //@TO DO: add support for a logarithmic scale here someday :-)
@@ -489,20 +489,20 @@ class Image_Graph_Axe_X extends Image_Graph_Axe
 * @package  Image_Graph
 * @access   public
 */
-class Image_Graph_Axe_Y extends Image_Graph_Axe
+class Image_Graph_Axis_Y extends Image_Graph_Axis
 {
     /**
-    * Type of the axe
+    * Type of the axis
     *
-    * always use the constants IMAGE_GRAPH_AXETYPE_* to evaluate / set this variable
+    * always use the constants IMAGE_GRAPH_AXISTYPE_* to evaluate / set this variable
     *
-    * @var mixed      only IMAGE_GRAPH_AXETYPE_LINEAR allowed
+    * @var mixed      only IMAGE_GRAPH_AXISTYPE_LINEAR allowed
     * @access private
     */
-    var $_axetype = IMAGE_GRAPH_AXETYPE_LINEAR;
+    var $_axistype = IMAGE_GRAPH_AXISTYPE_LINEAR;
 
     /**
-    * Indicator if axe currently contains data
+    * Indicator if axis currently contains data
     *
     * this variable is only used on the Y-axis; directly set internally by functions of package Image_Graph
     *
@@ -517,22 +517,22 @@ class Image_Graph_Axe_Y extends Image_Graph_Axe
     * @param  object  graph object (of type Image_Graph)
     * @access public
     */
-    function &Image_Graph_Axe_Y()
+    function &Image_Graph_Axis_Y()
     {
-        parent::Image_Graph_Axe();
+        parent::Image_Graph_Axis();
     }
 
     /**
     * Set type of axis
     *
-    * @param  mixed   only IMAGE_GRAPH_AXETYPE_LINEAR allowed
+    * @param  mixed   only IMAGE_GRAPH_AXISTYPE_LINEAR allowed
     * @access public
-    * @see    $_axetype
+    * @see    $_axistype
     */
-    function setAxetype($type)
+    function setAxistype($type)
     {
-        if ($type == IMAGE_GRAPH_AXETYPE_LINEAR) {
-            $this->_axetype = IMAGE_GRAPH_AXETYPE_LINEAR;
+        if ($type == IMAGE_GRAPH_AXISTYPE_LINEAR) {
+            $this->_axistype = IMAGE_GRAPH_AXISTYPE_LINEAR;
         }
         //@TO DO: add support for a logarithmic scale here someday :-)
     }

@@ -76,8 +76,8 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
         // TO DO: implement handling for $drawWhat
 
         $graph = &$this->_graph;
-        $xAxe  = &$graph->axeX;
-        $yAxe  = &$graph->{"axeY".$this->_attributes['axeId']};
+        $axisX = &$graph->axisX;
+        $axisY = &$graph->{"axisY".$this->_attributes['axisId']};
         $drawColor = Image_Graph_Color::allocateColor($img, $this->_color);
         $numData = count($this->_data);
 
@@ -97,13 +97,13 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
                             $polygon=array();
                         }
                     } else {
-                        $xValue = $xAxe->valueToPixelAbsolute($counter);
+                        $xValue = $axisX->valueToPixelAbsolute($counter);
                         // prepend lower point to array
-                        $temppoint = array($xValue, $yAxe->valueToPixelAbsolute(0));
+                        $temppoint = array($xValue, $axisY->valueToPixelAbsolute(0));
 //                        var_dump ($temppoint);exit();
                         array_unshift($polygon, $temppoint);
                         // append higher point to array
-                        $temppoint = array($xValue, $yAxe->valueToPixelAbsolute($datapoint));
+                        $temppoint = array($xValue, $axisY->valueToPixelAbsolute($datapoint));
                         $polygon[] = $temppoint;
                     }
                 }
@@ -119,10 +119,10 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
                         }
                     } else {
                         // prepend lower point to array
-                        $temppoint = array($xAxe->valueToPixelAbsolute($counter), $yAxe->valueToPixelAbsolute($this->_stackingData[$counter][0]));
+                        $temppoint = array($axisX->valueToPixelAbsolute($counter), $axisY->valueToPixelAbsolute($this->_stackingData[$counter][0]));
                         array_unshift($polygon, $temppoint);
                         // append higher point to array
-                        $temppoint = array($xAxe->valueToPixelAbsolute($counter), $yAxe->valueToPixelAbsolute($this->_stackingData[$counter][1]));
+                        $temppoint = array($axisX->valueToPixelAbsolute($counter), $axisY->valueToPixelAbsolute($this->_stackingData[$counter][1]));
                         $polygon[] = $temppoint;
                     }
                 }
@@ -145,12 +145,12 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
                 if (!is_null($currData[0]) && !is_null($currData[1])) {
                     // otherwise do not draw
                     if (($counter == 0) || (is_null($beforeData))) {
-                        if (($yAxe->_boundsEffective['min'] <= $currData[1]) && ($currData[1] <= $yAxe->_boundsEffective['max'])) {
-                            imagesetpixel ($img, $xAxe->valueToPixelAbsolute($counter), $yAxe->valueToPixelAbsolute($currData[1]), $drawColor);
+                        if (($axisY->_boundsEffective['min'] <= $currData[1]) && ($currData[1] <= $axisY->_boundsEffective['max'])) {
+                            imagesetpixel ($img, $axisX->valueToPixelAbsolute($counter), $axisY->valueToPixelAbsolute($currData[1]), $drawColor);
                         } // otherwise do not draw that point since it's out of the drawingarea
                     } else {
-                        $newCoords = $this->_calculateClippedLineCoords(array($xAxe->valueToPixelAbsolute($counter-1), $yAxe->valueToPixelAbsolute($beforeData[1])),
-                                                                        array($xAxe->valueToPixelAbsolute($counter)  , $yAxe->valueToPixelAbsolute($currData[1]  ))
+                        $newCoords = $this->_calculateClippedLineCoords(array($axisX->valueToPixelAbsolute($counter-1), $axisY->valueToPixelAbsolute($beforeData[1])),
+                                                                        array($axisX->valueToPixelAbsolute($counter)  , $axisY->valueToPixelAbsolute($currData[1]  ))
                                                                        );
                         if (!empty($newCoords)) {
                             imageline ($img, $newCoords[0][0], $newCoords[0][1], $newCoords[1][0], $newCoords[1][1], $drawColor);

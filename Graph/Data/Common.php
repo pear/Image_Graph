@@ -38,7 +38,7 @@ class Image_Graph_Data_Common
     * @var array
     * @access private
     */
-    var $_attributes = array("axeId" => 0);
+    var $_attributes = array("axisId" => 0);
 
     /**
     * graph object (of type Image_Graph)
@@ -167,16 +167,16 @@ class Image_Graph_Data_Common
         if (is_object($this->_datamarker))
         {
             $graph = &$this->_graph;
-            $xAxe  = &$graph->axeX;
-            $yAxe  = &$graph->{"axeY".$this->_attributes['axeId']};
+            $axisX  = &$graph->axisX;
+            $axisY  = &$graph->{"axisY".$this->_attributes['axisId']};
             $numData = count($this->_data);
 
             for ($counter=0; $counter<$numData; $counter++) {
                 if (!is_null($this->_data[$counter]) &&
-                    ($yAxe->_boundsEffective['min'] <= $this->_data[$counter]) && ($this->_data[$counter] <= $yAxe->_boundsEffective['max'])
+                    ($axisY->_boundsEffective['min'] <= $this->_data[$counter]) && ($this->_data[$counter] <= $axisY->_boundsEffective['max'])
                    ) { // otherwise do not draw
-                    $this->_datamarker->drawGD($img, array($xAxe->valueToPixelAbsolute($counter),
-                                                           $yAxe->valueToPixelAbsolute($this->_data[$counter])
+                    $this->_datamarker->drawGD($img, array($axisX->valueToPixelAbsolute($counter),
+                                                           $axisY->valueToPixelAbsolute($this->_data[$counter])
                                                           )
                                                );
                 }
@@ -188,7 +188,7 @@ class Image_Graph_Data_Common
     * Calculates coordinates for a line in the drawing-area
     *
     * If one point is outside the drawingarea it recalculated to get a "clipped" line.
-    * Pleas note: Only line that exceed the Y-axe-limits are clipped; no direct clipping for the X-axe
+    * Pleas note: Only line that exceed the Y-axis-limits are clipped; no direct clipping for the X-axis
     *
     * @param gd-resource image-resource to draw to
     * @access private

@@ -83,15 +83,15 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
     function drawGD(&$img, $drawWhat=IMAGE_GRAPH_DRAW_FILLANDBORDER)
     {
         $graph = &$this->_graph;
-        $xAxe  = &$graph->axeX;
-        $yAxe  = &$graph->{"axeY".$this->_attributes['axeId']};
+        $axisX  = &$graph->axisX;
+        $axisY  = &$graph->{"axisY".$this->_attributes['axisId']};
         $drawColor = Image_Graph_Color::allocateColor($img, $this->_color);
         $numData = count($this->_data);
 
         if ($numData < 2) {
           $halfWidthPixel = floor($graph->_drawingareaSize[1] / 2);
         } else {
-          $halfWidthPixel = floor(($xAxe->valueToPixelRelative(1) - $xAxe->valueToPixelRelative(0)) / 2 * $this->_attributes['width']);
+          $halfWidthPixel = floor(($axisX->valueToPixelRelative(1) - $axisX->valueToPixelRelative(0)) / 2 * $this->_attributes['width']);
         }
 
         for ($counter=0; $counter<$numData; $counter++) {
@@ -102,18 +102,18 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
             }
             if (!is_null($currData[0]) && !is_null($currData[1])) {
                 // otherwise do not draw
-                $xPos = $xAxe->valueToPixelAbsolute($counter);
+                $xPos = $axisX->valueToPixelAbsolute($counter);
 
                 // clip if necessary
-                if ($currData[0] < $yAxe->_boundsEffective['min']) {
-                    $currData[0] = $yAxe->_boundsEffective['min'];
+                if ($currData[0] < $axisY->_boundsEffective['min']) {
+                    $currData[0] = $axisY->_boundsEffective['min'];
                 }
-                if ($currData[1] > $yAxe->_boundsEffective['max']) {
-                    $currData[1] = $yAxe->_boundsEffective['max'];
+                if ($currData[1] > $axisY->_boundsEffective['max']) {
+                    $currData[1] = $axisY->_boundsEffective['max'];
                 }
 
-                $points = array(array($xPos-$halfWidthPixel, $yAxe->valueToPixelAbsolute($currData[1])),
-                                array($xPos+$halfWidthPixel, $yAxe->valueToPixelAbsolute($currData[0])));
+                $points = array(array($xPos-$halfWidthPixel, $axisY->valueToPixelAbsolute($currData[1])),
+                                array($xPos+$halfWidthPixel, $axisY->valueToPixelAbsolute($currData[0])));
 
                 if ((($drawWhat == IMAGE_GRAPH_DRAW_FILLANDBORDER) ||
                      ($drawWhat == IMAGE_GRAPH_DRAW_JUSTFILL)) &&
