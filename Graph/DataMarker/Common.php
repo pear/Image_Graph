@@ -25,19 +25,19 @@ class Image_Graph_DataMarker_Common
     */
     function Image_Graph_DataMarker_Common($attributes)
     {
-        $this->_attributes  = $attributes;
+        $this->_attributes = $attributes;
     }
     
     /**
-    * Draws diagram element 
+    * Draws data marker
     *
-    * @param gd-resource  image-resource to draw to
-    * @param array of int absolute position, where to draw the marker
+    * @param gd-resource    image-resource to draw to
+    * @param array of int   absolute position, where to draw the marker
     * @access private
     */
     function drawGD(&$img, $pos)
     {
-        // implementation of this function in the derived diagram-element-classes
+        // implementation of this function in the derived datamarker-element-classes
     }
 }
 ?>

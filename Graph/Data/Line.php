@@ -13,14 +13,6 @@ require_once("Image/Graph/Data/Common.php");
 class Image_Graph_Data_Line extends Image_Graph_Data_Common
 {
     /**
-    * Type of data element
-    *
-    * @var string
-    * @access private
-    */
-    var $_type = "line";
-
-    /**
     * Constructor for the class
     *
     * @param  object  parent object (of type Image_Graph)
@@ -55,13 +47,16 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
     }
 
     /**
-    * Draws diagram element 
+    * Draws diagram element
     *
-    * @param gd-resource image-resource to draw to
+    * @param gd-resource  image-resource to draw to
+    * @param int          choose what to draw; use constants IMAGE_GRAPH_DRAW_FILLANDBORDER, IMAGE_GRAPH_DRAW_JUSTFILL or IMAGE_GRAPH_DRAW_JUSTBORDER
     * @access private
     */
-    function drawGD(&$img)
+    function drawGD(&$img, $drawWhat=IMAGE_GRAPH_DRAW_FILLANDBORDER)
     {
+        // TO DO: implement handling for $drawWhat
+
         $graph = &$this->_graph;
         $xAxe  = &$graph->axeX;
         $yAxe  = &$graph->{"axeY".$this->_attributes['axeId']};

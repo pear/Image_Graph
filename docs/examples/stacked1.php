@@ -49,7 +49,10 @@
                       50.0
                     );
 
-    $graph->addData($data, "bar",  array("axeId" => 1, "color" => array(0x30,0xBF,0xBF)));
+    $dataObj = &$graph->addData($data, "bar",  array("axeId" => 1, "color" => array(0x30,0xBF,0xBF)));
+    $dataObj->setFill("solid", array("color" => array(0x00, 0x80, 0x80)));
+    
+    
     $dataObj = &$graph->addData($data, "line", array("axeId" => 1, "color" => array(0x29,0xCC,0x29)));
     $marker =& $dataObj->setDataMarker("diamond", array("color" => array(0xBF,0xBF,0xBF)));
     $marker->setSize(7);

@@ -13,14 +13,6 @@ require_once("Image/Graph/Data/Common.php");
 class Image_Graph_Data_Bar extends Image_Graph_Data_Common
 {
     /**
-    * Type of data element
-    *
-    * @var string
-    * @access private
-    */
-    var $_type = "bar";
-
-    /**
     * Constructor for the class
     *
     * @param  object  parent object (of type Image_Graph)
@@ -33,6 +25,9 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
             $attributes['width'] = 0.5;
         }
         parent::Image_Graph_Data_Common($parent, $data, $attributes);
+
+        // a bar is filled by default
+        $this->setFill("solid", array("color" => $attributes["color"]));
         $parent->_addExtraSpace = 1;
     }
 
@@ -57,14 +52,34 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
             }
         }
     }
+    
+    /**
+    * Checks if two arrays are equal
+    *
+    * @param array
+    * @param array
+    * @return boolean   true if both are equal
+    * @access private
+    */    
+    function _arraysEqual($arr1, $arr2)
+    {
+        $equal = true;
+        foreach ($arr1 as $key => $value) {
+            if (!isset($arr2[$key]) || ($value != $arr2[$key])) {
+                $equal = false;
+            }
+        }
+        return $equal;
+    }
 
     /**
-    * Draws diagram element 
+    * Draws diagram element
     *
-    * @param gd-resource image-resource to draw to
+    * @param gd-resource  image-resource to draw to
+    * @param int          choose what to draw; use constants IMAGE_GRAPH_DRAW_FILLANDBORDER, IMAGE_GRAPH_DRAW_JUSTFILL or IMAGE_GRAPH_DRAW_JUSTBORDER
     * @access private
     */
-    function drawGD(&$img)
+    function drawGD(&$img, $drawWhat=IMAGE_GRAPH_DRAW_FILLANDBORDER)
     {
         $graph = &$this->_graph;
         $xAxe  = &$graph->axeX;
@@ -72,12 +87,12 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
         $drawColor = imagecolorallocate($img, $this->_attributes["color"][0], $this->_attributes["color"][1], $this->_attributes["color"][2]);
         $numData = count($this->_data);
 
-        if ($numData < 2) {        
+        if ($numData < 2) {
           $halfWidthPixel = floor($graph->_drawingareaSize[1] / 2);
         } else {
           $halfWidthPixel = floor(($xAxe->valueToPixelRelative(1) - $xAxe->valueToPixelRelative(0)) / 2 * $this->_attributes['width']);
         }
-        
+
         for ($counter=0; $counter<$numData; $counter++) {
             if (!is_array($this->_stackingData)) {
                 $currData = array(0, $this->_data[$counter]);
@@ -87,7 +102,7 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
             if (!is_null($currData[0]) && !is_null($currData[1])) {
                 // otherwise do not draw
                 $xPos = $xAxe->valueToPixelAbsolute($counter);
-                
+
                 // clip if necessary
                 if ($currData[0] < $yAxe->_boundsEffective['min']) {
                     $currData[0] = $yAxe->_boundsEffective['min'];
@@ -95,9 +110,28 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
                 if ($currData[1] > $yAxe->_boundsEffective['max']) {
                     $currData[1] = $yAxe->_boundsEffective['max'];
                 }
-                imagefilledrectangle ($img, $xPos-$halfWidthPixel, $yAxe->valueToPixelAbsolute($currData[1]),
-                                            $xPos+$halfWidthPixel, $yAxe->valueToPixelAbsolute($currData[0]),
-                                      $drawColor);
+
+                $points = array(array($xPos-$halfWidthPixel, $yAxe->valueToPixelAbsolute($currData[1])),
+                                array($xPos+$halfWidthPixel, $yAxe->valueToPixelAbsolute($currData[0])));
+
+                if ((($drawWhat == IMAGE_GRAPH_DRAW_FILLANDBORDER) ||
+                     ($drawWhat == IMAGE_GRAPH_DRAW_JUSTFILL)) &&
+                    (isset($this->_fill))) {
+                    $this->_fill->drawGDBox($img, $points);
+                }
+
+                if (($drawWhat == IMAGE_GRAPH_DRAW_FILLANDBORDER) ||
+                    ($drawWhat == IMAGE_GRAPH_DRAW_JUSTBORDER)) {
+                    if (!is_null($this->_fill) &&
+                        (strtolower(get_class($this->_fill)) == "image_graph_fill_solid") &&
+                        ($this->_arraysEqual($this->_attributes["color"], $this->_fill->_attributes["color"]))
+                       ) {
+                        // simply do nothing in this case since drawing a border for the bar in the same color will
+                        // look the same if a solid fill is used as if we simply not draw the border at all :-))
+                    } else {
+                        imagerectangle ($img, $points[0][0], $points[0][1], $points[1][0], $points[1][1], $drawColor);
+                    }
+                }
             }
         }
     }

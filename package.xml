@@ -49,6 +49,10 @@
             <file>Square.php</file>
             <file>Triangle.php</file>
           </dir> 
+          <dir name="Fill" role="php">
+            <file>Common.php</file>
+            <file>Solid.php</file>
+          </dir> 
         </dir> 
         <dir name="docs" role="doc">
           <dir name="examples" role="doc">

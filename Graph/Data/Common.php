@@ -7,16 +7,13 @@
 * @package  Image_Graph
 * @access   private
 */
+
+define('IMAGE_GRAPH_DRAW_FILLANDBORDER',  1);
+define('IMAGE_GRAPH_DRAW_JUSTFILL', 2);
+define('IMAGE_GRAPH_DRAW_JUSTBORDER',    3);
+
 class Image_Graph_Data_Common
 {
-    /**
-    * Type of data element
-    *
-    * @var string
-    * @access private
-    */
-    var $_type = "common";
-
     /**
     * Data to be drawn (array of numerical values)
     *
@@ -50,6 +47,14 @@ class Image_Graph_Data_Common
     var $_datamarker = null;
 
     /**
+    * fill object (of type Image_Graph_Fill_...)
+    *
+    * @var object
+    * @access private
+    */
+    var $_fill = null;
+
+    /**
     * Constructor for the class
     *
     * @param  object  graph object (of type Image_Graph)
@@ -62,7 +67,7 @@ class Image_Graph_Data_Common
         $this->_data        = $data;
         $this->_attributes  = $attributes;
     }
-    
+
     /**
     * Set a data marker to be used
     *
@@ -73,20 +78,56 @@ class Image_Graph_Data_Common
     */
     function &setDataMarker($representation = "line", $attributes = array())
     {
+        if (is_null($representation)) {
+            unset($this->_datamarker);
+            return null;
+        }
+
         $representation = strtolower($representation);
-        $dataElementFile  = "Image/Graph/DataMarker/".ucfirst($representation).".php";
-        $dataElementClass = "Image_Graph_DataMarker_".ucfirst($representation);
+        $dataMarkerFile  = "Image/Graph/DataMarker/".ucfirst($representation).".php";
+        $dataMarkerClass = "Image_Graph_DataMarker_".ucfirst($representation);
 
         if (!isset($attributes["color"])) {
             $attributes["color"] = $this->_dataDefaultColor;
         }
 
-        if (!class_exists($dataElementClass)) {
-            require_once($dataElementFile);
+        if (!class_exists($dataMarkerClass)) {
+            require_once($dataMarkerFile);
         }
-        $newMarker =& new $dataElementClass($attributes);
+        $newMarker =& new $dataMarkerClass($attributes);
         $this->_datamarker =& $newMarker;
         return $newMarker;
+    }
+
+    /**
+    * Set a fill element to be used
+    *
+    * @param  string  type of fill (e.g. "solid")
+    * @param  array   attributes like color
+    * @return object  fill-object
+    * @access public
+    */
+    function &setFill($type = "solid", $attributes = array())
+    {
+        if (is_null($type)) {
+            unset($this->_fill);
+            return null;
+        }
+
+        $type = strtolower($type);
+        $fillFile  = "Image/Graph/Fill/".ucfirst($type).".php";
+        $fillClass = "Image_Graph_Fill_".ucfirst($type);
+
+        if (!isset($attributes["color"])) {
+            $attributes["color"] = $this->_dataDefaultColor;
+        }
+
+        if (!class_exists($fillClass)) {
+            require_once($fillFile);
+        }
+        $newFill =& new $fillClass($attributes);
+        $this->_fill =& $newFill;
+        return $newFill;
     }
 
     /**
@@ -104,7 +145,7 @@ class Image_Graph_Data_Common
             $xAxe  = &$graph->axeX;
             $yAxe  = &$graph->{"axeY".$this->_attributes['axeId']};
             $numData = count($this->_data);
-    
+
             for ($counter=0; $counter<$numData; $counter++) {
                 if (!is_null($this->_data[$counter]) &&
                     ($yAxe->_boundsEffective['min'] <= $this->_data[$counter]) && ($this->_data[$counter] <= $yAxe->_boundsEffective['max'])
@@ -132,7 +173,7 @@ class Image_Graph_Data_Common
         $graph = &$this->_graph;
         $upperLimit = $graph->_drawingareaPos[1];
         $lowerLimit = $graph->_drawingareaPos[1]+$graph->_drawingareaSize[1]-1;
-        
+
         // handle trivial cases first
         if (($from[1] < $upperLimit) &&
             ($to[1]   < $upperLimit)
@@ -147,10 +188,10 @@ class Image_Graph_Data_Common
             // both points below the min-limit
             return (array());
         }
-        
+
         $newFrom = $from;
         $newTo   = $to;
-        
+
         if ($from[1] < $upperLimit) {
             // from above the max-limit
             $factor = ($to[0]-$from[0]) / ($to[1]-$from[1]);
@@ -196,12 +237,13 @@ class Image_Graph_Data_Common
     }
 
     /**
-    * Draws diagram element 
+    * Draws diagram element
     *
-    * @param gd-resource image-resource to draw to
+    * @param gd-resource  image-resource to draw to
+    * @param int          choose what to draw; use constants IMAGE_GRAPH_DRAW_FILLANDBORDER, IMAGE_GRAPH_DRAW_JUSTFILL or IMAGE_GRAPH_DRAW_JUSTBORDER
     * @access private
     */
-    function drawGD(&$img)
+    function drawGD(&$img, $drawWhat=IMAGE_GRAPH_DRAW_FILLANDBORDER)
     {
         // implementation of this function in the derived diagram-element-classes
     }

@@ -1,7 +1,7 @@
 <?
 // $Id$
 /**
-* Square data-element for a Image_Graph diagram
+* Square datamarker-element for a Image_Graph diagram
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
