@@ -178,7 +178,7 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
             ($drawWhat == IMAGE_GRAPH_DRAW_JUSTBORDER)) {
             for ($counter=0; $counter<$numData; $counter++) {
                 if (!is_array($this->_stackingData)) {
-                    $beforeData = array(0, $this->_data[$counter-1]);
+                    $beforeData = array(0, @$this->_data[$counter-1]);
                     $currData   = array(0, $this->_data[$counter]);
                 } else {
                     $beforeData = $this->_stackingData[$counter-1];

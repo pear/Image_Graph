@@ -153,7 +153,7 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
                     ($drawWhat == IMAGE_GRAPH_DRAW_JUSTBORDER)) {
                     if (!is_null($this->_fill) &&
                         (strtolower(get_class($this->_fill)) == "image_graph_fill_solid") &&
-                        ($this->_arraysEqual($this->_color, $this->_fill->_attributes["color"]))
+                        ($this->_arraysEqual($this->_color, @$this->_fill->_attributes["color"]))
                        ) {
                         // simply do nothing in this case since drawing a border for the bar in the same color will
                         // look the same if a solid fill is used as if we simply not draw the border at all :-))
