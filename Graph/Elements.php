@@ -181,15 +181,68 @@ class Image_Graph_Base
     /**
     * Set text
     *
-    * @param  array/string    lines of title; lines can also be separated by "\n" and will automatically be converted into an array
+    * Multiple lines are possible by using "\n" as separator.
+    *
+    * @param  string
     * @access public
     */
     function setText($text)
     {
+        // @todo: make this a string, instead of an array
         if (is_string($text)) {
             $text = explode("\n", $text);
         }
         $this->_text = $text;
+    }
+}
+
+/**
+* Class for storing a title
+*
+* Titles are needed in various places: diagram title, axis titles, ...
+* This function provides a common API for all titles
+*
+* @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
+* @package  Image_Graph
+* @access   public
+*/
+class Image_Graph_Title extends Image_Graph_Base
+{
+    /**
+    * Spacer
+    *
+    * Note that not all values will have effect on all titles.
+    * For the diagram title and the x-axis title currently only the
+    * top/bottom-values are used/needed.
+    * For an y-axis-title the left/right-values are used/needed.
+    *
+    * @var    array           (array of 4 ints) array with keys "top, bottom, left, right"
+    * @access private
+    */
+    var $_spacer = array("top" => 2, "bottom" => 2, "left" => 2, "right" => 2);
+
+    /**
+    * Constructor
+    *
+    * The default color for a title is set to "black" here.
+    *
+    * @access public
+    */
+    function Image_Graph_Title()
+    {
+        $this->setColor("black");
+    }
+
+    /**
+    * Set color
+    *
+    * @param  mixed           any color representation supported by Image_Graph_Color::color2RGB()
+    * @see    Image_Graph_Color::color2RGB()
+    * @access public
+    */
+    function setColor($color)
+    {
+        $this->_fontOptions['color'] = Image_Graph_Color::color2RGB($color);
     }
 }
 
@@ -223,16 +276,12 @@ class Image_Graph_Axis extends Image_Graph_Base
     var $title = null;
 
     /**
-    * Spacer
+    * Values on the axis
     *
-    * Note that not all values will have effect on all axes. For the
-    * x-axis the top/bottom-values are used, for the y0/y1-axis only
-    * the left/right values make sense.
-    *
-    * @var    array           (array of 4 ints) array with keys "top, bottom, left, right"
-    * @access private
+    * @var    object Image_Graph_Axis_Values
+    * @access public
     */
-    var $_spacer = array("top" => 2, "bottom" => 2, "left" => 2, "right" => 2);
+    var $values = null;
 
     /**
     * Bounds for axis (min/max value)
@@ -329,22 +378,6 @@ class Image_Graph_Axis extends Image_Graph_Base
     var $_ticksAutoSteps = array("major" => 5, "minor" => 25);
 
     /**
-    * Numberformat
-    *
-    * @var    string          format-string in printf-syntax
-    * @access private
-    */
-    var $_numberformat = "%.02f";
-
-    /**
-    * Color for numbers
-    *
-    * @var    array           (4 ints for R,G,B,A); initially null
-    * @access private
-    */
-    var $_numbercolor = null;
-
-    /**
     * Type of the axis
     *
     * The variable is defined/used here as a "virtual" variable.
@@ -379,11 +412,16 @@ class Image_Graph_Axis extends Image_Graph_Base
     /**
     * Constructor
     *
+    * The colors for title and values on the axis are not set by default.
+    * If you don't explicitly set them, the color of the axis will be inherited.
+    *
     * @access public
     */
     function &Image_Graph_Axis()
     {
         $this->title  = new Image_Graph_Title();
+        unset($this->title->_fontOptions['color']);
+        $this->values = new Image_Graph_Axis_Values();
     }
 
     /**
@@ -512,31 +550,34 @@ class Image_Graph_Axis extends Image_Graph_Base
     /**
     * Set numberformat for axis
     *
-    * Use this to set the format in which numbers on the axis will be drawn.
-    * E.g. you can use it to set a certain number of decimal values or
-    * prepend/append text to the numbers.
-    * Numbers will be drawn at all "major ticks" on the axis.
+    * !! This function is deprecated. Use values->setNumberformat() !!
     *
     * @param  string          sprintf-formatstring
     * @access public
+    * @see    Image_Graph_Axis_Values::setNumberformat()
+    * @see    $values
+    * @deprecated
     */
     function setNumberformat($format)
     {
-        $this->_numberformat = $format;
+        $this->values->setNumberformat($format);
     }
 
     /**
     * Set color for numbers on the axis
     *
-    * If the color-value is "null" instead of an array default values will be taken
+    * !! This function is deprecated. Use values->setColor() !!
     *
     * @param  mixed           any color representation supported by Image_Graph_Color::color2RGB()
     * @see    Image_Graph_Color::color2RGB()
     * @access public
+    * @see    Image_Graph_Axis_Values::setColor()
+    * @see    $values
+    * @deprecated
     */
     function setNumbercolor($color)
     {
-        $this->_numbercolor = Image_Graph_Color::color2RGB($color);
+        $this->values->setColor($color);
     }
 }
 
@@ -562,16 +603,6 @@ class Image_Graph_Axis_X extends Image_Graph_Axis
     * @access private
     */
     var $_axistype = IMAGE_GRAPH_AXISTYPE_TEXT;
-
-    /**
-    * Labels for data on this axis
-    *
-    * Will be used (shown) when axis has $_axistype of IMAGE_GRAPH_AXISTYPE_TEXT
-    *
-    * @var    array           one string per data-column
-    * @access private
-    */
-    var $_labels = array();
 
     /**
     * Constructor
@@ -607,32 +638,17 @@ class Image_Graph_Axis_X extends Image_Graph_Axis
     /**
     * Set labels for data on this axis
     *
-    * These labels will be used (shown) when the axis-type is
-    * IMAGE_GRAPH_AXISTYPE_TEXT.
+    * !! This function is deprecated. Use values->setText() !!
     *
-    * @param  mixed
+    * @param  array           (array of string) Text-labels on the axis
     * @access public
     * @see    setAxistype()
+    * @see    Image_Graph_Axis_Values::setText()
+    * @see    $values
     */
     function setLabels($labels)
     {
-        if (is_array($labels)) {
-            // @todo: add additional checks here; only array of strings/ints/floats allowed
-
-            $arrayEmpty = true;
-            foreach ($labels as $currLabel) {
-                if (!empty($currLabel)) {
-                    $arrayEmpty = false;
-                }
-            }
-
-            // if array is empty (or all array-entries, e.g. strings, are empty) only set an empty array
-            if ($arrayEmpty) {
-                $this->_labels = array();
-            } else {
-                $this->_labels = $labels;
-            }
-        }
+        $this->values->setText($labels);
     }
 
     /**
@@ -886,41 +902,76 @@ class Image_Graph_Axis_Y extends Image_Graph_Axis
     }
 }
 
-/**
-* Class for storing a title
-*
-* Titles are needed in various places: diagram title, axis titles, ...
-* This function provides a common API for all titles
-*
-* @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
-* @package  Image_Graph
-* @access   public
-*/
-class Image_Graph_Title extends Image_Graph_Base
+class Image_Graph_Axis_Values extends Image_Graph_Title
 {
     /**
-    * Spacer
+    * Numberformat
     *
-    * Note that not all values will have effect on all titles.
-    * For the diagram title and the x-axis title currently only the
-    * top/bottom-values are used/needed.
-    * For an y-axis-title the left/right-values are used/needed.
-    *
-    * @var    array           (array of 4 ints) array with keys "top, bottom, left, right"
+    * @var    string          format-string in printf-syntax
     * @access private
     */
-    var $_spacer = array("top" => 2, "bottom" => 2, "left" => 2, "right" => 2);
+    var $_numberformat = "%.02f";
 
     /**
     * Constructor
     *
-    * The default color for a title is set to "black" here.
-    *
     * @access public
     */
-    function Image_Graph_Title()
+    function Image_Graph_Axis_Values()
     {
-        $this->setColor("black");
+        // standard is no color, will later be inherited from axis if
+        //   not explicitly set for these values
+        unset($this->_fontOptions['color']);
+    }
+
+    /**
+    * Set numberformat for numerical values on the axis
+    *
+    * Use this to set the format in which numbers on the axis will be drawn.
+    * E.g. you can use it to set a certain number of decimal values or
+    * prepend/append text to the numbers.
+    * Numbers will be drawn at all "major ticks" on the axis.
+    * Note that the "numberformat" is only used if the type of the axis is
+    * numerical (linear or at some later step even logarithmic), not if
+    * it's a textual axis (x-axis).
+    *
+    * @param  string          sprintf-formatstring
+    * @access public
+    */
+    function setNumberformat($format)
+    {
+        $this->_numberformat = $format;
+    }
+
+    /**
+    * Set text-labels on axis
+    *
+    * These text.labels will be used (shown) when the axis-type is
+    * IMAGE_GRAPH_AXISTYPE_TEXT.
+    * Multiple lines are possible by using "\n" as separator.
+    *
+    * @param  array           (array of string) Text-labels
+    * @access public
+    */
+    function setText($texts)
+    {
+        if (is_array($texts)) {
+            // @todo: add additional checks here; only array of strings/ints/floats allowed
+
+            $arrayEmpty = true;
+            foreach ($texts as $currText) {
+                if (!empty($currText)) {
+                    $arrayEmpty = false;
+                }
+            }
+
+            // if array is empty (or all array-entries, e.g. strings, are empty) only set an empty array
+            if ($arrayEmpty) {
+                $this->_text = array();
+            } else {
+                $this->_text = $texts;
+            }
+        }
     }
 }
 

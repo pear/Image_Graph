@@ -457,15 +457,16 @@ class Image_Graph
     function _calculateAxesYMinMaxTicks()
     {
         for ($axisCount=0; $axisCount<=1; $axisCount++) {
-            $currAxis = "axisY".$axisCount;
-            $bounds_min_auto = !isset($this->{$currAxis}->_bounds['min']);
-            $bounds_max_auto = !isset($this->{$currAxis}->_bounds['max']);
+            $currAxis = & $this->{"axisY".$axisCount};
+
+            $bounds_min_auto = !isset($currAxis->_bounds['min']);
+            $bounds_max_auto = !isset($currAxis->_bounds['max']);
 
             if (!$bounds_min_auto) {
-                $this->{$currAxis}->_boundsEffective['min'] = $this->{$currAxis}->_bounds['min'];
+                $currAxis->_boundsEffective['min'] = $currAxis->_bounds['min'];
             }
             if (!$bounds_max_auto) {
-                $this->{$currAxis}->_boundsEffective['max'] = $this->{$currAxis}->_bounds['max'];
+                $currAxis->_boundsEffective['max'] = $currAxis->_bounds['max'];
             }
             if (($bounds_min_auto) || ($bounds_max_auto)) {
                 foreach ($this->_dataElementsEffective as $currDataElement) {
@@ -475,11 +476,11 @@ class Image_Graph
                         $currDataElementTemp = $currDataElement;
                     }
                     if ($currDataElementTemp[0]->_attributes['axisId'] == $axisCount) {
-                        if ($bounds_min_auto && !isset($this->{$currAxis}->_boundsEffective['min'])) {
-                            $this->{$currAxis}->_boundsEffective['min'] = $currDataElementTemp[0]->_data[0];
+                        if ($bounds_min_auto && !isset($currAxis->_boundsEffective['min'])) {
+                            $currAxis->_boundsEffective['min'] = $currDataElementTemp[0]->_data[0];
                         }
-                        if ($bounds_max_auto && !isset($this->{$currAxis}->_boundsEffective['max'])) {
-                            $this->{$currAxis}->_boundsEffective['max'] = $currDataElementTemp[0]->_data[0];
+                        if ($bounds_max_auto && !isset($currAxis->_boundsEffective['max'])) {
+                            $currAxis->_boundsEffective['max'] = $currDataElementTemp[0]->_data[0];
                         }
 
                         foreach ($currDataElementTemp as $currDataElementEffective) {
@@ -489,11 +490,11 @@ class Image_Graph
                                 $dataTemp = & $currDataElementEffective->_data;
                             }
                             foreach ($dataTemp as $currData) {
-                                if ($bounds_min_auto && ($this->{$currAxis}->_boundsEffective['min'] > $currData)) {
-                                    $this->{$currAxis}->_boundsEffective['min'] = $currData;
+                                if ($bounds_min_auto && ($currAxis->_boundsEffective['min'] > $currData)) {
+                                    $currAxis->_boundsEffective['min'] = $currData;
                                 }
-                                if ($bounds_max_auto && ($this->{$currAxis}->_boundsEffective['max'] < $currData)) {
-                                    $this->{$currAxis}->_boundsEffective['max'] = $currData;
+                                if ($bounds_max_auto && ($currAxis->_boundsEffective['max'] < $currData)) {
+                                    $currAxis->_boundsEffective['max'] = $currData;
                                 }
                             }
                         }
@@ -502,57 +503,29 @@ class Image_Graph
             }
 
             // correction if only one y-value is present in the diagram
-            if ($this->{$currAxis}->_boundsEffective['min'] == $this->{$currAxis}->_boundsEffective['max']) {
-                if (($this->{$currAxis}->_boundsEffective['min']-1) >= 0) {
-                    $this->{$currAxis}->_boundsEffective['min']--;
+            if ($currAxis->_boundsEffective['min'] == $currAxis->_boundsEffective['max']) {
+                if (($currAxis->_boundsEffective['min']-1) >= 0) {
+                    $currAxis->_boundsEffective['min']--;
                 }
-                $this->{$currAxis}->_boundsEffective['max']++;
+                $currAxis->_boundsEffective['max']++;
             }
 
-            $this->{$currAxis}->_autoadjustBoundsAndTicks();
+            $currAxis->_autoadjustBoundsAndTicks();
 
             // remove ticks outside the axis-ranges
-            foreach ($this->{$currAxis}->_ticksMajorEffective as $key => $value) {
-                if (($value < $this->{$currAxis}->_boundsEffective['min']) ||
-                    ($value > $this->{$currAxis}->_boundsEffective['max'])) {
-                    unset($this->{$currAxis}->_ticksMajorEffective[$key]);
+            foreach ($currAxis->_ticksMajorEffective as $key => $value) {
+                if (($value < $currAxis->_boundsEffective['min']) ||
+                    ($value > $currAxis->_boundsEffective['max'])) {
+                    unset($currAxis->_ticksMajorEffective[$key]);
                 }
             }
-            foreach ($this->{$currAxis}->_ticksMinorEffective as $key => $value) {
-                if (($value < $this->{$currAxis}->_boundsEffective['min']) ||
-                    ($value > $this->{$currAxis}->_boundsEffective['max'])) {
-                    unset($this->{$currAxis}->_ticksMinorEffective[$key]);
+            foreach ($currAxis->_ticksMinorEffective as $key => $value) {
+                if (($value < $currAxis->_boundsEffective['min']) ||
+                    ($value > $currAxis->_boundsEffective['max'])) {
+                    unset($currAxis->_ticksMinorEffective[$key]);
                 }
             }
         } // for ($axisCount=0; $axisCount<=1; $axisCount++)
-    }
-
-    /**
-    * Get font options, combined with the _defaultFontOptions
-    *
-    * If certain values are not in the array given to the function, they
-    * are taken from the _defaultFontOptions.
-    * These options are directly given to the class Image_Text which
-    * handles text-output. For a full list of necessary/available
-    * font-options please refer to the Image_Text-docs and/or have a
-    * look at the examples shipped with the Image_Graph-package.
-    * !! Note that the option "font_type" defaults to "ttf" (TrueType-fonts)
-    * at the moment. As soon as PHP-internal (bitmap) fonts are also
-    * supported by Image_Text this will default to those internal fonts
-    * instead. !!
-    *
-    * @var    array     stores information like font_type, font_path, font_file, font_size, antialiasing etc.
-    * @return array     combined font-options
-    * @access private
-    */
-    function _mergeFontOptions($options)
-    {
-        foreach ($this->_defaultFontOptions as $key => $value) {
-            if (!isset($options[$key])) {
-                $options[$key] = $value;
-            }
-        }
-        return $options;
     }
 
     /**
@@ -650,8 +623,9 @@ class Image_Graph
                               "right"  => $this->_borderspace);
 
         if (!empty($this->_defaultFontOptions)) { // otherwise we don't have correct settings for font-filename etc.
+            // diagram title
             if (!empty($this->diagramTitle->_text)) {
-                $this->diagramTitle->_fontOptions = $this->_mergeFontOptions($this->diagramTitle->_fontOptions);
+                $this->diagramTitle->_fontOptions = array_merge($this->_defaultFontOptions, $this->diagramTitle->_fontOptions);
 
                 require_once 'Image/Text.php';
                 $tempText = new Image_Text($this->diagramTitle->_text, $this->diagramTitle->_fontOptions);
@@ -663,86 +637,95 @@ class Image_Graph
                 $borderspaceSum['top'] += $this->diagramTitle->_spacer['bottom'];
             }
 
-            if (!empty($this->axisX->title->_text)) {
-                $this->axisX->title->_fontOptions = $this->_mergeFontOptions($this->axisX->title->_fontOptions);
+            // title for x-axis
+            $currAxis = & $this->axisX;
+            if (!empty($currAxis->title->_text)) {
+                if (!isset($currAxis->title->_fontOptions['color'])) {
+                    $currAxis->title->_fontOptions['color'] = $currAxis->_color;
+                }
+                $currAxis->title->_fontOptions = array_merge($this->_defaultFontOptions, $currAxis->title->_fontOptions);
 
                 require_once 'Image/Text.php';
-                $tempText = new Image_Text($this->axisX->title->_text, $this->axisX->title->_fontOptions);
+                $tempText = new Image_Text($currAxis->title->_text, $currAxis->title->_fontOptions);
                 $tempText->init();
                 $tempText->measurize();
                 $textSize = $tempText->_realTextSize;
                 $borderspaceSum["bottom"] += $textSize['height'];
-                $borderspaceSum['bottom'] += $this->axisX->title->_spacer['top'];
-                $borderspaceSum['bottom'] += $this->axisX->title->_spacer['bottom'];
+                $borderspaceSum['bottom'] += $currAxis->title->_spacer['top'];
+                $borderspaceSum['bottom'] += $currAxis->title->_spacer['bottom'];
 
                 $totalTitleWidth = $textSize['width'] +
-                                       $this->axisX->title->_spacer['left'] +
-                                       $this->axisX->title->_spacer['right'];
-                $this->axisX->_internalTempValues['totalTitleWidth'] = $totalTitleWidth;
+                                       $currAxis->title->_spacer['left'] +
+                                       $currAxis->title->_spacer['right'];
+                $currAxis->_internalTempValues['totalTitleWidth'] = $totalTitleWidth;
 
                 $totalTitleHeight = $textSize['height'] +
-                                       $this->axisX->title->_spacer['top'] +
-                                       $this->axisX->title->_spacer['bottom'];
-                $this->axisX->_internalTempValues['totalTitleHeight'] = $totalTitleHeight;
-                $this->axisX->_internalTempValues['titleHeight'] = $textSize['height'];
+                                       $currAxis->title->_spacer['top'] +
+                                       $currAxis->title->_spacer['bottom'];
+                $currAxis->_internalTempValues['totalTitleHeight'] = $totalTitleHeight;
+                $currAxis->_internalTempValues['titleHeight'] = $textSize['height'];
             }
 
             for ($axisCount=0; $axisCount<=1; $axisCount++) {
-                $currAxis = "axisY".$axisCount;
+                $currAxis = & $this->{"axisY".$axisCount};
 
-                $this->{$currAxis}->_internalTempValues['totalTitleWidth'] = 0;
-                if (!empty($this->{$currAxis}->title->_text)) {
-                    $this->{$currAxis}->title->_fontOptions = $this->_mergeFontOptions($this->{$currAxis}->title->_fontOptions);
+                $currAxis->_internalTempValues['totalTitleWidth'] = 0;
+                if (!empty($currAxis->title->_text)) {
+                    if (!isset($currAxis->title->_fontOptions['color'])) {
+                        $currAxis->title->_fontOptions['color'] = $currAxis->_color;
+                    }
+                    $currAxis->title->_fontOptions = array_merge($this->_defaultFontOptions, $currAxis->title->_fontOptions);
 
                     require_once 'Image/Text.php';
-                    $tempText = new Image_Text($this->{$currAxis}->title->_text, $this->{$currAxis}->title->_fontOptions);
+                    $tempText = new Image_Text($currAxis->title->_text, $currAxis->title->_fontOptions);
                     $tempText->set('angle', 90);
                     $tempText->init();
                     $tempText->measurize();
                     $textSize = $tempText->_realTextSize;
 
                     $totalTitleWidth = $textSize['height'] +
-                                       $this->{$currAxis}->title->_spacer['left'] +
-                                       $this->{$currAxis}->title->_spacer['right'];
-                    $this->{$currAxis}->_internalTempValues['totalTitleWidth'] = $totalTitleWidth;
+                                       $currAxis->title->_spacer['left'] +
+                                       $currAxis->title->_spacer['right'];
+                    $currAxis->_internalTempValues['totalTitleWidth'] = $totalTitleWidth;
 
                     $totalTitleHeight = $textSize['width'] +
-                                       $this->{$currAxis}->title->_spacer['top'] +
-                                       $this->{$currAxis}->title->_spacer['bottom'];
-                    $this->{$currAxis}->_internalTempValues['totalTitleHeight'] = $totalTitleHeight;
+                                       $currAxis->title->_spacer['top'] +
+                                       $currAxis->title->_spacer['bottom'];
+                    $currAxis->_internalTempValues['totalTitleHeight'] = $totalTitleHeight;
 
                     if ($axisCount == 0)
                     {
                         $borderspaceSum['left'] += $totalTitleWidth;
-                        $borderspaceSum['left'] += $this->axisX->title->_spacer['left'];
-                        $borderspaceSum['left'] += $this->axisX->title->_spacer['right'];
+                        $borderspaceSum['left'] += $currAxis->title->_spacer['left'];
+                        $borderspaceSum['left'] += $currAxis->title->_spacer['right'];
                     } else { // else axisCount == 1
                         $borderspaceSum['right'] += $totalTitleWidth;
-                        $borderspaceSum['right'] += $this->axisX->title->_spacer['left'];
-                        $borderspaceSum['right'] += $this->axisX->title->_spacer['right'];
+                        $borderspaceSum['right'] += $currAxis->title->_spacer['left'];
+                        $borderspaceSum['right'] += $currAxis->title->_spacer['right'];
                     }
                 }
             }
 
             // prepare drawing of labels for the X-axes
-            if (!empty($this->axisX->_labels)) {
-                $this->axisX->_fontOptions = $this->_mergeFontOptions($this->axisX->_fontOptions);
+            $currAxis = & $this->axisX;
+
+            if (!empty($currAxis->values->_text)) {
+                if (!isset($currAxis->values->_fontOptions['color'])) {
+                    $currAxis->values->_fontOptions['color'] = $currAxis->_color;
+                }
+                $currAxis->values->_fontOptions = array_merge($this->_defaultFontOptions, $currAxis->values->_fontOptions);
 
                 require_once 'Image/Text.php';
-                $tempText = new Image_Text("", $this->axisX->_fontOptions);
+                $tempText = new Image_Text("", $currAxis->values->_fontOptions);
                 $maxHeight = 0;
 
-                for ($labelCount=0; $labelCount<$this->axisX->_bounds['max']; $labelCount++) {
-                    if (isset($this->axisX->_labels[$labelCount])) {
-                        $currLabel = $this->axisX->_labels[$labelCount];
-                    } else {
-                        $currLabel = null;
-                    }
-                    if (!empty($currLabel)) {
+                for ($labelCount=0; $labelCount < $currAxis->_bounds['max']; $labelCount++) {
+                    $currLabel = $currAxis->values->_text[$labelCount];
+                    if (isset($currLabel) && !empty($currLabel)) {
                         if (is_string($currLabel)) {
                             $tempText->set('text', $currLabel);
                         } else {
-                            $tempText->set('text', sprintf($this->axisX->_numberformat, $currLabel));
+                            $tempText->set('text', sprintf($currAxis->values->_numberformat, $currLabel));
                         }
 
                         $tempText->init();
@@ -750,47 +733,51 @@ class Image_Graph
                         $textSize = $tempText->_realTextSize;
                         $maxHeight = max ($maxHeight, $textSize['height']);
 
-                        $this->axisX->_internalTempValues['maxLabelHeight'] = $maxHeight;
+                        $currAxis->_internalTempValues['maxLabelHeight'] = $maxHeight;
                     }
                 }
                 $borderspaceSum["bottom"] += $maxHeight;
-                $borderspaceSum["bottom"] += $this->axisX->_spacer['top'];
-                $borderspaceSum["bottom"] += $this->axisX->_spacer['bottom'];
+                $borderspaceSum["bottom"] += $currAxis->values->_spacer['top'];
+                $borderspaceSum["bottom"] += $currAxis->values->_spacer['bottom'];
             }
 
-            if (($this->axisX->_tickStyle == IMAGE_GRAPH_TICKS_OUTSIDE) ||
-                ($this->axisX->_tickStyle == IMAGE_GRAPH_TICKS_BOTH)
+            if (($currAxis->_tickStyle == IMAGE_GRAPH_TICKS_OUTSIDE) ||
+                ($currAxis->_tickStyle == IMAGE_GRAPH_TICKS_BOTH)
                ) {
-                $borderspaceSum["bottom"]  += $this->axisX->_tickSize;
+                $borderspaceSum["bottom"]  += $currAxis->_tickSize;
             }
 
             // prepare drawing of numbers for the Y-axes
             for ($axisCount=0; $axisCount<=1; $axisCount++) {
-                $currAxis = "axisY".$axisCount;
-                if ($this->{$currAxis}->_containsData) {
-                    $this->{$currAxis}->_fontOptions = $this->_mergeFontOptions($this->{$currAxis}->_fontOptions);
+                $currAxis = & $this->{"axisY".$axisCount};
+
+                if ($currAxis->_containsData) {
+                    if (!isset($currAxis->values->_fontOptions['color'])) {
+                        $currAxis->values->_fontOptions['color'] = $currAxis->_color;
+                    }
+                    $currAxis->values->_fontOptions = array_merge($this->_defaultFontOptions, $currAxis->values->_fontOptions);
 
                     require_once 'Image/Text.php';
                     $maxWidth = 0;
-                    foreach ($this->{$currAxis}->_ticksMajorEffective as $currTick) {
-                        $textStr  = sprintf($this->{$currAxis}->_numberformat, $currTick);
-                        $tempText = new Image_Text($textStr, $this->{$currAxis}->_fontOptions);
+                    foreach ($currAxis->_ticksMajorEffective as $currTick) {
+                        $textStr  = sprintf($currAxis->values->_numberformat, $currTick);
+                        $tempText = new Image_Text($textStr, $currAxis->values->_fontOptions);
                         $tempText->init();
                         $tempText->measurize();
                         $textSize = $tempText->_realTextSize;
                         $maxWidth = max ($maxWidth, $textSize['width']);
                     }
-                    $this->{$currAxis}->_internalTempValues['maxNumWidth'] = $maxWidth;
+                    $currAxis->_internalTempValues['maxNumWidth'] = $maxWidth;
 
                     if ($maxWidth > 0) {
                         if ($axisCount == 0) { // axis 0 (left axis)
                              $borderspaceSum["left"] += $maxWidth;
-                             $borderspaceSum["left"] += $this->{$currAxis}->_spacer['left'];
-                             $borderspaceSum["left"] += $this->{$currAxis}->_spacer['right'];
+                             $borderspaceSum["left"] += $currAxis->values->_spacer['left'];
+                             $borderspaceSum["left"] += $currAxis->values->_spacer['right'];
                         } else { // axis 1 (right axis)
                              $borderspaceSum["right"] += $maxWidth;
-                             $borderspaceSum["right"] += $this->{$currAxis}->_spacer['left'];
-                             $borderspaceSum["right"] += $this->{$currAxis}->_spacer['right'];
+                             $borderspaceSum["right"] += $currAxis->values->_spacer['left'];
+                             $borderspaceSum["right"] += $currAxis->values->_spacer['right'];
                         }
                     }
                 }
@@ -828,7 +815,7 @@ class Image_Graph
     function _drawGDtitles(&$img)
     {
         if (!empty($this->_defaultFontOptions)) { // otherwise we don't have correct settings for font-filename etc.
-            // draw title text
+            // draw diagram title
             if (!empty($this->diagramTitle->_text)) {
                 require_once 'Image/Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
                 $textY = $this->_pos[1] + $this->_borderspace + $this->diagramTitle->_spacer['top'];
@@ -839,61 +826,51 @@ class Image_Graph
                 $tempText->set('halign', IMAGE_TEXT_ALIGN_CENTER);
                 $tempText->set('canvas', $img);
                 $tempText->init();
-
-                $tempText->setColor(array ("r" => $this->diagramTitle->_color[0],
-                                           "g" => $this->diagramTitle->_color[1],
-                                           "b" => $this->diagramTitle->_color[2]));
                 $tempText->measurize();
                 $tempText->render();
             }
 
-            // draw x-axis text
-            if (!empty($this->axisX->title->_text)) {
+            // draw x-axis title
+            $currAxis = & $this->axisX;
+            if (!empty($currAxis->title->_text)) {
                 require_once 'Image/Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
-                $textY = $this->_pos[1] + $this->_size[1] - $this->axisX->_internalTempValues['titleHeight'] - $this->_borderspace - $this->axisX->title->_spacer['bottom'];
-                $height = $this->axisX->_internalTempValues['titleHeight'];
+                $textY = $this->_pos[1] + $this->_size[1] - $currAxis->_internalTempValues['titleHeight'] - $this->_borderspace - $currAxis->title->_spacer['bottom'];
+                $height = $currAxis->_internalTempValues['titleHeight'];
 
                 $width = $this->_drawingareaSize[0];
                 $textX = $this->_drawingareaPos[0];
 
-                $options = array_merge($this->axisX->_fontOptions, array('x' => $textX, 'y' => $textY, 'width' => $width, 'height' => $height));
-                $tempText = new Image_Text($this->axisX->title->_text, $options);
+                $options = array_merge($currAxis->title->_fontOptions, array('x' => $textX, 'y' => $textY, 'width' => $width, 'height' => $height));
+                $tempText = new Image_Text($currAxis->title->_text, $options);
                 $tempText->set('halign', IMAGE_TEXT_ALIGN_CENTER);
                 $tempText->set('canvas', $img);
                 $tempText->init();
                 $tempText->measurize();
-                $tempText->setColor(array ("r" => $this->axisX->title->_color[0],
-                                           "g" => $this->axisX->title->_color[1],
-                                           "b" => $this->axisX->title->_color[2]));
                 $tempText->render();
             }
 
-            // draw y-axis texts
+            // draw y-axis titles
             for ($axisCount=0; $axisCount<=1; $axisCount++) {
-                $currAxis = "axisY".$axisCount;
-                if (!empty($this->{$currAxis}->title->_text)) {
+                $currAxis = & $this->{"axisY".$axisCount};
+
+                if (!empty($currAxis->title->_text)) {
                     require_once 'Image/Text.php';
                     $options = array('angle' => 90, 'canvas' => $img);
-                    $options = array_merge($options, $this->{$currAxis}->title->_fontOptions);
+                    $options = array_merge($options, $currAxis->title->_fontOptions);
 
-                    $tempText = new Image_Text($this->{$currAxis}->title->_text, $options);
+                    $tempText = new Image_Text($currAxis->title->_text, $options);
                     $tempText->set('canvas', $img);
                     $tempText->init();
                     $tempText->measurize();
                     $textSize = $tempText->_realTextSize;
                     if ($axisCount == 0) {
-                        $textX = $this->_pos[0] + $this->_borderspace + $this->{$currAxis}->title->_spacer['left'];
+                        $textX = $this->_pos[0] + $this->_borderspace + $currAxis->title->_spacer['left'];
                     } else {
-                        $textX = $this->_pos[0] + $this->_size[0] - 1 - $this->_borderspace - $this->{$currAxis}->title->_spacer['right'] - $textSize['height'];
+                        $textX = $this->_pos[0] + $this->_size[0] - 1 - $this->_borderspace - $currAxis->title->_spacer['right'] - $textSize['height'];
                     }
                     $textY = $this->_drawingareaPos[1] + ($this->_drawingareaSize[1]/2) + ($textSize['width']/2);
 
-                    if (is_null($this->{$currAxis}->title->_color)) {
-                        $this->{$currAxis}->title->_color = $this->{$currAxis}->_color;
-                    }
-                    $tempText->set('color', array ("r" => $this->{$currAxis}->title->_color[0],
-                                               "g" => $this->{$currAxis}->title->_color[1],
-                                               "b" => $this->{$currAxis}->title->_color[2]));
+                    // @todo: !!! adapt this to the new API !!!
                     $tempText->set(array('x' => $textX, 'y' => $textY));
                     $tempText->render();
                 }
@@ -936,11 +913,11 @@ class Image_Graph
             }
         }
 
-        // drawing of numbers for the X-axis
+        // drawing of labels/numbers on the X-axis
         if (!empty($this->_defaultFontOptions)) { // otherwise we don't have correct settings for font-filename etc.
             require_once 'Image/Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
-            $textoptions = $this->axisX->_fontOptions;
-            $tempText = new Image_Text("", $textoptions);
+            $options = $this->axisX->values->_fontOptions;
+            $tempText = new Image_Text("", $options);
             $tempText->set('canvas', $img);
 
             $textY = $this->_drawingareaPos[1] + $this->_drawingareaSize[1];
@@ -950,21 +927,17 @@ class Image_Graph
                 $textY += $this->axisX->_tickSize;
             }
             $textY += round($this->axisX->_internalTempValues['maxLabelHeight'] / 2);
-            $textY += $this->axisX->_spacer['top'];
+            $textY += $this->axisX->values->_spacer['top'];
             $tempText->set('height', $this->axisX->_internalTempValues['maxLabelHeight']);
 
 
             for ($labelCount=0; $labelCount<$this->axisX->_bounds['max']; $labelCount++) {
-                if (isset($this->axisX->_labels[$labelCount])) {
-                    $currLabel = $this->axisX->_labels[$labelCount];
-                } else {
-                    $currLabel = null;
-                }
-                if (!empty($currLabel)) {
+                $currLabel = $this->axisX->values->_text[$labelCount];
+                if (isset($currLabel) && !empty($currLabel)) {
                     if (is_string($currLabel)) {
                         $tempText->set('text', $currLabel);
                     } else {
-                        $tempText->set('text', sprintf($this->axisX->_numberformat, $currLabel));
+                        $tempText->set('text', sprintf($this->axisX->values->_numberformat, $currLabel));
                     }
 
                     $tempText->set('halign', IMAGE_TEXT_ALIGN_CENTER);
@@ -973,15 +946,9 @@ class Image_Graph
                     $textSize = $tempText->_realTextSize;
                     $textX = $this->axisX->valueToPixelAbsolute($labelCount);
 
-                    if (is_null($this->axisX->_numbercolor)) {
-                        $this->axisX->_numbercolor = $this->axisX->_color;
-                    }
-
-                    $tempText->setColor(array ("r" => $this->axisX->_numbercolor[0],
-                                               "g" => $this->axisX->_numbercolor[1],
-                                               "b" => $this->axisX->_numbercolor[2]));
-                    $opts = array('cx' => $textX, 'cy' => $textY, 'canvas' => $img);
-                    $tempText->set($opts);
+                    // @todo: !!! adapt this to the new API !!!
+                    $options = array('cx' => $textX, 'cy' => $textY, 'canvas' => $img);
+                    $tempText->set($options);
                     $tempText->init();
                     $tempText->measurize();
                     $tempText->render();
@@ -994,18 +961,19 @@ class Image_Graph
                                  $this->_drawingareaPos[0]+$this->_drawingareaSize[0]-1);
 
         for ($axisCount=0; $axisCount<=1; $axisCount++) {
-            $currAxis = "axisY".$axisCount;
-            if ($this->{$currAxis}->_containsData) {
+            $currAxis = & $this->{"axisY".$axisCount};
+
+            if ($currAxis->_containsData) {
                 imageline    ($img, $axesXpositions[$axisCount], $this->_drawingareaPos[1]+$this->_drawingareaSize[1]-1,
                                     $axesXpositions[$axisCount], $this->_drawingareaPos[1], $drawColor);
 
-                $tickSize = $this->{$currAxis}->_tickSize;
-                $this->{$currAxis}->_internalTempValues['tickSize'] = $tickSize;
+                $tickSize = $currAxis->_tickSize;
+                $currAxis->_internalTempValues['tickSize'] = $tickSize;
 
-                foreach ($this->{$currAxis}->_ticksMajorEffective as $currTick) {
-                    $relativeYPosition = $this->{$currAxis}->valueToPixelRelative($currTick);
+                foreach ($currAxis->_ticksMajorEffective as $currTick) {
+                    $relativeYPosition = $currAxis->valueToPixelRelative($currTick);
 
-                    switch ($this->{$currAxis}->_tickStyle) {
+                    switch ($currAxis->_tickStyle) {
                         case IMAGE_GRAPH_TICKS_INSIDE:
                               imageline ($img, $axesXpositions[$axisCount]          , $this->_drawingareaPos[1]+$relativeYPosition,
                                                $axesXpositions[$axisCount]+$tickSize, $this->_drawingareaPos[1]+$relativeYPosition,
@@ -1024,11 +992,11 @@ class Image_Graph
                     }
                 }
 
-                $tickSize = ceil($this->{$currAxis}->_tickSize/2);
-                foreach ($this->{$currAxis}->_ticksMinorEffective as $currTick) {
-                    $relativeYPosition = $this->{$currAxis}->valueToPixelRelative($currTick);
+                $tickSize = ceil($currAxis->_tickSize/2);
+                foreach ($currAxis->_ticksMinorEffective as $currTick) {
+                    $relativeYPosition = $currAxis->valueToPixelRelative($currTick);
 
-                    switch ($this->{$currAxis}->_tickStyle) {
+                    switch ($currAxis->_tickStyle) {
                         case IMAGE_GRAPH_TICKS_INSIDE:
                               imageline ($img, $axesXpositions[$axisCount]          , $this->_drawingareaPos[1]+$relativeYPosition,
                                                $axesXpositions[$axisCount]+$tickSize, $this->_drawingareaPos[1]+$relativeYPosition,
@@ -1049,55 +1017,59 @@ class Image_Graph
             }
         }
 
-        // drawing of numbers for the Y-axes
+        // drawing of labels/numbers on the Y-axes
         if (!empty($this->_defaultFontOptions)) { // otherwise we don't have correct settings for font-filename etc.
             for ($axisCount=0; $axisCount<=1; $axisCount++) {
-                $currAxis = "axisY".$axisCount;
-                if ($this->{$currAxis}->_containsData) {
+                $currAxis = & $this->{"axisY".$axisCount};
+
+                if ($currAxis->_containsData) {
                     require_once 'Image/Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
-                    $textoptions = $this->{$currAxis}->_fontOptions;
-                    $textoptions['width'] = $this->{$currAxis}->_internalTempValues['maxNumWidth'];
-                    $tempText = new Image_Text("", $textoptions);
+                    $options = $currAxis->values->_fontOptions;
+                    $options['width'] = $currAxis->_internalTempValues['maxNumWidth'];
+                    $tempText = new Image_Text("", $options);
                     $tempText->set('canvas', $img);
 
                     if ($axisCount == 0) { // axis 0 (left axis)
                         $textX = $this->_drawingareaPos[0]-1
-                                 - $this->{$currAxis}->_internalTempValues['maxNumWidth'];
-                        if (($this->{$currAxis}->_tickStyle == IMAGE_GRAPH_TICKS_OUTSIDE) ||
-                            ($this->{$currAxis}->_tickStyle == IMAGE_GRAPH_TICKS_BOTH)) {
-                            $textX -= $this->{$currAxis}->_internalTempValues['tickSize'];
+                                 - $currAxis->_internalTempValues['maxNumWidth'];
+                        if (($currAxis->_tickStyle == IMAGE_GRAPH_TICKS_OUTSIDE) ||
+                            ($currAxis->_tickStyle == IMAGE_GRAPH_TICKS_BOTH)) {
+                            $textX -= $currAxis->_internalTempValues['tickSize'];
                         }
-                        $textX -= $this->{$currAxis}->_spacer['right'];
+                        $textX -= $currAxis->values->_spacer['right'];
                     } else { // axis 1 (right axis)
                         $textX = $this->_drawingareaPos[0] + $this->_drawingareaSize[0]-1;
-                        if (($this->{$currAxis}->_tickStyle == IMAGE_GRAPH_TICKS_OUTSIDE) ||
-                            ($this->{$currAxis}->_tickStyle == IMAGE_GRAPH_TICKS_BOTH)) {
-                            $textX += $this->{$currAxis}->_internalTempValues['tickSize'];
+                        if (($currAxis->_tickStyle == IMAGE_GRAPH_TICKS_OUTSIDE) ||
+                            ($currAxis->_tickStyle == IMAGE_GRAPH_TICKS_BOTH)) {
+                            $textX += $currAxis->_internalTempValues['tickSize'];
                         }
-                        $textX += $this->{$currAxis}->_spacer['left'];
+                        $textX += $currAxis->values->_spacer['left'];
                     }
 
-                    foreach ($this->{$currAxis}->_ticksMajorEffective as $currTick) {
-                        $tempText->set('text', sprintf($this->{$currAxis}->_numberformat, $currTick));
+                    foreach ($currAxis->_ticksMajorEffective as $currTick) {
+                        $tempText->set('text', sprintf($currAxis->values->_numberformat, $currTick));
                         $tempText->set('halign', IMAGE_TEXT_ALIGN_RIGHT);
-                        $tempText->set('width', $this->{$currAxis}->_internalTempValues['maxNumWidth']);
+                        $tempText->set('width', $currAxis->_internalTempValues['maxNumWidth']);
                         $tempText->set('canvas', $img);
                         $tempText->init();
                         $tempText->measurize();
                         $textSize = $tempText->_realTextSize;
-                        $relativeYPosition = $this->{$currAxis}->valueToPixelRelative($currTick);
+                        $relativeYPosition = $currAxis->valueToPixelRelative($currTick);
 
                         $textY = (int) round($this->_drawingareaPos[1]+$relativeYPosition - ($textSize['height']/2));
 
-                        if (is_null($this->{$currAxis}->_numbercolor)) {
-                            $this->{$currAxis}->_numbercolor = $this->{$currAxis}->_color;
+                        // @todo: !!! adapt this to the new API !!!
+/*
+                        if (is_null($currAxis->_numbercolor)) {
+                            $currAxis->_numbercolor = $currAxis->_color;
                         }
 
-                        $tempText->setColor(array ("r" => $this->{$currAxis}->_numbercolor[0],
-                                                   "g" => $this->{$currAxis}->_numbercolor[1],
-                                                   "b" => $this->{$currAxis}->_numbercolor[2]), 0);
-                        $opts = array('x' => (int)$textX, 'y' => (int)$textY, 'canvas' => $img);
-                        $tempText->set($opts);
+                        $tempText->setColor(array ("r" => $currAxis->_numbercolor[0],
+                                                   "g" => $currAxis->_numbercolor[1],
+                                                   "b" => $currAxis->_numbercolor[2]), 0);
+*/
+                        $options = array('x' => (int)$textX, 'y' => (int)$textY, 'canvas' => $img);
+                        $tempText->set($options);
                         $tempText->init();
                         $tempText->measurize();
                         $tempText->render();

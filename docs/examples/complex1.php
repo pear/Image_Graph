@@ -22,7 +22,7 @@
                                         "color"         => array(0,0,0)
                                  ));
 
-    $graph->diagramTitle->setColor (array(0xBF,0xBF,0xBF));
+    $graph->diagramTitle->setColor (array(0xBF, 0xBF, 0xBF));
     $graph->diagramTitle->setSpacer (array("bottom" => 10));
     $graph->axisX->title->setSpacer (array("top" => 10, "bottom" => 0));
 
@@ -56,7 +56,7 @@
     $dataObj = &$graph->addData($data, "line", array("axisId" => 1, "color" => array(0x29,0xCC,0x29)));
     $marker =& $dataObj->setDataMarker("diamond", array("color" => array(0xBF,0xBF,0xBF)));
     $marker->setSize(7);
-    
+
     $graph->axisX->setLabels(array("Month 1", "Month 2", "Month 3"));
 
     $graph->axisY1->setTicksAutoSteps(10);
