@@ -188,6 +188,7 @@ class Image_Graph extends Image_Graph_Element
      *
      * @return Image_Graph_Driver The driver used by this graph
      * @access private
+     * @since 0.3.0dev2
      */
     function &_getDriver()
     {
@@ -325,8 +326,8 @@ class Image_Graph extends Image_Graph_Element
      * Logging requires {@link Log}.
      *
      * @param mixed $log The log method, either a Log object or filename to log
-     *   to
-     * @since 0.3.0dev2
+     * to
+	 * @since 0.3.0dev2
      */
     function setLog($log)
     {

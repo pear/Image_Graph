@@ -1,5 +1,4 @@
 <?php
-    // Requires Refsan font
     include 'Image/Graph/Driver.php';
     
     $driver =& Image_Graph_Driver::factory(

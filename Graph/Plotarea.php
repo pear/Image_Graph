@@ -155,14 +155,13 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
     }
 
     /**
-     * Sets the plot border line style of the element
+     * Sets the plot border line style of the element.
      *
      * @param Image_Graph_Line $lineStyle The line style of the border
+     * @deprecated 0.3.0dev2 - 2004-12-16
      */
     function setPlotBorderStyle(& $plotBorderStyle)
-    {
-        $this->_plotBorderStyle = & $plotBorderStyle;
-        $this->add($plotBorderStyle);
+    {        
     }
 
     /**
@@ -685,13 +684,6 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
             return false;
         }
 
-        // TODO Reimplement support for plot borderstyle
-/*        if ($this->_plotBorderStyle) {
-            ImageRectangle(
-            	$this->_canvas(), $this->_plotLeft, $this->_plotTop, $this-
-            	>_plotRight, $this->_plotBottom, $this->_plotBorderStyle-
-            	>_getLineStyle());
-        }*/
     }
 
 }

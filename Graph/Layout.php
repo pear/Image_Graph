@@ -87,9 +87,13 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
     }
 
     /**
-     * (Add basic description here)
-     *
-     * @since 0.3.0dev2
+     * Calculate the edge offset for a specific edge
+     * @param array $alignSize The alignment of the edge
+     * @param int $offset The offset/posision of the at 0% edge
+     * @param int $total The total size (width or height) of the element
+     * @param int $multiplier +/- 1 if the edge should pushed either toward more
+     * negative or positive values
+	 * @since 0.3.0dev2
      * @access private
      */
     function _calcEdgeOffset($alignSize, $offset, $total, $multiplier) {

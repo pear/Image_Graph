@@ -55,10 +55,11 @@ class Image_Graph_Layout_Vertical extends Image_Graph_Layout_Horizontal
 {
 
     /**
-     * (Add description here)
+     * Gets the absolute size of one of the parts.
      *
-     * @since 0.3.0dev2
-     *
+     * @param string $part The name of the part - auto_part(1|2)
+     * @return int The number of pixels the edge should be pushed
+	 * @since 0.3.0dev2
      * @access private
      */
     function _getAbsolute(&$part)

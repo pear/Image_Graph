@@ -188,7 +188,7 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
      * @param string $name The name of the font
      * @return string The filename of the font
      * @access private
-     * @since 0.3.0dev2
+	 * @since 0.3.0dev2
      */
     function _mapFont($name)
     {

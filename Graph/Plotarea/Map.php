@@ -296,10 +296,6 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
             return false;
         }
 
-        // TODO Reimplement support for plot borderstyle
-/*        if ($this->_plotBorderStyle) {
-            ImageRectangle($this->_canvas(), $this->_fillLeft(), $this->_fillTop(), $this->_fillRight(), $this->_fillBottom(), $this->_plotBorderStyle->_getLineStyle());
-        }*/
     }
 
 }
