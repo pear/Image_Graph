@@ -8,7 +8,7 @@
 * @access   private
 */
 
-require_once("Graph/common.php");
+require_once("Image/Graph/common.php");
 
 class Image_Graph_Data_Rhomb extends Image_Graph_Data_Common
 {
