@@ -372,6 +372,7 @@ class Image_Graph_Element extends Image_Graph_Common
      */
     function _getFont($options = false)
     {
+        // TODO Avoid calling this multiple times
         if ($options === false) {
             $options = $this->_fontOptions;
         } else {

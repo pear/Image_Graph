@@ -316,6 +316,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
             unset($keys);
         }
         $this->_labels = array_values(array_unique($this->_labels));
+        $this->_calcLabelInterval();
     }
 
     /**

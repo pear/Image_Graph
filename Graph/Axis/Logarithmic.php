@@ -67,25 +67,18 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
     }
 
     /**
-     * Axis value span
+     * Calculate the label interval
      *
-     * @return double The span of the axis (i.e. Max-Min)
+     * If explicitly defined this will be calucated to an approximate best.
+     *
+     * @return double The label interval
      * @access private
      */
-    function _axisValueSpan()
+    function _calcLabelInterval()
     {
-        return $this->_value($this->_axisSpan());
-    }
-
-    /**
-     * Axis span
-     *
-     * @return double The span of the axis (i.e. Max-Min)
-     * @access private
-     */
-    function _axisSpan()
-    {
-        return $this->_getMaximum();
+        $result = parent::_calcLabelInterval();
+        $this->_axisValueSpan = $this->_value($this->_axisSpan);
+        return $result;
     }
 
     /**

@@ -89,6 +89,22 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     var $_maximumSet = false;
 
     /**
+     * The value span of the axis.
+     * This is primarily included for performance reasons
+     * @var double
+     * @access private
+     */
+    var $_axisSpan = false;
+
+    /**
+     * The value span of the axis.
+     * This is primarily included for performance reasons
+     * @var double
+     * @access private
+     */
+    var $_axisValueSpan = false;
+    
+    /**
      * Specify if the axis should label the minimum value
      * @var bool
      * @access private
@@ -500,28 +516,6 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     }
 
     /**
-     * Axis value span
-     *
-     * @return double The span of the axis (i.e. Max-Min)
-     * @access private
-     */
-    function _axisValueSpan()
-    {
-        return $this->_axisSpan();
-    }
-
-    /**
-     * Axis span
-     *
-     * @return double The span of the axis (i.e. Max-Min)
-     * @access private
-     */
-    function _axisSpan()
-    {
-        return abs($this->_getMaximum() - $this->_getMinimum());
-    }
-
-    /**
      * Get the step each pixel on the canvas will represent on the axis.
      *
      * @return double The step a pixel represents
@@ -529,7 +523,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      */
     function _delta()
     {
-        if (($span = $this->_axisValueSpan()) == 0) {
+        if (($span = $this->_axisValueSpan) == 0) {
             return 0;
         }
 
@@ -652,6 +646,9 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     {
         $min = $this->_getMinimum();
         $max = $this->_getMaximum();
+        
+        $this->_axisValueSpan = $this->_axisSpan = abs($max - $min);
+        
         if ((!empty($min)) && (!empty($max)) && ($min > $max)) {
             $this->_labelOptions[1]['interval'] = 1;
             return true;
@@ -661,7 +658,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
             if ((!isset($labelOptions['type'])) || ($labelOptions['type'] !== 'auto')) {
                 $span = false;
             } elseif ($level == 1) {
-                $span = $this->_axisValueSpan();
+                $span = $this->_axisValueSpan;
             } else {
                 $l1 = $this->_getNextLabel(false, $level - 1);
                 $l2 = $this->_getNextLabel($l1, $level - 1);
@@ -733,13 +730,13 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
             }
         } else {
             $li = $this->_labelInterval($level);
-            if (($this->_axisSpan() == 0) || ($this->_axisValueSpan() == 0) ||
+            if (($this->_axisSpan == 0) || ($this->_axisValueSpan == 0) ||
                 ($li == 0)
             ) {
                 return false;
             }
 
-            $labelInterval = $this->_axisSpan() / ($this->_axisValueSpan() / $li);
+            $labelInterval = $this->_axisSpan / ($this->_axisValueSpan / $li);
 
             if ($labelInterval == 0) {
                 return false;

@@ -92,7 +92,7 @@ class Image_Graph_Grid_Polar extends Image_Graph_Grid
         $cx = $this->_pointX($p0);
         $cy = $this->_pointY($p0);
 
-        $span = $this->_primaryAxis->_axisSpan();
+        $span = $this->_primaryAxis->_axisSpan;
 
         while (($value <= $this->_primaryAxis->_getMaximum()) && ($value !== false)) {
             if ($value > $this->_primaryAxis->_getMinimum()) {

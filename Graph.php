@@ -907,4 +907,6 @@ class Image_Graph extends Image_Graph_Element
 // General to-do's
 // TODO Implement a way to display graphs when there are *no* data
 // TODO Create bar-chart-type where bar have individual widths (i.e. in the dataset fx).
+// TODO Update private tags to protected wherever necessary
+// TODO Check performance with recursive/polymorphic methods
 ?>
