@@ -30,6 +30,9 @@ define('IMAGE_GRAPH_TICKS_INSIDE',  1);
 define('IMAGE_GRAPH_TICKS_OUTSIDE', 2);
 define('IMAGE_GRAPH_TICKS_BOTH',    3);
 
+define('IMAGE_GRAPH_AXETYPE_TEXT',   'text');
+define('IMAGE_GRAPH_AXETYPE_LINEAR', 'linear');
+
 require_once 'Image/Graph/Elements.php';
 
 /**
@@ -167,9 +170,9 @@ class Image_Graph
     */
     function Image_Graph($width, $height, $pos_x=0, $pox_y=0)
     {
-        $this->axeX = new Image_Graph_Axe();
-        $this->axeY0 = new Image_Graph_Axe();
-        $this->axeY1 = new Image_Graph_Axe();
+        $this->axeX = new Image_Graph_Axe_X();
+        $this->axeY0 = new Image_Graph_Axe_Y();
+        $this->axeY1 = new Image_Graph_Axe_Y();
         $this->axeY0->title->setSpacer(array("right" => 5));
         $this->axeY1->title->setSpacer(array("left"  => 5));
         $this->diagramTitle = new Image_Graph_Title();
@@ -178,19 +181,6 @@ class Image_Graph
         $this->_pos  = array($pos_x, $pox_y);
         $this->setSpaceFromBorder(10);
         $this->setAxesColor(array(0, 0, 0)); // set default color to black, all axes
-
-/*
-        $this->setAxesYTickStyle     (IMAGE_GRAPH_TICKS_OUTSIDE, 0);
-        $this->setAxesYTickStyle     (IMAGE_GRAPH_TICKS_OUTSIDE, 1);
-        $this->setAxesYTickSize      (10, 0);
-        $this->setAxesYTickSize      (10, 1);
-        $this->setAxesYTicksMajor    (array(), 0);
-        $this->setAxesYTicksMinor    (array(), 0);
-        $this->setAxesYTicksMajor    (array(), 1);
-        $this->setAxesYTicksMinor    (array(), 1);
-        $this->setAxesYNumberformat  ("%.02f", 0);
-        $this->setAxesYNumberformat  ("%.02f", 1);
-*/
 
         $this->_drawingareaSize = $this->_size;
         $this->_drawingareaPos  = $this->_pos;
@@ -308,7 +298,7 @@ class Image_Graph
     {
         $step = 1;
         $faktor = 1;
-        
+
 //        unset($axe->_bounds['min']);
 //        unset($axe->_bounds['max']);
 
@@ -376,7 +366,7 @@ class Image_Graph
             {
                 $stepMinor = $step;
                 $faktorMinor = $faktor;
-                
+
                 if ($step == 5)
                 {
                     $step = 2;
@@ -386,11 +376,11 @@ class Image_Graph
                     $step = 5;
                     $faktor *= 0.1;
                 }
-    
+
                 $stepfaktor = $step*$faktor;
                 $currSteps = (($newMax-$newMin) / $stepfaktor) + 1;
             } while ($currSteps <= $axe->_ticksAutoSteps['minor']);
-    
+
             $stepsMinor = array();
             $stepfaktor = $stepMinor*$faktorMinor;
             for ($count = $newMin; $count<=$newMax; $count+=$stepfaktor)
@@ -400,7 +390,7 @@ class Image_Graph
                 }
             }
         }
-        
+
         $axe->_boundsEffective['min'] = $newMin;
         $axe->_boundsEffective['max'] = $newMax;
         $axe->_ticksMajorEffective = $stepsMajor;
@@ -537,8 +527,6 @@ class Image_Graph
                 $borderspaceSum['bottom'] += $this->axeX->title->_spacer['bottom'];
             }
 
-/* !!! Y-title not yet fully implemented - left out for the moment !!! */
-
             for ($axeCount=0; $axeCount<=1; $axeCount++) {
                 $currAxe = "axeY".$axeCount;
 
@@ -563,6 +551,41 @@ class Image_Graph
                         $borderspaceSum['right'] += $totalTitleWidth;
                     }
                 }
+            }
+
+            // prepare drawing of labels for the X-axes
+            if (true) { // @TO DO: add check to see if there are any labels set for the X-axis
+                $this->axeX->_fontOptions = $this->_mergeFontOptions($this->axeX->_fontOptions);
+
+                require_once 'Image/Text.php';
+                $tempText = new Image_Text("", $this->axeX->_fontOptions);
+                $maxHeight = 0;
+
+$this->axeX->_bounds['max'] = 4;
+                for ($labelCount=0; $labelCount<$this->axeX->_bounds['max']; $labelCount++) {
+                    $currLabel = $this->axeX->_labels[$labelCount];
+                    if (!empty($currLabel)) {
+
+                        // TO DO: remove this dirty little hack :-) we shouldn't access the lines directly, should we?
+                        if (is_string($currLabel)) {
+                            $tempText->lines = array(new Image_Text_Line($currLabel, $tempText->options));
+                        } else {
+                            $tempText->lines = array(new Image_Text_Line(sprintf($this->axeX->_numberformat, $currLabel), $tempText->options));
+                        }
+
+                        $textSize = $tempText->getSize();
+                        $maxHeight = max ($maxHeight, $textSize['height']);
+
+                        $this->axeX->_internalTempValues['maxLabelHeight'] = $maxHeight;
+                    }
+                }
+                $borderspaceSum["bottom"] += $maxHeight;
+            }
+
+            if (($this->axeX->_tickStyle == IMAGE_GRAPH_TICKS_OUTSIDE) ||
+                ($this->axeX->_tickStyle == IMAGE_GRAPH_TICKS_BOTH)
+               ) {
+                $borderspaceSum["bottom"]  += $this->axeX->_tickSize;
             }
 
             // prepare drawing of numbers for the Y-axes
@@ -657,6 +680,8 @@ class Image_Graph
         for ($counter=0; $counter<$maxElements; $counter++) {
             $relativeXPositions[] = round(($counter + ($this->_addExtraSpace*0.5)) * $pixelPerColumn);
         }
+// @TO DO: replace this hack (_relativeXPositions) by an official way to hand over the values between functions!
+$this->_relativeXPositions=$relativeXPositions;
 
         // calculate linear position of datapoints
         foreach ($this->_dataElements as $currDataElementKey => $currDataElementValue) {
@@ -667,13 +692,8 @@ class Image_Graph
             } else {
                 $axeId = 0;
             }
-if ($axeId > 1)
-{
-  var_dump($currDataElement);
-  exit();
-}
-            reset($relativeXPositions);
 
+            reset($relativeXPositions);
             foreach ($currDataElement->_data as $currDataKey => $currDataValue) {
                 $currData = &$currDataElement->_data[$currDataKey];
                 $relativeYPosition = $this->_calculateValueToPixelLinear($currData, $axeId);
@@ -683,7 +703,6 @@ if ($axeId > 1)
             }
         }
     }
-
 
     /**
     * Draw titles for diagram
@@ -769,6 +788,69 @@ if ($axeId > 1)
         // draw X-axe
         imageline    ($img, $this->_drawingareaPos[0],                              $this->_drawingareaPos[1]+$this->_drawingareaSize[1]-1,
                             $this->_drawingareaPos[0]+$this->_drawingareaSize[0]-1, $this->_drawingareaPos[1]+$this->_drawingareaSize[1]-1, $drawColor);
+
+        foreach ($this->_relativeXPositions as $currPos) {
+            $currPos += $this->_drawingareaPos[0];
+            $tickSize = $this->axeX->_tickSize;
+            switch ($this->axeX->_tickStyle) {
+                case IMAGE_GRAPH_TICKS_INSIDE:
+                      imageline ($img, $currPos, $this->_drawingareaPos[1]+($this->_drawingareaSize[1]-1)-$tickSize,
+                                       $currPos, $this->_drawingareaPos[1]+($this->_drawingareaSize[1]-1),
+                                 $drawColor);
+                      break;
+                case IMAGE_GRAPH_TICKS_OUTSIDE:
+                      imageline ($img, $currPos, $this->_drawingareaPos[1]+($this->_drawingareaSize[1]-1),
+                                       $currPos, $this->_drawingareaPos[1]+($this->_drawingareaSize[1]-1)+$tickSize,
+                                 $drawColor);
+                      break;
+                case IMAGE_GRAPH_TICKS_BOTH:
+                      imageline ($img, $currPos, $this->_drawingareaPos[1]+($this->_drawingareaSize[1]-1)-$tickSize,
+                                       $currPos, $this->_drawingareaPos[1]+($this->_drawingareaSize[1]-1)+$tickSize,
+                                 $drawColor);
+                      break;
+            }
+        }
+                
+        // drawing of numbers for the X-axis
+        if (!empty($this->_defaultFontOptions)) { // otherwise we don't have correct settings for font-filename etc.
+            require_once 'Image/Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
+            $textoptions = $this->axeX->_fontOptions;
+            $tempText = new Image_Text("", $textoptions);
+
+            $textY = $this->_drawingareaPos[1] + $this->_drawingareaSize[1];
+            if (($this->axeX->_tickStyle == IMAGE_GRAPH_TICKS_OUTSIDE) ||
+                ($this->axeX->_tickStyle == IMAGE_GRAPH_TICKS_BOTH)
+               ) {
+                $textY += $this->axeX->_tickSize;
+            }
+
+
+            for ($labelCount=0; $labelCount<count($this->axeX->_labels); $labelCount++) {
+                $currLabel = $this->axeX->_labels[$labelCount];
+                if (!empty($currLabel)) {
+                    // TO DO: remove this dirty little hack :-) we shouldn't access the lines directly, should we?
+                    if (is_string($currLabel)) {
+                        $tempText->lines = array(new Image_Text_Line($currLabel, $tempText->options));
+                    } else {
+                        $tempText->lines = array(new Image_Text_Line(sprintf($this->axeX->_numberformat, $currLabel), $tempText->options));
+                    }
+
+                    $tempText->align(IMAGE_TEXT_ALIGN_CENTER);
+                    $textSize = $tempText->getSize();
+// @TO DO: replace this hack (_relativeXPositions) by an official way to hand over the values between functions!
+                    $textX = $this->_drawingareaPos[0] + $this->_relativeXPositions[$labelCount];
+
+                    if (is_null($this->axeX->_numbercolor)) {
+                        $this->axeX->_numbercolor = $this->axeX->_color;
+                    }
+
+                    $tempText->colorize(array ("r" => $this->axeX->_numbercolor[0],
+                                               "g" => $this->axeX->_numbercolor[1],
+                                               "b" => $this->axeX->_numbercolor[2]));
+                    $tempText->renderImage($textX, $textY, $img);
+                }
+            }
+        } // if (!empty($this->_defaultFontOptions))
 
         // draw Y-axes
         $axesXpositions = array ($this->_drawingareaPos[0],
@@ -889,11 +971,11 @@ if ($axeId > 1)
         $bgcolor = imagecolorallocate($img, $this->_bgcolor[0], $this->_bgcolor[1], $this->_bgcolor[2]);
         imagefill($img, 0, 0, $bgcolor);
 
-        $this->_drawGDtitles($img);
-        $this->_drawGDAxes($img);
         foreach ($this->_dataElements as $currDataElement) {
             $currDataElement->drawGD($img, $this);
         }
+        $this->_drawGDtitles($img);
+        $this->_drawGDAxes($img);
 
         return $img;
     }

@@ -110,7 +110,7 @@ class Image_Graph_Axe extends Image_Graph_Base
     * @see $_boundsEffective
     */
     var $_bounds = array('min' => null, 'max' => null);
-
+    
     /**
     * effective bounds for axe (min/max value)
     *
@@ -206,20 +206,21 @@ class Image_Graph_Axe extends Image_Graph_Base
     /**
     * Color for numbers
     *
-    * @var array (3 ints for R,G,B); initially null
+    * @var array      (3 ints for R,G,B); initially null
     * @access private
     */
     var $_numbercolor = null;
 
     /**
-    * Indicator if axe currently contains data
+    * Type of the axe
     *
-    * this variable is only used on the Y-axis; directly set internally by functions of package Image_Graph
+    * The variable is defined/used here as a "virtual" variable.
+    * It will receive it's initial values in the derived classes for x-/y-axes
     *
-    * @var boolean
+    * @var mixed      always use the constants IMAGE_GRAPH_AXETYPE_* to evaluate / set this variable
     * @access private
     */
-    var $_containsData = false;
+    var $_axetype = IMAGE_GRAPH_AXETYPE_LINEAR;
 
     /**
     * Space for storing internal temporary values
@@ -347,6 +348,122 @@ class Image_Graph_Axe extends Image_Graph_Base
     function setNumbercolor($color)
     {
         $this->_numbercolor = $color;
+    }
+}
+
+/**
+* Class for storing specific settings for the x-axis
+*
+* @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
+* @package  Image_Graph
+* @access   public
+*/
+class Image_Graph_Axe_X extends Image_Graph_Axe
+{
+    /**
+    * Type of the axe
+    *
+    * always use the constants IMAGE_GRAPH_AXETYPE_* to evaluate / set this variable
+    *
+    * @var mixed      only IMAGE_GRAPH_AXETYPE_TEXT allowed
+    * @access private
+    */
+    var $_axetype = IMAGE_GRAPH_AXETYPE_TEXT;
+
+    /**
+    * Labels for data on this axe
+    *
+    * Will be used (shown) when axe has $_axetype of IMAGE_GRAPH_AXETYPE_TEXT
+    *
+    * @var array      one string per data-column
+    * @access private
+    */
+    var $_labels = array();
+
+    /**
+    * Set type of axis
+    *
+    * @param  mixed   only IMAGE_GRAPH_AXETYPE_TEXT allowed
+    * @access public
+    * @see    $_axetype
+    */
+    function setAxetype($type)
+    {
+        if ($type == IMAGE_GRAPH_AXETYPE_TEXT) {
+            $this->_axetype = IMAGE_GRAPH_AXETYPE_TEXT;
+        }
+        
+        /*
+         elseif ($type == IMAGE_GRAPH_AXETYPE_LINEAR) {
+            if ($this->_axetype == IMAGE_GRAPH_AXETYPE_TEXT) {
+                //@TO DO: add conversion-functions here to transform axe from text to linear
+                //        if this is not possible, throw an error
+            }
+            $this->_axetype = IMAGE_GRAPH_AXETYPE_LINEAR;
+        }
+        */
+        //@TO DO: add support for a logarithmic scale here someday :-)
+    }
+
+    /**
+    * Set labels
+    *
+    * @param  mixed
+    * @access public
+    */
+    function setLabels($labels)
+    {
+        if (is_array($labels)) {
+            //@TO DO: do additional checks here - only array of strings/ints/floats allowed;
+            //        numbers will later be translated when drawing using the current set
+            //        numberformat
+            $this->_labels = $labels;
+        }
+    }
+}
+
+/**
+* Class for storing specific settings for the Y-axes
+*
+* @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
+* @package  Image_Graph
+* @access   public
+*/
+class Image_Graph_Axe_Y extends Image_Graph_Axe
+{
+    /**
+    * Type of the axe
+    *
+    * always use the constants IMAGE_GRAPH_AXETYPE_* to evaluate / set this variable
+    *
+    * @var mixed      only IMAGE_GRAPH_AXETYPE_LINEAR allowed
+    * @access private
+    */
+    var $_axetype = IMAGE_GRAPH_AXETYPE_LINEAR;
+
+    /**
+    * Indicator if axe currently contains data
+    *
+    * this variable is only used on the Y-axis; directly set internally by functions of package Image_Graph
+    *
+    * @var boolean
+    * @access private
+    */
+    var $_containsData = false;
+    
+    /**
+    * Set type of axis
+    *
+    * @param  mixed   only IMAGE_GRAPH_AXETYPE_LINEAR allowed
+    * @access public
+    * @see    $_axetype
+    */
+    function setAxetype($type)
+    {
+        if ($type == IMAGE_GRAPH_AXETYPE_LINEAR) {
+            $this->_axetype = IMAGE_GRAPH_AXETYPE_LINEAR;
+        }
+        //@TO DO: add support for a logarithmic scale here someday :-)
     }
 }
 

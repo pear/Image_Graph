@@ -23,7 +23,7 @@
     $graph->axeY1->setNumberformat ("%.0f files");
 
     $graph->axeY0->title->setText ("Traffic");
-    $graph->axeY1->title->setText ("Number of downloadsxxxxxxx");
+    $graph->axeY1->title->setText ("Number of downloads");
 
     $graph->axeY0->setNumbercolor (array(0xCC,0x29,0x29));
     $graph->axeY1->setNumbercolor (array(0x29,0xCC,0x29));
@@ -38,9 +38,9 @@
 
     $graph->setAxesColor(array(0x40, 0x40, 0xFF));
 
-    $data    = array( "Mo.\n8.9." => 15.8,
-                      "Di.\n9.9." => 37.2,
-                      "Mi.\n10.9." => 50.0
+    $data    = array( 15.8,
+                      37.2,
+                      50.0
                     );
     $graph->setDataDefaultColor(array(0xCC,0x29,0x29));
     $graph->addData($data, "line", array("axeId" => 0));
@@ -49,6 +49,8 @@
     $dataObj = &$graph->addData($data, "line", array("axeId" => 1, "color" => array(0x29,0xCC,0x29)));
     $marker =& $dataObj->setDataMarker("diamond", array("color" => array(0xBF,0xBF,0xBF)));
     $marker->setSize(7);
+    
+    $graph->axeX->setLabels(array("Month 1", "Month 2", "Month 3", "Month 4"));
 
     $graph->axeY0->setBounds (10,  50);
     $graph->axeY1->setBounds ( 5, 100);
@@ -59,6 +61,9 @@
 
     $graph->axeY1->setTickStyle(IMAGE_GRAPH_TICKS_BOTH);
     $graph->axeY1->setTickSize (5);
+
+    $graph->axeX->setTickStyle(IMAGE_GRAPH_TICKS_BOTH);
+    $graph->axeX->setTickSize (5);
 
     $image = $graph->getGDImage();
 
