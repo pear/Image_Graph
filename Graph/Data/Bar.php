@@ -59,11 +59,11 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
 
         for ($counter=0; $counter<$numDatapoints; $counter++) {
             if (!is_null($this->_datapoints[$counter])) { // otherwise do not draw
-              if ($this->_data[ $dataKeys[$counter] ] > $yAxe->_bounds['max']) { // clip big value to the drawingarea
+              if ($this->_data[ $dataKeys[$counter] ] > $yAxe->_boundsEffective['max']) { // clip big value to the drawingarea
                 imagefilledrectangle ($img, $this->_datapoints[$counter][0]-$halfWidthPixel, $graph->_drawingareaPos[1],
                                             $this->_datapoints[$counter][0]+$halfWidthPixel, $graph->_drawingareaPos[1]+$graph->_drawingareaSize[1]-2,
                                       $drawColor);
-              } elseif ($this->_data[ $dataKeys[$counter] ] >= $yAxe->_bounds['min']) {
+              } elseif ($this->_data[ $dataKeys[$counter] ] >= $yAxe->_boundsEffective['min']) {
                 imagefilledrectangle ($img, $this->_datapoints[$counter][0]-$halfWidthPixel, $this->_datapoints[$counter][1],
                                             $this->_datapoints[$counter][0]+$halfWidthPixel, $graph->_drawingareaPos[1]+$graph->_drawingareaSize[1]-2,
                                       $drawColor);

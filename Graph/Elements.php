@@ -3,6 +3,9 @@
 //
 // $Id$
 
+// This file includes several classes used in Image_Graph. We decided to have just one file with
+// various classes in it for performance reasons (including and opening only one file is much faster).
+
 /**
 * Base class for data-storage in common objects
 *
@@ -417,7 +420,20 @@ class Image_Graph_Axe_X extends Image_Graph_Axe
             //@TO DO: do additional checks here - only array of strings/ints/floats allowed;
             //        numbers will later be translated when drawing using the current set
             //        numberformat
-            $this->_labels = $labels;
+            
+            $arrayEmpty = true;
+            foreach ($labels as $currLabel) {
+                if (!empty($currLabel)) {
+                    $arrayEmpty = false;
+                }
+            }
+            
+            // if array is empty (or all array-entries, e.g. strings, are empty) only set an empty array
+            if ($arrayEmpty) {
+                $this->_labels = array();
+            } else {
+                $this->_labels = $labels;
+            }
         }
     }
 }
@@ -465,6 +481,112 @@ class Image_Graph_Axe_Y extends Image_Graph_Axe
         }
         //@TO DO: add support for a logarithmic scale here someday :-)
     }
+
+    /**
+    * automatically adjust all fields (bounds + ticks) where auto-detection of values is enabled
+    *
+    * @access private
+    */
+    function _autoadjustBoundsAndTicks()
+    {
+        $step = 1;
+        $faktor = 1;
+
+        do
+        {
+            $stepfaktor = $step*$faktor;
+            if (isset($this->_bounds['min'])) {
+                $newMin = $this->_bounds['min'];
+            } else {
+                $newMin = floor($this->_boundsEffective['min'] / $stepfaktor) * $stepfaktor;
+            }
+            if (isset($this->_bounds['max'])) {
+                $newMax = $this->_bounds['max'];
+            } else {
+                $newMax = ceil($this->_boundsEffective['max'] / $stepfaktor) * $stepfaktor;
+            }
+            $currSteps = (($newMax-$newMin) / $stepfaktor) + 1;
+            if ($currSteps<$maxSteps)
+            {
+                $faktor = $faktor * 0.1;
+            }
+        } while ($currSteps < $this->_ticksAutoSteps['major']);
+
+        while ($currSteps > $this->_ticksAutoSteps['major'])
+        {
+            if ($step == 1)
+            {
+                $step = 2;
+            } elseif ($step == 2) {
+                $step = 5;
+            } else { // $step == 5
+                $step = 1;
+                $faktor *= 10;
+            }
+
+            $stepfaktor = $step*$faktor;
+            if (isset($this->_bounds['min'])) {
+                $newMin = $this->_bounds['min'];
+            } else {
+                $newMin = floor($this->_boundsEffective['min'] / $stepfaktor) * $stepfaktor;
+            }
+            if (isset($this->_bounds['max'])) {
+                $newMax = $this->_bounds['max'];
+            } else {
+                $newMax = ceil($this->_boundsEffective['max'] / $stepfaktor) * $stepfaktor;
+            }
+            $currSteps = (($newMax-$newMin) / $stepfaktor) + 1;
+        }
+
+        if (isset($this->_ticksMajor)) {
+            $stepsMajor = $this->_ticksMajor;
+        } else {
+            $stepsMajor = array();
+            $stepfaktor = $step*$faktor;
+            for ($count = $newMin; $count<=$newMax; $count+=$stepfaktor)
+            {
+                $stepsMajor[] = $count;
+            }
+        }
+
+        if (isset($this->_ticksMinor)) {
+            $stepsMinor = $this->_ticksMinor;
+        } else {
+            do
+            {
+                $stepMinor = $step;
+                $faktorMinor = $faktor;
+
+                if ($step == 5)
+                {
+                    $step = 2;
+                } elseif ($step == 2) {
+                    $step = 1;
+                } else { // $step == 5
+                    $step = 5;
+                    $faktor *= 0.1;
+                }
+
+                $stepfaktor = $step*$faktor;
+                $currSteps = (($newMax-$newMin) / $stepfaktor) + 1;
+            } while ($currSteps <= $this->_ticksAutoSteps['minor']);
+
+            $stepsMinor = array();
+            $stepfaktor = $stepMinor*$faktorMinor;
+            for ($count = $newMin; $count<=$newMax; $count+=$stepfaktor)
+            {
+                if (!in_array($count, $stepsMajor)) {
+                    $stepsMinor[] = $count;
+                }
+            }
+        }
+
+        $this->_boundsEffective['min'] = $newMin;
+        $this->_boundsEffective['max'] = $newMax;
+        $this->_ticksMajorEffective = $stepsMajor;
+        $this->_ticksMinorEffective = $stepsMinor;
+    }
+
 }
 
 /**

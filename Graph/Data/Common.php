@@ -116,7 +116,7 @@ class Image_Graph_Data_Common
     
             for ($counter=0; $counter<$numDatapoints; $counter++) {
                 if (!is_null($this->_datapoints[$counter]) &&
-                    ($yAxe->_bounds['min'] <= $this->_data[ $dataKeys[$counter] ]) && ($this->_data[ $dataKeys[$counter] ] <= $yAxe->_bounds['max'])
+                    ($yAxe->_boundsEffective['min'] <= $this->_data[ $dataKeys[$counter] ]) && ($this->_data[ $dataKeys[$counter] ] <= $yAxe->_boundsEffective['max'])
                    ) { // otherwise do not draw
                     $this->_datamarker->drawGD($img, $this->_datapoints[$counter]);
                 }

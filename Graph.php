@@ -283,119 +283,15 @@ class Image_Graph
         }
         $myNew = &new $dataElementClass($this, $data, $attributes);
         $this->_dataElements[count($this->_dataElements)] =& $myNew;
+        
+        // the following is only true if axeX is of axetype IMAGE_GRAPH_AXETYPE_TEXT
+        $this->axeX->_bounds['max'] = max($this->axeX->_bounds['max'], count($data));
 
         $this->{"axeY".$attributes['axeId']}->_containsData = true;
 
         return $myNew;
     }
 
-    /**
-    * automatically adjust all fields (bounds + ticks) where auto-detection of values is enabled
-    *
-    * @access private
-    */
-    function _autoadjustBoundsAndTicks(&$axe)
-    {
-        $step = 1;
-        $faktor = 1;
-
-//        unset($axe->_bounds['min']);
-//        unset($axe->_bounds['max']);
-
-        do
-        {
-            $stepfaktor = $step*$faktor;
-            if (isset($axe->_bounds['min'])) {
-                $newMin = $axe->_bounds['min'];
-            } else {
-                $newMin = floor($axe->_boundsEffective['min'] / $stepfaktor) * $stepfaktor;
-            }
-            if (isset($axe->_bounds['max'])) {
-                $newMax = $axe->_bounds['max'];
-            } else {
-                $newMax = ceil($axe->_boundsEffective['max'] / $stepfaktor) * $stepfaktor;
-            }
-            $currSteps = (($newMax-$newMin) / $stepfaktor) + 1;
-            if ($currSteps<$maxSteps)
-            {
-                $faktor = $faktor * 0.1;
-            }
-        } while ($currSteps < $axe->_ticksAutoSteps['major']);
-
-        while ($currSteps > $axe->_ticksAutoSteps['major'])
-        {
-            if ($step == 1)
-            {
-                $step = 2;
-            } elseif ($step == 2) {
-                $step = 5;
-            } else { // $step == 5
-                $step = 1;
-                $faktor *= 10;
-            }
-
-            $stepfaktor = $step*$faktor;
-            if (isset($axe->_bounds['min'])) {
-                $newMin = $axe->_bounds['min'];
-            } else {
-                $newMin = floor($axe->_boundsEffective['min'] / $stepfaktor) * $stepfaktor;
-            }
-            if (isset($axe->_bounds['max'])) {
-                $newMax = $axe->_bounds['max'];
-            } else {
-                $newMax = ceil($axe->_boundsEffective['max'] / $stepfaktor) * $stepfaktor;
-            }
-            $currSteps = (($newMax-$newMin) / $stepfaktor) + 1;
-        }
-
-        if (isset($axe->_ticksMajor)) {
-            $stepsMajor = $axe->_ticksMajor;
-        } else {
-            $stepsMajor = array();
-            $stepfaktor = $step*$faktor;
-            for ($count = $newMin; $count<=$newMax; $count+=$stepfaktor)
-            {
-                $stepsMajor[] = $count;
-            }
-        }
-
-        if (isset($axe->_ticksMinor)) {
-            $stepsMinor = $axe->_ticksMinor;
-        } else {
-            do
-            {
-                $stepMinor = $step;
-                $faktorMinor = $faktor;
-
-                if ($step == 5)
-                {
-                    $step = 2;
-                } elseif ($step == 2) {
-                    $step = 1;
-                } else { // $step == 5
-                    $step = 5;
-                    $faktor *= 0.1;
-                }
-
-                $stepfaktor = $step*$faktor;
-                $currSteps = (($newMax-$newMin) / $stepfaktor) + 1;
-            } while ($currSteps <= $axe->_ticksAutoSteps['minor']);
-
-            $stepsMinor = array();
-            $stepfaktor = $stepMinor*$faktorMinor;
-            for ($count = $newMin; $count<=$newMax; $count+=$stepfaktor)
-            {
-                if (!in_array($count, $stepsMajor)) {
-                    $stepsMinor[] = $count;
-                }
-            }
-        }
-
-        $axe->_boundsEffective['min'] = $newMin;
-        $axe->_boundsEffective['max'] = $newMax;
-        $axe->_ticksMajorEffective = $stepsMajor;
-        $axe->_ticksMinorEffective = $stepsMinor;
-    }
 
     /**
     * adjust the min/max-values and the ticks of the Y-axe;
@@ -411,13 +307,15 @@ class Image_Graph
                 $this->{$currAxe}->_boundsEffective['min'] = $this->{$currAxe}->_bounds['min'];
             } else {
                 foreach ($this->_dataElements as $currDataElement) {
-                    if (!isset($this->{$currAxe}->_boundsEffective['min'])) {
-                        $this->{$currAxe}->_boundsEffective['min'] = $currDataElement->_data[0];
-                    }
-
-                    foreach ($currDataElement->_data as $currData) {
-                        if ($this->{$currAxe}->_boundsEffective['min'] > $currData) {
-                            $this->{$currAxe}->_boundsEffective['min'] = $currData;
+                    if ($currDataElement->_attributes['axeId'] == $axeCount) {
+                        if (!isset($this->{$currAxe}->_boundsEffective['min'])) {
+                            $this->{$currAxe}->_boundsEffective['min'] = $currDataElement->_data[0];
+                        }
+    
+                        foreach ($currDataElement->_data as $currData) {
+                            if ($this->{$currAxe}->_boundsEffective['min'] > $currData) {
+                                $this->{$currAxe}->_boundsEffective['min'] = $currData;
+                            }
                         }
                     }
                 }
@@ -427,13 +325,15 @@ class Image_Graph
                 $this->{$currAxe}->_boundsEffective['max'] = $this->{$currAxe}->_bounds['max'];
             } else {
                 foreach ($this->_dataElements as $currDataElement) {
-                    if (!isset($this->{$currAxe}->_boundsEffective['max'])) {
-                        $this->{$currAxe}->_boundsEffective['max'] = $currDataElement->_data[0];
-                    }
-
-                    foreach ($currDataElement->_data as $currData) {
-                        if ($this->{$currAxe}->_boundsEffective['max'] < $currData) {
-                            $this->{$currAxe}->_boundsEffective['max'] = $currData;
+                    if ($currDataElement->_attributes['axeId'] == $axeCount) {
+                        if (!isset($this->{$currAxe}->_boundsEffective['max'])) {
+                            $this->{$currAxe}->_boundsEffective['max'] = $currDataElement->_data[0];
+                        }
+    
+                        foreach ($currDataElement->_data as $currData) {
+                            if ($this->{$currAxe}->_boundsEffective['max'] < $currData) {
+                                $this->{$currAxe}->_boundsEffective['max'] = $currData;
+                            }
                         }
                     }
                 }
@@ -447,7 +347,7 @@ class Image_Graph
                 $this->{$currAxe}->_boundsEffective['max']++;
             }
 
-            $this->_autoadjustBoundsAndTicks($this->{$currAxe});
+            $this->{$currAxe}->_autoadjustBoundsAndTicks();
 
             // remove ticks outside the axe-ranges
             foreach ($this->{$currAxe}->_ticksMajorEffective as $key => $value) {
@@ -490,7 +390,7 @@ class Image_Graph
     /**
     * Prepare some internal variables
     *
-    * This function is needed to do some limit-checking, set internal variables to appropriate values etc.
+    * This function is needed for some limit-checking, setting internal variables to appropriate values etc.
     * It's necessary to call this function shortly before actually drawing since it does all necessary preparations.
     *
     * @access private
@@ -554,18 +454,20 @@ class Image_Graph
             }
 
             // prepare drawing of labels for the X-axes
-            if (true) { // @TO DO: add check to see if there are any labels set for the X-axis
+            if (!empty($this->axeX->_labels)) {
                 $this->axeX->_fontOptions = $this->_mergeFontOptions($this->axeX->_fontOptions);
 
                 require_once 'Image/Text.php';
                 $tempText = new Image_Text("", $this->axeX->_fontOptions);
                 $maxHeight = 0;
 
-$this->axeX->_bounds['max'] = 4;
                 for ($labelCount=0; $labelCount<$this->axeX->_bounds['max']; $labelCount++) {
-                    $currLabel = $this->axeX->_labels[$labelCount];
+                    if (isset($this->axeX->_labels[$labelCount])) {
+                        $currLabel = $this->axeX->_labels[$labelCount];
+                    } else {
+                        $currLabel = null;
+                    }
                     if (!empty($currLabel)) {
-
                         // TO DO: remove this dirty little hack :-) we shouldn't access the lines directly, should we?
                         if (is_string($currLabel)) {
                             $tempText->lines = array(new Image_Text_Line($currLabel, $tempText->options));
@@ -789,8 +691,8 @@ $this->_relativeXPositions=$relativeXPositions;
         imageline    ($img, $this->_drawingareaPos[0],                              $this->_drawingareaPos[1]+$this->_drawingareaSize[1]-1,
                             $this->_drawingareaPos[0]+$this->_drawingareaSize[0]-1, $this->_drawingareaPos[1]+$this->_drawingareaSize[1]-1, $drawColor);
 
-        foreach ($this->_relativeXPositions as $currPos) {
-            $currPos += $this->_drawingareaPos[0];
+        for ($labelCount=0; $labelCount<$this->axeX->_bounds['max']; $labelCount++) {
+            $currPos = $this->_relativeXPositions[$labelCount] + $this->_drawingareaPos[0];
             $tickSize = $this->axeX->_tickSize;
             switch ($this->axeX->_tickStyle) {
                 case IMAGE_GRAPH_TICKS_INSIDE:
@@ -825,8 +727,12 @@ $this->_relativeXPositions=$relativeXPositions;
             }
 
 
-            for ($labelCount=0; $labelCount<count($this->axeX->_labels); $labelCount++) {
-                $currLabel = $this->axeX->_labels[$labelCount];
+            for ($labelCount=0; $labelCount<$this->axeX->_bounds['max']; $labelCount++) {
+                if (isset($this->axeX->_labels[$labelCount])) {
+                    $currLabel = $this->axeX->_labels[$labelCount];
+                } else {
+                    $currLabel = null;
+                }
                 if (!empty($currLabel)) {
                     // TO DO: remove this dirty little hack :-) we shouldn't access the lines directly, should we?
                     if (is_string($currLabel)) {
@@ -951,7 +857,6 @@ $this->_relativeXPositions=$relativeXPositions;
             }
         } // if (!empty($this->_defaultFontOptions))
 
-        // TO DO: add separators / ticks for x-axe
         // TO DO: add possibility to turn on a "grid"
     }
 
@@ -971,10 +876,15 @@ $this->_relativeXPositions=$relativeXPositions;
         $bgcolor = imagecolorallocate($img, $this->_bgcolor[0], $this->_bgcolor[1], $this->_bgcolor[2]);
         imagefill($img, 0, 0, $bgcolor);
 
+        // elements to draw before the data
+        $this->_drawGDtitles($img);
+
+        // loop through all data-objects and display them
         foreach ($this->_dataElements as $currDataElement) {
             $currDataElement->drawGD($img, $this);
         }
-        $this->_drawGDtitles($img);
+
+        // elements to draw after the data
         $this->_drawGDAxes($img);
 
         return $img;
