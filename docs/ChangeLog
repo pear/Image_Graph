@@ -1,7 +1,7 @@
 *************************
  Image_Graph - Changelog
 *************************
-Version 0.3.0-dev2 [2004-Jan-xx] - Jesper Veggerby <pear.nosey@veggerby.dk>
+Version 0.3.0-dev2 [2005-Jan-13] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Added functionality for multi-level labels (ticks, text, etc.) to support for minor and major labels (and more if needed)
     * Added fontmapping in GD drivers useful for mapping mnemonic fontnames, i.e. Times New Roman to font file names (either partial or full)
     * Added configuration option in Config.php (IMAGE_GRAPH_SYSTEM_FONT_PATH) enabling to specify default search path for system fonts
