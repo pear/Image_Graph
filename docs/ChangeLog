@@ -8,8 +8,10 @@ Version 0.3.0-dev2 [2004-Jan-xx] - Jesper Veggerby <pear.nosey@veggerby.dk>
         - On Windows systems this defaults to %SYSTEMROOT%\Fonts\
     * Added 'auto' split on layouts - calculated automatically based on actual sizes of the parts (supported only with titles)
     * Added visual tests - not PHPUnit, test cases:
-        - Driver support for gradients
-        - Text output alignment
+        - Basic testing if requirements are met (GD + Freetype)
+        - Testcases for testing drivers
+        - Plot tests
+        - Axis tests
     * Added support for setting width on the bars in a bar chart
     * Added setFontColor(), setFontSize(), setFontAngle() to elements for easy change of properties of propagating fonts, without needing to create a new object
     * Added new setTitle() method to axis to allow for easier displaying of axis titles
