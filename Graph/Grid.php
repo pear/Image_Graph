@@ -105,13 +105,10 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
     function _getSecondaryAxisPoints()
     {
         if (is_a($this->_secondaryAxis, 'Image_Graph_Axis_Radar')) {
-            $secondaryValue = $this->_secondaryAxis->_getNextLabel();
+            $secondaryValue = false;
             $firstValue = $secondaryValue;
-            while (($secondaryValue <= $this->_secondaryAxis->_getMaximum()) &&
-                ($secondaryValue !== false)
-            ) {
+            while (($secondaryValue = $this->_secondaryAxis->_getNextLabel($secondaryValue)) !== false) {
                 $secondaryAxisPoints[] = $secondaryValue;
-                $secondaryValue = $this->_secondaryAxis->_getNextLabel($secondaryValue);
             }
             $secondaryAxisPoints[] = $firstValue;
         } else {

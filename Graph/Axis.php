@@ -743,10 +743,18 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
             }
 
             if ($currentLabel === false) {
-                return((int) ($this->_getMinimum() / $labelInterval)) *
+                $label = ((int) ($this->_getMinimum() / $labelInterval)) *
                     $labelInterval - $labelInterval;
+                while ($label < $this->_getMinimum()) {
+                    $label += $labelInterval;
+                }
+                return $label;
             } else {
-                return $currentLabel + $labelInterval;
+                if ($currentLabel + $labelInterval > $this->_getMaximum()) {
+                    return false;
+                } else {
+                    return $currentLabel + $labelInterval;
+                }
             }
         }
     }
@@ -812,9 +820,9 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
                 }
                 $this->_driver->setFont($this->_getFont($font));
 
-                $value = $this->_getNextLabel(false, $level);
+                $value = false;
                 $maxSize = 0;
-                while (($value <= $this->_getMaximum()) && ($value !== false)) {
+                while (($value = $this->_getNextLabel($value, $level)) !== false) {
                     if ((abs($value) > 0.0001) && ($value > $this->_getMinimum()) &&
                         ($value < $this->_getMaximum()))
                     {
@@ -830,8 +838,6 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
                             $maxSize = max($maxSize, $this->_driver->textWidth($labelText));
                         }
                     }
-
-                    $value = $this->_getNextLabel($value, $level);
                 }
                 if ((isset($labelOptions['showoffset'])) && ($labelOptions['showoffset'] === true)) {
                     $totalMaxSize += $maxSize;
@@ -1229,8 +1235,8 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
         ksort($this->_labelOptions);
         foreach ($this->_labelOptions as $level => $labelOption) {
-            $value = $this->_getNextLabel(false, $level);
-            while (($value <= $this->_getMaximum()) && ($value !== false)) {
+            $value = false;
+            while (($value = $this->_getNextLabel($value, $level)) !== false) {
                 if ((((abs($value) > 0.0001) || ($this->_showLabelZero)) &&
                     (($value > $this->_getMinimum()) || ($this->_showLabelMinimum)) &&
                     (($value < $this->_getMaximum()) || ($this->_showLabelMaximum))) &&
@@ -1238,7 +1244,6 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
                 ) {
                     $this->_drawTick($value, $level);
                 }
-                $value = $this->_getNextLabel($value, $level);
             }
         }
 

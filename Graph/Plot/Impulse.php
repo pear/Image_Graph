@@ -72,8 +72,6 @@ class Image_Graph_Plot_Impulse extends Image_Graph_Plot
      */
     function _done()
     {
-        // TODO Check problem with array fill!
-        
         if (parent::_done() === false) {
             return false;
         }

@@ -76,35 +76,32 @@ class Image_Graph_Grid_Lines extends Image_Graph_Grid
             return false;
         }
 
-        $value = $this->_primaryAxis->_getNextLabel();
+        $value = false;
 
         $secondaryPoints = $this->_getSecondaryAxisPoints();
 
-        while (($value <= $this->_primaryAxis->_getMaximum()) && ($value !== false)) {
-            if ($value > $this->_primaryAxis->_getMinimum()) {
-                reset($secondaryPoints);
-                list ($id, $previousSecondaryValue) = each($secondaryPoints);
-                while (list ($id, $secondaryValue) = each($secondaryPoints)) {
-                    if ($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y) {
-                        $p1 = array ('X' => $secondaryValue, 'Y' => $value);
-                        $p2 = array ('X' => $previousSecondaryValue, 'Y' => $value);
-                    } else {
-                        $p1 = array ('X' => $value, 'Y' => $secondaryValue);
-                        $p2 = array ('X' => $value, 'Y' => $previousSecondaryValue);
-                    }
-
-                    $x1 = $this->_pointX($p1);
-                    $y1 = $this->_pointY($p1);
-                    $x2 = $this->_pointX($p2);
-                    $y2 = $this->_pointY($p2);
-
-                    $previousSecondaryValue = $secondaryValue;
-
-                    $this->_getLineStyle();
-                    $this->_driver->line($x1, $y1, $x2, $y2);
+        while (($value = $this->_primaryAxis->_getNextLabel($value)) !== false) {
+            reset($secondaryPoints);
+            list ($id, $previousSecondaryValue) = each($secondaryPoints);
+            while (list ($id, $secondaryValue) = each($secondaryPoints)) {
+                if ($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y) {
+                    $p1 = array ('X' => $secondaryValue, 'Y' => $value);
+                    $p2 = array ('X' => $previousSecondaryValue, 'Y' => $value);
+                } else {
+                    $p1 = array ('X' => $value, 'Y' => $secondaryValue);
+                    $p2 = array ('X' => $value, 'Y' => $previousSecondaryValue);
                 }
+
+                $x1 = $this->_pointX($p1);
+                $y1 = $this->_pointY($p1);
+                $x2 = $this->_pointX($p2);
+                $y2 = $this->_pointY($p2);
+
+                $previousSecondaryValue = $secondaryValue;
+
+                $this->_getLineStyle();
+                $this->_driver->line($x1, $y1, $x2, $y2);
             }
-            $value = $this->_primaryAxis->_getNextLabel($value);
         }
         return true;
     }

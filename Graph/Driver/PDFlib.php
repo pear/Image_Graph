@@ -863,8 +863,6 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
      */
     function overlayImage($x, $y, $filename, $width = false, $height = false, $alignment = false)
     {       
-        // TODO Something seems to be wrong with Y-alignment 
-        
         if (substr($filename, -4) == '.png') {
             $type = 'png';
         } elseif (substr($filename, -4) == '.jpg') {

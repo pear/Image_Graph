@@ -1,7 +1,7 @@
                 *******************************
                           Image_Graph
                 *******************************
-                       version 0.3.0dev2
+                       version 0.3.0dev3
          
   ------ CopyRight (C) Jesper Veggerby Hansen, 2003-2004 ------
              http://pear.php.net/package/Image_Graph
@@ -38,7 +38,7 @@ Functionality includes:
 * Gradient colored filling
 * Image masked filling
 * Every line, every color, every font can be customized
-* Output as PNG or JPEG
+* Output as PNG, JPEG, GIF, WBMP, SVG, PDF or SWF
 * Antialiasing
 * Legends
 * ...and much more
@@ -47,6 +47,9 @@ Requirements
 ------------
 The only system requirement is PHP4/PHP5 support with GD 2 support.
 Full GD 1.x support, with functionality tradeof.
+For PDF support, PDFlib is required (planned File_PDF support when released in 
+working version). For SWF support, Ming is required (planned libswf support as
+well).
 
 Tested with: PHP >= 4.3.3 with GD 1.x & 2.x and PHP >= 5.0.1 with GD 2.x
 
@@ -73,6 +76,7 @@ See http://pear.php.net/package/Image_Graph/docs for documentation
 History
 -------
 Release history of Image_Graph/GraPHPite (see also ChangeLog for changes)
+0.3.0dev3   27-Jan-2005
 0.3.0dev2   13-Jan-2005 (Driver support)
 0.3.0devl   25-Oct-2004 (PEAR - renamed to Image_Graph, merged with 'old' Image_Graph)
 1.2         15-Sep-2004 (Last GraPHPite release)

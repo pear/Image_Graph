@@ -124,6 +124,18 @@ class Image_Graph_Element extends Image_Graph_Common
     var $_fontOptions = array();
 
     /**
+     * Default font options
+     * 
+     * This option is included for performance reasons. The value is calculated
+     * before output and reused in default cases to avoid unnecessary recursive
+     * calls.
+     * 
+     * @var array
+     * @access private
+     */
+    var $_defaultFontOptions = false;
+
+    /**
      * Enable shadows on the element
      * @var bool
      * @access private
@@ -377,7 +389,10 @@ class Image_Graph_Element extends Image_Graph_Common
      */
     function _getFont($options = false)
     {
-        // TODO Avoid calling this multiple times
+        if (($options === false) && ($this->_defaultFontOptions !== false)) {
+            return $this->_defaultFontOptions;
+        }
+        
         if ($options === false) {
             $options = $this->_fontOptions;
         } else {
@@ -648,8 +663,6 @@ class Image_Graph_Element extends Image_Graph_Common
         $this->_driver->write($x, $y, $text, $alignment);
     }
 
-
-
     /**
      * Output the element to the canvas
      *
@@ -659,6 +672,7 @@ class Image_Graph_Element extends Image_Graph_Common
      */
     function _done()
     {
+        $this->_defaultFontOptions = $this->_getFont();
         $this->_getBackground();
         $this->_getBorderStyle();
         $this->_driver->rectangle($this->_left, $this->_top, $this->_right, $this->_bottom);

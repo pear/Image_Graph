@@ -68,12 +68,12 @@ class Image_Graph_Grid_Bars extends Image_Graph_Grid
         }
 
         $i = 0;
-        $value = $this->_primaryAxis->_getNextLabel();
+        $value = false;
 
         $secondaryPoints = $this->_getSecondaryAxisPoints();
 
-        while (($value <= $this->_primaryAxis->_getMaximum()) && ($value !== false)) {
-            if (($value > $this->_primaryAxis->_getMinimum()) && ($i == 1)) {
+        while (($value = $this->_primaryAxis->_getNextLabel($value)) !== false) {
+            if ($i == 1) {
                 reset($secondaryPoints);
                 list ($id, $previousSecondaryValue) = each($secondaryPoints);
                 while (list ($id, $secondaryValue) = each($secondaryPoints)) {
@@ -102,7 +102,6 @@ class Image_Graph_Grid_Bars extends Image_Graph_Grid
             }
             $i = 1 - $i;
             $previousValue = $value;
-            $value = $this->_primaryAxis->_getNextLabel($value);
         }
         return true;
     }

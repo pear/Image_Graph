@@ -78,7 +78,7 @@ class Image_Graph_Grid_Polar extends Image_Graph_Grid
             return false;
         }
 
-        $value = $this->_primaryAxis->_getNextLabel();
+        $value = false;
 
         $p0 = array ('X' => '#min#', 'Y' => '#min#');
         if ($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y) {
@@ -94,14 +94,11 @@ class Image_Graph_Grid_Polar extends Image_Graph_Grid
 
         $span = $this->_primaryAxis->_axisSpan;
 
-        while (($value <= $this->_primaryAxis->_getMaximum()) && ($value !== false)) {
-            if ($value > $this->_primaryAxis->_getMinimum()) {
-                $r = $r0 * ($value - $this->_primaryAxis->_getMinimum()) / $span;
+        while (($value = $this->_primaryAxis->_getNextLabel($value)) !== false) {
+            $r = $r0 * ($value - $this->_primaryAxis->_getMinimum()) / $span;
 
-                $this->_getLineStyle();
-                $this->_driver->ellipse($cx, $cy, $r, $r);
-            }
-            $value = $this->_primaryAxis->_getNextLabel($value);
+            $this->_getLineStyle();
+            $this->_driver->ellipse($cx, $cy, $r, $r);
         }
         return true;
     }
