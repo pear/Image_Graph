@@ -1,6 +1,6 @@
 <?
 /**
-* Line data-element for a Image_Graph diagram
+* Bar data-element for a Image_Graph diagram
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
@@ -9,7 +9,7 @@
 
 require_once("Graph/common.php");
 
-class Image_Graph_Data_Line extends Image_Graph_Data_Common
+class Image_Graph_Data_Bar extends Image_Graph_Data_Common
 {
     /**
     * Type of data element
@@ -17,7 +17,7 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
     * @var string
     * @access private
     */
-    var $_type = "line";
+    var $_type = "bar";
 
     /**
     * Constructor for the class
@@ -26,9 +26,13 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
     * @param  array   numerical data to be drawn
     * @access public
     */
-    function Image_Graph_Data_Line(&$parent, $data, $attributes)
+    function Image_Graph_Data_Bar(&$parent, $data, $attributes)
     {
+        if (!isset($attributes['width'])) {
+            $attributes['width'] = 0.5;
+        }
         parent::Image_Graph_Data_Common(&$parent, $data, $attributes);
+        $parent->_addExtraSpace = 1;
     }
 
     /**
@@ -40,21 +44,22 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
 
     function drawGD(&$img)
     {
-        $yAxe = &$this->_parent->_axes['y'][ $this->_attributes['axeId'] ];
+        $yAxe  = &$this->_parent->_axes['y'][ $this->_attributes['axeId'] ];
+        $graph = &$this->_parent;
         $drawColor = imagecolorallocate($img, $this->_attributes["color"][0], $this->_attributes["color"][1], $this->_attributes["color"][2]);
         $numDatapoints = count($this->_datapoints);
+
+        if ($numDatapoints < 2) {        
+          $halfWidthPixel = floor($graph->_drawingareaSize[1] / 2);
+        } else {
+          $halfWidthPixel = floor(($this->_datapoints[1][0]-$this->_datapoints[0][0]) / 2 * $this->_attributes['width']);
+        }
+
         for ($counter=0; $counter<$numDatapoints; $counter++) {
             if (!is_null($this->_datapoints[$counter])) { // otherwise do not draw this point
-                if (($counter == 0) || (is_null($this->_datapoints[$counter-1]))) {
-                    if (($yAxe['min'] <= $this->_data[$counter]) && ($this->_data[$counter] <= $yAxe['max'])) {
-                        imagesetpixel ($img, $this->_datapoints[$counter][0], $this->_datapoints[$counter][1], $drawColor);
-                    } // otherwise do not draw that point since it's out of the drawingarea
-                } else {
-                    $newCoords = $this->_calculateClippedLineCoords($this->_datapoints[$counter-1], $this->_datapoints[$counter]);
-                    if (!empty($newCoords)) {
-                        imageline ($img, $newCoords[0][0], $newCoords[0][1], $newCoords[1][0], $newCoords[1][1], $drawColor);
-                    }
-                }
+                imagefilledrectangle ($img, $this->_datapoints[$counter][0]-$halfWidthPixel, $this->_datapoints[$counter][1],
+                                            $this->_datapoints[$counter][0]+$halfWidthPixel, $graph->_drawingareaPos[1]+$graph->_drawingareaSize[1]-2,
+                 $drawColor);
             }
         }
     }
