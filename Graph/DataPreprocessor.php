@@ -25,7 +25,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  * @package Image_Graph
- * @subpackage Fill     
+ * @subpackage DataPreprocessor     
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
@@ -34,45 +34,33 @@
  */ 
 
 /**
- * Include file Image/Graph/Fill.php
+ * Data preprocessor used for preformatting a data.
+ * A data preprocessor is used in cases where a value from a dataset or label must be
+ * displayed in another format or way than entered. This could for example be the need
+ * to display X-values as a date instead of 1, 2, 3, .. or even worse unix-timestamps. 
+ * It could also be when a {@see Image_Graph_Marker_Value} needs to display values as percentages
+ * with 1 decimal digit instead of the default formatting (fx. 12.01271 -> 12.0%).
+ * @abstract
  */
-require_once 'Image/Graph/Fill.php';
-
-/**
- * Solid colored fill.
- */
-class Image_Graph_Fill_Solid extends Image_Graph_Fill 
+class Image_Graph_DataPreprocessor 
 {
 
     /**
-     * The solid fill color
-     * @var mixed
-     * @access private
-     */
-    var $_color = null;
-
-    /**
-     * Image_Graph_SolidFill [Constructor]
-     * @param mixed $color The color to use as a solid fill 
-     */
-    function &Image_Graph_Fill_Solid($color)
+     * Image_Graph_DataPreprocessor [Constructor]. 
+	 */
+    function &Image_Graph_DataPreprocessor()
     {
-        parent::Image_Graph_Fill();
-        $this->_color = $color;
     }
 
     /**
-     * Return the fillstyle
-     * @return int A GD fillstyle
-     * @access private 
+     * Process the value
+     * @param var $value The value to process/format
+     * @return string The processed value
+     * @access private
      */
-    function _getFillStyle($ID = false)
+    function _process($value)
     {
-        if ($this->_color != null) {
-            return $this->_color($this->_color);
-        } else {
-            return parent::_getFillStyle($ID);
-        }
+        return $value;
     }
 
 }

@@ -25,7 +25,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  * @package Image_Graph
- * @subpackage Fill     
+ * @subpackage Marker     
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
@@ -34,45 +34,72 @@
  */ 
 
 /**
- * Include file Image/Graph/Fill.php
+ * Include file Image/Graph/Plotarea/Element.php
  */
-require_once 'Image/Graph/Fill.php';
+require_once 'Image/Graph/Plotarea/Element.php';
 
 /**
- * Solid colored fill.
+ * Data point marker.
+ * The data point marker is used for marking the datapoints on a graph with some 
+ * visual label, fx. a cross, a text box with the value or an icon.
+ * @abstract
  */
-class Image_Graph_Fill_Solid extends Image_Graph_Fill 
+class Image_Graph_Marker extends Image_Graph_Plotarea_Element 
 {
 
     /**
-     * The solid fill color
-     * @var mixed
+     * Secondary marker
+     * @var Marker
      * @access private
      */
-    var $_color = null;
+    var $_secondaryMarker = false;
 
     /**
-     * Image_Graph_SolidFill [Constructor]
-     * @param mixed $color The color to use as a solid fill 
+     * The 'size' of the marker, the meaning depends on the specific Marker implementation
+     * @var int
+     * @access private
      */
-    function &Image_Graph_Fill_Solid($color)
+    var $_size = 6;
+
+    /**
+     * Set the 'size' of the marker
+     * @param int $size The 'size' of the marker, the meaning depends on the specific Marker implementation 
+     */
+    function setSize($size)
     {
-        parent::Image_Graph_Fill();
-        $this->_color = $color;
+        $this->_size = $size;
+    }
+    
+    /**
+     * Set the secondary marker
+     * @param Marker $secondaryMarker The secondary marker 
+     */
+    function setSecondaryMarker(& $secondaryMarker)
+    {
+        $this->_secondaryMarker = & $secondaryMarker;
+        $this->_secondaryMarker->_setParent($this);
     }
 
     /**
-     * Return the fillstyle
-     * @return int A GD fillstyle
-     * @access private 
+     * Draw the marker on the canvas
+     * @param int $x The X (horizontal) position (in pixels) of the marker on the canvas 
+     * @param int $y The Y (vertical) position (in pixels) of the marker on the canvas 
+     * @param array $values The values representing the data the marker 'points' to 
+     * @access private
      */
-    function _getFillStyle($ID = false)
+    function _drawMarker($x, $y, $values = false)
     {
-        if ($this->_color != null) {
-            return $this->_color($this->_color);
-        } else {
-            return parent::_getFillStyle($ID);
+        if (is_a($this->_secondaryMarker, 'Image_Graph_Marker')) {
+            $this->_secondaryMarker->_drawMarker($x, $y, $values);
         }
+    }
+
+    /**
+     * Output to the canvas
+     * @access private
+     */
+    function _done()
+    {
     }
 
 }

@@ -25,7 +25,6 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  * @package Image_Graph
- * @subpackage Fill     
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
@@ -34,47 +33,71 @@
  */ 
 
 /**
- * Include file Image/Graph/Fill.php
+ * Include file Image/Graph.php
  */
-require_once 'Image/Graph/Fill.php';
+require_once 'Image/Graph.php';
 
 /**
- * Solid colored fill.
+ * Class for simple creation of graphs
  */
-class Image_Graph_Fill_Solid extends Image_Graph_Fill 
+class Image_Graph_Simple extends Image_Graph 
 {
-
+   
     /**
-     * The solid fill color
-     * @var mixed
-     * @access private
+     * Image_Graph_Simple [Constructor]
+     * @param int $width The width of the graph in pixels	 
+     * @param int $height The height of the graph in pixels	 
      */
-    var $_color = null;
-
-    /**
-     * Image_Graph_SolidFill [Constructor]
-     * @param mixed $color The color to use as a solid fill 
-     */
-    function &Image_Graph_Fill_Solid($color)
+    function &Image_Graph_Simple($width, $height, $plotType, $data, $title, $lineColor = 'black', $fillColor = 'white')
     {
-        parent::Image_Graph_Fill();
-        $this->_color = $color;
-    }
-
-    /**
-     * Return the fillstyle
-     * @return int A GD fillstyle
-     * @access private 
-     */
-    function _getFillStyle($ID = false)
-    {
-        if ($this->_color != null) {
-            return $this->_color($this->_color);
-        } else {
-            return parent::_getFillStyle($ID);
+        parent::Image_Graph($width, $height);
+        
+        $plotarea =& Image_Graph::factory('Image_Graph_Plotarea');
+        
+        $dataset =& Image_Graph::factory('Image_Graph_Dataset_Trivial');
+        $keys = array_keys($data);
+        reset($keys);
+        while (list($id, $key) = each($keys)) {
+            $dataset->addPoint($id, $data[$key]);
         }
+        
+        $this->add(
+            Image_Graph::vertical(
+                Image_Graph::factory('title', array($title, &$GLOBALS['_Image_Graph_font'])),
+                $plotarea,
+                10
+            )   
+        );
+
+        $plotarea->addNew('line_grid', array(), IMAGE_GRAPH_AXIS_Y);        
+        
+        $plot =& $plotarea->addNew("Image_Graph_Plot_$plotType", &$dataset);
+        $plot->setLineColor($lineColor);
+        $plot->setFillColor($fillColor);
+        
+        $axisX =& $plotarea->getAxis(IMAGE_GRAPH_AXIS_X);
+        $axisX->setDataPreprocessor(Image_Graph::factory('Image_Graph_DataPreprocessor_Array', array($keys)));
+        $axisX->setLabelInterval(1);
+        $axisX->showLabel(IMAGE_GRAPH_LABEL_MINIMUM+IMAGE_GRAPH_LABEL_ZERO+IMAGE_GRAPH_LABEL_MAXIMUM);
+        
     }
+    
+    /**
+     * Factory method to create the Image_Simple_Graph object.
+     */
+    function &factory($width, $height, $plotType, $data, $title, $lineColor = 'black', $fillColor = 'white') {
+        return Image_Graph::factory('Image_Graph_Simple',
+            array(
+                $width,
+                $height,
+                $plotType,
+                $data,
+                $title,
+                $lineColor,
+                $fillColor
+            )
+        );
+    }           
 
 }
-
 ?>

@@ -25,7 +25,6 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  * @package Image_Graph
- * @subpackage Fill     
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
@@ -34,47 +33,8 @@
  */ 
 
 /**
- * Include file Image/Graph/Fill.php
+ * Enable graph debugging, no graphical output to browser if enabled
  */
-require_once 'Image/Graph/Fill.php';
-
-/**
- * Solid colored fill.
- */
-class Image_Graph_Fill_Solid extends Image_Graph_Fill 
-{
-
-    /**
-     * The solid fill color
-     * @var mixed
-     * @access private
-     */
-    var $_color = null;
-
-    /**
-     * Image_Graph_SolidFill [Constructor]
-     * @param mixed $color The color to use as a solid fill 
-     */
-    function &Image_Graph_Fill_Solid($color)
-    {
-        parent::Image_Graph_Fill();
-        $this->_color = $color;
-    }
-
-    /**
-     * Return the fillstyle
-     * @return int A GD fillstyle
-     * @access private 
-     */
-    function _getFillStyle($ID = false)
-    {
-        if ($this->_color != null) {
-            return $this->_color($this->_color);
-        } else {
-            return parent::_getFillStyle($ID);
-        }
-    }
-
-}
+define('IMAGE_GRAPH_DEBUG', false);
 
 ?>

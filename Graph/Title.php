@@ -25,7 +25,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  * @package Image_Graph
- * @subpackage Fill     
+ * @subpackage Text     
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
@@ -34,45 +34,77 @@
  */ 
 
 /**
- * Include file Image/Graph/Fill.php
+ * Include file Image/Graph/Layout.php
  */
-require_once 'Image/Graph/Fill.php';
+require_once 'Image/Graph/Layout.php';
 
 /**
- * Solid colored fill.
+ * Title
  */
-class Image_Graph_Fill_Solid extends Image_Graph_Fill 
+class Image_Graph_Title extends Image_Graph_Layout 
 {
 
     /**
-     * The solid fill color
-     * @var mixed
+     * The text to print
+     * @var string
      * @access private
      */
-    var $_color = null;
+    var $_text;
 
     /**
-     * Image_Graph_SolidFill [Constructor]
-     * @param mixed $color The color to use as a solid fill 
+     * The font to use
+     * @var Font
+     * @access private
      */
-    function &Image_Graph_Fill_Solid($color)
+    var $_font;
+
+    /**
+     * Create the title
+     * @param sting $text The text to represent the title
+     * @param Font $font The font to use in the title
+     */
+    function &Image_Graph_Title($text, & $font)
     {
-        parent::Image_Graph_Fill();
-        $this->_color = $color;
+        parent::Image_Graph_Layout();
+        $this->_font = & $font;
+        $this->setText($text);
     }
 
     /**
-     * Return the fillstyle
-     * @return int A GD fillstyle
-     * @access private 
+     * Set the text
+     * @param string $text The text to display
      */
-    function _getFillStyle($ID = false)
+    function setText($text)
     {
-        if ($this->_color != null) {
-            return $this->_color($this->_color);
-        } else {
-            return parent::_getFillStyle($ID);
+        $this->_text = $text;
+    }
+
+    /**
+     * Output the text 
+     * @access private
+     */
+    function _done()
+    {
+        if (!$this->_font) {
+            return false;
         }
+        
+        if (!is_a($this->_parent, 'Image_Graph_Layout')) {
+            $this->_setCoords(
+                $this->_parent->_fillLeft(),
+                $this->_parent->_fillTop(),
+                $this->_parent->_fillRight(),
+                $this->_parent->_fillTop() + $this->_font->height($this->_text)
+            );
+        }               
+        
+        parent::_done();
+
+        $this->_font->_write(
+            ($this->_left + $this->_right - $this->_font->width($this->_text)) / 2, 
+            ($this->_top + $this->_bottom - $this->_font->height($this->_text)) / 2, 
+            $this->_text
+        );
     }
 
 }

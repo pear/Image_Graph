@@ -34,45 +34,47 @@
  */ 
 
 /**
- * Include file Image/Graph/Fill.php
+ * Include file Image/Graph/Element.php
  */
-require_once 'Image/Graph/Fill.php';
+require_once 'Image/Graph/Element.php';
 
 /**
- * Solid colored fill.
+ * Style used for filling elements. 
+ * @abstract
  */
-class Image_Graph_Fill_Solid extends Image_Graph_Fill 
+class Image_Graph_Fill extends Image_Graph_Element 
 {
 
     /**
-     * The solid fill color
-     * @var mixed
-     * @access private
+     * Resets the fillstyle
+     * @access private 
      */
-    var $_color = null;
-
-    /**
-     * Image_Graph_SolidFill [Constructor]
-     * @param mixed $color The color to use as a solid fill 
-     */
-    function &Image_Graph_Fill_Solid($color)
+    function _reset()
     {
-        parent::Image_Graph_Fill();
-        $this->_color = $color;
     }
 
     /**
-     * Return the fillstyle
-     * @return int A GD fillstyle
-     * @access private 
-     */
-    function _getFillStyle($ID = false)
+    * Return the fillstyle at positions X, Y 
+    * @param int $x The X position
+    * @param int $y The Y position
+    * @param int $w The Width
+    * @param int $h The Height
+    * @return int A GD fillstyle 
+    * @access private
+    */
+    function _getFillStyleAt($x, $y, $w, $h, $ID = false)
     {
-        if ($this->_color != null) {
-            return $this->_color($this->_color);
-        } else {
-            return parent::_getFillStyle($ID);
-        }
+        return $this->_getFillStyle($ID);
+    }
+
+    /**
+     * Causes the object to update all sub elements coordinates (Image_Graph_Common, does not itself have coordinates, this is basically an abstract method)
+     * @access private
+     */
+    function _updateCoords()
+    {
+        $this->_setCoords($this->_parent->_fillLeft()-1, $this->_parent->_fillTop()-1, $this->_parent->_fillRight()+1, $this->_parent->_fillBottom()+1);
+        parent::_updateCoords();
     }
 
 }

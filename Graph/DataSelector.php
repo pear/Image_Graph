@@ -25,7 +25,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  * @package Image_Graph
- * @subpackage Fill     
+ * @subpackage DataSelector     
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
@@ -34,45 +34,28 @@
  */ 
 
 /**
- * Include file Image/Graph/Fill.php
+ * Filter used for selecting which data to show as markers
+ * @abstract
  */
-require_once 'Image/Graph/Fill.php';
-
-/**
- * Solid colored fill.
- */
-class Image_Graph_Fill_Solid extends Image_Graph_Fill 
+class Image_Graph_DataSelector 
 {
 
     /**
-     * The solid fill color
-     * @var mixed
-     * @access private
-     */
-    var $_color = null;
-
-    /**
-     * Image_Graph_SolidFill [Constructor]
-     * @param mixed $color The color to use as a solid fill 
-     */
-    function &Image_Graph_Fill_Solid($color)
+     * Image_Graph_DataSelector [Constructor]
+	 */
+    function &Image_Graph_DataSelector()
     {
-        parent::Image_Graph_Fill();
-        $this->_color = $color;
     }
 
     /**
-     * Return the fillstyle
-     * @return int A GD fillstyle
-     * @access private 
-     */
-    function _getFillStyle($ID = false)
+     * Check if a specified value should be 'selected', ie shown as a marker
+     * @param array $values The values to check
+     * @return bool True if the Values should cause a marker to be shown, false if not
+     * @access private
+	 */
+    function _select($values)
     {
-        if ($this->_color != null) {
-            return $this->_color($this->_color);
-        } else {
-            return parent::_getFillStyle($ID);
-        }
+        return true;
     }
 
 }

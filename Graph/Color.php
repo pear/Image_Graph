@@ -30,7 +30,7 @@
 /**
 * Color class to be extended; from package PEAR::Image_Color
 */
-require_once("Image/Color.php");
+require_once 'Image/Color.php';
 
 /**
 * Class for color-handling
