@@ -48,6 +48,7 @@ require_once 'Image/Graph/Plotarea/Element.php';
  */
 class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 {
+    // TODO Create an option to make it user specified at which point/value the axis intersects (i.e. 0, min, max)
 
     /**
      * The type of the axis, possible values are:
@@ -116,6 +117,13 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      */
     var $_showArrow = false;
 
+    /**
+     * Intersection data of axis
+     * @var array
+     * @access private
+     */
+    var $_intersect = array('value' => 'default', 'axis' => 'default');
+    
     // TODO Make labelOptions propagate to sub-classes where required
     /**
      * The label options
@@ -505,6 +513,33 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     }
 
     /**
+     * Get the axis intersection pixel position
+     *
+     * This is only to be called prior to output! I.e. between the user
+     * invokation of Image_Graph::done() and any actual output is performed.
+     * This is because it can change the axis range.
+     *
+     * @param double $value the intersection value to get the pixel-point for
+     * @return double The pixel position along the axis
+     * @access private
+     */
+    function _intersectPoint($value)
+    {
+
+        if ($value === 'min') {
+            $value = $this->_getMinimum();
+        } elseif ($value === 'max') {
+            $value = $this->_getMaximum();
+        } elseif ($value < $this->_getMinimum()) {
+            $this->_setMinimum($value);
+        } elseif ($value > $this->_getMaximum()) {
+            $this->_setMaximum($value);
+        }
+
+        return $this->_point($value);
+    }
+    
+    /**
      * Calculate the label interval
      *
      * If explicitly defined this will be calucated to an approximate best.
@@ -767,6 +802,71 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
         );
     }
 
+    /**
+     * Set axis intersection.
+     *
+     * Sets the value at which the axis intersects other axis, fx. at which Y-
+     * value the x-axis intersects the y-axis (normally at 0).
+     * 
+     * Possible values are 'default', 'min', 'max' or a number between axis min
+     * and max (the value will automatically be limited to this range).
+     * 
+     * For a coordinate system with 2 y-axis, the x-axis can either intersect
+     * the primary or the secondary y-axis. To make the x-axis intersect the
+     * secondary y-axis at a given value pass IMAGE_GRAPH_AXIS_Y_SECONDARY as
+     * second parameter.
+     *
+     * @param mixed $intersection The value at which the axis intersect the
+     * 'other' axis
+     * @param mixed $axis The axis to intersect. Only applies to x-axis with
+     * both a primary and secondary y-axis available.
+     * @since 0.3.0dev2
+     */
+    function setAxisIntersection($intersection, $axis = 'default')
+    {
+        // TODO Ensure that the intersection is within the other axis range, otherwise expand range
+        $this->_intersect = array(
+            'value' => $intersection,
+            'axis' => $axis
+        );
+    }
+
+    /**
+     * Get axis intersection data.
+     * 
+     * @return array An array with the axis intersection data.
+     * @since 0.3.0dev2
+     * @access private
+     */
+    function _getAxisIntersection()
+    {
+        $value = $this->_intersect['value'];
+        $axis = $this->_intersect['axis'];
+        if (($this->_type == IMAGE_GRAPH_AXIS_Y) 
+            || ($this->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY)
+        ) {
+            $axis = IMAGE_GRAPH_AXIS_X;
+        } elseif ($axis == 'default') {
+            $axis = IMAGE_GRAPH_AXIS_Y;
+        }
+        
+        if ($value === 'default') {
+            switch ($this->_type) {
+            case IMAGE_GRAPH_AXIS_Y:
+                $value = 'min';
+                break;
+            case IMAGE_GRAPH_AXIS_Y_SECONDARY:
+                $value = 'max';
+                break;
+            case IMAGE_GRAPH_AXIS_X:
+                $value = 0;
+                break;
+            }
+        }
+        
+        return array('value' => $value, 'axis' => $axis);
+    }
+    
     /**
      * Output an axis tick mark.
      *

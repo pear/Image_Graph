@@ -20,6 +20,7 @@ Version 0.3.0-dev2 [2004-Jan-xx] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Added support for adding an array to Image_Graph_Dataset_Trivial for easy point addition
     * Added some error/insanity checks
     * Added Image_Graph_Tool class with static function for bezier curve-smoothing for drivers without native support (fx. GD)
+    * Added Image_Graph_Axis::setAxisIntersection() to specify a value for which the axis intersects another axis (i.e. Y-axis intersects X-axis in x=1 instead of x=0)
     * Implemented drivers to support different output formats
         - Currently full GD (JPEG/PNG/GIF/WBMP), SVG and PDF (PDFlib) support
         - Semi-supported drivers SWF (Ming)

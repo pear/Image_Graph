@@ -647,6 +647,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
     {
+        // TODO Create a method for making legend samples user defined
         $this->_driver->rectangle($x0, $y0, $x1, $y1);
     }
 

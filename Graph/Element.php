@@ -450,6 +450,22 @@ class Image_Graph_Element extends Image_Graph_Common
      */
     function _setCoords($left, $top, $right, $bottom)
     {
+        if ($left === false) {
+            $left = $this->_left;
+        }
+        
+        if ($top === false) {
+            $top = $this->_top;
+        }
+
+        if ($right === false) {
+            $right = $this->_right;
+        }
+        
+        if ($bottom === false) {
+            $bottom = $this->_bottom;
+        }
+        
         $this->_left = min($left, $right);
         $this->_top = min($top, $bottom);
         $this->_right = max($left, $right);
