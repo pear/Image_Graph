@@ -535,7 +535,7 @@ class Image_Graph
             if (!empty($this->_diagramTitleText)) {
                 $this->_diagramTitleFontOptions = $this->_getFontOptions($this->_diagramTitleFontOptions);
 
-                require_once 'Image/Image_Text.php';
+                require_once 'Image/Text.php';
                 $tempText = new Image_Text($this->_diagramTitleText, $this->_diagramTitleFontOptions);
                 $textSize = $tempText->getSize();
                 $borderspaceSum['top'] += $textSize['height'];
@@ -550,7 +550,7 @@ class Image_Graph
             if (!empty($this->_axes['x']['titleText'])) {
                 $this->_axes['x']['titleFontOptions'] = $this->_getFontOptions($this->_axes['x']['titleFontOptions']);
 
-                require_once 'Image/Image_Text.php';
+                require_once 'Image/Text.php';
                 $tempText = new Image_Text($this->_axes['x']['titleText'], $this->_axes['x']['titleFontOptions']);
                 $textSize = $tempText->getSize();
                 $borderspaceSum["bottom"] += $textSize["height"];
@@ -567,7 +567,7 @@ class Image_Graph
                 if ($this->_axes['y'][$axeCount]['containsData']) {
                     $this->_axes['y'][$axeCount]['fontOptions'] = $this->_getFontOptions($this->_axes['y'][$axeCount]['fontOptions']);
 
-                    require_once 'Image/Image_Text.php';
+                    require_once 'Image/Text.php';
                     $tempText = new Image_Text("", $this->_axes['y'][$axeCount]['fontOptions']);
 
                     $maxWidth = 0;
@@ -686,7 +686,7 @@ class Image_Graph
         if (!empty($this->_defaultFontOptions)) { // otherwise we don't have correct settings for font-filename etc.
             // draw title text
             if (!empty($this->_diagramTitleText)) {
-                require_once 'Image/Image_Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
+                require_once 'Image/Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
                 $tempText = new Image_Text($this->_diagramTitleText, $this->_diagramTitleFontOptions);
 
                 $tempText->align(IMAGE_TEXT_ALIGN_CENTER);
@@ -701,7 +701,7 @@ class Image_Graph
 
             // draw x-axe text
             if (!empty($this->_axes['x']['titleText'])) {
-                require_once 'Image/Image_Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
+                require_once 'Image/Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
                 $tempText = new Image_Text($this->_axes['x']['titleText'], $this->_axes['x']['titleFontOptions']);
 
                 $tempText->align(IMAGE_TEXT_ALIGN_CENTER);
@@ -793,7 +793,7 @@ class Image_Graph
         if (!empty($this->_defaultFontOptions)) { // otherwise we don't have correct settings for font-filename etc.
             for ($axeCount=0; $axeCount<=1; $axeCount++) {
                 if ($this->_axes['y'][$axeCount]['containsData']) {
-                    require_once 'Image/Image_Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
+                    require_once 'Image/Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
                     $textoptions = $this->_axes['y'][$axeCount]['fontOptions'];
                     $textoptions['width'] = $this->_axes['y'][$axeCount]['_maxNumWidth'];
                     $tempText = new Image_Text("", $textoptions);
