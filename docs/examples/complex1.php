@@ -34,8 +34,6 @@
     $graph->axeY0->title->setFontOptions (array("fontSize" => 8));
     $graph->axeY1->title->setFontOptions (array("fontSize" => 8));
 
-// TO DO: add Y-axes titles
-
     $graph->setAxesColor(array(0x40, 0x40, 0xFF));
 
     $data    = array( 15.8,
@@ -53,6 +51,9 @@
     $graph->axeX->setLabels(array("Month 1", "Month 2", "Month 3"));
 
     $graph->axeY1->setTicksAutoSteps(10);
+
+/* these function-calls might be useful to try out */
+/* but we don't need them in our example since we use the auto-values */
 //    $graph->axeY0->setBounds (10,  50);
 //    $graph->axeY1->setBounds ( 5, 100);
 //    $graph->axeY0->setTicksMajor(array(0, 10, 20, 30, 40, 50));
