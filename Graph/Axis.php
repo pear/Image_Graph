@@ -49,8 +49,6 @@ require_once 'Image/Graph/Plotarea/Element.php';
 class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 {
     
-    // TODO There seems to be a problem with axis labels not printing after setting new driver (i.e. a reset)
-
     /**
      * The type of the axis, possible values are:
      * <ul>
@@ -106,6 +104,21 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      * @access private
      */
     var $_axisValueSpan = false;
+    
+    /**
+     * The axis padding.
+     * The index 'low' specifies the padding for the low axis values (when not
+     * inverted), i.e. to the left on an x-axis and on the bottom of an y-axis,
+     * vice versa for 'high'.
+     * 
+     * Axis padding does not make sense on a normal linear y-axis with a 'y-min'
+     * of 0 since this corresponds to displaying a small part of the y-axis
+     * below 0!
+     * 
+     * @var array
+     * @access private
+     */
+    var $_axisPadding = array('low' => 0, 'high' => 0);
 
     /**
      * The number of "pixels" representing 1 unit on the axis
@@ -252,6 +265,17 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     {
         $this->_pushValues = true;
     }
+    
+    /**
+     * Sets the axis padding for a given position ('low' or 'high')
+     * @param string $where The position
+     * @param int $value The number of pixels to "pad"
+     * @access private
+     */
+    function _setAxisPadding($where, $value)
+    {
+        $this->_axisPadding[$where] = $value;
+    }     
 
     /**
      * Gets the font of the title.
@@ -571,15 +595,15 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     {
         if ($this->_type == IMAGE_GRAPH_AXIS_X) {
             if ($this->_invert) {                
-                return $this->_right - $this->_delta * $this->_value($value);
+                return $this->_right - $this->_axisPadding['high'] - $this->_delta * $this->_value($value);
             } else {
-                return $this->_left + $this->_delta * $this->_value($value);
+                return $this->_left + $this->_axisPadding['low'] + $this->_delta * $this->_value($value);
             }                
         } else {
             if ($this->_invert) {                
-                return $this->_top + $this->_delta * $this->_value($value);
+                return $this->_top + $this->_axisPadding['high'] + $this->_delta * $this->_value($value);
             } else {
-                return $this->_bottom - $this->_delta * $this->_value($value);
+                return $this->_bottom - $this->_axisPadding['low'] - $this->_delta * $this->_value($value);
             }
         }
     }
@@ -643,9 +667,9 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
         if ($this->_axisValueSpan == 0) {
             $this->_delta = false;
         } elseif ($this->_type == IMAGE_GRAPH_AXIS_X) {
-            $this->_delta = $this->width() / $this->_axisValueSpan;
+            $this->_delta = ($this->width() - ($this->_axisPadding['low'] + $this->_axisPadding['high'])) / $this->_axisValueSpan;
         } else {
-            $this->_delta = $this->height() / $this->_axisValueSpan;
+            $this->_delta = ($this->height() - ($this->_axisPadding['low'] + $this->_axisPadding['high'])) / $this->_axisValueSpan;
         }
     }        
     

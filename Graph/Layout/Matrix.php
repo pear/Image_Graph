@@ -152,7 +152,7 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
      * @param Image_Graph_Layout $element The element to set in the position
      *   ($row, $col) in the matrix
      */
-    function setEntry($row, $col, $element)
+    function setEntry($row, $col, &$element)
     {
         $this->_matrix[$row][$col] =& $element;
         $this->_pushEdges($row, $col);

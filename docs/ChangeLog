@@ -6,6 +6,7 @@ Version 0.x.y-state [2005-xxx-yy] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Added use of 'null' y-values in line plots (normal and smoothed) causing a break in the line (instead of dropping to zero)
     * Added possibility to make one legend use multiple plotareas
     * Added grouping to drivers (currently only fully supported by SVG driver)
+    * Added axis padding (padding inside the plotarea)
     * Implemented simple shadows (and removed shadow images from distribution)
     * Fixed bug #3346 "double as data"
     * Fixed a problem with normal multi-data bar charts not displaying expected bar width
@@ -199,5 +200,5 @@ Version 0.9c [2004-Jun-15] - Jesper Veggerby <pear.nosey@veggerby.dk>
 Version 0.9b [2003-Nov-03] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * 2nd release, minor changed
 
-Versiob 0.9a [2003-Oct-14] - Jesper Veggerby <pear.nosey@veggerby.dk>
+Version 0.9a [2003-Oct-14] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Initial release

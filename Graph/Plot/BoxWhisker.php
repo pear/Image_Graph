@@ -50,6 +50,12 @@ require_once 'Image/Graph/Plot.php';
  */
 class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
 {
+    /**
+     * Whisker circle size
+     * @var int
+     * @access private
+     */
+    var $_whiskerSize = false;
 
     /**
      * Draws a box & whisker
@@ -120,6 +126,16 @@ class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
         $r = 2;//round(abs($x1 - $x0) / 13);
         $this->_drawBoxWhisker($x, $w, $r, $y1, $y1 - 2 * $h, $y1 - 4 * $h, $y0 + 3 * $h, $y0);
     }
+    
+    /**
+     * Sets the whisker circle size
+     *
+     * @param int $size Size (radius) of the whisker circle/dot
+     */
+    function setWhiskerSize($size = false)
+    {
+        $this->_whiskerSize = $size;
+    }
 
     /**
      * Output the plot
@@ -145,6 +161,12 @@ class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
         $current = array();
         $number = 0;
         $width = floor(0.5 * $this->_parent->_labelDistance(IMAGE_GRAPH_AXIS_X) / 2);
+
+        if ($this->_whiskerSize !== false) {
+            $r = $this->_whiskerSize;
+        } else {            
+            $r = min(5, $width / 10);
+        }
 
         $keys = array_keys($this->_dataset);
         foreach ($keys as $key) {
@@ -176,7 +198,6 @@ class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
                 $point['Y'] = $q3;
                 $y_q3 = $this->_pointY($point);
 
-                $r = min(5, $width / 10);
                 $this->_drawBoxWhisker($x, $width, $r, $y_min, $y_q1, $y_med, $y_q3, $y_max, $key);
             }
         }

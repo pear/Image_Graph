@@ -52,7 +52,7 @@ require_once 'Image/Graph/Layout.php';
  */
 class Image_Graph_Plotarea extends Image_Graph_Layout
 {
-
+    
     /**
      * The left most pixel of the 'real' plot area on the canvas
      * @var int
@@ -108,6 +108,13 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
      * @access private
      */
     var $_plotBorderStyle = null;
+
+    /**
+     * Does any plot have any data?
+     * @var bool
+     * @access private
+     */
+    var $_hasData = false;
 
     /**
      * Image_Graph_Plotarea [Constructor]
@@ -247,7 +254,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
             }
         }
         return $element;
-    }
+    }    
 
     /**
      * Get the width of the 'real' plotarea
@@ -300,9 +307,14 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
         if (!is_array($datasets)) {
             $datasets = array($datasets);
         }
+        
         $keys = array_keys($datasets);
         foreach ($keys as $key) {
             $dataset =& $datasets[$key];
+            if ($dataset->count() > 0) {
+                $this->_hasData = true;
+            }
+            
             if (is_a($dataset, 'Image_Graph_Dataset')) {
                 if (($this->_axisX != null) && (!$this->_axisX->_isNumeric())) {
                     $this->_axisX->_applyDataset($dataset);
@@ -758,6 +770,98 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
             $this->_axisYSecondary->_updateCoords();
         }*/
     }
+    
+    /**
+     * Set the axis padding for a specified position.
+     * 
+     * The axis padding is padding "inside" the plotarea (i.e. to put some space
+     * between the axis line and the actual plot).
+     * 
+     * This can be specified in a number of ways:
+     * 
+     * 1) Specify an associated array with 'left', 'top', 'right' and 'bottom'
+     * indices with values for the paddings. Leave out 2nd parameter.
+     * 
+     * 2) Specify an overall padding as the first parameter
+     * 
+     * 3) Specify the padding and position with position values as mentioned
+     * above
+     * 
+     * Normally you'd only consider applying axis padding to a category x-axis.
+     * 
+     * @param mixed $value The value/padding
+     * @param mixed $position The "position" of the padding
+     */
+    function setAxisPadding($value, $position = false)
+    {
+        if ($position === false) {
+            if (is_array($value)) {
+                if ((isset($value['left'])) && ($this->_axisX !== null)) {
+                    $this->_axisX->_setAxisPadding('low', $value['left']);
+                }
+                if ((isset($value['right'])) && ($this->_axisX !== null)) {
+                    $this->_axisX->_setAxisPadding('high', $value['right']);
+                }
+                if ((isset($value['bottom'])) && ($this->_axisY !== null)) {
+                    $this->_axisY->_setAxisPadding('low', $value['bottom']);
+                }
+                if ((isset($value['top'])) && ($this->_axisY !== null)) {               
+                    $this->_axisY->_setAxisPadding('high', $value['top']);
+                }
+                if ((isset($value['bottom'])) && ($this->_axisYSecondary !== null)) {
+                    $this->_axisYSecondary->_setAxisPadding('low', $value['bottom']);
+                }
+                if ((isset($value['top'])) && ($this->_axisYSecondary !== null)) {               
+                    $this->_axisYSecondary->_setAxisPadding('high', $value['top']);
+                }
+            } else {
+                if ($this->_axisX !== null) {
+                    $this->_axisX->_setAxisPadding('low', $value);
+                    $this->_axisX->_setAxisPadding('high', $value);
+                }
+                if ($this->_axisY !== null) {
+                    $this->_axisY->_setAxisPadding('low', $value);
+                    $this->_axisY->_setAxisPadding('high', $value);
+                }
+                if ($this->_axisYSecondary !== null) {
+                    $this->_axisYSecondary->_setAxisPadding('low', $value);
+                    $this->_axisYSecondary->_setAxisPadding('high', $value);
+                }
+            }
+        } else {
+            switch ($position) {
+            case 'left': 
+                if ($this->_axisX !== null) {
+                    $this->_axisX->_setAxisPadding('low', $value);
+                }
+                break;
+
+            case 'right': 
+                if ($this->_axisX !== null) {
+                    $this->_axisX->_setAxisPadding('high', $value);
+                }
+                break;
+
+            case 'top': 
+                if ($this->_axisY !== null) {
+                    $this->_axisY->_setAxisPadding('high', $value);
+                }
+                if ($this->_axisYSecondary !== null) {
+                    $this->_axisYSecondary->_setAxisPadding('high', $value);
+                }
+                break;
+
+            case 'bottom': 
+                if ($this->_axisY !== null) {
+                    $this->_axisY->_setAxisPadding('low', $value);
+                }
+                if ($this->_axisYSecondary !== null) {
+                    $this->_axisYSecondary->_setAxisPadding('low', $value);
+                }
+                break;
+            }
+        }
+    }
 
     /**
      * Output the plotarea to the canvas
@@ -767,27 +871,33 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
      */
     function _done()
     {
-        $this->_driver->startGroup(get_class($this));        
-        if ($this->_axisX != null) {
-            $this->add($this->_axisX);
-        }
-        if ($this->_axisY != null) {
-            $this->add($this->_axisY);
-        }
-        if ($this->_axisYSecondary != null) {
-            $this->add($this->_axisYSecondary);
-        }
-
-        $this->_getFillStyle();
-        $this->_driver->rectangle(
-            $this->_plotLeft,
-            $this->_plotTop,
-            $this->_plotRight,
-            $this->_plotBottom
-        );
-        $result = parent::_done();
-        $this->_driver->endGroup();
-        return $result;
+        if ($this->_hasData) {        
+            $this->_driver->startGroup(get_class($this));
+        
+            if ($this->_axisX != null) {
+                $this->add($this->_axisX);
+            }
+            if ($this->_axisY != null) {
+                $this->add($this->_axisY);
+            }
+            if ($this->_axisYSecondary != null) {
+                $this->add($this->_axisYSecondary);
+            }
+    
+            $this->_getFillStyle();
+            $this->_driver->rectangle(
+                $this->_plotLeft,
+                $this->_plotTop,
+                $this->_plotRight,
+                $this->_plotBottom
+            );
+            $result = parent::_done();
+            $this->_driver->endGroup();            
+            return $result;
+        } else {
+            // no data -> do nothing at all!
+            return true;
+        }        
     }
 
 }

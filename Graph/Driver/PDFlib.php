@@ -778,7 +778,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
      */
     function pieSlice($x, $y, $rx, $ry, $v1, $v2, $srx = false, $sry = false, $fillColor = false, $lineColor = false)
     {
-        // TODO Implement PDFLIB::pieSlice()
+        // TODO Implement Image_Driver_PDF::pieslice()
         parent::pieSlice($x, $y, $rx, $ry, $v1, $v2, $fillColor, $lineColor);
     }
 

@@ -69,8 +69,8 @@ class Image_Graph_Driver_GD_PNG extends Image_Graph_Driver_GD
             } else {
                 $transparent = $param['transparent'];
             }
-            $color = $this->_color($transparent);
-            $trans = ImageColorTransparent($this->_canvas, $color);
+            $color = $this->_color($transparent);            
+            ImageColorTransparent($this->_canvas, $color);
 
             $this->rectangle(
                 $this->_left,
