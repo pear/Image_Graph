@@ -56,7 +56,7 @@ class Image_Graph_Fill_Solid extends Image_Graph_Fill_Common
             $points[] = $currPos[0];
             $points[] = $currPos[1];
         }
-        imagefilledpolygon ($img, $points, count($pos)*2, $drawColor);
+        imagefilledpolygon ($img, $points, count($pos), $drawColor);
     }
     
     /**

@@ -38,7 +38,9 @@
 
     $data    = array( 20,
                       42,
-                      58
+                      58,
+                      65,
+                      70
                     );
 
     $graph->setDataDefaultColor(array(0xCC,0x29,0x29));
@@ -46,6 +48,8 @@
 
     $data    = array( 15.8,
                       37.2,
+                      3,
+                      8,
                       50.0
                     );
 
@@ -54,17 +58,21 @@
     
     
     $dataObj = &$graph->addData($data, "line", array("axeId" => 1, "color" => array(0x29,0xCC,0x29)));
+    $dataObj->setFill("solid", array("color" => array(0xBF,0,0)));
     $marker =& $dataObj->setDataMarker("diamond", array("color" => array(0xBF,0xBF,0xBF)));
     $marker->setSize(7);
 
     $data    = array( 10,
                       12,
+                      5,
+                      7,
                       17
                     );
 
-    $graph->addData($data, "line",  array("axeId" => 0, "color" => array(0x30,0xBF,0xBF)));
+    $dataObj = &$graph->addData($data, "line",  array("axeId" => 1, "color" => array(0x30,0xBF,0xBF)));
+    $dataObj->setFill("solid", array("color" => array(0,0,0xBF)));
     
-    $graph->axeX->setLabels(array("Month 1", "Month 2", "Month 3"));
+    $graph->axeX->setLabels(array("Month 1", "Month 2", "Month 3", "Month 4", "Month 5"));
 
     $graph->axeY1->setBounds(0,100);
     $graph->axeY1->setTicksAutoSteps(10);
