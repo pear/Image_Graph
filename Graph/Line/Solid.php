@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Line     
  * @category images
@@ -40,7 +41,12 @@ require_once 'Image/Graph/Common.php';
 
 /**
  * Simple colored line style.
- * Use a color for line style. 
+ * 
+ * Use a color for line style.
+ *             
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Line 
  */
 class Image_Graph_Line_Solid extends Image_Graph_Common 
 {
@@ -86,10 +92,10 @@ class Image_Graph_Line_Solid extends Image_Graph_Common
      */
     function _getLineStyle()
     {
-        if (isset($GLOBALS['_Image_Graph_gd2'])) {
-            ImageSetThickness($this->_canvas(), $this->_thickness);
-        }
-        return $this->_color($this->_color);
+        return array(
+            'color' => $this->_color, 
+            'thickness' => $this->_thickness
+        );
     }
 
 }

@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Figure     
  * @category images
@@ -40,6 +41,10 @@ require_once 'Image/Graph/Element.php';
 
 /**
  * Ellipse to draw on the canvas
+ *        
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Figure
  */
 class Image_Graph_Figure_Ellipse extends Image_Graph_Element 
 {
@@ -63,10 +68,18 @@ class Image_Graph_Figure_Ellipse extends Image_Graph_Element
      */     
     function _done()
     {
-        parent::_done();
-
-        ImageFilledEllipse($this->_canvas(), ($this->_left + $this->_right) / 2, ($this->_top + $this->_bottom) / 2, $this->width(), $this->height(), $this->_getFillStyle());
-        ImageEllipse($this->_canvas(), ($this->_left + $this->_right) / 2, ($this->_top + $this->_bottom) / 2, $this->width(), $this->height(), $this->_getLineStyle());
+        if (parent::_done() === false) {
+            return false;
+        }
+        
+        $this->_getFillStyle();
+        $this->_getLineStyle();
+        $this->_driver->ellipse(
+            ($this->_left + $this->_right) / 2, 
+            ($this->_top + $this->_bottom) / 2, 
+            $this->width(), 
+            $this->height()
+        );
     }
 
 }

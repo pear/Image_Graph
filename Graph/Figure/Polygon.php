@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Figure     
  * @category images
@@ -40,6 +41,10 @@ require_once 'Image/Graph/Element.php';
 
 /**
  * Polygon to draw on the canvas
+ *        
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Figure
  */
 class Image_Graph_Figure_Polygon extends Image_Graph_Element 
 {
@@ -56,8 +61,7 @@ class Image_Graph_Figure_Polygon extends Image_Graph_Element
      */
     function addVertex($x, $y)
     {
-        $this->_polygon[] = $x;
-        $this->_polygon[] = $y;
+        $this->_driver->polygonAdd($x, $y);
     }
 
     /**
@@ -66,10 +70,13 @@ class Image_Graph_Figure_Polygon extends Image_Graph_Element
      */
     function _done()
     {
-        parent::_done();
+        if (parent::_done() === false) {
+            return false;
+        }
 
-        ImageFilledPolygon($this->_canvas(), $this->_polygon, count($this->_polygon) / 2, $this->_getFillStyle());
-        ImagePolygon($this->_canvas(), $this->_polygon, count($this->_polygon) / 2, $this->_getLineStyle());
+        $this->_getFillStyle();
+        $this->_getLineStyle();
+        $this->_driver->polygonEnd();
     }
 
 }

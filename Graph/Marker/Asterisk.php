@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Marker     
  * @category images
@@ -40,23 +41,58 @@ require_once 'Image/Graph/Marker.php';
 
 /**
  * Data marker as an asterisk (*)
+ *              
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Marker
  */
 class Image_Graph_Marker_Asterisk extends Image_Graph_Marker 
 {
 
     /**
      * Draw the marker on the canvas
-     * @param int $x The X (horizontal) position (in pixels) of the marker on the canvas 
-     * @param int $y The Y (vertical) position (in pixels) of the marker on the canvas 
-     * @param array $values The values representing the data the marker 'points' to 
+     * @param int $x The X (horizontal) position (in pixels) of the marker on
+     * the canvas
+     * @param int $y The Y (vertical) position (in pixels) of the marker on the
+     * canvas
+     * @param array $values The values representing the data the marker 'points'
+     * to
      * @access private
      */
     function _drawMarker($x, $y, $values = false)
     {
-        ImageLine($this->_canvas(), $x - $this->_size, $y - $this->_size, $x + $this->_size, $y + $this->_size, $this->_getLineStyle());
-        ImageLine($this->_canvas(), $x + $this->_size, $y - $this->_size, $x - $this->_size, $y + $this->_size, $this->_getLineStyle());
-        ImageLine($this->_canvas(), $x - $this->_size, $y, $x + $this->_size, $y, $this->_getLineStyle());
-        ImageLine($this->_canvas(), $x, $y - $this->_size, $x, $y + $this->_size, $this->_getLineStyle());
+        $this->_getLineStyle();
+        $this->_driver->line(
+            $x - $this->_size, 
+            $y - $this->_size, 
+            $x + $this->_size, 
+            $y + $this->_size
+        );
+
+        $this->_getLineStyle();
+        $this->_driver->line(
+            $x + $this->_size, 
+            $y - $this->_size, 
+            $x - $this->_size, 
+            $y + $this->_size
+        );
+
+        $this->_getLineStyle();
+        $this->_driver->line(
+            $x - $this->_size, 
+            $y, 
+            $x + $this->_size, 
+            $y
+        );
+
+        $this->_getLineStyle();
+        $this->_driver->line(
+            $x, 
+            $y - $this->_size, 
+            $x, 
+            $y + $this->_size
+        );
+
         parent::_drawMarker($x, $y, $values);
     }
 

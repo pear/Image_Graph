@@ -26,12 +26,13 @@
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  * 
  * @package Image_Graph
- * @subpackage Pl7ot     
+ * @subpackage Plot     
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license http://www.gnu.org/licenses/lgpl.txt GNU Lesser General Public License
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @version $Id$
+ * @since 0.3.0dev2
  */ 
 
 /**
@@ -40,18 +41,26 @@
 require_once 'Image/Graph/Plot.php';
 
 /**
- * Dot chart (only marker).
- * 
- * This plot type only displays a {@link Image_Graph_Marker} for the datapoints.
- * The marker must explicitly be defined using {@link Image_Graph_Plot::
- * setMarker()}.
+ * Impulse chart.
  *               
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  * @subpackage Plot
+ * @since 0.3.0dev2
  */
-class Image_Graph_Plot_Dot extends Image_Graph_Plot 
+class Image_Graph_Plot_CandleStick extends Image_Graph_Plot 
 {
+
+    function _drawCandleStick($x, $w, $y_min, $y_open, $y_close, $y_max, $ID) {
+                $this->_getLineStyle();
+                $this->_driver->line($x, min($y_open, $y_close), $x, $y_max);
+                $this->_getLineStyle();
+                $this->_driver->line($x, max($y_open, $y_close), $x, $y_min);
+                
+                $this->_getLineStyle();
+                $this->_getFillStyle($ID);
+                $this->_driver->rectangle($x - $w, min($y_open, $y_close), $x + $w, max($y_open, $y_close));
+    }
 
     /**
      * Perform the actual drawing on the legend.
@@ -62,19 +71,67 @@ class Image_Graph_Plot_Dot extends Image_Graph_Plot
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
     {
+        $x = round(($x0 + $x1) / 2);        
+        $h = abs($y1 - $y0) / 4;
+        $w = round(abs($x1 - $x0) / 5);
+        $this->_drawCandleStick($x, $w, $y1, $y1 - $h, $y0 + $h, $y0, 'green'); 
     }
-    
+
     /**
      * Output the plot
      * @access private
      */
     function _done()
     {
-        if (Image_Graph_Plot::_done() === false) {
+        if (parent::_done() === false) {
             return false;
         }
+
+        if (!is_array($this->_dataset)) {
+            return false;
+        }
+        
+        if ($this->_multiType == 'stacked100pct') {
+            $total = $this->_getTotals();
+        }
+        $current = array();
+        $number = 0;        
+        $width = floor(0.8 * $this->_parent->_labelDistance(IMAGE_GRAPH_AXIS_X) / 2);
+        
+        $keys = array_keys($this->_dataset);
+        foreach ($keys as $key) {
+            $dataset =& $this->_dataset[$key];
+            $dataset->_reset();            
+            while ($data = $dataset->_next()) {
+                $point['X'] = $data['X'];                
+                $y = $data['Y'];
+                
+                $point['Y'] = $data['Y']['open'];
+                $x = $this->_pointX($point);                
+                $y_open = $this->_pointY($point);                 
+
+                $point['Y'] = $data['Y']['close'];
+                $y_close = $this->_pointY($point);                 
+
+                $point['Y'] = $data['Y']['min'];
+                $y_min = $this->_pointY($point);                 
+
+                $point['Y'] = $data['Y']['max'];
+                $y_max = $this->_pointY($point);                 
+                
+                if ($data['Y']['close'] < $data['Y']['open']) {
+                    $ID = 'red';
+                } else {
+                    $ID = 'green';
+                }
+                
+                $this->_drawCandleStick($x, $width, $y_min, $y_open, $y_close, $y_max, $ID);
+            }
+        }
+        unset($keys);
         $this->_drawMarker();
     }
+
 }
 
 ?>

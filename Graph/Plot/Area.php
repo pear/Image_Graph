@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Plot     
  * @category images
@@ -40,13 +41,38 @@ require_once 'Image/Graph/Plot.php';
 
 /**
  * Area Chart plot.
- * An area chart plots all data points similar to a {@see Image_Graph_Plot_Line}, but the area beneath the
- * line is filled and the whole area 'the-line', 'the right edge', 'the x-axis' and 
- * 'the left edge' is bounded.
- * Smoothed charts are only supported with non-stacked types 
+ * 
+ * An area chart plots all data points similar to a {@link
+ * Image_Graph_Plot_Line}, but the area beneath the line is filled and the whole
+ * area 'the-line', 'the right edge', 'the x-axis' and 'the left edge' is
+ * bounded. Smoothed charts are only supported with non-stacked types
+ *               
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Plot
  */
 class Image_Graph_Plot_Area extends Image_Graph_Plot 
 {
+
+    /**
+     * Perform the actual drawing on the legend.
+     * @param int $x0 The top-left x-coordinate
+     * @param int $y0 The top-left y-coordinate
+     * @param int $x1 The bottom-right x-coordinate
+     * @param int $y1 The bottom-right y-coordinate
+     */
+    function _drawLegendSample($x0, $y0, $x1, $y1)
+    {
+        $dx = abs($x1 - $x0) / 3;        
+        $dy = abs($y1 - $y0) / 3;      
+        $this->_driver->polygonAdd($x0, $y1);
+        $this->_driver->polygonAdd($x0, $y0 + $dy);
+        $this->_driver->polygonAdd($x0 + $dx, $y0);
+        $this->_driver->polygonAdd($x0 + 2*$dx, $y0 + 2*$dy);
+        $this->_driver->polygonAdd($x1, $y0 + $dy);
+        $this->_driver->polygonAdd($x1, $y1);
+        $this->_driver->polygonEnd();
+    }
 
     /**
      * Output the plot
@@ -54,26 +80,38 @@ class Image_Graph_Plot_Area extends Image_Graph_Plot
      */
     function _done()
     {
-        parent::_done();
+        if (parent::_done() === false) {
+            return false;
+        }
 
-        reset($this->_dataset);
-        $keys = array_keys($this->_dataset);
         if ($this->_multiType == 'stacked') {
-            list ($ID, $key) = each($keys);
+            reset($this->_dataset);
+            $key = key($this->_dataset);
             $dataset = & $this->_dataset[$key];
     
-            $point = array ('X' => $dataset->minimumX(), 'Y' => 0);
-            $base[] = $this->_pointY($point);
-            $base[] = $this->_pointX($point);
+            $dataset->_reset();
+            $first = true;
+            while ($point = $dataset->_next()) {
+                if ($first) {
+                    $point['Y'] = '#min_pos#';
+                    $base[] = $this->_pointY($point);
+                    $base[] = $this->_pointX($point);
+                    $first = false;
+                }
+                $lastpoint = $point;
+            }            
     
-            $point = array ('X' => $dataset->maximumX(), 'Y' => 0);
-            $base[] = $this->_pointY($point);
-            $base[] = $this->_pointX($point);
+            $lastpoint['Y'] = '#min_pos#';
+            $base[] = $this->_pointY($lastpoint);
+            $base[] = $this->_pointX($lastpoint);
             $current = array();            
         }
 
-        reset($keys);
-        while (list ($ID, $key) = each($keys)) {
+        $minYaxis = $this->_parent->_getMinimum($this->_axisY);
+        $maxYaxis = $this->_parent->_getMaximum($this->_axisY);
+
+        $keys = array_keys($this->_dataset);
+        foreach ($keys as $key) {
             $dataset = & $this->_dataset[$key];
             $dataset->_reset();
             if ($this->_multiType == 'stacked') {
@@ -96,24 +134,36 @@ class Image_Graph_Plot_Area extends Image_Graph_Plot
                     $current[$x] += $point['Y'];
                 }
             } else {           
-                $point = array ('X' => $dataset->minimumX(), 'Y' => 0);             
-                $plotarea[] = $this->_pointX($point);
-                $plotarea[] = $this->_pointY($point);
-                while ($point = $dataset->_next()) {
+                $first = true;
+                $plotarea = array();                
+                while ($point = $dataset->_next()) {                    
+                    if ($first) {
+                        $firstPoint = array ('X' => $point['X'], 'Y' => '#min_pos#');
+                        $plotarea[] = $this->_pointX($firstPoint);
+                        $plotarea[] = $this->_pointY($firstPoint);
+                    }                        
                     $plotarea[] = $this->_pointX($point);
                     $plotarea[] = $this->_pointY($point);
                     $lastPoint = $point;
+                    $first = false;
                 }
                 $endPoint['X'] = $lastPoint['X'];
-                $endPoint['Y'] = 0;
+                $endPoint['Y'] = '#min_pos#';
                 $plotarea[] = $this->_pointX($endPoint);
                 $plotarea[] = $this->_pointY($endPoint);
             }
-
-            ImageFilledPolygon($this->_canvas(), $plotarea, count($plotarea) / 2, $this->_getFillStyle());
-            ImagePolygon($this->_canvas(), $plotarea, count($plotarea) / 2, $this->_getLineStyle());
+            
+            reset($plotarea);
+            while (list(, $x) = each($plotarea)) {
+                list(, $y) = each($plotarea);
+                $this->_driver->polygonAdd($x, $y);
+            }
+            
+            $this->_getFillStyle($key);
+            $this->_getLineStyle($key);
+            $this->_driver->polygonEnd();
         }
-        
+        unset($keys);
         $this->_drawMarker();
     }
 

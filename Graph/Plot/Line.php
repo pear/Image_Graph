@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Plot     
  * @category images
@@ -39,7 +40,11 @@
 require_once 'Image/Graph/Plot.php';
 
 /**
- * Linechart
+ * Linechart.
+ *               
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Plot
  */ 
 class Image_Graph_Plot_Line extends Image_Graph_Plot 
 {
@@ -54,6 +59,26 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
     {
         return IMG_COLOR_TRANSPARENT;
     }
+
+    /**
+     * Perform the actual drawing on the legend.
+     * @param int $x0 The top-left x-coordinate
+     * @param int $y0 The top-left y-coordinate
+     * @param int $x1 The bottom-right x-coordinate
+     * @param int $y1 The bottom-right y-coordinate
+     */
+    function _drawLegendSample($x0, $y0, $x1, $y1)
+    {
+        // TODO Consider new legend icon
+        $y = ($y0 + $y1) / 2;
+        $dx = abs($x1 - $x0) / 3;
+        $dy = abs($y1 - $y0) / 5;
+        $this->_driver->polygonAdd($x0, $y);
+        $this->_driver->polygonAdd($x0 + $dx, $y - $dy * 2);
+        $this->_driver->polygonAdd($x1 - $dx, $y + $dy);
+        $this->_driver->polygonAdd($x1, $y - $dy);
+        $this->_driver->polygonEnd(false);
+    }
     
     /**
      * Output the plot
@@ -61,7 +86,9 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
      */
     function _done()
     {
-        parent::_done();
+        if (parent::_done() === false) {
+            return false;
+        }
 
         if (!is_array($this->_dataset)) {
             return false;
@@ -76,11 +103,13 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
         $p1 = false;
 
         $keys = array_keys($this->_dataset);
-        while (list ($ID, $key) = each($keys)) {
+        foreach ($keys as $key) {
             $dataset = & $this->_dataset[$key];
             $dataset->_reset();
             while ($point = $dataset->_next()) {            
-                if (($this->_multiType == 'stacked') or ($this->_multiType == 'stacked100pct')) {
+                if (($this->_multiType == 'stacked') || 
+                    ($this->_multiType == 'stacked100pct')) 
+                {
                     $x = $point['X'];                    
                     if (!isset($current[$x])) {
                         $current[$x] = 0;
@@ -97,12 +126,12 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
                 $p2['X'] = $this->_pointX($point);
                 $p2['Y'] = $this->_pointY($point);
                 
-                if ($p1) {
-                    ImageLine($this->_canvas(), $p1['X'], $p1['Y'], $p2['X'], $p2['Y'], $this->_getLineStyle());
-                }
-                $p1 = $p2;
+                $this->_driver->polygonAdd($p2['X'], $p2['Y']);
             }
+            $this->_getLineStyle($key);
+            $this->_driver->polygonEnd(false);            
         }
+        unset($keys);
         $this->_drawMarker();
     }
 

@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Marker     
  * @category images
@@ -39,28 +40,33 @@
 require_once 'Image/Graph/Marker.php';
 
 /**
- * Data marker as a triangle
+ * Data marker as a triangle.
+ *              
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Marker
  */
 class Image_Graph_Marker_Triangle extends Image_Graph_Marker 
 {
 
     /**
      * Draw the marker on the canvas
-     * @param int $x The X (horizontal) position (in pixels) of the marker on the canvas 
-     * @param int $y The Y (vertical) position (in pixels) of the marker on the canvas 
-     * @param array $values The values representing the data the marker 'points' to 
+     * @param int $x The X (horizontal) position (in pixels) of the marker on
+     * the canvas
+     * @param int $y The Y (vertical) position (in pixels) of the marker on the
+     * canvas
+     * @param array $values The values representing the data the marker 'points'
+     * to
      * @access private
      */
     function _drawMarker($x, $y, $values = false)
     {
-        $triangle[] = $x - $this->_size;
-        $triangle[] = $y + $this->_size;
-        $triangle[] = $x;
-        $triangle[] = $y - $this->_size;
-        $triangle[] = $x + $this->_size;
-        $triangle[] = $y + $this->_size;
-        ImageFilledPolygon($this->_canvas(), $triangle, 3, $this->_getFillStyle());
-        ImagePolygon($this->_canvas(), $triangle, 3, $this->_getLineStyle());
+        $this->_getFillStyle();
+        $this->_getLineStyle();
+        $this->_driver->polygonAdd($x - $this->_size, $y + $this->_size);
+        $this->_driver->polygonAdd($x, $y - $this->_size);
+        $this->_driver->polygonAdd($x + $this->_size, $y + $this->_size);
+        $this->_driver->polygonEnd();
         parent::_drawMarker($x, $y, $values);
     }
 

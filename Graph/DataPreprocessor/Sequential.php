@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage DataPreprocessor     
  * @category images
@@ -39,7 +40,12 @@
 require_once 'Image/Graph/DataPreprocessor/Array.php';
 
 /**
- * Formatting values using a sequential data label array, ie. returning the 'next label' when asked for any label.
+ * Formatting values using a sequential data label array, ie. returning the
+ * 'next label' when asked for any label.
+ *     
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage DataPreprocessor
  */
 class Image_Graph_DataPreprocessor_Sequential extends Image_Graph_DataPreprocessor_Array 
 {

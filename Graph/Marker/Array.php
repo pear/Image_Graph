@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Marker     
  * @category images
@@ -40,11 +41,16 @@ require_once 'Image/Graph/Marker.php';
 
 /**
  * A sequential array of markers.
+ * 
  * This is used for displaying different markers for datapoints on a chart.
- * This is done by adding multiple markers to a MarkerArrray structure. The marker array 
- * will then when requested return the 'next' marker in sequential order. It is possible
- * to specify ID tags to each marker, which is used to make sure some data uses a 
- * specific marker.
+ * This is done by adding multiple markers to a MarkerArrray structure.
+ * The marker array will then when requested return the 'next' marker in
+ * sequential order. It is possible to specify ID tags to each marker, which is
+ * used to make sure some data uses a specific marker.
+ *              
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Marker
  */
 class Image_Graph_Marker_Array extends Image_Graph_Marker 
 {
@@ -71,9 +77,12 @@ class Image_Graph_Marker_Array extends Image_Graph_Marker
 
     /**
      * Draw the marker on the canvas
-     * @param int $x The X (horizontal) position (in pixels) of the marker on the canvas 
-     * @param int $y The Y (vertical) position (in pixels) of the marker on the canvas 
-     * @param array $values The values representing the data the marker 'points' to 
+     * @param int $x The X (horizontal) position (in pixels) of the marker on
+     * the canvas
+     * @param int $y The Y (vertical) position (in pixels) of the marker on the
+     * canvas
+     * @param array $values The values representing the data the marker 'points'
+     * to
      * @access private
      */
     function _drawMarker($x, $y, $values = false)

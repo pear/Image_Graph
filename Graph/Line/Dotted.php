@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Line
  * @category images
@@ -40,8 +41,13 @@ require_once 'Image/Graph/Line/Formatted.php';
 
 /**
  * Dotted line style.
+ * 
  * This style displays as a short line with a shorter space afterwards, i.e 
- * 1px color1, 1px color2, 1px color1, etc. 
+ * 1px color1, 1px color2, 1px color1, etc.
+ *             
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Line 
  */
 class Image_Graph_Line_Dotted extends Image_Graph_Line_Formatted 
 {

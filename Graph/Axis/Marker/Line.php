@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Grid     
  * @category images
@@ -40,7 +41,12 @@ require_once 'Image/Graph/Grid.php';
 
 /**
  * Display a grid
- * {@see Image_Graph_Grid} 
+ * 
+ * {@link Image_Graph_Grid}
+ *             
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Line 
  */
 class Image_Graph_Axis_Marker_Line extends Image_Graph_Grid 
 {
@@ -56,7 +62,8 @@ class Image_Graph_Axis_Marker_Line extends Image_Graph_Grid
      * Sets the value of the line marker (value on the axis)
      * @param double $value the value
      */
-    function setValue($value) {
+    function setValue($value)
+    {
         $this->_value = $value;
     }
 
@@ -66,7 +73,9 @@ class Image_Graph_Axis_Marker_Line extends Image_Graph_Grid
      */
     function _done()
     {
-        parent::_done();
+        if (parent::_done() === false) {
+            return false;
+        }
 
         if (!$this->_primaryAxis) {
             return false;
@@ -96,7 +105,8 @@ class Image_Graph_Axis_Marker_Line extends Image_Graph_Grid
 
             $previousSecondaryValue = $secondaryValue;
 
-            ImageLine($this->_canvas(), $x1, $y1, $x2, $y2, $this->_getLineStyle());
+            $this->_getLineStyle();
+            $this->_driver->line($x1, $y1, $x2, $y2);
         }
     }
 

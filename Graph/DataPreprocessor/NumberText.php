@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage DataPreprocessor     
  * @category images
@@ -40,7 +41,13 @@ require_once 'Image/Graph/DataPreprocessor.php';
 
 /**
  * Formatting a number as its written in languages supported by Numbers_Words.
+ * 
  * Used to display values as text, i.e. 123 is displayed as one hundred and twenty three.
+ * Requires Numbers_Words
+ *     
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage DataPreprocessor
  */
 class Image_Graph_DataPreprocessor_NumberText extends Image_Graph_DataPreprocessor 
 {

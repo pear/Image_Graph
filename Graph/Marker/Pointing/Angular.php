@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Marker     
  * @category images
@@ -40,11 +41,16 @@ require_once 'Image/Graph/Marker/Pointing.php';
 
 /**
  * Marker that points 'away' from the graph.
- * Use this as a marker for displaying another marker pointing to the original point on
- * the graph - where the 'pointer' is calculated as line orthogonal to a line drawn between
- * the points neighbours to both sides (an approximate tangent). This should make an
- * the pointer appear to point 'straight' out from the graph. The 'head' of the pointer
- * is then another marker of any choice. 
+ * 
+ * Use this as a marker for displaying another marker pointing to the original
+ * point on the graph - where the 'pointer' is calculated as line orthogonal to
+ * a line drawn between the points neighbours to both sides (an approximate
+ * tangent). This should make an the pointer appear to point 'straight' out from
+ * the graph. The 'head' of the pointer is then another marker of any choice.
+ *             
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Marker
  */
 class Image_Graph_Marker_Pointing_Angular extends Image_Graph_Marker_Pointing 
 {
@@ -59,7 +65,8 @@ class Image_Graph_Marker_Pointing_Angular extends Image_Graph_Marker_Pointing
     /**
      * Image_Graph_AngularPointingMarker [Constructor]
      * @param int $radius The 'length' of the pointer 
-     * @param Marker $markerEnd The ending marker that represents 'the head of the pin'
+     * @param Marker $markerEnd The ending marker that represents 'the head of
+     * the pin'
      */
     function &Image_Graph_Marker_Pointing_Angular($radius, & $markerEnd)
     {
@@ -69,19 +76,25 @@ class Image_Graph_Marker_Pointing_Angular extends Image_Graph_Marker_Pointing
 
     /**
      * Draw the marker on the canvas
-     * @param int $x The X (horizontal) position (in pixels) of the marker on the canvas 
-     * @param int $y The Y (vertical) position (in pixels) of the marker on the canvas 
-     * @param array $values The values representing the data the marker 'points' to 
+     * @param int $x The X (horizontal) position (in pixels) of the marker on
+     * the canvas
+     * @param int $y The Y (vertical) position (in pixels) of the marker on the
+     * canvas
+     * @param array $values The values representing the data the marker 'points'
+     * to
      * @access private
      */
     function _drawMarker($x, $y, $values = false)
     {
-        if ((isset($values['LENGTH'])) and ($values['LENGTH'] != 0)) {
+        if ((isset($values['LENGTH'])) && ($values['LENGTH'] != 0)) {
             $this->_deltaX = - $values['AX'] * $this->_radius / $values['LENGTH'];
             $this->_deltaY = - $values['AY'] * $this->_radius / $values['LENGTH'];
         }
         
-        if ((isset($values['NPY'])) and (isset($values['APY'])) and (isset($values['PPY'])) and ($values['NPY'] > $values['APY']) and ($values['PPY'] > $values['APY'])) {
+        if ((isset($values['NPY'])) && (isset($values['APY'])) && 
+            (isset($values['PPY'])) && ($values['NPY'] > $values['APY']) && 
+            ($values['PPY'] > $values['APY'])) 
+        {
             $this->_deltaX = - $this->_deltaX;
             $this->_deltaY = - $this->_deltaY;
         }

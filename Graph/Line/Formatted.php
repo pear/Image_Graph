@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Line
  * @category images
@@ -40,8 +41,13 @@ require_once 'Image/Graph/Line/Solid.php';
 
 /**
  * Formatted user defined line style.
+ * 
  * Use this to create a user defined line style. Specify an array of colors that are to
- * be used for displaying the line. The array must   
+ * be used for displaying the line. 
+ *             
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Line   
  */
 class Image_Graph_Line_Formatted extends Image_Graph_Line_Solid 
 {
@@ -71,9 +77,10 @@ class Image_Graph_Line_Formatted extends Image_Graph_Line_Solid
      */
     function _getLineStyle()
     {
-        parent::_getLineStyle();
-        ImageSetStyle($this->_canvas(), $this->_style);
-        return IMG_COLOR_STYLED;
+        return array(
+            'color' => $this->_style, 
+            'thickness' => $this->_thickness
+        );
     }
 
 }

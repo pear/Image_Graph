@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage DataPreprocessor     
  * @category images
@@ -40,20 +41,26 @@ require_once 'Image/Graph/DataPreprocessor.php';
 
 /**
  * Format data as looked up in an array.
- * ArrayData is useful when a numercal value is to be translated to something thats
- * cannot directly be calculated from this value, this could for example be a dataset
- * meant to plot population of various countries. Since x-values are numerical and
- * they should really be country names, but there is no linear correlation between the
- * number and the name, we use an array to 'map' the numbers to the name, i.e. 
- * $array[0] = 'Denmark'; $array[1] = 'Sweden'; ..., where the indexes are the numerical
- * values from the dataset.
- * This is NOT usefull when the x-values are a large domain, i.e. to map unix timestamps
- * to date-strings for an x-axis. This is because the x-axis will selecte arbitrary values
- * for labels, which would in principle require the ArrayData to hold values for every
- * unix timestamp. However ArrayData can still be used to solve such a situation, since 
- * one can use another value for X-data in the dataset and then map this (smaller domain)
- * value to a date. That is we for example instead of using the unix-timestamp we use value 0 
- * to represent the 1st date, 1 to represent the next date, etc.
+ * 
+ * ArrayData is useful when a numercal value is to be translated to
+ * something thats cannot directly be calculated from this value, this could for
+ * example be a dataset meant to plot population of various countries. Since x-
+ * values are numerical and they should really be country names, but there is no
+ * linear correlation between the number and the name, we use an array to 'map'
+ * the numbers to the name, i.e. $array[0] = 'Denmark'; $array[1] = 'Sweden';
+ * ..., where the indexes are the numerical values from the dataset. This is NOT
+ * usefull when the x-values are a large domain, i.e. to map unix timestamps to
+ * date-strings for an x-axis. This is because the x-axis will selecte arbitrary
+ * values for labels, which would in principle require the ArrayData to hold
+ * values for every unix timestamp. However ArrayData can still be used to solve
+ * such a situation, since one can use another value for X-data in the dataset
+ * and then map this (smaller domain) value to a date. That is we for example
+ * instead of using the unix-timestamp we use value 0 to represent the 1st date,
+ * 1 to represent the next date, etc.
+ *    
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage DataPreprocessor
  */
 class Image_Graph_DataPreprocessor_Array extends Image_Graph_DataPreprocessor 
 {
@@ -83,7 +90,7 @@ class Image_Graph_DataPreprocessor_Array extends Image_Graph_DataPreprocessor
      */
     function _process($value)
     {
-        if ((is_array($this->_dataArray)) and (isset ($this->_dataArray[$value]))) {
+        if ((is_array($this->_dataArray)) && (isset ($this->_dataArray[$value]))) {
             return $this->_dataArray[$value];
         } else {
             return $value;

@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Marker     
  * @category images
@@ -40,6 +41,10 @@ require_once 'Image/Graph/Marker.php';
 
 /**
  * Data marker as a box
+ *              
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Marker
  */
 class Image_Graph_Marker_Box extends Image_Graph_Marker 
 {
@@ -53,8 +58,14 @@ class Image_Graph_Marker_Box extends Image_Graph_Marker
      */
     function _drawMarker($x, $y, $values = false)
     {
-        ImageFilledRectangle($this->_canvas(), $x - $this->_size, $y - $this->_size, $x + $this->_size, $y + $this->_size, $this->_getFillStyle());
-        ImageRectangle($this->_canvas(), $x - $this->_size, $y - $this->_size, $x + $this->_size, $y + $this->_size, $this->_getLineStyle());
+        $this->_getFillStyle();
+        $this->_getLineStyle();
+        $this->_driver->rectangle(
+            $x - $this->_size, 
+            $y - $this->_size, 
+            $x + $this->_size, 
+            $y + $this->_size
+        );
         parent::_drawMarker($x, $y, $values);
     }
 

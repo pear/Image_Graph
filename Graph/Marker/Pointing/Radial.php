@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Marker     
  * @category images
@@ -40,6 +41,10 @@ require_once 'Image/Graph/Marker/Pointing.php';
 
 /**
  * A pointing marker in a random angle from the data
+ *              
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Marker
  */
 class Image_Graph_Marker_Pointing_Radial extends Image_Graph_Marker_Pointing 
 {
@@ -52,9 +57,11 @@ class Image_Graph_Marker_Pointing_Radial extends Image_Graph_Marker_Pointing
     var $_radius;
 
     /**
-     * Create an radial pointing marker, ie a marker on a defined distance from the data
+     * Create an radial pointing marker, ie a marker on a defined distance from
+     * the data
      * @param int $radius The 'length' of the pointer 
-     * @param Marker $markerEnd The ending marker that represents 'the head of the pin'
+     * @param Marker $markerEnd The ending marker that represents 'the head of
+     * the pin'
      */
     function &Image_Graph_Marker_Pointing_Radial($radius, & $markerEnd)
     {
@@ -64,9 +71,12 @@ class Image_Graph_Marker_Pointing_Radial extends Image_Graph_Marker_Pointing
 
     /**
      * Draw the marker on the canvas
-     * @param int $x The X (horizontal) position (in pixels) of the marker on the canvas 
-     * @param int $y The Y (vertical) position (in pixels) of the marker on the canvas 
-     * @param array $values The values representing the data the marker 'points' to 
+     * @param int $x The X (horizontal) position (in pixels) of the marker on
+     * the canvas
+     * @param int $y The Y (vertical) position (in pixels) of the marker on the
+     * canvas
+     * @param array $values The values representing the data the marker 'points'
+     * to
      * @access private
      */
     function _drawMarker($x, $y, $values = false)

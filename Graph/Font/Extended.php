@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Text     
  * @category images
@@ -40,6 +41,10 @@ require_once 'Image/Graph/Font.php';
 
 /**
  * A font with extended functionality.
+ *         
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Text
  * @abstract
  */
 class Image_Graph_Font_Extended extends Image_Graph_Font 
@@ -60,7 +65,8 @@ class Image_Graph_Font_Extended extends Image_Graph_Font
     var $_size = 11;
 
     /**
-     * Set the angle slope of the output font (0 = normal, 90 = bottom and up, 180 = upside down, 270 = top and down)
+     * Set the angle slope of the output font.
+     * 0 = normal, 90 = bottom and up, 180 = upside down, 270 = top and down
      * @param int $angle The angle in degrees to slope the text 
      */
     function setAngle($angle)

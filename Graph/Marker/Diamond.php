@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Marker     
  * @category images
@@ -39,7 +40,11 @@
 require_once 'Image/Graph/Marker.php';
 
 /**
- * Data marker as a diamond
+ * Data marker as a diamond.
+ *              
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Marker
  */
 class Image_Graph_Marker_Diamond extends Image_Graph_Marker 
 {
@@ -53,16 +58,13 @@ class Image_Graph_Marker_Diamond extends Image_Graph_Marker
      */
     function _drawMarker($x, $y, $values = false)
     {
-        $diamond[] = $x - $this->_size;
-        $diamond[] = $y;
-        $diamond[] = $x;
-        $diamond[] = $y - $this->_size;
-        $diamond[] = $x + $this->_size;
-        $diamond[] = $y;
-        $diamond[] = $x;
-        $diamond[] = $y + $this->_size;
-        ImageFilledPolygon($this->_canvas(), $diamond, 4, $this->_getFillStyle());
-        ImagePolygon($this->_canvas(), $diamond, 4, $this->_getLineStyle());
+        $this->_getFillStyle();
+        $this->_getLineStyle();
+        $this->_driver->polygonAdd($x - $this->_size, $y);
+        $this->_driver->polygonAdd($x, $y - $this->_size);
+        $this->_driver->polygonAdd($x + $this->_size, $y);
+        $this->_driver->polygonAdd($x, $y + $this->_size);
+        $this->_driver->polygonEnd();
         parent::_drawMarker($x, $y, $values);
     }
 

@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Marker     
  * @category images
@@ -40,12 +41,17 @@ require_once 'Image/Graph/Marker.php';
 
 /**
  * Data marker as circle (require GD2)
+ *              
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Marker
  */
 class Image_Graph_Marker_Circle extends Image_Graph_Marker 
 {
 
     /**
-     * The 'size' of the marker, the meaning depends on the specific Marker implementation
+     * The 'size' of the marker, the meaning depends on the specific Marker
+     * implementation
      * @var int
      * @access private
      */
@@ -53,26 +59,34 @@ class Image_Graph_Marker_Circle extends Image_Graph_Marker
 
     /**
      * Draw the marker on the canvas
-     * @param int $x The X (horizontal) position (in pixels) of the marker on the canvas 
-     * @param int $y The Y (vertical) position (in pixels) of the marker on the canvas 
+     * @param int $x The X (horizontal) position (in pixels) of the marker on
+     * the canvas
+     * @param int $y The Y (vertical) position (in pixels) of the marker on the
+     * canvas
      * @param array $values The values representing the data the marker 'points' to 
      * @access private
      */
     function _drawMarker($x, $y, $values = false)
     {
+        $this->_getFillStyle();
+        $this->_getLineStyle();
+
         $dA = 2*pi()/($this->_size*2);
         $angle = 0;
         while ($angle < 2*pi()) {
-            $polygon[] = $x + $this->_size*cos($angle);        
-            $polygon[] = $y - $this->_size*sin($angle);
+            $this->_driver->polygonAdd(
+                $x + $this->_size*cos($angle), 
+                $y - $this->_size*sin($angle)
+            );
             $angle += $dA;
         }
 
-        $polygon[] = $x + $this->_size*cos(0);        
-        $polygon[] = $y - $this->_size*sin(0);
-
-        ImageFilledPolygon($this->_canvas(), $polygon, count($polygon)/2, $this->_getFillStyle());
-        ImagePolygon($this->_canvas(), $polygon, count($polygon)/2, $this->_getLineStyle());
+        $this->_driver->polygonAdd(
+            $x + $this->_size*cos(0), 
+            $y - $this->_size*sin(0)
+        );
+        
+        $this->_driver->polygonEnd();
 
         parent::_drawMarker($x, $y, $values);
     }

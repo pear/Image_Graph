@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Marker     
  * @category images
@@ -40,23 +41,45 @@ require_once 'Image/Graph/Marker.php';
 
 /**
  * A marker displaying the 'distance' to the datasets average value.
+ *              
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Marker
  */
 class Image_Graph_Marker_Average extends Image_Graph_Marker 
 {
 
     /**
      * Draw the marker on the canvas
-     * @param int $x The X (horizontal) position (in pixels) of the marker on the canvas 
-     * @param int $y The Y (vertical) position (in pixels) of the marker on the canvas 
-     * @param array $values The values representing the data the marker 'points' to 
+     * @param int $x The X (horizontal) position (in pixels) of the marker on
+     * the canvas
+     * @param int $y The Y (vertical) position (in pixels) of the marker on the
+     * canvas
+     * @param array $values The values representing the data the marker 'points'
+     * to
      * @access private
      */
     function _drawMarker($x, $y, $values = false)
     {
-        if ((isset($values['AVERAGE_Y'])) and (is_a($this->_parent, 'Image_Graph_Plot'))) {
-            $point = $this->_pointXY(array ('X' => $values['APX'], 'Y' => $values['AVERAGE_Y']));
-            ImageLine($this->_canvas(), $x, $y, $point['X'], $point['Y'], $this->_getLineStyle());
-            ImageLine($this->_canvas(), $point['X'] - 2, $point['Y'], $point['X'] + 2, $point['Y'], $this->_getLineStyle());
+        if ((isset($values['AVERAGE_Y'])) && 
+            (is_a($this->_parent, 'Image_Graph_Plot'))) 
+        {
+            $point = $this->_pointXY(
+                array(
+                    'X' => $values['APX'], 
+                    'Y' => $values['AVERAGE_Y']
+                )
+            );
+            $this->_getLineStyle();
+            $this->_driver->line($x, $y, $point['X'], $point['Y']);
+
+            $this->_getLineStyle();
+            $this->_driver->line(
+                $point['X'] - 2, 
+                $point['Y'], 
+                $point['X'] + 2, 
+                $point['Y']
+            );
         }
         parent::_drawMarker($x, $y, $values);
     }

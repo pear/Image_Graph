@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Marker     
  * @category images
@@ -39,7 +40,11 @@
 require_once 'Image/Graph/Marker/Icon.php';
 
 /**
- * Data marker using a pinpoint as marker
+ * Data marker using a pinpoint as marker.
+ *              
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Marker
  */
 class Image_Graph_Marker_Pinpoint extends Image_Graph_Marker_Icon 
 {
@@ -49,7 +54,9 @@ class Image_Graph_Marker_Pinpoint extends Image_Graph_Marker_Icon
      */
     function &Image_Graph_Marker_Pinpoint()
     {
-        parent::Image_Graph_Marker_Icon(dirname(__FILE__).'/../Images/Icons/pinpoint.png');
+        parent::Image_Graph_Marker_Icon(
+            dirname(__FILE__).'/../Images/Icons/pinpoint.png'
+        );
         $this->setPointX(0);
         $this->setPointY(13);
     }

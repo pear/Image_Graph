@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph 
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
@@ -33,12 +34,15 @@
  */ 
 
 /**
- * Include file Element.php
+ * Include file Image/Graph/Element.php
  */
-require_once 'Element.php';
+require_once 'Image/Graph/Element.php';
 
 /**
  * Representation of a element on a plotarea.
+ *               
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
  * @abstract
  */
 class Image_Graph_Plotarea_Element extends Image_Graph_Element 

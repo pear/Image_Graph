@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Marker     
  * @category images
@@ -39,10 +40,15 @@
 require_once 'Image/Graph/Marker/Circle.php';
 
 /**
- * Dsiplay a circle with y-value percentage as radius (require GD2).
- * This will display a circle centered on the datapoint with a radius calculated as
- * a percentage of the maximum value. I.e. the radius depends on the y-value of the
- * datapoint
+ * Display a circle with y-value percentage as radius (require GD2).
+ * 
+ * This will display a circle centered on the datapoint with a radius calculated
+ * as a percentage of the maximum value. I.e. the radius depends on the y-value
+ * of the datapoint
+ *              
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Marker
  */
 class Image_Graph_Marker_Bubble extends Image_Graph_Marker_Circle 
 {
@@ -65,9 +71,12 @@ class Image_Graph_Marker_Bubble extends Image_Graph_Marker_Circle
 
     /**
      * Draw the marker on the canvas
-     * @param int $x The X (horizontal) position (in pixels) of the marker on the canvas 
-     * @param int $y The Y (vertical) position (in pixels) of the marker on the canvas 
-     * @param array $values The values representing the data the marker 'points' to 
+     * @param int $x The X (horizontal) position (in pixels) of the marker on
+     * the canvas
+     * @param int $y The Y (vertical) position (in pixels) of the marker on the
+     * canvas
+     * @param array $values The values representing the data the marker 'points'
+     * to
      * @access private
      */
     function _drawMarker($x, $y, $values = false)

@@ -23,7 +23,9 @@
 // +--------------------------------------------------------------------------+
 
 /**
- * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * Image_Graph - Main class for the graph creation.
+ * 
+ * This class is the main class for graph creation
  * @package Image_Graph
  * @category images
  * @copyright Copyright (C) 2003, 2004 Jesper Veggerby Hansen
@@ -59,25 +61,21 @@ require_once 'Image/Graph/Color.php';
 
 /**
  * Main class for the graph creation.
- * This is the main class, it holds the canvas and performs the final
- * output by sending the http headers and making sure the elements are outputted.
+ * 
+ * This is the main class, it manages the driver and performs the final output
+ * by sequentialy making the elements output their results. The final output is
+ * handled using the {@link Image_Graph_Driver} classes which makes it possible
+ * to use different engines (fx GD, PDFlib, libswf, etc) for output to several
+ * formats with a non-intersecting API.
+ * 
+ * This class also handles coordinates and the correct managment of setting the
+ * correct coordinates on child elements.
+
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
  */
 class Image_Graph extends Image_Graph_Element 
 {
-
-    /**
-     * The GD Image resource.     
-     * @var resource
-     * @access private
-     */
-    var $_canvas = null;
-
-    /**
-     * Number of degress to rotate the canvas, counter-clockwise
-     * @var int
-     * @access private
-     */
-    var $_rotation = 0;
 
     /**
      * Show generation time on graph
@@ -85,48 +83,6 @@ class Image_Graph extends Image_Graph_Element
      * @access private
      */
     var $_showTime = false;
-
-    /**
-     * Filename of output, if it will be saved to a file
-     * @var string
-     * @access private
-     */
-    var $_fileName = '';
-
-    /**
-     * Filename of a possible thumbnail
-     * @var string
-     * @access private
-     */
-    var $_thumbFileName = '';
-
-    /**
-     * Width of a possible thumbnail
-     * @var int
-     * @access private
-     */
-    var $_thumbWidth = 0;
-
-    /**
-     * Height of a possible thumbnail
-     * @var string
-     * @access private
-     */
-    var $_thumbHeight = 0;
-
-    /**
-     * Output the image to the browser
-     * @var bool
-     * @access private
-     */
-    var $_outputImage = true;
-
-    /**
-     * Antialiasing percentage
-     * @var int
-     * @access private
-     */
-    var $_antialias = 0;
 
     /**
      * Specifies whether the logo should be displayed or not
@@ -143,118 +99,127 @@ class Image_Graph extends Image_Graph_Element
     var $_displayErrors = false;
 
     /**
-     * Should caching be employed or not. If yes it holds the directory of the cache. If not
-     * then false.
-     * @var mixed.
-     * @access private
-     */
-    var $_cache = false;
-
-    /**
      * Image_Graph [Constructor].
-     * If passing an array as a single parameter, the following set of indexes can be used:
-     * 1) Create a new image
-     * 'width' - The width of the graph in pixels
-     * 'height' - The height of the graph in pixels
-     * 'transparent' - If set the graph is created with a transparent background
-     * 2) Use an "existing" GD image
-     * 'image' - A gd resource to add the graph to
-     * 'left' - The left most pixel where the graphs starts on the image
-     * 'top' - The top most pixel where the graph starts on the image
-     * 'width' and 'height' as above
-     * 3) Create from a file
-     * 'filename' - The filename of the image to add the graph to (either PNG or JPEG)   
-     * 'left', 'top', 'width' and 'height' as above
-     * @param mixed $params A set of parameters in an indexed array or the width of the graph in pixels.	 
+     * 
+     * If passing the 3 parameters they are defined as below, and a 'gd'
+     * driver is created by default. Otherwise use a single parameter either as
+     * an associated array or passing the driver along to the constructor:
+     * 
+     * 1) Create a new driver with the following parameters:
+     * 
+     * 'driver' - The driver type, can be any of 'gd', 'jpg', 'png' or 'svg'
+     * (more to come) - if omitted the default is 'gd'
+     * 
+     * 'width' - The width of the graph
+     * 
+     * 'height' - The height of the graph
+     * 
+     * 2) Use the driver specified, pass a valid Image_Graph_Driver as
+     * parameter. Remember to pass by reference, i. e. &amp;$driver, fx.:
+     * 
+     * $Graph =& new Image_Graph(&$Driver);
+     * 
+     * or using the factory method:
+     * 
+     * $Graph =& Image_Graph::factory('graph', &$Driver));
+     * 
+     * @param mixed $params The width of the graph, an indexed array
+     * describing a new driver or a valid {@link Image_Graph_Driver} object
      * @param int $height The height of the graph in pixels
-     * @param bool $createTransparent Specify whether 	 
+     * @param bool $createTransparent Specifies whether the graph should be
+     * created with a transparent background (fx for PNG's - note: transparent
+     * PNG's is not supported by Internet Explorer!)
      */
     function &Image_Graph($params, $height = false, $createTransparent = false)
     {        
-        $stack =& PEAR_ErrorStack::singleton('Image_Graph');
-        
-        include_once('Log.php');        
-        $log =& Log::factory('file', 'image_graph.log', 'Image_Graph Error Log');
-        $stack->setLogger($log);        
-               
         parent::Image_Graph_Element();
         
-        if (is_array($params)) {
-            if (isset($params['left'])) {
-                $left = $params['left'];
-            } else {
-                $left = 0;
+        $this->setFont(Image_Graph::factory('Image_Graph_Font'));
+        
+        if (defined('IMAGE_GRAPH_DEFAULT_DRIVER_TYPE')) {            
+            $driverType = IMAGE_GRAPH_DEFAULT_DRIVER_TYPE;
+        } else {
+            $driverType = 'png'; // use GD as default, if nothing else is specified
+        }
+        
+        if (is_array($params)) {            
+            if (isset($params['driver'])) {
+                $driverType = $params['driver'];
             }
-
-            if (isset($params['top'])) {
-                $top = $params['top'];
-            } else {
-                $top = 0;
-            }
+                                                
+            $width = 0;
+            $height = 0;
 
             if (isset($params['width'])) {
                 $width = $params['width'];
-            } else {
-                $width = 0;
             }
-            
+
             if (isset($params['height'])) {
                 $height = $params['height'];
-            } else {
-                $height = 0;
-            }
-            
-            if ((isset($params['image'])) and (is_resource($params['image']))) {
-                $this->_canvas =& $params['image'];
-            } elseif ((isset($params['filename'])) and (file_exists($params['filename']))) {
-                $filename = $params['filename'];
-                if (strtolower(substr($filename, -4)) == '.png') {
-                    $this->_canvas = ImageCreateFromPNG($filename);
-                } else {
-                    $this->_canvas = ImageCreateFromJPEG($filename);
-                }            
-            }                        
-            
-            if ($this->_canvas != null) {
-                $this->_outputImage = false;
-                if ($width == 0) {
-                    $width = max(0, ImageSX($this->_canvas) - $left);
-                } 
-                if ($height == 0) {
-                    $height = max(0, ImageSY($this->_canvas) - $top);
-                } 
-                $this->_setCoords($left, $top, $left + $width, $top + $height);
             }            
+        } elseif (is_a($params, 'Image_Graph_Driver')) {
+            $this->_driver =& $params;
+            $width = $this->_driver->getWidth();
+            $height = $this->_driver->getHeight();
+        }
+
+        if (is_int($params)) {
+            $width = $params;
+        }            
+
+        if ($this->_driver == null) {
+            include_once 'Image/Graph/Driver.php';
+            $this->_driver =& 
+                Image_Graph_Driver::factory(
+                    $driverType, 
+                    array('width' => $width, 'height' => $height)
+                );
         }
         
-        if ($this->_canvas == null) {
-            if (!is_array($params)) {
-                $width = $params;
-            }            
-            $this->_setCoords(0, 0, $width-1, $height-1);
-    
-            if (isset($GLOBALS['_Image_Graph_gd2'])) {
-                $this->_canvas = ImageCreateTrueColor($width, $height);
-                ImageAlphaBlending($this->_canvas(), true);
-            } else {
-                $this->_canvas = ImageCreate($width, $height);
-            }
-
-            ImageColorTransparent($this->_canvas(), Image_Graph_Color::allocateColor($this->_canvas, array(0xab, 0xe1, 0x23)));        
-
-            if ($createTransparent) {
-                ImageFilledRectangle($this->_canvas(), 0, 0, $width -1, $height -1, $this->_color());
-            } else {
-                ImageFilledRectangle($this->_canvas(), 0, 0, $width -1, $height -1, $this->_color('white'));
-            }
-        }
-
-        $this->add($GLOBALS['_Image_Graph_font']);
-        $this->add($GLOBALS['_Image_Graph_verticalFont']);
+        $this->_setCoords(0, 0, $width - 1, $height - 1);    
     }
 
     /**
-     * Get a very precise timestamp
+     * Gets the driver for this graph.
+     * 
+     * The driver is set by either passing it to the constructor {@link
+     * Image_Graph::ImageGraph()} or using the {@link Image_Graph::setDriver()}
+     * method. 
+     * 
+     * @return Image_Graph_Driver The driver used by this graph 
+     * @access private
+     */
+    function &_getDriver()
+    {
+        return $this->_driver;
+    }
+
+    /**
+     * Sets the driver for this graph.
+     * 
+     * Calling this method makes this graph use the newly specified driver for
+     * handling output. This method should be called whenever multiple
+     * 'outputs' are required. Invoke this method after calls to {@link
+     * Image_Graph:: done()} has been performed, to switch drivers.
+     * 
+     * @param Image_Graph_Driver $driver The new driver
+     * @return Image_Graph_Driver The new driver
+     * @since 0.3.0dev2
+     */
+    function &setDriver(&$driver)
+    {
+        $this->_driver =& $driver;
+        $this->_setCoords(
+            0, 
+            0, 
+            $this->_driver->getWidth() - 1, 
+            $this->_driver->getHeight() - 1
+        );
+        return $this->_driver;
+    }
+
+    /**
+     * Gets a very precise timestamp
      * @return The number of seconds to a lot of decimals
      * @access private 
      */
@@ -267,17 +232,11 @@ class Image_Graph extends Image_Graph_Element
     }
     
     /**
-     * Returns the graph's canvas. 
-     * @return resource A GD image representing the graph's canvas 
-     * @access private
-     */
-    function &_canvas()
-    {
-        return $this->_canvas;
-    }
-
-    /**
-     * Hides the logo from the output 
+     * Hides the logo from the output.
+     * 
+     * The Image_Graph logo is displayed by default [as a small promotion :)].
+     * This is often not desireable in a production environment. Use this method
+     * to disable the display of the Image_Graph logo.
      */
     function hideLogo()
     {
@@ -285,59 +244,36 @@ class Image_Graph extends Image_Graph_Element
     }
 
     /**
-     * Get a new color. 
-     * This method allocates a color to the graph. {@see Image_Graph_Color::allocateColor()}.
-     * @param int $red The red part or the whole part
-     * @param int $green The green part (or nothing), or the alpha channel
-     * @param int $blue The blue part (or nothing)
-     * @param int $alpha The alpha channel (or nothing)
-     */
-    function newColor($red, $green = false, $blue = false, $alpha = false)
-    {
-        if (($green !== false) and ($blue !== false) and (is_numeric($green)) and (is_numeric($blue))) {
-            $color = array($red, $green, $blue);
-        } else {
-            $color = array(($red >> 16) & 0xff, ($red >> 8) & 0xff, $red & 0xff);
-            $alpha = $green;            
-        }
-        if ($alpha !== false) {
-            $color[] = $alpha;
-        }
-        $canvas = $this->_canvas();
-        return Image_Graph_Color::allocateColor($canvas, $color);
-    }
-
-    /**
-     * The width of the graph 
-     * @return int Number of pixels representing the width of the graph
+     * Gets the width of this graph.
+     * 
+     * The width is returned as 'defined' by the driver. 
+     * 
+     * @return int the width of this graph
      */
     function width()
     {
-        return ImageSX($this->_canvas());
+        return $this->_driver->getWidth();
     }
 
     /**
-     * The height of the graph 
-     * @return int Number of pixels representing the height of the graph
+     * Gets the height of this graph.
+     * 
+     * The height is returned as 'defined' by the driver.
+     * 
+     * @return int the height of this graph
      */
     function height()
     {
-        return ImageSY($this->_canvas());
+        return $this->_driver->getHeight();
     }
 
     /**
-     * Rotate the final graph 
-     * @param int $Rotation Number of degrees to rotate the canvas counter-clockwise
-     */
-    function rotate($rotation)
-    {
-        $this->_rotation = $rotation;
-    }
-
-    /**
-     * The width of the graph
-     * @see Image_Graph::width() 
-     * @return int Number of pixels representing the width of the graph
+     * Gets the width of this graph.
+     * 
+     * The width is returned as 'defined' by the driver. {@link
+     * Image_Graph::width()}
+     * 
+     * @return int the width of this graph
      * @access private
      */
     function _graphWidth()
@@ -346,9 +282,12 @@ class Image_Graph extends Image_Graph_Element
     }
 
     /**
-     * The height of the graph
-     * @see Image_Graph::height() 
-     * @return int Number of pixels representing the height of the graph
+     * Gets the height of this graph.
+     * 
+     * The height is returned as 'defined' by the driver. {@link
+     * Image_Graph::height()}
+     * 
+     * @return int the height of this graph
      * @access private
      */
     function _graphHeight()
@@ -357,102 +296,11 @@ class Image_Graph extends Image_Graph_Element
     }
 
     /**
-     * Save the output as a file
-     * @param string $fileName The filename and path of the file to save output in
-     * @param bool $outputImage Output the image to the browser as well
-     */
-    function saveAs($fileName, $outputImage = false)
-    {
-        $this->_fileName = $fileName;
-        $this->_outputImage = $outputImage;
-    }
-
-    /**
-     * Create the output as a thumbnail
-     * @param int $width The width of the thumbnail
-     * @param int $height The height of the thumbnail
-     * @param string $fileName The filename and path of the file to save the thumbnail in, if specified the thumbnail will be saved and the output will be the normal graph
-     */
-    function thumbnail($width = 80, $height = 60, $fileName = '')
-    {
-        $this->_thumbFileName = $fileName;
-        $this->_thumbWidth = $width;
-        $this->_thumbHeight = $height;
-    }
-
-    /**
-     * Antialias the a single pixel in the graph
-     * @param int $x1 X-coordinate of the first pixel to antialias
-     * @param int $y1 Y-coordinate of the first pixel to antialias
-     * @param int $x2 X-coordinate of the second pixel to antialias
-     * @param int $y2 Y-coordinate of the second pixel to antialias
-     * @access private
-     */
-    function _antialiasPixel($x1, $y1, $x2, $y2)
-    {
-        $rgb = ImageColorAt($this->_canvas(), $x1, $y1);
-        $r1 = ($rgb >> 16) & 0xFF;
-        $g1 = ($rgb >> 8) & 0xFF;
-        $b1 = $rgb & 0xFF;
-
-        $rgb = ImageColorAt($this->_canvas(), $x2, $y2);
-        $r2 = ($rgb >> 16) & 0xFF;
-        $g2 = ($rgb >> 8) & 0xFF;
-        $b2 = $rgb & 0xFF;
-
-        if (($r1 <> $r2) or ($g1 <> $g2) or ($b1 <> $b2)) {
-            $r = round($r1 + ($r2 - $r1) * 50 / ($this->_antialias + 50));
-            $g = round($g1 + ($g2 - $g1) * 50 / ($this->_antialias + 50));
-            $b = round($b1 + ($b2 - $b1) * 50 / ($this->_antialias + 50));
-            
-            $rgb = Image_Graph_Color::allocateColor($this->_canvas, array($r, $g, $b));
-            ImageSetPixel($this->_canvas(), $x2, $y2, $rgb);
-        }
-    }
-
-    /**
-     * Perform the antialias on the graph
-     * @param int $percetage The percentage 'to' antialias
-     * @access private
-     */
-    function _performAntialias()
-    {
-        for ($l = 0; $l < $this->height(); $l ++) {
-            for ($p = 0; $p < $this->width(); $p ++) {
-                // fix pixel to the left
-                if ($p > 0) {
-                    $this->_antialiasPixel($p, $l, $p -1, $l);
-                }
-
-                // fix pixel to the right
-                if ($p < $this->width() - 1) {
-                    $this->_antialiasPixel($p, $l, $p +1, $l);
-                }
-
-                // fix pixel above
-                if ($l > 0) {
-                    $this->_antialiasPixel($p, $l, $p, $l -1);
-                }
-
-                // fix pixel below
-                if ($l < $this->height() - 1) {
-                    $this->_antialiasPixel($p, $l, $p, $l +1);
-                }
-            }
-        }
-    }
-
-    /**
-     * Antialias on the graph
-     * @param int $percent The percentage 'to' antialias
-     */
-    function antialias($percent = 5)
-    {
-        $this->_antialias = $percent;
-    }
-
-    /**
-     * Displays errors on canvas
+     * Enables displaying of errors on the output.
+     * 
+     * Use this method to enforce errors to be displayed on the output. Calling
+     * this method makes PHP uses this graphs error handler as default {@link
+     * Image_Graph::_default_error_handler()}.
      */
     function displayErrors()
     {
@@ -461,45 +309,117 @@ class Image_Graph extends Image_Graph_Element
     }
 
     /**
-     * Output to the canvas
-     * @param int $type The type of image to output, i.e. IMG_PNG (default) and IMG_JPEG
-     * @return mixed If the scripts outputs the image to the browser true is returned, if no output, the GD image is returned 
+     * Sets the log method for this graph. 
+     * 
+     * Use this method to enable logging. This causes any errors caught
+     * by either the error handler (@see Image_Graph::displayErrors()}
+     * or explicitly by calling {@link Image_Graph_Common::_error()} be
+     * logged using the specified logging method. 
+     * 
+     * If a filename is specified as log method, a Log object is created (using
+     * the 'file' handler), with a handle of 'Image_Graph Error Log'.
+     * 
+     * Logging requires {@link Log}.
+     * 
+     * @param mixed $log The log method, either a Log object or filename to log
+     * to
+     * @since 0.3.0dev2
      */
-    function done($type = IMG_PNG)
+    function setLog($log)
     {
-        return $this->_done($type);
+        $stack =& $this->_getErrorStack();
+        if (is_string($log)) {
+            include_once 'Log.php';
+            $log =& Log::factory('file', $log, 'Image_Graph Error Log');
+        }
+        $stack->setLogger($log);
     }
-    
+
     /**
      * Factory method to create Image_Graph objects.
-     * Used for 'lazy including', i.e. loading only what is necessary, when it is necessary.
-     * If only one parameter is required for the constructor of the class simply pass this
-     * parameter as the $params parameter, unless the parameter is an array or a reference
-     * to a value, in that case you must 'enclose' the parameter in an array. Similar if
-     * the constructor takes more than one parameter specify the parameters in an array, i.e
+     * 
+     * Used for 'lazy including', i.e. loading only what is necessary, when it
+     * is necessary. If only one parameter is required for the constructor of
+     * the class simply pass this parameter as the $params parameter, unless the
+     * parameter is an array or a reference to a value, in that case you must
+     * 'enclose' the parameter in an array. Similar if the constructor takes
+     * more than one parameter specify the parameters in an array, i.e
+     * 
      * Image_Graph::factory('MyClass', array($param1, $param2, &$param3));
-     *
+     * 
+     * Variables that need to be passed by reference *must* have the &amp;
+     * before the variable, i.e:
+     * 
+     * Image_Graph::factory('line', &$Dataset);
+     * 
+     * or
+     * 
+     * Image_graph::factory('bar', array(array(&$Dataset1, &$Dataset2),
+     * 'stacked'));
+     * 
      * Class name can be either of the following:
-     * 1 The 'real' Image_Graph class name, i.e. Image_Graph_Plotarea or Image_Graph_Plot_Line
-     * 2 Short class name (leave out Image_Graph) and retain case, i.e. Plotarea, Plot_Line *not* plot_line
-     * 3 Class name alias, the following are supported:
+     * 
+     * 1 The 'real' Image_Graph class name, i.e. Image_Graph_Plotarea or
+     * Image_Graph_Plot_Line
+     * 
+     * 2 Short class name (leave out Image_Graph) and retain case, i.e.
+     * Plotarea, Plot_Line *not* plot_line
+     * 
+     * 3 Class name 'alias', the following are supported:
+     * 
      * 'graph' = Image_Graph
+     * 
      * 'plotarea' = Image_Graph_Plotarea
+     * 
      * 'line' = Image_Graph_Plot_Line
+     * 
      * 'area' = Image_Graph_Plot_Area
+     * 
      * 'bar' = Image_Graph_Plot_Bar
-     * 'stacked_bar' = Image_Graph_Plot_Bar_Stacked
+     * 
+     * 'pie' = Image_Graph_Plot_Pie
+     * 
+     * 'radar' = Image_Graph_Plot_Radar
+     * 
+     * 'step' = Image_Graph_Plot_Step
+     * 
+     * 'impulse' = Image_Graph_Plot_Impulse
+     * 
+     * 'dot' or 'scatter' = Image_Graph_Plot_Dot
+     * 
+     * 'smooth_line' = Image_Graph_Plot_Smoothed_Line
+     * 
+     * 'smooth_area' = Image_Graph_Plot_Smoothed_Area
+ 
      * 'dataset' = Image_Graph_Dataset_Trivial
+     * 
      * 'random' = Image_Graph_Dataset_Random
+     * 
+     * 'function' = Image_Graph_Dataset_Function
+     * 
+     * 'vector' = Image_Graph_Dataset_VectorFunction
+     * 
      * 'axis' = Image_Graph_Axis
+     * 
      * 'axis_log' = Image_Graph_Axis_Logarithmic
+     * 
      * 'title' = Image_Graph_Title
+     * 
      * 'line_grid' = Image_Graph_Grid_Lines
+     * 
      * 'bar_grid' = Image_Graph_Grid_Bars
-     * 'legend' = Image_Graph_Legend 
+     * 
+     * 'polar_grid' = Image_Graph_Grid_Polar
+     * 
+     * 'legend' = Image_Graph_Legend
+     * 
      * 'ttf_font' = Image_Graph_Font_TTF
+     * 
      * 'gradient' = Image_Graph_Fill_Gradient
-     * @param string $class The class for the object
+     * 
+     * This method can be called statically.
+     * 
+     * @param string $class The class for the new object
      * @param mixed $params The paramaters to pass to the constructor
      * @return object A new object for the class 
      */
@@ -507,23 +427,111 @@ class Image_Graph extends Image_Graph_Element
     {
         if (substr($class, 0, 11) != 'Image_Graph') {
             switch ($class) {
-            case 'graph': $class = 'Image_Graph'; break;
-            case 'plotarea': $class = 'Image_Graph_Plotarea'; break;
-            case 'line': $class = 'Image_Graph_Plot_Line'; break;
-            case 'area': $class = 'Image_Graph_Plot_Area'; break;
-            case 'bar': $class = 'Image_Graph_Plot_Bar'; break;
-            case 'stacked_bar': $class = 'Image_Graph_Plot_Bar_Stacked'; break;
-            case 'dataset': $class = 'Image_Graph_Dataset_Trivial'; break;
-            case 'random': $class = 'Image_Graph_Dataset_Random'; break;
-            case 'axis': $class = 'Image_Graph_Axis'; break;
-            case 'axis_log': $class = 'Image_Graph_Axis_Logarithmic'; break;
-            case 'title': $class = 'Image_Graph_Title'; break;
-            case 'line_grid': $class = 'Image_Graph_Grid_Lines'; break;
-            case 'bar_grid': $class = 'Image_Graph_Grid_Bars'; break;
-            case 'legend': $class = 'Image_Graph_Legend'; break;
-            case 'ttf_font': $class = 'Image_Graph_Font_TTF'; break;
-            case 'gradient': $class = 'Image_Graph_Fill_Gradient'; break;
-            default: $class = 'Image_Graph_' . $class; break;
+            case 'graph': 
+                $class = 'Image_Graph'; 
+                break;
+                
+            case 'plotarea': 
+                $class = 'Image_Graph_Plotarea'; 
+                break;
+                
+            case 'line': 
+                $class = 'Image_Graph_Plot_Line'; 
+                break;
+                
+            case 'area': 
+                $class = 'Image_Graph_Plot_Area'; 
+                break;
+                
+            case 'bar': 
+                $class = 'Image_Graph_Plot_Bar'; 
+                break;
+
+            case 'smooth_line': 
+                $class = 'Image_Graph_Plot_Smoothed_Line'; 
+                break;
+                
+            case 'smooth_area': 
+                $class = 'Image_Graph_Plot_Smoothed_Area'; 
+                break;
+
+            case 'pie': 
+                $class = 'Image_Graph_Plot_Pie'; 
+                break;
+
+            case 'radar': 
+                $class = 'Image_Graph_Plot_Radar'; 
+                break;
+
+            case 'step': 
+                $class = 'Image_Graph_Plot_Step'; 
+                break;
+
+            case 'impulse': 
+                $class = 'Image_Graph_Plot_Impulse'; 
+                break;
+
+            case 'dot': 
+            case 'scatter': 
+                $class = 'Image_Graph_Plot_Dot'; 
+                break;
+                
+            case 'dataset': 
+                $class = 'Image_Graph_Dataset_Trivial'; 
+                break;
+                
+            case 'random': 
+                $class = 'Image_Graph_Dataset_Random'; 
+                break;
+                
+            case 'function': 
+                $class = 'Image_Graph_Dataset_Function'; 
+                break;
+
+            case 'vector': 
+                $class = 'Image_Graph_Dataset_Vector'; 
+                break;
+                
+            case 'axis': 
+                $class = 'Image_Graph_Axis'; 
+                break;
+                
+            case 'axis_log': 
+                $class = 'Image_Graph_Axis_Logarithmic'; 
+                break;
+                
+            case 'title': 
+                $class = 'Image_Graph_Title'; 
+                break;
+                
+            case 'line_grid': 
+                $class = 'Image_Graph_Grid_Lines'; 
+                break;
+                
+            case 'bar_grid': 
+                $class = 'Image_Graph_Grid_Bars'; 
+                break;
+                
+            case 'polar_grid': 
+                $class = 'Image_Graph_Grid_Polar'; 
+                break;
+                
+            case 'legend': 
+                $class = 'Image_Graph_Legend'; 
+                break;
+                
+            case 'ttf_font': 
+                $class = 'Image_Graph_Font_TTF'; 
+                break;
+                
+            case 'gradient': 
+                $class = 'Image_Graph_Fill_Gradient'; 
+                break;
+                
+            default: 
+                $class = 'Image_Graph_' . $class; 
+                break;
+                
             }
         }           
         
@@ -531,17 +539,115 @@ class Image_Graph extends Image_Graph_Element
 
         if (is_array($params)) {
             switch (count($params)) {
-            case 1: return new $class($params[0]);
-            case 2: return new $class($params[0], $params[1]);
-            case 3: return new $class($params[0], $params[1], $params[2]);
-            case 4: return new $class($params[0], $params[1], $params[2], $params[3]);
-            case 5: return new $class($params[0], $params[1], $params[2], $params[3], $params[4]);
-            case 6: return new $class($params[0], $params[1], $params[2], $params[3], $params[4], $params[5]);
-            case 7: return new $class($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6]);
-            case 8: return new $class($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6], $params[7]);
-            case 9: return new $class($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6], $params[7], $params[8]);
-            case 10: return new $class($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6], $params[7], $params[8], $params[9]);
-            default: return new $class();
+            case 1: 
+                return new $class(
+                    $params[0]
+                );
+                break;
+                
+            case 2: 
+                return new $class(
+                    $params[0], 
+                    $params[1]
+                );
+                break;
+                
+            case 3: 
+                return new $class(
+                    $params[0], 
+                    $params[1], 
+                    $params[2]
+                );
+                break;
+                
+            case 4: 
+                return new $class(
+                    $params[0], 
+                    $params[1], 
+                    $params[2], 
+                    $params[3]
+                );
+                break;
+                
+            case 5: 
+                return new $class(
+                    $params[0], 
+                    $params[1], 
+                    $params[2], 
+                    $params[3], 
+                    $params[4]
+                );
+                break;
+                
+            case 6: 
+                return new $class(
+                    $params[0], 
+                    $params[1], 
+                    $params[2], 
+                    $params[3], 
+                    $params[4], 
+                    $params[5]
+                );
+                break;
+                
+            case 7: 
+                return new $class(
+                    $params[0], 
+                    $params[1], 
+                    $params[2], 
+                    $params[3], 
+                    $params[4], 
+                    $params[5], 
+                    $params[6]
+                );
+                break;
+                
+            case 8: 
+                return new $class(
+                    $params[0], 
+                    $params[1], 
+                    $params[2], 
+                    $params[3], 
+                    $params[4], 
+                    $params[5], 
+                    $params[6], 
+                    $params[7]
+                );
+                break;
+                
+            case 9: 
+                return new $class(
+                    $params[0], 
+                    $params[1], 
+                    $params[2], 
+                    $params[3], 
+                    $params[4], 
+                    $params[5], 
+                    $params[6], 
+                    $params[7], 
+                    $params[8]
+                );
+                break;
+                
+            case 10: 
+                return new $class(
+                    $params[0], 
+                    $params[1], 
+                    $params[2], 
+                    $params[3], 
+                    $params[4], 
+                    $params[5], 
+                    $params[6], 
+                    $params[7], 
+                    $params[8], 
+                    $params[9]
+                );
+                break;
+                
+            default: 
+                return new $class();
+                break;
+                
             }           
         } else {
             if ($params == null) {
@@ -554,16 +660,25 @@ class Image_Graph extends Image_Graph_Element
 
     /**
      * Factory method to create layouts.
-     * This method is used for easy creation, since using {@see Image_Graph::factory()} does
-     * not work with passing newly created objects from Image_Graph::factory() as reference,
-     * this is something that is fortunately fixed in PHP5. 
-     * Also used for 'lazy including', i.e. loading only what is necessary, when it is necessary.
-     * @param mixed $layout The type of layout, can be either 'Vertical' or 'Horizontal'
+     * 
+     * This method is used for easy creation, since using {@link Image_Graph::
+     * factory()} does not work with passing newly created objects from
+     * Image_Graph::factory() as reference, this is something that is
+     * fortunately fixed in PHP5. Also used for 'lazy including', i.e. loading
+     * only what is necessary, when it is necessary.
+     * 
+     * Use {@link Image_Graph::horizontal()} or {@link Image_Graph::vertical()}
+     * instead for easier access.
+     * 
+     * @param mixed $layout The type of layout, can be either 'Vertical'
+     * or 'Horizontal' (case sensitive)
      * @param Image_Graph_Element $part1 The 1st part of the layout
      * @param Image_Graph_Element $part2 The 2nd part of the layout
      * @param int $percentage The percentage of the layout to split at
+     * @return Image_Graph_Layout The newly created layout object
      */
-    function &layoutFactory($layout, &$part1, &$part2, $percentage = 50) {               
+    function &layoutFactory($layout, &$part1, &$part2, $percentage = 50)
+    {               
         include_once "Image/Graph/Layout/$layout.php";
         $class = "Image_Graph_Layout_$layout";
         return new $class($part1, $part2, $percentage);        
@@ -571,44 +686,78 @@ class Image_Graph extends Image_Graph_Element
 
     /**
      * Factory method to create horizontal layout.
-     * @param Image_Graph_Element $part1 The 1st part of the layout
-     * @param Image_Graph_Element $part2 The 2nd part of the layout
+     * 
+     * See {@link Image_Graph::layoutFactory()}
+     * 
+     * @param Image_Graph_Element $part1 The 1st (left) part of the layout
+     * @param Image_Graph_Element $part2 The 2nd (right) part of the layout
      * @param int $percentage The percentage of the layout to split at
+     * (percentage of total height from the left side)
      */
-    function &horizontal(&$part1, &$part2, $percentage = 50) {                       
+    function &horizontal(&$part1, &$part2, $percentage = 50)
+    {                       
         return Image_Graph::layoutFactory('Horizontal', $part1, $part2, $percentage);        
     }
     
     /**
      * Factory method to create vertical layout.
-     * @param Image_Graph_Element $part1 The 1st part of the layout
-     * @param Image_Graph_Element $part2 The 2nd part of the layout
+     * 
+     * See {@link Image_Graph::layoutFactory()}
+     * 
+     * @param Image_Graph_Element $part1 The 1st (top) part of the layout
+     * @param Image_Graph_Element $part2 The 2nd (bottom) part of the layout
      * @param int $percentage The percentage of the layout to split at
+     * (percentage of total width from the top edge)
      */
-    function &vertical(&$part1, &$part2, $percentage = 50) {                       
+    function &vertical(&$part1, &$part2, $percentage = 50)
+    {                       
         return Image_Graph::layoutFactory('Vertical', $part1, $part2, $percentage);        
     }
     
     /**
-     * The error handling routine set by set_error_handler()
+     * The error handling routine set by set_error_handler().
+     * 
+     * This method is used internaly by Image_Graph and PHP as a proxy for {@link
+     * Image_Graph::_error()}. This method should *not* be called explicitly.
+     * 
      * @param string $error_type The type of error being handled.
      * @param string $error_msg The error message being handled.
      * @param string $error_file The file in which the error occurred.
      * @param integer $error_line The line in which the error occurred.
      * @param string $error_context The context in which the error occurred.
-     * @return Boolean
      * @access private
      */
     function _default_error_handler($error_type, $error_msg, $error_file, $error_line, $error_context)
     {
         switch( $error_type ) {
-        case E_ERROR: $level = 'error'; break;
-        case E_USER_ERROR: $level = 'user error'; break;
-        case E_WARNING: $level = 'warning'; break;
-        case E_USER_WARNING: $level = 'user warning'; break;
-        case E_NOTICE: $level = 'notice'; break;
-        case E_USER_NOTICE: $level = 'user notice'; break;
-        default: $level = '(unknown)'; break;
+        case E_ERROR: 
+            $level = 'error'; 
+            break;
+            
+        case E_USER_ERROR: 
+            $level = 'user error'; 
+            break;
+            
+        case E_WARNING: 
+            $level = 'warning'; 
+            break;
+            
+        case E_USER_WARNING: 
+            $level = 'user warning'; 
+            break;
+            
+        case E_NOTICE: 
+            $level = 'notice'; 
+            break;
+            
+        case E_USER_NOTICE: 
+            $level = 'user notice'; 
+            break;
+            
+        default: 
+            $level = '(unknown)'; 
+            break;
+            
         }
         
         $this->_error("PHP $level: $error_msg", 
@@ -622,163 +771,152 @@ class Image_Graph extends Image_Graph_Element
     }
     
     /**
-     * Display errors on error stack
+     * Displays the errors on the error stack.
+     * 
+     * Invoking this method cause all errors on the error stack to be displayed
+     * on the graph-output, by calling the {@link Image_Graph::_displayError()}
+     * method.
      */
-    function _displayErrors() {
+    function _displayErrors()
+    {
         $stack =& $this->_getErrorStack();
         if ($stack->hasErrors()) {
             $errors = $stack->getErrors();
             if (is_array($errors)) {
                 $y = 0;
-                while (list($id, $error) = each($errors)) {
-                    $y += $this->_displayError(0, $y, $error);
+                foreach ($errors as $error) {
+                    $this->_displayError(0, $y, $error);
+                    $y += 20;
                 }
             }
         }
     }
 
     /**
-     * Display an error from the error stack
-     * @param int $x The horizontal position of the error box
-     * @param int $y The vertical position of the error box
+     * Display an error from the error stack.
+     * 
+     * This method writes error messages caught from the {@link Image_Graph::
+     * _default_error_handler()} if {@Image_Graph::displayErrors()} was invoked,
+     * and the error explicitly set by the system using {@link
+     * Image_Graph_Common::_error()}.
+     * 
+     * @param int $x The horizontal position of the error message
+     * @param int $y The vertical position of the error message
      * @param array $error The error context
      */
-    function _displayError($x, $y, $error) {        
-        $canvas =& $error['params']['canvas'];
-        if (!is_resource($canvas)) {
-            $canvas =& $this->_canvas();
+    function _displayError($x, $y, $error)
+    {                
+        $driver =& $error['params']['driver'];
+        if (is_a($driver, 'Image_Graph_Driver')) {
+            $driver->setFont(array('font' => 1, 'color' => 'black'));
+            $driver->write($x, $y, $error['message']);
         }
-        
-        $FH = ImageFontHeight(1);
-        $FW = ImageFontWidth(1);
-
-        $MAX_CHARS = floor(ImageSX($canvas)/$FW) - 20;
-        $error['message'] = trim($error['message']);
-        while ((strlen($error['message']) > $MAX_CHARS) and (strpos($error['message'], ' '))) {
-            $string = substr($error['message'], 0, $MAX_CHARS);
-            $pos = strrpos($string, ' ');
-            if (($nl = strpos($string, "\n")) and ($nl<$pos)) {
-                $pos = $nl;
-            }
-            $lines[] = substr($error['message'], 0, $pos);;
-            $error['message'] = substr($error['message'], $pos+1);
-        }
-        if ($error['message']) {
-            $strings = explode("\n", $error['message']);
-            if ((isset($lines)) and (is_array($lines))) {
-                $lines = array_merge($lines, $strings);
-            } else {
-                $lines = $strings;
-            }
-        }
-
-        if ((isset($lines)) and (is_array($lines))) {
-            $title = ucfirst($error['level']) . ' ' . $error['code'] . ': ' . $error['package'] . ' (' . $error['context']['class'] . ')';
-
-            reset($lines);
-
-            $max = strlen($title)*$FW;
-            while (list($id, $text) = each($lines)) {
-                $max = max($max, strlen($text)*$FW);
-            }
-            $height = 25+(count($lines)-1)*($FH+2)+15;
-            $width = $max+10;
-
-            $left = max(0, min($x, ImageSX($canvas)-$width));
-            $top = max(0, min($y, ImageSY($canvas)-$height));
-
-            ImageFilledRectangle($canvas, $left+5, $top+5, $left+$width+5, $top+$height+5, $this->_color('lightgray@0.5'));
-            ImageFilledRectangle($canvas, $left, $top, $left+$width, $top+$height, $this->_color('white'));
-            ImageRectangle($canvas, $left, $top, $left+$width, $top+$height, $this->_color('black'));
-            ImageFilledRectangle($canvas, $left, $top, $left+$width, $top+20, $this->_color('blue'));
-            ImageRectangle($canvas, $left, $top, $left+$width, $top+20, $this->_color('black'));
-
-            ImageString($canvas, 1, $left+($width-$FW*strlen($title))/2, $top+(20-$FH)/2, $title, $this->_color('white'));
-
-            reset($lines);
-            $y = $top+25;
-            while (list($id, $text) = each($lines)) {
-                ImageString($canvas, 1, $left+5, $y, $text, $this->_color('black'));
-                $y += $FH+2;
-            }
-            return $top+$height+10;
-        }
-        return 0;               
     }
     
     /**
-     * Enable caching of the output. 
-     * Note! Any change at all to any part of the graph makes it output again. Do *NOT*
-     * use caching with plots using Image_Graph_Dataset_Random. The specified cache directory
-     * must exist prior to caching.
-     * Requires PEAR::Cache.
-     * @param string $cacheDir The directory where cached files are put. If false caching is disabled.    
+     * Enable caching of the output.
+     *  
+     * Any change at all to any part of the graph makes it output again. Do
+     * *NOT* use caching with plots using {@link Image_Graph_Dataset_Random},
+     * since the graph will (always) change. The specified cache directory must
+     * exist prior to caching.
+     * 
+     * Requires {@link Cache}.
+     * 
+     * @param string $cacheDir The directory where cached files are put. If
+     * false caching is disabled.
      */
-    function cache($cacheDir = 'cache/') {
+    function cache($cacheDir = 'cache/')
+    {
         $this->_cache = $cacheDir;
     }
         
+    /**
+     * Outputs this graph using the driver.
+     * 
+     * This causes the graph to make all elements perform their output. Their
+     * result is 'written' to the output using the driver, which also performs
+     * the actual output, fx. it being to a file or directly to the browser
+     * (in the latter case, the driver will also make sure the correct HTTP
+     * headers are sent, making the browser handle the output correctly, if
+     * supported by it).
+     * 
+     * @param mixed $param The output parameters to pass to the driver
+     * 
+     * @return bool Was the output 'good' (true) or 'bad' (false).
+     */
+    function done($param = false)
+    {                
+        $this->_reset();
+        return $this->_done($param);
+    }
     
     /**
-     * Output to the canvas
-     * @param int $type The type of image to output, i.e. IMG_PNG (default) and IMG_JPEG
+     * Outputs this graph using the driver.
+     * 
+     * This causes the graph to make all elements perform their output. Their
+     * result is 'written' to the output using the driver, which also performs
+     * the actual output, fx. it being to a file or directly to the browser
+     * (in the latter case, the driver will also make sure the correct HTTP
+     * headers are sent, making the browser handle the output correctly, if
+     * supported by it).
+     * 
+     * @param mixed $param The output parameters to pass to the driver
+     * 
+     * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
-    function _done($type = IMG_PNG)
+    function _done($param = false)
     {
         $useCached = false;
         $timeStart = $this->_getMicroTime();
-        
-        if ($this->_cache !== false) {        
-            include_once 'Cache/Graphics.php';
-            $cache =& new Cache_Graphics();
-            $cache->setCacheDir($this->_cache);
-            $cacheID = $cache->generateID(serialize($this));
-            
-            if ($output =& $cache->getImage($cacheID)) {                
-                $this->_canvas =& ImageCreateFromString($output);
-                $useCached = true;
-            }
-        }
-        
+
         if ($useCached === false) {       
             if ($this->_shadow) {
                 $this->setPadding(20);
-                $this->_setCoords($this->_left, $this->_top, $this->_right -10, $this->_bottom-10);
+                $this->_setCoords(
+                    $this->_left, 
+                    $this->_top, 
+                    $this->_right - 10, 
+                    $this->_bottom - 10);
             }
     
             $this->_updateCoords();
             
     
-            if ($this->_background) {
-                ImageFilledRectangle($this->_canvas(), $this->_left, $this->_top, $this->_right, $this->_bottom, $this->_getBackground());
+            if ($this->_getBackground()) {
+                $this->_driver->rectangle(
+                    $this->_left, 
+                    $this->_top, 
+                    $this->_right, 
+                    $this->_bottom
+                );
             }
     
             if (!file_exists(dirname(__FILE__).'/Graph/Images/logo.png')) {
                 $this->_error('Could not find Logo your installation may be incomplete');
             } else {
-                parent::_done();
+                $result = parent::_done();
             }
             
-            if (isset($this->_borderStyle)) {
-                ImageRectangle($this->_canvas(), $this->_left, $this->_top, $this->_right, $this->_bottom, $this->_getBorderStyle());
-            }
-    
             if ($this->_displayErrors) {
                 $this->_displayErrors();
-            }
-    
-            if ($this->_rotation) {
-                $this->_canvas = ImageRotate($this->_canvas(), $this->_rotation, $this->_getFillStyle());
             }
     
             $timeEnd = $this->_getMicroTime();
     
             if ($this->_showTime) {
-                ImageString($this->_canvas(), FONT, $this->_left + $this->width() * 0.15, $this->_bottom - $this->_height * 0.1 - ImageFontHeight(IMAGE_GRAPH_FONT), 'Generated in '.sprintf('%0.3f', $timeEnd - $timeStart).' sec', $this->_color('red'));
+                $text = 'Generated in ' . 
+                    sprintf('%0.3f', $timeEnd - $timeStart) . ' sec';
+                $this->write(
+                    $this->_right, 
+                    $this->_bottom, 
+                    $text, 
+                    IMAGE_GRAPH_ALIGN_RIGHT + IMAGE_GRAPH_ALIGN_BOTTOM
+                );
             }
     
-            if (!$this->_hideLogo) {
+    		if (!$this->_hideLogo) {
                 include_once 'Image/Graph/Logo.php';
                 $logo = Image_Graph::factory('Image_Graph_Logo', 
                     array(
@@ -788,83 +926,14 @@ class Image_Graph extends Image_Graph_Element
                 );
                 $logo->_setParent($this);
                 $logo->_done();
-            }
-            
-            if ($this->_antialias) {
-                $this->_performAntialias();
-            }
+            }            
         }
 
-        if (($this->_outputImage) and (!IMAGE_GRAPH_DEBUG)) {
-            header('Expires: Tue, 2 Jul 1974 17:41:00 GMT'); // Date in the past
-            header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-            header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
-            header('Pragma: no-cache');
-            header('Content-type: image/'. ($type == IMG_JPG ? 'jpeg' : 'png'));            
-            header('Content-Disposition: attachment; filename = \"'. (isset($_GET['thumb']) ? $_GET['thumb'] : (isset($_GET['image']) ? $_GET['image'] : '')).'\"');
-        }
-        
-        if ($this->_fileName) {
-            if (strtolower(substr($this->_fileName, -4)) == '.png') {
-                ImagePNG($this->_canvas(), $this->_fileName);
-            } else {
-                ImageJPEG($this->_canvas(), $this->_fileName);
-            }
-        }
-        
-        if (($this->_thumbWidth) and ($this->_thumbHeight)) {
-            if (isset($GLOBALS['_Image_Graph_gd2'])) {
-                $thumbnail = ImageCreateTrueColor($this->_thumbWidth, $this->_thumbHeight);
-                ImageCopyResampled($thumbnail, $this->_canvas(), 0, 0, 0, 0, $this->_thumbWidth, $this->_thumbHeight, $this->width(), $this->height());
-            } else {
-                $thumbnail = ImageCreate($this->_thumbWidth, $this->_thumbHeight);
-                ImageCopyResized($thumbnail, $this->_canvas(), 0, 0, 0, 0, $this->_thumbWidth, $this->_thumbHeight, $this->width(), $this->height());
-            }
-
-            if ($this->_thumbFileName) {
-                if (strtolower(substr($this->_thumbFileName, -4)) == '.png') {
-                    ImagePNG($thumbnail, $this->_thumbFileName);
-                } else {
-                    ImageJPEG($thumbnail, $this->_thumbFileName);
-                }
-                ImageDestroy($thumbnail);
-            } else {
-                ImageDestroy($this->_canvas());
-                $this->_canvas = $thumbnail;
-            }
-        }
-
-        if (($this->_outputImage) and (!IMAGE_GRAPH_DEBUG)) {
-            if ($type == IMG_JPG) {
-                ImageJPEG($this->_canvas());
-            } else {
-                ImagePNG($this->_canvas());
-            }
-        }
-
-        if (($this->_cache !== false) and (is_object($cache)) and ($useCached === false)) {
-            $cache->cacheImage($cacheID, $this->_canvas(), ($type == IMG_JPG ? 'jpg' : 'png'));
-        }
-
-        if ($this->_outputImage) {
-            ImageDestroy($this->_canvas());
-            return true;
-        } else {
-            return $this->_canvas();
-        }                
+        return $this->_driver->done($param);    
     }
 }
 
-/**
- * Default font variable
- * @global Image_Graph_Font $_Image_Graph_font
- */
-$GLOBALS['_Image_Graph_font'] = & Image_Graph::factory('Image_Graph_Font');
-
-/**
- * Default vertical font variable
- * @global Image_Graph_Font_Vertical $_Image_Graph_verticalFont
- */
-$GLOBALS['_Image_Graph_verticalFont'] = & Image_Graph::factory('Image_Graph_Font_Vertical');
-
+// General to-do's
+// TODO Implement a way to display graphs when there are *no* data
+// TODO Create bar-chart-type where bar have individual widths (i.e. in the dataset fx).  
 ?>

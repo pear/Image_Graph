@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Plot     
  * @category images
@@ -39,11 +40,41 @@
 require_once 'Image/Graph/Plot.php';
 
 /**
- * Radar chart
+ * Radar chart.
+ *               
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Plot
  */
 class Image_Graph_Plot_Radar extends Image_Graph_Plot 
 {
 
+    /**
+     * Perform the actual drawing on the legend.
+     * @param int $x0 The top-left x-coordinate
+     * @param int $y0 The top-left y-coordinate
+     * @param int $x1 The bottom-right x-coordinate
+     * @param int $y1 The bottom-right y-coordinate
+     */
+    function _drawLegendSample($x0, $y0, $x1, $y1)
+    {
+        $p = 10;
+        $rx = abs($x1 - $x0) / 2;
+        $ry = abs($x1 - $x0) / 2;
+        $r = min($rx, $ry);
+        $cx = ($x0 + $x1) / 2;
+        $cy = ($y0 + $y1) / 2;
+        $max = 5;        
+        for ($i = 0; $i < $p; $i++) {
+            $v = 2 * pi() * $i / $p;
+            $t = $r * rand(3, $max) / $max;
+            $x = $cx + $t * cos($v);
+            $y = $cy + $t * sin($v);
+            $this->_driver->polygonAdd($x, $y);
+        }
+        $this->_driver->polygonEnd();
+    }
+    
     /**
      * Output the plot
      * @access private
@@ -51,28 +82,28 @@ class Image_Graph_Plot_Radar extends Image_Graph_Plot
     function _done()
     {
         if (is_a($this->_parent, 'Image_Graph_Plotarea_Radar')) {
-            $centerX = (int) (($this->_left + $this->_right) / 2);
-            $centerY = (int) (($this->_top + $this->_bottom) / 2);
-            $radius = min($this->height(), $this->width()) * 0.40;                       
-            
             $keys = array_keys($this->_dataset);
-        
-            while (list ($ID, $key) = each($keys)) {
+            foreach ($keys as $key) {
                 $dataset = & $this->_dataset[$key];                    
                 $maxY = $dataset->maximumY();
                 $count = $dataset->count();
 
                 $dataset->_reset();
                 while ($point = $dataset->_next()) {
-                    $radarPolygon[] = $this->_pointX($point);
-                    $radarPolygon[] = $this->_pointY($point);
+                    $this->_driver->polygonAdd(
+                        $this->_pointX($point), 
+                        $this->_pointY($point)
+                    );
                 }
-                ImageFilledPolygon($this->_canvas(), $radarPolygon, count($radarPolygon) / 2, $this->_getFillStyle());
-                ImagePolygon($this->_canvas(), $radarPolygon, count($radarPolygon) / 2, $this->_getLineStyle());
+                $this->_getFillStyle($key);
+                $this->_getLineStyle($key);
+                $this->_driver->polygonEnd();
             }
+            unset($keys);
         }
         $this->_drawMarker();
-        parent::_done();
+        
+        return parent::_done();
     }
 
 }

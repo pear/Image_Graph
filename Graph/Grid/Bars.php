@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Grid     
  * @category images
@@ -40,7 +41,12 @@ require_once 'Image/Graph/Grid.php';
 
 /**
  * Display alternating bars on the plotarea.
- * {@see Image_Graph_Grid} 
+ * 
+ * {@link Image_Graph_Grid}
+ *          
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Grid
  */
 class Image_Graph_Grid_Bars extends Image_Graph_Grid 
 {
@@ -51,7 +57,9 @@ class Image_Graph_Grid_Bars extends Image_Graph_Grid
      */
     function _done()
     {
-        parent::_done();
+        if (parent::_done() === false) {
+            return false;
+        }
 
         if (!$this->_primaryAxis) {
             return false;
@@ -62,73 +70,33 @@ class Image_Graph_Grid_Bars extends Image_Graph_Grid
 
         $secondaryPoints = $this->_getSecondaryAxisPoints();
 
-        while (($value <= $this->_primaryAxis->_getMaximum()) and ($value !== false)) {
-            if (($value > $this->_primaryAxis->_getMinimum()) and ($i == 1)) {
+        while (($value <= $this->_primaryAxis->_getMaximum()) && ($value !== false)) {
+            if (($value > $this->_primaryAxis->_getMinimum()) && ($i == 1)) {
                 reset($secondaryPoints);
-                if (count($secondaryPoints) > 2) {
-                    list ($id, $previousSecondaryValue) = each($secondaryPoints);
-                    while (list ($id, $secondaryValue) = each($secondaryPoints)) {
-                        if ($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_X) {
-                            $p1 = array ('Y' => $secondaryValue, 'X' => $value);
-                            $p2 = array ('Y' => $previousSecondaryValue, 'X' => $value);
-                            $p3 = array ('Y' => $previousSecondaryValue, 'X' => $previousValue);
-                            $p4 = array ('Y' => $secondaryValue, 'X' => $previousValue);
-                        } else {
-                            $p1 = array ('X' => $secondaryValue, 'Y' => $value);
-                            $p2 = array ('X' => $previousSecondaryValue, 'Y' => $value);
-                            $p3 = array ('X' => $previousSecondaryValue, 'Y' => $previousValue);
-                            $p4 = array ('X' => $secondaryValue, 'Y' => $previousValue);
-                        }
-    
-                        $polygon[] = $this->_pointX($p1);
-                        $polygon[] = $this->_pointY($p1);
-                        $polygon[] = $this->_pointX($p2);
-                        $polygon[] = $this->_pointY($p2);
-                        $polygon[] = $this->_pointX($p3);
-                        $polygon[] = $this->_pointY($p3);
-                        $polygon[] = $this->_pointX($p4);
-                        $polygon[] = $this->_pointY($p4);
-    
-                        $previousSecondaryValue = $secondaryValue;
-    
-                        ImageFilledPolygon($this->_canvas(), $polygon, 4, $this->_getFillStyle());
-                        unset ($polygon);
-                    }
-                } else {
-                    list($id, $p1) = each($secondaryPoints);
-                    list($id, $p2) = each($secondaryPoints);
-
+                list ($id, $previousSecondaryValue) = each($secondaryPoints);
+                while (list ($id, $secondaryValue) = each($secondaryPoints)) {
                     if ($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_X) {
-                        $p1 = array ('Y' => $p1, 'X' => $value);
-                        $p2 = array ('Y' => $p2, 'X' => $value);
-                        $p3 = array ('Y' => $p2, 'X' => $previousValue);
-                        $p4 = array ('Y' => $p1, 'X' => $previousValue);
-                        $polygon[] = $this->_pointX($p1);
-                        $polygon[] = $this->_top;
-                        $polygon[] = $this->_pointX($p2);
-                        $polygon[] = $this->_bottom;
-                        $polygon[] = $this->_pointX($p3);
-                        $polygon[] = $this->_bottom;
-                        $polygon[] = $this->_pointX($p4);
-                        $polygon[] = $this->_top;
+                        $p1 = array ('Y' => $secondaryValue, 'X' => $value);
+                        $p2 = array ('Y' => $previousSecondaryValue, 'X' => $value);
+                        $p3 = array ('Y' => $previousSecondaryValue, 'X' => $previousValue);
+                        $p4 = array ('Y' => $secondaryValue, 'X' => $previousValue);
                     } else {
-                        $p1 = array ('X' => $p1, 'Y' => $value);
-                        $p2 = array ('X' => $p2, 'Y' => $value);
-                        $p3 = array ('X' => $p2, 'Y' => $previousValue);
-                        $p4 = array ('X' => $p1, 'Y' => $previousValue);
-                        $polygon[] = $this->_left;
-                        $polygon[] = $this->_pointY($p1);
-                        $polygon[] = $this->_right;
-                        $polygon[] = $this->_pointY($p2);
-                        $polygon[] = $this->_right;
-                        $polygon[] = $this->_pointY($p3);
-                        $polygon[] = $this->_left;
-                        $polygon[] = $this->_pointY($p4);
+                        $p1 = array ('X' => $secondaryValue, 'Y' => $value);
+                        $p2 = array ('X' => $previousSecondaryValue, 'Y' => $value);
+                        $p3 = array ('X' => $previousSecondaryValue, 'Y' => $previousValue);
+                        $p4 = array ('X' => $secondaryValue, 'Y' => $previousValue);
                     }
-    
-                    ImageFilledPolygon($this->_canvas(), $polygon, 4, $this->_getFillStyle());
-                    unset ($polygon);
-                }                    
+                    
+                    $this->_driver->polygonAdd($this->_pointX($p1), $this->_pointY($p1));
+                    $this->_driver->polygonAdd($this->_pointX($p2), $this->_pointY($p2));
+                    $this->_driver->polygonAdd($this->_pointX($p3), $this->_pointY($p3));
+                    $this->_driver->polygonAdd($this->_pointX($p4), $this->_pointY($p4));
+                    
+                    $this->_getFillStyle();
+                    $this->_driver->polygonEnd();
+
+                    $previousSecondaryValue = $secondaryValue;
+                }
             }
             $i = 1 - $i;
             $previousValue = $value;

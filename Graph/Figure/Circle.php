@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Figure     
  * @category images
@@ -40,6 +41,10 @@ require_once 'Image/Graph/Figure/Ellipse.php';
 
 /**
  * Circle to draw on the canvas
+ *       
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Figure
  */
 class Image_Graph_Figure_Circle extends Image_Graph_Figure_Ellipse 
 {

@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Plot     
  * @category images
@@ -39,22 +40,52 @@
 require_once 'Image/Graph/Plot/Bar.php';
 
 /**
- * Stepchart
+ * Stepchart.
+ *               
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Plot
  */
 class Image_Graph_Plot_Step extends Image_Graph_Plot
 {
 
     /**
+     * Perform the actual drawing on the legend.
+     * @param int $x0 The top-left x-coordinate
+     * @param int $y0 The top-left y-coordinate
+     * @param int $x1 The bottom-right x-coordinate
+     * @param int $y1 The bottom-right y-coordinate
+     */
+    function _drawLegendSample($x0, $y0, $x1, $y1)
+    {
+        $dx = abs($x1 - $x0) / 3;        
+        $dy = abs($y1 - $y0) / 3;      
+        $this->_driver->polygonAdd($x0, $y1);
+        $this->_driver->polygonAdd($x0, $y0 + $dy);
+        
+        $this->_driver->polygonAdd($x0 + $dx, $y0 + $dy);
+        $this->_driver->polygonAdd($x0 + $dx, $y0);
+        
+        $this->_driver->polygonAdd($x0 + 2*$dx, $y0);
+        $this->_driver->polygonAdd($x0 + 2*$dx, $y0 + 2*$dy);
+
+        $this->_driver->polygonAdd($x1, $y0 + 2*$dy);
+        $this->_driver->polygonAdd($x1, $y1);
+        $this->_driver->polygonEnd();
+    }
+    
+    /**
      * PlotType [Constructor]
      * A 'normal' step chart is 'stacked'     
      * @param Dataset $dataset The data set (value containter) to plot
      * @param string $multiType The type of the plot
-     * @param string $title The title of the plot (used for legends, {@see Image_Graph_Legend})
+     * @param string $title The title of the plot (used for legends, {@link
+     * Image_Graph_Legend})
      */
     function &Image_Graph_Plot_Step(& $dataset, $multiType = 'stacked', $title = '')
     {
         $multiType = strtolower($multiType);
-        if (($multiType != 'stacked') and ($multiType != 'stacked100pct')) {
+        if (($multiType != 'stacked') && ($multiType != 'stacked100pct')) {
             $multiType = 'stacked';
         }          
         parent::Image_Graph_Plot($dataset, $multiType, $title);
@@ -66,7 +97,9 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
      */
     function _done()
     {
-        Image_Graph_Plot::_done();
+        if (Image_Graph_Plot::_done() === false) {
+            return false;
+        }
 
         if ($this->_multiType == 'stacked100pct') {
             $total = $this->_getTotals();
@@ -75,21 +108,20 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
         $width = $this->width() / ($this->_maximumX() + 2) / 2;
 
         reset($this->_dataset);
-        $keys = array_keys($this->_dataset);
-
-        list ($ID, $key) = each($keys);
+        $key = key($this->_dataset);
         $dataset = & $this->_dataset[$key];
 
-        $point = array ('X' => $dataset->minimumX(), 'Y' => 0);
+        $point = array ('X' => $dataset->minimumX(), 'Y' => '#min_pos#');
         $base[] = $this->_pointY($point);
         $first = $this->_pointX($point) - $width;
         $base[] = $first;
 
-        $point = array ('X' => $dataset->maximumX(), 'Y' => 0);
+        $point = array ('X' => $dataset->maximumX(), 'Y' => '#min_pos#');
         $base[] = $this->_pointY($point);
         $base[] = $this->_pointX($point) + $width;                
-        reset($keys);
-        while (list ($ID, $key) = each($keys)) {
+
+        $keys = array_keys($this->_dataset);
+        foreach ($keys as $key) {
             $dataset = & $this->_dataset[$key];
             $dataset->_reset();
             $polygon = array_reverse($base);
@@ -120,10 +152,17 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
                 $polygon[] = $x1; $base[] = $y1;
                 $polygon[] = $y1; $base[] = $x1;
             }
-        
-            ImageFilledPolygon($this->_canvas(), $polygon, count($polygon)/2, $this->_getFillStyle());
-            ImagePolygon($this->_canvas(), $polygon, count($polygon)/2, $this->_getLineStyle());
+
+            while (list(, $x) = each($polygon)) {
+                list(, $y) = each($polygon);
+                $this->_driver->polygonAdd($x, $y);
+            }
+            
+            $this->_getFillStyle($key);
+            $this->_getLineStyle($key);
+            $this->_driver->polygonEnd();
         }
+        unset($keys);
         $this->_drawMarker();
     }
 }

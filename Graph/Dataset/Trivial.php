@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Dataset     
  * @category images
@@ -40,6 +41,10 @@ require_once 'Image/Graph/Dataset.php';
 
 /**
  * Trivial data set, simply add points (x, y) 1 by 1 
+ *       
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Dataset
  */
 class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset 
 {
@@ -53,11 +58,27 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
 
     /**
      * Image_Graph_Dataset_Trivial [Constructor]
+     * 
+     * Pass an assictaed array ($data[$x] = $y) to the constructor for easy data
+     * addition.
+     * 
+     * NB! If passing an array at this point, the x-values will also be used for
+     * ID tags, i.e. when using {@link Image_Graph_Fill_Array}.
+     * 
+     * @param array $dataArray An associated array with values to the dataset
      */
-    function &Image_Graph_Dataset_Trivial()
+    function &Image_Graph_Dataset_Trivial($dataArray = false)
     {
         parent::Image_Graph_Dataset();
         $this->_data = array ();
+        if (is_array($dataArray)) {
+            reset($dataArray);
+            $keys = array_keys($dataArray);
+            foreach ($keys as $x) {
+                $y = $dataArray[$x];
+                $this->addPoint($x, $y, $x);
+            }
+        }
     }
 
     /**
@@ -77,7 +98,8 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
 
     /**
      * Gets a X point from the dataset
-     * @param var $x The variable to return an X value from, fx in a vector function data set
+     * @param var $x The variable to return an X value from, fx in a
+     * vector function data set
      * @return var The X value of the variable
      * @access private
 	 */
@@ -92,7 +114,8 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
 
     /**
      * Gets a Y point from the dataset
-     * @param var $x The variable to return an Y value from, fx in a vector function data set
+     * @param var $x The variable to return an Y value from, fx in a
+     * vector function data set
      * @return var The Y value of the variable
      * @access private
 	 */
@@ -107,7 +130,8 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
 
     /**
      * Gets a ID from the dataset
-     * @param var $x The variable to return an Y value from, fx in a vector function data set
+     * @param var $x The variable to return an Y value from, fx in a
+     * vector function data set
      * @return var The ID value of the variable
      * @access private
 	 */

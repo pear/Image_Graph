@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Marker     
  * @category images
@@ -39,7 +40,11 @@
 require_once 'Image/Graph/Marker.php';
 
 /**
- * A marker showing the data value. 
+ * A marker showing the data value.
+ *              
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Marker
  */
 class Image_Graph_Marker_Value extends Image_Graph_Marker 
 {
@@ -59,15 +64,16 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
     var $_useValue;
 
     /**
-     * Create a value marker, ie a box containing the value of the 'pointing data'
-     * @param int $useValue Defines which value to use from the dataset, ie the X or Y value 
+     * Create a value marker, ie a box containing the value of the 'pointing
+     * data'
+     * @param int $useValue Defines which value to use from the dataset, ie the
+     * X or Y value
      */
     function &Image_Graph_Marker_Value($useValue = IMAGE_GRAPH_VALUE_X)
     {
         parent::Image_Graph_Marker();
         $this->_padding = 2;
         $this->_useValue = $useValue;
-        $this->setFont($GLOBALS['_Image_Graph_font']);
         $this->_fillStyle = 'white';
         $this->_borderStyle = 'black';
     }
@@ -104,48 +110,58 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
 
     /**
      * Get the value to display
-     * @param array $values The values representing the data the marker 'points' to
-     * @return string The display value, this is the pre-preprocessor value, to support for customized with multiple values. i.e show 'x = y' or '(x, y)'
+     * @param array $values The values representing the data the marker 'points'
+     * to
+     * @return string The display value, this is the pre-preprocessor value, to
+     * support for customized with multiple values. i.e show 'x = y' or '(x, y)'
      * @access private
      */
     function _getDisplayValue($values)
     {
         switch ($this->_useValue) {
-            case IMAGE_GRAPH_VALUE_X :
-                $value = $values['X'];
-                break;
+        case IMAGE_GRAPH_VALUE_X:
+            $value = $values['X'];
+            break;
 
-            case IMAGE_GRAPH_PCT_X_MIN :
-                $value = $values['PCT_MIN_X'];
-                break;
+        case IMAGE_GRAPH_PCT_X_MIN:
+            $value = $values['PCT_MIN_X'];
+            break;
 
-            case IMAGE_GRAPH_PCT_X_MAX :
-                $value = $values['PCT_MAX_X'];
-                break;
+        case IMAGE_GRAPH_PCT_X_MAX:
+            $value = $values['PCT_MAX_X'];
+            break;
 
-            case IMAGE_GRAPH_PCT_Y_MIN :
-                $value = $values['PCT_MIN_Y'];
-                break;
+        case IMAGE_GRAPH_PCT_Y_MIN:
+            $value = $values['PCT_MIN_Y'];
+            break;
 
-            case IMAGE_GRAPH_PCT_Y_MAX :
-                $value = $values['PCT_MAX_Y'];
-                break;
+        case IMAGE_GRAPH_PCT_Y_MAX:
+            $value = $values['PCT_MAX_Y'];
+            break;
 
-            case IMAGE_GRAPH_POINT_ID :
-                $value = $values['ID'];
-                break;
+        case IMAGE_GRAPH_PCT_Y_TOTAL:
+            $value = 100*$values['Y'] / $values['SUM_Y'];
+            break;
 
-            default :
-                $value = $values['Y'];
+        case IMAGE_GRAPH_POINT_ID:
+            $value = $values['ID'];
+            break;
+
+        default:
+            $value = $values['Y'];
+            break;
         }
         return $value;
     }
 
     /**
      * Draw the marker on the canvas
-     * @param int $x The X (horizontal) position (in pixels) of the marker on the canvas 
-     * @param int $y The Y (vertical) position (in pixels) of the marker on the canvas 
-     * @param array $values The values representing the data the marker 'points' to 
+     * @param int $x The X (horizontal) position (in pixels) of the marker on
+     * the canvas
+     * @param int $y The Y (vertical) position (in pixels) of the marker on the
+     * canvas
+     * @param array $values The values representing the data the marker 'points'
+     * to
      * @access private
      */
     function _drawMarker($x, $y, $values = false)
@@ -158,18 +174,21 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
             $value = $this->_dataPreprocessor->_process($value);
         }
         
-        $width = $this->_font->width($value);
-        $height = $this->_font->height($value);
+        $this->_driver->setFont($this->_getFont());
+        
+        $width = $this->_driver->textWidth($value);
+        $height = $this->_driver->textHeight($value);
         $offsetX = $width/2 + $this->_padding;
         $offsetY = $height/2 + $this->_padding;
-
-        if ($this->_fillStyle) {
-            ImageFilledRectangle($this->_canvas(), $x - $offsetX, $y - $offsetY, $x + $offsetX, $y + $offsetY, $this->_getFillStyle());
-        }
-
-        if (isset($this->_borderStyle)) {            
-            ImageRectangle($this->_canvas(), $x - $offsetX, $y - $offsetY, $x + $offsetX, $y + $offsetY, $this->_getBorderStyle());
-        }
+        
+        $this->_getFillStyle();
+        $this->_getBorderStyle();
+        $this->_driver->rectangle(
+            $x - $offsetX, 
+            $y - $offsetY, 
+            $x + $offsetX, 
+            $y + $offsetY
+        );
         
         $this->write($x, $y, $value, IMAGE_GRAPH_ALIGN_CENTER);
     }

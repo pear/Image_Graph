@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage DataPreprocessor     
  * @category images
@@ -40,15 +41,22 @@ require_once 'Image/Graph/DataPreprocessor.php';
 
 /**
  * Format data using a (s)printf pattern.
- * This method is useful when data must displayed using a simple (s)printf pattern as
- * described in the {@link http://www.php.net/manual/en/function.sprintf.php PHP manual}
+ * 
+ * This method is useful when data must displayed using a simple (s) printf
+ * pattern as described in the {@link http://www.php. net/manual/en/function.
+ * sprintf.php PHP manual}
+ *     
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage DataPreprocessor
  */
 class Image_Graph_DataPreprocessor_Formatted extends Image_Graph_DataPreprocessor 
 {
 
     /**
      * A (s)printf format string.
-     * See {@link http://www.php.net/manual/en/function.sprintf.php PHP Manual} for a description
+     * See {@link http://www.php.net/manual/en/function.sprintf.php PHP Manual}
+     * for a description
      * @var string
      * @access private
      */
@@ -56,7 +64,8 @@ class Image_Graph_DataPreprocessor_Formatted extends Image_Graph_DataPreprocesso
 
     /**
      * Create a (s)printf format data preprocessor
-     * @param string $format See <a href = 'http://www.php.net/manual/en/function.sprintf.php'> PHP Manual</a> for a description
+     * @param string $format See {@link http://www.php.net/manual/en/function.sprintf.php 
+     * PHP Manual} for a description
      */
     function &Image_Graph_DataPreprocessor_Formatted($format)
     {

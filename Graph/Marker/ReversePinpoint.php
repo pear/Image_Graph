@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Marker     
  * @category images
@@ -39,7 +40,11 @@
 require_once 'Image/Graph/Marker/Icon.php';
 
 /**
- * Data marker using a (reverse) pinpoint as marker
+ * Data marker using a (reverse) pinpoint as marker.
+ *              
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Marker
  */
 class Image_Graph_Marker_ReversePinpoint extends Image_Graph_Marker_Icon 
 {
@@ -49,7 +54,9 @@ class Image_Graph_Marker_ReversePinpoint extends Image_Graph_Marker_Icon
      */
     function &Image_Graph_Marker_ReversePinpoint()
     {
-        parent::Image_Graph_Marker_Icon(dirname(__FILE__).'/../Images/Icons/pinpointr.png');
+        parent::Image_Graph_Marker_Icon(
+            dirname(__FILE__).'/../Images/Icons/pinpointr.png'
+        );
         $this->setPointX(10);
         $this->setPointY(13);
     }

@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage DataPreprocessor     
  * @category images
@@ -40,12 +41,20 @@ require_once 'Image/Graph/DataPreprocessor.php';
 
 /**
  * Formatting a value as a roman numerals.
+ * 
  * Values are formatted as roman numeral, i.e. 1 = I, 2 = II, 9 = IX, 2004 = MMIV.
+ * Requires Numbers_Roman
+ *     
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage DataPreprocessor
  */
 class Image_Graph_DataPreprocessor_RomanNumerals extends Image_Graph_DataPreprocessor 
 {
 
-    /** Create a RomanNumerals preprocessor
+    /** 
+     * Create a RomanNumerals preprocessor
+     * See {@link http://pear.php.net/package/Numbers_Roman Numbers_Roman}
      */
     function &Image_Graph_DataPreprocessor_RomanNumerals()
     {

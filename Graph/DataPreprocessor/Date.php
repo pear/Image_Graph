@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage DataPreprocessor     
  * @category images
@@ -40,13 +41,18 @@ require_once 'Image/Graph/DataPreprocessor.php';
 
 /**
  * Formats Unix timestamp as a date using specified format.
+ *     
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage DataPreprocessor
  */
 class Image_Graph_DataPreprocessor_Date extends Image_Graph_DataPreprocessor 
 {
 
     /**
      * The format of the Unix time stamp.
-     * See <a href = 'http://www.php.net/manual/en/function.date.php'> PHP Manual</a> for a description
+     * See <a href = 'http://www.php.net/manual/en/function.date.php'>PHP
+     * Manual</a> for a description
      * @var string
      * @access private
      */
@@ -54,7 +60,8 @@ class Image_Graph_DataPreprocessor_Date extends Image_Graph_DataPreprocessor
 
     /**
      * Create a DateData preprocessor
-     * @param string $format See <a href = 'http://www.php.net/manual/en/function.date.php'> PHP Manual</a> for a description
+     * @param string $format See  {@link http://www.php.net/manual/en/function.date.php 
+     * PHP Manual} for a description
      */
     function &Image_Graph_DataPreprocessor_Date($format)
     {

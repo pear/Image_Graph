@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Plotarea     
  * @category images
@@ -40,6 +41,10 @@ require_once 'Image/Graph/Plotarea.php';
 
 /**
  * Plot area used for radar plots.
+ *              
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Plotarea
  */
 class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea 
 {
@@ -127,8 +132,17 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
     function _pointX($value)
     {
         if (is_array($value)) {
-            $radius = (($value['Y'] === false) ? 1 : ($value['Y'] - $this->_axisY->_getMinimum()) / ($this->_axisY->_getMaximum() - $this->_axisY->_getMinimum()));
-            $x = ($this->_left + $this->_right) / 2 - $radius * ($this->_plotWidth() / 2) * cos(deg2rad($this->_axisX->_point($value['X'])));
+            if ($value['Y'] == '#min#') {
+                $radius = 0;
+            } elseif (($value['Y'] == '#max#') || ($value['Y'] === false)) {
+                $radius = 1;
+            } else {                        
+                $radius = ($value['Y'] - $this->_axisY->_getMinimum()) / 
+                    ($this->_axisY->_getMaximum() - $this->_axisY->_getMinimum());
+            }
+            $x = ($this->_left + $this->_right) / 2 - 
+                $radius * ($this->_plotWidth() / 2) * 
+                cos(deg2rad($this->_axisX->_point($value['X'])));
         }
         return max($this->_plotLeft, min($this->_plotRight, $x));
     }
@@ -142,8 +156,18 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
     function _pointY($value)
     {
         if (is_array($value)) {
-            $radius = (($value['Y'] === false) ? 1 : ($value['Y'] - $this->_axisY->_getMinimum()) / ($this->_axisY->_getMaximum() - $this->_axisY->_getMinimum()));
-            $y = ($this->_top + $this->_bottom) / 2 + $radius * ($this->_plotHeight() / 2) * sin(deg2rad($this->_axisX->_point($value['X'])));
+            if ($value['Y'] == '#min#') {
+                $radius = 0;
+            } elseif (($value['Y'] == '#max#') || ($value['Y'] === false)) {
+                $radius = 1;
+            } else {                        
+                $radius = ($value['Y'] - $this->_axisY->_getMinimum()) / 
+                    ($this->_axisY->_getMaximum() - $this->_axisY->_getMinimum());
+            }
+            
+            $y = ($this->_top + $this->_bottom) / 2 - 
+                $radius * ($this->_plotHeight() / 2) * 
+                sin(deg2rad($this->_axisX->_point($value['X'])));
         }
         return max($this->_plotTop, min($this->_plotBottom, $y));
     }
@@ -155,15 +179,14 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
     function _updateCoords()
     {
         if (is_array($this->_elements)) {
-            reset($this->_elements);
-
             $keys = array_keys($this->_elements);
-            while (list ($ID, $key) = each($keys)) {
+            foreach ($keys as $key) {
                 $element =& $this->_elements[$key];
                 if (is_a($element, 'Image_Graph_Plot')) {
                     $this->_setExtrema($element);
                 }
             }
+            unset($keys);
         }        
 
         $this->_calcEdges();
@@ -173,11 +196,21 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
         $radius = min($this->_plotHeight(), $this->_plotWidth()) / 2;
 
         if (is_object($this->_axisX)) {
-            $this->_axisX->_setCoords($centerX - $radius, $centerY - $radius, $centerX + $radius, $centerY + $radius);
+            $this->_axisX->_setCoords(
+                $centerX - $radius, 
+                $centerY - $radius, 
+                $centerX + $radius, 
+                $centerY + $radius
+            );
         }
 
         if (is_object($this->_axisY)) {
-            $this->_axisY->_setCoords($centerX, $centerY, $centerX - $radius, $centerY - $radius);
+            $this->_axisY->_setCoords(
+                $centerX, 
+                $centerY, 
+                $centerX - $radius, 
+                $centerY - $radius
+            );
         }
 
         $this->_plotLeft = $this->_fillLeft();

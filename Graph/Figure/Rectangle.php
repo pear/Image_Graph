@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Figure     
  * @category images
@@ -40,6 +41,10 @@ require_once 'Image/Graph/Element.php';
 
 /**
  * Rectangle to draw on the canvas
+ *        
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Figure
  */
 class Image_Graph_Figure_Rectangle extends Image_Graph_Element 
 {
@@ -63,10 +68,18 @@ class Image_Graph_Figure_Rectangle extends Image_Graph_Element
      */
     function _done()
     {
-        parent::_done();
+        if (parent::_done() === false) {
+            return false;
+        }
 
-        ImageFilledRectangle($this->_canvas(), $this->_left, $this->_top, $this->_right, $this->_bottom, $this->_getFillStyle());
-        ImageRectangle($this->_canvas(), $this->_left, $this->_top, $this->_right, $this->_bottom, $this->_getLineStyle());
+        $this->_getFillStyle();
+        $this->_getLineStyle();
+        $this->_driver->rectangle(
+            $this->_left, 
+            $this->_top, 
+            $this->_right, 
+            $this->_bottom
+        );
     }
 
 }

@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Dataset     
  * @category images
@@ -40,9 +41,15 @@ require_once 'Image/Graph/Dataset/Trivial.php';
 
 /**
  * Sequential data set, simply add points (y) 1 by 1.
- * This is a single point dataset, all points are of the type (0, y1), (1, y2), (2, y3)...
- * Where the X-value is implicitly incremented. This is useful for example for barcharts,
- * where you could fx. use an {@see Image_Graph_Dataset_Array} datapreprocessor to make sence of the x-values.
+ * 
+ * This is a single point dataset, all points are of the type (0, y1), (1, y2),
+ * (2,  y3)... Where the X-value is implicitly incremented. This is useful for
+ * example for barcharts, where you could fx. use an {@link
+ * Image_Graph_Dataset_Array} datapreprocessor to make sence of the x-values.
+ *       
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Dataset
  */
 class Image_Graph_Dataset_Sequential extends Image_Graph_Dataset_Trivial 
 {
@@ -55,7 +62,7 @@ class Image_Graph_Dataset_Sequential extends Image_Graph_Dataset_Trivial
         parent::Image_Graph_Dataset_Trivial();
         if (is_array($dataArray)) {
             reset($dataArray);
-            while (list($id, $value) = each($dataArray)) {
+            foreach ($dataArray as $value) {
                 $this->addPoint($value);
             }
         }
@@ -73,7 +80,8 @@ class Image_Graph_Dataset_Sequential extends Image_Graph_Dataset_Trivial
 
     /**
      * Gets a X point from the dataset
-     * @param var $x The variable to return an X value from, fx in a vector function data set
+     * @param var $x The variable to return an X value from, fx in a
+     * vector function data set
      * @return var The X value of the variable
      * @access private
      */

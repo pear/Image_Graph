@@ -16,7 +16,7 @@
 // | but WITHOUT ANY WARRANTY; without even the implied warranty of           |
 // | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU        |
 // | Lesser General Public License for more details.                          |
-// |                                                                          |
+// |                  |
 // | You should have received a copy of the GNU Lesser General Public         |
 // | License along with this library; if not, write to the Free Software      |
 // | Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA |
@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Text     
  * @category images
@@ -40,41 +41,27 @@ require_once 'Image/Graph/Font.php';
 
 /**
  * A vertical font
+ *          
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Text
  */
 class Image_Graph_Font_Vertical extends Image_Graph_Font 
 {
 
     /**
-     * Get the width of the text specified in pixels
-     * @param string $text The text to calc the width for 
-     * @return int The width of the text using the specified font 
-     */
-    function width($text)
-    {
-        return ImageFontHeight(IMAGE_GRAPH_FONT);
-    }
-
-    /**
-     * Get the height of the text specified in pixels
-     * @param string $text The text to calc the height for 
-     * @return int The height of the text using the specified font 
-     */
-    function height($text)
-    {
-        return ImageFontWidth(IMAGE_GRAPH_FONT) * strlen($text);
-    }
-
-    /**
-     * Write a text on the canvas
-     * @param int $x The X (horizontal) position of the text 
-     * @param int $y The Y (vertical) position of the text 
-     * @param string $text The text to write on the canvas 
+     * Get the font 'array'
+     * @return array The font 'summary' to pass to the driver 
      * @access private 
      */
-    function _write($x, $y, $text)
+    function _getFont($options = false)
     {
-        ImageStringUp($this->_canvas(), IMAGE_GRAPH_FONT, $x, $y + $this->height($text), $text, $this->_getColor());
-    }
+        $options = parent::_getFont($options);
+        $options['vertical'] = true;
+        $options['angle'] = 90;
+        return $options;
+    }    
+
 
 }
 

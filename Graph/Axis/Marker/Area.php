@@ -40,7 +40,12 @@ require_once 'Image/Graph/Grid.php';
 
 /**
  * Display a grid
- * {@see Image_Graph_Grid} 
+ * 
+ * {@link Image_Graph_Grid}
+ *             
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Grid 
  */
 class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid 
 {
@@ -59,11 +64,17 @@ class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid
      */
     var $_upper = false;
     
+    function &Image_Graph_Axis_Marker_Area() {
+        parent::Image_Graph_Grid();
+        $this->_lineStyle = false;
+    }
+    
     /**
      * Sets the lower bound of the area (value on the axis)
      * @param double $lower the lower bound
      */
-    function setLowerBound($lower) {
+    function setLowerBound($lower)
+    {
         $this->_lower = $lower;
     }
 
@@ -71,7 +82,8 @@ class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid
      * Sets the upper bound of the area (value on the axis)
      * @param double $upper the upper bound
      */
-    function setUpperBound($upper) {
+    function setUpperBound($upper)
+    {
         $this->_upper = $upper;
     }
 
@@ -81,7 +93,9 @@ class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid
      */
     function _done()
     {
-        parent::_done();
+        if (parent::_done() === false) {
+            return false;
+        }
 
         if (!$this->_primaryAxis) {
             return false;
@@ -109,19 +123,16 @@ class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid
                 $p4 = array ('X' => $secondaryValue, 'Y' => $this->_upper);
             }
 
-            $polygon[] = $this->_pointX($p1);
-            $polygon[] = $this->_pointY($p1);
-            $polygon[] = $this->_pointX($p2);
-            $polygon[] = $this->_pointY($p2);
-            $polygon[] = $this->_pointX($p3);
-            $polygon[] = $this->_pointY($p3);
-            $polygon[] = $this->_pointX($p4);
-            $polygon[] = $this->_pointY($p4);
+            $this->_driver->polygonAdd($this->_pointX($p1), $this->_pointY($p1));
+            $this->_driver->polygonAdd($this->_pointX($p2), $this->_pointY($p2));
+            $this->_driver->polygonAdd($this->_pointX($p3), $this->_pointY($p3));
+            $this->_driver->polygonAdd($this->_pointX($p4), $this->_pointY($p4));
 
             $previousSecondaryValue = $secondaryValue;
-
-            ImageFilledPolygon($this->_canvas(), $polygon, 4, $this->_getFillStyle());
-            unset ($polygon);
+            
+            $this->_getLineStyle();
+            $this->_getFillStyle();
+            $this->_driver->polygonEnd();
         }
     }
 

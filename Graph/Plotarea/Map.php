@@ -24,6 +24,7 @@
 
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
+ * 
  * @package Image_Graph
  * @subpackage Plotarea     
  * @category images
@@ -40,21 +41,27 @@ require_once 'Image/Graph/Plotarea.php';
 
 /**
  * Plot area used for map plots.
- * A map plot is a chart that displays a map (fx. a world map) in the form of .png file.
- * The maps must be located in the /Images/Maps folder and a corresponding .txt files mush
- * also exist in this location where named locations are mapped to an (x, y) coordinate of
- * the map picture (this text file is tab separated with 'Name' 'X' 'Y' values, fx 
- * 'Denmark 378 223'). The x-values in the dataset are then the named locations (fx 'Denmark')
- * and the y-values are then the data to plot. Currently the best (if not only) use is to
- * combine a map plot area with a {@see Image_Graph_Plot_Dot} using {@see Image_Graph_Marker_PercentageCircle} as
- * marker.
+ * 
+ * A map plot is a chart that displays a map (fx. a world map) in the form of  .
+ * png file. The maps must be located in the /Images/Maps folder and a
+ * corresponding .txt files mush also exist in this location where named
+ * locations are mapped to an (x, y) coordinate of the map picture (this text
+ * file is tab separated with 'Name' 'X' 'Y' values, fx 'Denmark 378 223'). The
+ * x-values in the dataset are then the named locations (fx 'Denmark') and the
+ * y-values are then the data to plot. Currently the best (if not only) use is
+ * to combine a map plot area with a {@link Image_Graph_Plot_Dot} using {@link
+ * Image_Graph_Marker_PercentageCircle} as marker.
+ *               
+ * @author Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @package Image_Graph
+ * @subpackage Plotarea
  */
 class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea 
 {
     
     /**
      * The GD image for the map
-     * @var resource
+     * @var string
      * @access private
      */
     var $_imageMap;
@@ -82,25 +89,26 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
 
     /**
      * PlotareaMap [Constructor]
-     * @param string $map The name of the map, i.e. the [name].png and [name].txt files located in the Images/maps folder     
+     * @param string $map The name of the map, i.e. the [name].png and  [name].
+     * txt files located in the Images/maps folder
      */
     function &Image_Graph_Plotarea_Map($map)
     {
         parent::Image_Graph_Plotarea();
         
-        $this->_imageMap = ImageCreateFromPNG(dirname(__FILE__)."/../Images/Maps/$map.png");
+        $this->_imageMap = dirname(__FILE__)."/../Images/Maps/$map.png";
         $points = file(dirname(__FILE__)."/../Images/Maps/$map.txt");
+        list($width, $height) = getimagesize($this->_imageMap); 
+        $this->_mapSize['X'] = $width;
+        $this->_mapSize['Y'] = $height;
         
         if (is_array($points)) {
             unset($this->_mapPoints);
-            while (list($id, $line) = each($points)) {
+            foreach ($points as $line) {
                 list($country, $x, $y) = explode("\t", $line);                
                 $this->_mapPoints[$country] = array('X' => $x, 'Y' => $y);
             }
-        }                
-        
-        $this->_mapSize['X'] = ImageSX($this->_imageMap);
-        $this->_mapSize['Y'] = ImageSY($this->_imageMap);
+        }                        
     }
 
     /**
@@ -220,25 +228,31 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
         
         $scaleFactorX = ($mapAspectRatio > $plotAspectRatio);
         
-        if ((($this->_mapSize['X'] <= $width) and ($this->_mapSize['Y'] <= $height)) or
-            (($this->_mapSize['X'] >= $width) and ($this->_mapSize['Y'] >= $height))) {
+        if ((($this->_mapSize['X'] <= $width) && ($this->_mapSize['Y'] <= $height)) || 
+            (($this->_mapSize['X'] >= $width) && ($this->_mapSize['Y'] >= $height))) 
+        {
             if ($scaleFactorX) {
                 $this->_scale = $width / $this->_mapSize['X'];
             } else {
                 $this->_scale = $height / $this->_mapSize['Y'];
             }
-        } 
-        elseif ($this->_mapSize['X'] < $width) {
+        } elseif ($this->_mapSize['X'] < $width) {
             $this->_scale = $height / $this->_mapSize['Y'];
-        }
-        elseif ($this->_mapSize['Y'] < $height) {
+        } elseif ($this->_mapSize['Y'] < $height) {
             $this->_scale = $width / $this->_mapSize['X'];
         }        
     
-        $this->_plotLeft = ($this->_fillLeft() + $this->_fillRight() - $this->_mapSize['X']*$this->_scale)/2;
-        $this->_plotTop = ($this->_fillTop() + $this->_fillBottom() - $this->_mapSize['Y']*$this->_scale)/2;
-        $this->_plotRight = ($this->_fillLeft() + $this->_fillRight() + $this->_mapSize['X']*$this->_scale)/2;
-        $this->_plotBottom = ($this->_fillTop() + $this->_fillBottom() + $this->_mapSize['Y']*$this->_scale)/2;
+        $this->_plotLeft = ($this->_fillLeft() + $this->_fillRight() - 
+            $this->_mapSize['X']*$this->_scale)/2;
+
+        $this->_plotTop = ($this->_fillTop() + $this->_fillBottom() - 
+            $this->_mapSize['Y']*$this->_scale)/2;
+
+        $this->_plotRight = ($this->_fillLeft() + $this->_fillRight() + 
+            $this->_mapSize['X']*$this->_scale)/2;
+
+        $this->_plotBottom = ($this->_fillTop() + $this->_fillBottom() + 
+            $this->_mapSize['Y']*$this->_scale)/2;
     }
     
     /**
@@ -247,24 +261,33 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
      */
     function _done()
     {
-        if ($this->_fillStyle) {
-            ImageFilledRectangle($this->_canvas(), $this->_fillLeft(), $this->_fillTop(), $this->_fillRight(), $this->_fillBottom(), $this->_getFillStyle());
-        }
+        $this->_getFillStyle();
+        $this->_driver->rectangle(
+            $this->_fillLeft(), 
+            $this->_fillTop(), 
+            $this->_fillRight(), 
+            $this->_fillBottom()
+        );
 
         $scaledWidth = $this->_mapSize['X']*$this->_scale;
         $scaledHeight = $this->_mapSize['Y']*$this->_scale;               
         
-        if (isset($GLOBALS['_Image_Graph_gd2'])) {            
-            ImageCopyResampled($this->_canvas(), $this->_imageMap, $this->_plotLeft, $this->_plotTop, 0, 0, $scaledWidth, $scaledHeight, $this->_mapSize['X'], $this->_mapSize['Y']);
-        } else {
-            ImageCopyResized($this->_canvas(), $this->_imageMap, $this->_plotLeft, $this->_plotTop, 0, 0, $scaledWidth, $scaledHeight, $this->_mapSize['X'], $this->_mapSize['Y']);
-        }               
+        $this->_driver->overlayImage(
+            $this->_plotLeft, 
+            $this->_plotTop, 
+            $this->_imageMap, 
+            $scaledWidth, 
+            $scaledHeight
+        );               
 
-        Image_Graph_Layout::_done();
-
-        if ($this->_plotBorderStyle) {
-            ImageRectangle($this->_canvas(), $this->_fillLeft(), $this->_fillTop(), $this->_fillRight(), $this->_fillBottom(), $this->_plotBorderStyle->_getLineStyle());
+        if (Image_Graph_Layout::_done() === false) {
+            return false;
         }
+
+        // TODO Reimplement support for plot borderstyle 
+/*        if ($this->_plotBorderStyle) {
+            ImageRectangle($this->_canvas(), $this->_fillLeft(), $this->_fillTop(), $this->_fillRight(), $this->_fillBottom(), $this->_plotBorderStyle->_getLineStyle());
+        }*/
     }
 
 }
