@@ -104,6 +104,13 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
      * Create the GD driver.
      *
      * Parameters available:
+     * 
+     * 'antialias' Set to true if line antialiasing should be enabled, this is
+     * the built in GD antialiasing, which causes lines with a linestyle to
+     * disappear and lines with a thickness > 1 to display as = 1. This does
+     * also not look good when displaying "short" lines as fx. done with a
+     * smooth line/area chart. Use it for best results with a line chart having
+     * few datapoints.
      *
      * 'width' The width of the graph on the canvas
      *
@@ -147,10 +154,14 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
                     $this->_width,
                     $this->_height
                 );
-                ImageAlphaBlending($this->_canvas, true);
+                ImageAlphaBlending($this->_canvas, true);               
             } else {
                 $this->_canvas = ImageCreate($this->_width, $this->_height);
-            }
+            }            
+        }
+        
+        if (($this->_gd2) && (isset($param['antialias'])) && ($param['antialias'])) {
+            ImageAntialias($this->_canvas, true);
         }
 
         if (file_exists($fontmap = (dirname(__FILE__) . '/../Fonts/fontmap.txt'))) {
