@@ -11,7 +11,12 @@
 
     $graph = new Image_Graph (400, 200);
     $graph->setBackgroundColor(array(200, 200, 200));
-    $graph->setDefaultFontOptions(array("fontPath" => "", "fontFile" => "arial", "antiAliasing" => true, "fontSize" => 10, "color" => array(0,0,0) ));
+    $graph->setDefaultFontOptions(array("fontType" => "ttf",
+                                        "fontPath" => "",
+                                        "fontFile" => "arial",
+                                        "antiAliasing" => true,
+                                        "fontSize" => 10,
+                                        "color" => array(0,0,0) ));
 
     $graph->diagramTitle->setText("Downloads June 2003");
 
@@ -25,7 +30,7 @@
 
     $graph->setDataDefaultColor(array(0xCC,0x29,0x29));
     $dataObj = &$graph->addData($data, "line", array("axisId" => 0));
-    $dataObj->setFill("gradient", array("color" => array(array(0xF4, 0x80, 0x80,150), array(0xCC, 0x29, 0x29,150),"#00FF00")));
+    $dataObj->setFill("gradient", array("color" => array("#F48080@0.6", "#CC2929@0.6", "#00FF00")));
 
     $graph->axisY0->setBounds(10,50);
 

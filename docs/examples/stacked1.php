@@ -12,7 +12,13 @@
     $graph = new Image_Graph (400, 200);
     $graph->setBackgroundColor (array(0x59, 0x59, 0x59));
     $graph->setSpaceFromBorder (5); // 5 pixels from each border
-    $graph->setDefaultFontOptions (array("fontPath" => "", "fontFile" => "arial", "antiAliasing" => true, "fontSize" => 10, "color" => array(0,0,0) ));
+    $graph->setDefaultFontOptions (array("fontType" => "ttf",
+                                         "fontPath" => "",
+                                         "fontFile" => "arial",
+                                         "antiAliasing" => true,
+                                         "fontSize" => 10,
+                                         "color" => array(0,0,0) ));
+
     $graph->diagramTitle->setColor (array(0xBF,0xBF,0xBF));
     $graph->diagramTitle->setSpacer (array("bottom" => 10));
     $graph->axisX->title->setSpacer (array("top" => 10, "bottom" => 0));
@@ -55,7 +61,7 @@
 
     $dataObj = &$graph->addData($data, "bar",  array("axisId" => 1, "color" => array(0x30,0xBF,0xBF)));
     $dataObj->setFill("gradient", array("color" => array(array(0xF4, 0x80, 0x80), array(0xCC, 0x29, 0x29))));
-    
+
     $dataObj = &$graph->addData($data, "line", array("axisId" => 1, "color" => array(0x29,0xCC,0x29)));
     $dataObj->setFill("solid", array("color" => array(0,0,0xBF)));
     $marker =& $dataObj->setDataMarker("diamond", array("color" => array(0xBF,0xBF,0xBF)));
@@ -70,7 +76,7 @@
 
     $dataObj = &$graph->addData($data, "line",  array("axisId" => 1, "color" => array(0x30,0xBF,0xBF)));
     $dataObj->setFill("gradient", array("color" => array(array(0xF4, 0x80, 0x80), array(0xCC, 0x29, 0x29))));
-    
+
     $graph->axisX->setLabels(array("Month 1", "Month 2", "Month 3", "Month 4", "Month 5"));
 
     $graph->axisY1->setBounds(0,100);
@@ -81,7 +87,7 @@
 
     $graph->axisX->setTickStyle(IMAGE_GRAPH_TICKS_BOTH);
     $graph->axisX->setTickSize (5);
-    
+
     $graph->stackData();
 
     $image = $graph->getGDImage();

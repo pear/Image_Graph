@@ -197,6 +197,10 @@ class Image_Graph
         $this->axisY1 =& new Image_Graph_Axis_Y();
         $this->axisY0->title->setSpacer(array("right" => 5));
         $this->axisY1->title->setSpacer(array("left"  => 5));
+        
+        $this->gridX  =& new Image_Graph_Grid($this->axisX);
+        $this->gridY0 =& new Image_Graph_Grid($this->axisY0);
+        $this->gridY1 =& new Image_Graph_Grid($this->axisY1);
         $this->diagramTitle = new Image_Graph_Title();
 
         $this->_size = array($width, $height);
@@ -958,6 +962,11 @@ class Image_Graph
 
         // elements to draw before the data
         $this->_drawGDtitles($img);
+
+        // draw grids
+        $this->gridX->drawGD($img);
+        $this->gridY0->drawGD($img);
+        $this->gridY1->drawGD($img);
 
         // loop through all data-objects and display them
         foreach ($this->_dataElementsEffective as $currDataElement) {

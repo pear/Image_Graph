@@ -40,6 +40,8 @@
     $graph->axisY0->title->setFontOptions (array("fontSize" => 8));
     $graph->axisY1->title->setFontOptions (array("fontSize" => 8));
 
+    $graph->gridY0->setFillType(IMAGE_GRAPH_GRID_MINOR);
+
     $graph->setAxesColor(array(0x40, 0x40, 0xFF));
 
     $data    = array( 15.8,

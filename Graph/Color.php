@@ -75,25 +75,35 @@ class Image_Graph_Color extends Image_Color
             }
             return null; // error
         } elseif (is_string($color)) {
+            $alphaPos = strpos($color, '@');
+            if ($alphaPos === false) {
+                $alpha = 255;
+            } else {
+                $alphaFloat = (float) substr($color, $alphaPos+1);
+                // restrict to range 0..1
+                $alphaFloat = max(min($alphaFloat, 1), 0);
+                $alpha = (int) round((float) 255 * $alphaFloat);
+                $color = substr($color, 0, $alphaPos);
+            }
             if ($color[0] == '#') {  // hex-color given, e.g. #FFB4B4
                 $tempColor = parent::hex2rgb($color);
                 return array((int) $tempColor[0],
                              (int) $tempColor[1],
                              (int) $tempColor[2],
-                             255);
+                             $alpha);
             }
             if (strpos($color,'%') !== FALSE) {
                 $tempColor = parent::percentageColor2RGB($color);
                 return array((int) $tempColor[0],
                              (int) $tempColor[1],
                              (int) $tempColor[2],
-                             255);
+                             $alpha);
             } else {
                 $tempColor = parent::namedColor2RGB($color);
                 return array((int) $tempColor[0],
                              (int) $tempColor[1],
                              (int) $tempColor[2],
-                             255);
+                             $alpha);
             }
         } else {
             return null; // error
