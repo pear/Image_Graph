@@ -46,7 +46,9 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
     function drawGD(&$img)
     {
         $graph = &$this->_parent;
+        $yAxe  = &$this->_parent->_axes['y'][ $this->_attributes['axeId'] ];
         $drawColor = imagecolorallocate($img, $this->_attributes["color"][0], $this->_attributes["color"][1], $this->_attributes["color"][2]);
+        $dataKeys  = array_keys($this->_data);
         $numDatapoints = count($this->_datapoints);
 
         if ($numDatapoints < 2) {        
@@ -57,9 +59,15 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
 
         for ($counter=0; $counter<$numDatapoints; $counter++) {
             if (!is_null($this->_datapoints[$counter])) { // otherwise do not draw
+              if ($this->_data[ $dataKeys[$counter] ] > $yAxe['max']) { // clip big value to the drawingarea
+                imagefilledrectangle ($img, $this->_datapoints[$counter][0]-$halfWidthPixel, $graph->_drawingareaPos[1],
+                                            $this->_datapoints[$counter][0]+$halfWidthPixel, $graph->_drawingareaPos[1]+$graph->_drawingareaSize[1]-2,
+                                      $drawColor);
+              } elseif ($this->_data[ $dataKeys[$counter] ] >= $yAxe['min']) {
                 imagefilledrectangle ($img, $this->_datapoints[$counter][0]-$halfWidthPixel, $this->_datapoints[$counter][1],
                                             $this->_datapoints[$counter][0]+$halfWidthPixel, $graph->_drawingareaPos[1]+$graph->_drawingareaSize[1]-2,
                                       $drawColor);
+              }
             }
         }
     }

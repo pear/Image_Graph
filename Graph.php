@@ -167,7 +167,7 @@ class Image_Graph
     function Image_Graph($width, $height, $pos_x=0, $pox_y=0)
     {
         $this->_size = array($width, $height);
-        $this->_pos  = array($pox_x, $pox_y);
+        $this->_pos  = array($pos_x, $pox_y);
         $this->setSpaceFromBorder(10);
         $this->setAxesColor(array(0, 0, 0)); // set default color to black, all axes
         $this->setAxesYTickStyle     (IMAGE_GRAPH_TICKS_OUTSIDE, 0);
@@ -535,20 +535,8 @@ class Image_Graph
             if (!empty($this->_diagramTitleText)) {
                 $this->_diagramTitleFontOptions = $this->_getFontOptions($this->_diagramTitleFontOptions);
 
-                // BEGIN: !!! workaround currently needed by Image_Text v0.1
-                // without measurize Image_Text v0.1 doesn't work as it should
-                // so we need to call measurize, but ensure it will use the correct fontsize etc.
-                // unfortunately this fix breaks linebreaks - so currently e.g. if you have a title
-                // consisting of 2 or more lines those will be reordered in one line by this fix
-                $this->_diagramTitleFontOptions['width']  = 99999;
-                $this->_diagramTitleFontOptions['height'] = 99999;
-                $this->_diagramTitleFontOptions['minFontSize'] = $this->_diagramTitleFontOptions['fontSize'];
-                $this->_diagramTitleFontOptions['maxFontSize'] = $this->_diagramTitleFontOptions['fontSize'];
-                // END: !!! workaround currently needed by Image_Text v0.1
-
                 require_once 'Image/Image_Text.php';
                 $tempText = new Image_Text($this->_diagramTitleText, $this->_diagramTitleFontOptions);
-                $tempText->measurize();  // workaround currently needed by Image_Text v0.1
                 $textSize = $tempText->getSize();
                 $borderspaceSum['top'] += $textSize['height'];
                 if (isset($this->_diagramTitleFontOptions['spacerTop'])) {
@@ -562,20 +550,8 @@ class Image_Graph
             if (!empty($this->_axes['x']['titleText'])) {
                 $this->_axes['x']['titleFontOptions'] = $this->_getFontOptions($this->_axes['x']['titleFontOptions']);
 
-                // BEGIN: !!! workaround currently needed by Image_Text v0.1
-                // without measurize Image_Text v0.1 doesn't work as it should
-                // so we need to call measurize, but ensure it will use the correct fontsize etc.
-                // unfortunately this fix breaks linebreaks - so currently e.g. if you have a title
-                // consisting of 2 or more lines those will be reordered in one line by this fix
-                $this->_axes['x']['titleFontOptions']['width']  = 99999;
-                $this->_axes['x']['titleFontOptions']['height'] = 99999;
-                $this->_axes['x']['titleFontOptions']['minFontSize'] = $this->_axes['x']['titleFontOptions']['fontSize'];
-                $this->_axes['x']['titleFontOptions']['maxFontSize'] = $this->_axes['x']['titleFontOptions']['fontSize'];
-                // END: !!! workaround currently needed by Image_Text v0.1
-
                 require_once 'Image/Image_Text.php';
                 $tempText = new Image_Text($this->_axes['x']['titleText'], $this->_axes['x']['titleFontOptions']);
-                $tempText->measurize();  // workaround currently needed by Image_Text v0.1
                 $textSize = $tempText->getSize();
                 $borderspaceSum["bottom"] += $textSize["height"];
                 if (isset($this->_axes['x']['titleFontOptions']['spacerTop'])) {
@@ -591,20 +567,8 @@ class Image_Graph
                 if ($this->_axes['y'][$axeCount]['containsData']) {
                     $this->_axes['y'][$axeCount]['fontOptions'] = $this->_getFontOptions($this->_axes['y'][$axeCount]['fontOptions']);
 
-                    // BEGIN: !!! workaround currently needed by Image_Text v0.1
-                    // without measurize Image_Text v0.1 doesn't work as it should
-                    // so we need to call measurize, but ensure it will use the correct fontsize etc.
-                    // unfortunately this fix breaks linebreaks - so currently e.g. if you have a title
-                    // consisting of 2 or more lines those will be reordered in one line by this fix
-                    $this->_axes['y'][$axeCount]['fontOptions']['width']  = 99999;
-                    $this->_axes['y'][$axeCount]['fontOptions']['height'] = 99999;
-                    $this->_axes['y'][$axeCount]['fontOptions']['minFontSize'] = $this->_axes['y'][$axeCount]['fontOptions']['fontSize'];
-                    $this->_axes['y'][$axeCount]['fontOptions']['maxFontSize'] = $this->_axes['y'][$axeCount]['fontOptions']['fontSize'];
-                    // END: !!! workaround currently needed by Image_Text v0.1
-
                     require_once 'Image/Image_Text.php';
                     $tempText = new Image_Text("", $this->_axes['y'][$axeCount]['fontOptions']);
-                    $tempText->measurize();  // workaround currently needed by Image_Text v0.1
 
                     $maxWidth = 0;
                     foreach ($this->_axes['y'][$axeCount]['ticksMajor'] as $currTick) {
@@ -725,20 +689,9 @@ class Image_Graph
                 require_once 'Image/Image_Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
                 $tempText = new Image_Text($this->_diagramTitleText, $this->_diagramTitleFontOptions);
 
-                // BEGIN: !!! workaround currently needed by Image_Text v0.1
-                $tempText->measurize();
-                $tempText->align(IMAGE_TEXT_ALIGN_LEFT);
-                $textSize = $tempText->getSize();
-                $textX = $this->_pos[0] + (($this->_size[0]-$textSize['width']) / 2);
+                $tempText->align(IMAGE_TEXT_ALIGN_CENTER);
+                $textX = $this->_pos[0] + ($this->_size[0] / 2);
                 $textY = $this->_pos[1] + $this->_borderspace;
-                if (isset($this->_diagramTitleFontOptions['spacerTop'])) {
-                    $textY += $this->_diagramTitleFontOptions['spacerTop'];
-                }
-                // WITHOUT WORKAROUND (as soon as Image_Text is fixed) use the following lines instead
-                // $tempText->align(IMAGE_TEXT_ALIGN_CENTER);
-                // $textX = $this->_pos[0] + ($this->_size[0] / 2);
-                // $textY = $this->_pos[1] + $this->_borderspace;
-                // END: !!! workaround currently needed by Image_Text v0.1
 
                 $tempText->colorize(array ("r" => $this->_diagramTitleFontOptions['color'][0],
                                            "g" => $this->_diagramTitleFontOptions['color'][1],
@@ -751,20 +704,11 @@ class Image_Graph
                 require_once 'Image/Image_Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
                 $tempText = new Image_Text($this->_axes['x']['titleText'], $this->_axes['x']['titleFontOptions']);
 
-                // BEGIN: !!! workaround currently needed by Image_Text v0.1
-                $tempText->measurize();
-                $tempText->align(IMAGE_TEXT_ALIGN_LEFT);
+                $tempText->align(IMAGE_TEXT_ALIGN_CENTER);
                 $textSize = $tempText->getSize();
-                $textX = $this->_pos[0] + (($this->_size[0]-$textSize['width']) / 2);
+                $textX = $this->_pos[0] + ($this->_size[0] / 2);
                 $textY = $this->_pos[1] + $this->_size[1] - $textSize['height'] - $this->_borderspace;
-                if (isset($this->_axes['x']['titleFontOptions']['spacerBottom'])) {
-                    $textY -= $this->_axes['x']['titleFontOptions']['spacerBottom'];
-                }
-                // WITHOUT WORKAROUND (as soon as Image_Text is fixed) use the following lines instead
-                // $tempText->align(IMAGE_TEXT_ALIGN_CENTER);
-                // $textX = $this->_pos[0] + ($this->_size[0] / 2);
-                // $textY = $this->_pos[1] + $this->_size[1] - $textSize['height'] - $this->_borderspace;
-                // END: !!! workaround currently needed by Image_Text v0.1
+
                 $tempText->colorize(array ("r" => $this->_axes['x']['titleFontOptions']['color'][0],
                                            "g" => $this->_axes['x']['titleFontOptions']['color'][1],
                                            "b" => $this->_axes['x']['titleFontOptions']['color'][2]));
@@ -850,33 +794,24 @@ class Image_Graph
             for ($axeCount=0; $axeCount<=1; $axeCount++) {
                 if ($this->_axes['y'][$axeCount]['containsData']) {
                     require_once 'Image/Image_Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
-                    $tempText = new Image_Text("", $this->_axes['y'][$axeCount]['fontOptions']);
-                    $tempText->measurize();  // workaround currently needed by Image_Text v0.1
-
-                    // BEGIN: !!! workaround currently needed by Image_Text v0.1
-                    $tempText->measurize();
-                    // END: !!! workaround currently needed by Image_Text v0.1
+                    $textoptions = $this->_axes['y'][$axeCount]['fontOptions'];
+                    $textoptions['width'] = $this->_axes['y'][$axeCount]['_maxNumWidth'];
+                    $tempText = new Image_Text("", $textoptions);
+                    if ($axeCount == 0) { // axe 0 (left axe)
+                        $textX = $this->_pos[0] + $this->_borderspace;
+                    } else { // axe 1 (right axe)
+                        $textX = $this->_pos[0] + $this->_size[0] - $this->_borderspace - $this->_axes['y'][$axeCount]['_maxNumWidth'];
+                    }
 
                     foreach ($this->_axes['y'][$axeCount]['ticksMajor'] as $currTick) {
                         // TO DO: remove this dirty little hack :-) we shouldn't access the lines directly, should we?
                         $tempText->lines = array(new Image_Text_Line(sprintf($this->_axes['y'][$axeCount]['numberformat'], $currTick), $tempText->options));
-                        $textSize = $tempText->getSize();
-                        $maxWidth = max ($maxWidth, $textSize['width']);
 
 
-                        // BEGIN: !!! workaround currently needed by Image_Text v0.1
-                        $tempText->align(IMAGE_TEXT_ALIGN_LEFT);
+                        $tempText->align(IMAGE_TEXT_ALIGN_RIGHT);
                         $textSize = $tempText->getSize();
-                        if ($axeCount == 0) { // axe 0 (left axe)
-                            $textX = $this->_pos[0] + $this->_borderspace + ($this->_axes['y'][$axeCount]['_maxNumWidth']-$textSize['width']);
-                        } else { // axe 1 (right axe)
-                            $textX = $this->_pos[0] + $this->_size[0] - $this->_borderspace - $textSize['width'];
-                        }
                         $relativeYPosition = $this->_calculateValueToPixelLinear($currTick, $axeCount);
                         $textY = $this->_drawingareaPos[1]+$relativeYPosition - ($textSize['height']/2);
-                        // WITHOUT WORKAROUND (as soon as Image_Text is fixed) use the following lines instead
-                        // ... write these lines ...
-                        // END: !!! workaround currently needed by Image_Text v0.1
                         $tempText->colorize(array ("r" => $this->_axes['y'][$axeCount]['fontOptions']['color'][0],
                                                    "g" => $this->_axes['y'][$axeCount]['fontOptions']['color'][1],
                                                    "b" => $this->_axes['y'][$axeCount]['fontOptions']['color'][2]));

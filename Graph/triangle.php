@@ -44,7 +44,9 @@ class Image_Graph_Data_Triangle extends Image_Graph_Data_Common
 
     function drawGD(&$img)
     {
+        $yAxe = &$this->_parent->_axes['y'][ $this->_attributes['axeId'] ];
         $drawColor = imagecolorallocate($img, $this->_attributes["color"][0], $this->_attributes["color"][1], $this->_attributes["color"][2]);
+        $dataKeys  = array_keys($this->_data);
         $numDatapoints = count($this->_datapoints);
 
         // compute side-length using Pythagoras so that square and rhomb look equal-size
@@ -53,7 +55,9 @@ class Image_Graph_Data_Triangle extends Image_Graph_Data_Common
         $halfSizePixelSide = floor(($this->_attributes['size']-1) / 2);
 
         for ($counter=0; $counter<$numDatapoints; $counter++) {
-            if (!is_null($this->_datapoints[$counter])) { // otherwise do not draw
+            if (!is_null($this->_datapoints[$counter]) &&
+                ($yAxe['min'] <= $this->_data[ $dataKeys[$counter] ]) && ($this->_data[ $dataKeys[$counter] ] <= $yAxe['max'])
+               ) { // otherwise do not draw
                 $points = array($this->_datapoints[$counter][0]               , $this->_datapoints[$counter][1]-$halfSizePixelSide,
                                 $this->_datapoints[$counter][0]+$halfSizePixelSide, $this->_datapoints[$counter][1]+$halfSizePixelSide,
                                 $this->_datapoints[$counter][0]-$halfSizePixelSide, $this->_datapoints[$counter][1]+$halfSizePixelSide);
