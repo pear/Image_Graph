@@ -59,9 +59,10 @@ class Image_Graph_DataPreprocessor_Date extends Image_Graph_DataPreprocessor
     var $_format;
 
     /**
-     * Create a DateData preprocessor
+     * Create a DateData preprocessor [Constructor]
+     *
      * @param string $format See  {@link http://www.php.net/manual/en/function.date.php 
-     * PHP Manual} for a description
+     *   PHP Manual} for a description
      */
     function &Image_Graph_DataPreprocessor_Date($format)
     {
@@ -71,6 +72,7 @@ class Image_Graph_DataPreprocessor_Date extends Image_Graph_DataPreprocessor
 
     /**
      * Process the value
+     *
      * @param var $value The value to process/format
      * @return string The processed value   
      * @access private

@@ -54,6 +54,7 @@ class Image_Graph_DataPreprocessor_Currency extends Image_Graph_DataPreprocessor
 
     /**
      * Image_Graph_CurrencyData [Constructor]. 
+     *
      * @param string $currencySymbol The symbol representing the currency 
      */
     function &Image_Graph_DataPreprocessor_Currency($currencySymbol)

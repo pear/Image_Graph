@@ -87,6 +87,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
     
     /**
      * The number of actual plots in the plot area 
+     *
      * @return int The number of plotes
      * @access private
      */
@@ -111,6 +112,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
 
     /**
      * The height of the element on the canvas 
+     *
      * @return int Number of pixels representing the height of the element
      * @access private
      */
@@ -130,6 +132,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
 
     /**
      * The width of the element on the canvas 
+     *
      * @return int Number of pixels representing the width of the element
      * @access private
      */
@@ -162,6 +165,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
 
     /**
      * Set the alignment of the legend
+     *
      * @param int $alignment The alignment
      */
     function setAlignment($alignment)
@@ -171,6 +175,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
 
     /**
      * Update coordinates
+     *
      * @access private
      */
     function _updateCoords()
@@ -202,6 +207,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
 
     /**
      * Sets Plotarea
+     *
      * @param Image_Graph_Plotarea $plotarea The plotarea 
      */
     function setPlotarea(& $plotarea)
@@ -211,6 +217,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
 
     /**
      * Sets the parent. The parent chain should ultimately be a GraPHP object
+     *
      * @see Image_Graph
      * @param Image_Graph_Common $parent The parent 
      * @access private
@@ -225,15 +232,18 @@ class Image_Graph_Legend extends Image_Graph_Layout
     
     /**
      * Set if this legends should show markers
+     *
      * @param bool $showMarker True if markers are to be shown, false is not
      */
-    function setShowMarker($showMarker) {
+    function setShowMarker($showMarker)
+    {
         $this->_showMarker = $showMarker;
     }
      
 
     /**
      * Output the plot
+     *
      * @access private
      */
     function _done()

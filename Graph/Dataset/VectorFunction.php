@@ -82,12 +82,13 @@ class Image_Graph_Dataset_VectorFunction extends Image_Graph_Dataset
 
     /**
      * Image_Graph_VectorFunctionDataset [Constructor]
+     *
      * @param double $minimumT The minimum value of the vector function variable
      * @param double $maximumT The maximum value of the vector function variable
      * @param string $functionX The name of the X function, if must be a single
-     * parameter function like fx sin(x) or cos(x)
+     *   parameter function like fx sin(x) or cos(x)
      * @param string $functionY The name of the Y function, if must be a single
-     * parameter function like fx sin(x) or cos(x)
+     *   parameter function like fx sin(x) or cos(x)
      * @param int $points The number of points to create
      */
     function &Image_Graph_Dataset_VectorFunction($minimumT, $maximumT, $functionX, $functionY, $points)
@@ -103,20 +104,22 @@ class Image_Graph_Dataset_VectorFunction extends Image_Graph_Dataset
 
     /**
      * Add a point to the dataset
+     *
      * @param int $x The X value to add
      * @param int $y The Y value to add, can be omited
      * @param var $ID The ID of the point
-	 */
+     */
     function addPoint($x, $y = false, $ID = false)
     {
     }
 
     /**
      * Gets a X point from the dataset
+     *
      * @param var $x The variable to apply the X function to
      * @return var The X function applied to the X value
      * @access private
-	 */
+     */
     function _getPointX($x)
     {
         $functionX = $this->_functionX;
@@ -125,10 +128,11 @@ class Image_Graph_Dataset_VectorFunction extends Image_Graph_Dataset
 
     /**
      * Gets a Y point from the dataset
+     *
      * @param var $x The variable to apply the Y function to
      * @return var The Y function applied to the X value
      * @access private
-	 */
+     */
     function _getPointY($x)
     {
         $functionY = $this->_functionY;
@@ -137,9 +141,10 @@ class Image_Graph_Dataset_VectorFunction extends Image_Graph_Dataset
 
     /**
      * Reset the intertal dataset pointer
+     *
      * @return var The first T value
      * @access private
-	 */
+     */
     function _reset()
     {
         $this->_posX = $this->_minimumT;
@@ -148,9 +153,10 @@ class Image_Graph_Dataset_VectorFunction extends Image_Graph_Dataset
 
     /**
      * The interval between 2 adjacent T values
+     *
      * @return var The interval
      * @access private
-	 */
+     */
     function _stepX()
     {
         return ($this->_maximumT - $this->_minimumT) / $this->count();
@@ -158,8 +164,9 @@ class Image_Graph_Dataset_VectorFunction extends Image_Graph_Dataset
 
     /**
      * Calculates the X and Y extrema of the functions
+     *
      * @access private
-	 */
+     */
     function _calculateMaxima()
     {
         $t = $this->_minimumT;

@@ -52,6 +52,7 @@ class Image_Graph_Fill extends Image_Graph_Common
 
     /**
      * Resets the fillstyle
+     *
      * @access private 
      */
     function _reset()

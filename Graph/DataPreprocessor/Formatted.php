@@ -64,8 +64,9 @@ class Image_Graph_DataPreprocessor_Formatted extends Image_Graph_DataPreprocesso
 
     /**
      * Create a (s)printf format data preprocessor
+     *
      * @param string $format See {@link http://www.php.net/manual/en/function.sprintf.php 
-     * PHP Manual} for a description
+     *   PHP Manual} for a description
      */
     function &Image_Graph_DataPreprocessor_Formatted($format)
     {
@@ -75,6 +76,7 @@ class Image_Graph_DataPreprocessor_Formatted extends Image_Graph_DataPreprocesso
 
     /**
      * Process the value
+     *
      * @param var $value The value to process/format
      * @return string The processed value
      * @access private

@@ -83,10 +83,11 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
 
     /**
      * Add a point to the dataset
+     *
      * @param int $x The X value to add
      * @param int $y The Y value to add, can be omited
      * @param var $ID The ID of the point
-	 */
+     */
     function addPoint($x, $y = false, $ID = false)
     {
         parent::addPoint($x, $y, $ID);
@@ -98,11 +99,12 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
 
     /**
      * Gets a X point from the dataset
+     *
      * @param var $x The variable to return an X value from, fx in a
-     * vector function data set
+     *   vector function data set
      * @return var The X value of the variable
      * @access private
-	 */
+     */
     function _getPointX($x)
     {
         if (isset ($this->_data[$x]['X'])) {
@@ -114,11 +116,12 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
 
     /**
      * Gets a Y point from the dataset
+     *
      * @param var $x The variable to return an Y value from, fx in a
-     * vector function data set
+     *   vector function data set
      * @return var The Y value of the variable
      * @access private
-	 */
+     */
     function _getPointY($x)
     {
         if (isset ($this->_data[$x]['Y'])) {
@@ -130,11 +133,12 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
 
     /**
      * Gets a ID from the dataset
+     *
      * @param var $x The variable to return an Y value from, fx in a
-     * vector function data set
+     *   vector function data set
      * @return var The ID value of the variable
      * @access private
-	 */
+     */
     function _getPointID($x)
     {
         if (isset ($this->_data[$x]['ID'])) {
@@ -146,8 +150,9 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
 
     /**
      * The number of values in the dataset
+     *
      * @return int The number of values in the dataset
-	 */
+     */
     function count()
     {
         return count($this->_data);
@@ -155,9 +160,10 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
 
     /**
      * Reset the intertal dataset pointer
+     *
      * @return var The first X value
      * @access private
-	 */
+     */
     function _reset()
     {
         $this->_posX = 0;
@@ -166,9 +172,10 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
 
     /**
      * Get the next point the internal pointer refers to and advance the pointer
+     *
      * @return array The next point
      * @access private
-	 */
+     */
     function _next()
     {
         if ($this->_posX >= $this->count()) {

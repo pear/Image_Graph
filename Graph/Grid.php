@@ -76,6 +76,7 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
 
     /**
      * Set the primary axis: the grid should 'refer' to
+     *
      * @param Image_Graph_Axis $axis The axis 
      * @access private 
      */
@@ -86,6 +87,7 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
 
     /**
      * Set the secondary axis
+     *
      * @param Image_Graph_Axis $axis The axis 
      * @access private 
      */
@@ -96,7 +98,8 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
 
     /**
      * Get the points on the secondary axis that the grid should 'connect'
-     * @return Array The secondary data values that should mark the grid 'end points'
+     *
+     * @return array The secondary data values that should mark the grid 'end points'
      * @access private	 
      */
     function _getSecondaryAxisPoints()
@@ -119,6 +122,7 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
 
     /**
      * Get the X pixel position represented by a value
+     *
      * @param double $point the value to get the pixel-point for  
      * @return double The pixel position along the axis
      * @access private
@@ -137,6 +141,7 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
 
     /**
      * Get the Y pixel position represented by a value
+     *
      * @param double $point the value to get the pixel-point for  
      * @return double The pixel position along the axis
      * @access private
@@ -155,6 +160,7 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
     
    /**
      * Causes the object to update all sub elements coordinates.
+     *
      * @access private
      */
     function _updateCoords()

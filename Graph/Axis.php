@@ -194,6 +194,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      * Normally a manual creation should not be necessary, axis are created
      * automatically by the {@link Image_Graph_Plotarea} constructor unless
      * explicitly defined otherwise
+     *
      * @param int $type The type (direction) of the Axis, use IMAGE_GRAPH_AXIS_X
      * for an X-axis (default, may be omitted) and IMAGE_GRAPH_AXIS_Y for Y-
      * axis)
@@ -206,6 +207,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
     /** 
      * Push the values by 0.5 (for bar and step chart)
+     *
      * @access private
      */
     function _pushValues()
@@ -247,6 +249,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      * <li>IMAGE_GRAPH_LABEL_MAXIMUM
      * </ul>
      * By default none of these are shows on the axis
+     *
      * @param int $value The values to show labels for
      */
     function showLabel($value)
@@ -258,6 +261,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
     /**
      * Sets a data preprocessor for formatting the axis labels
+     *
      * @param Image_Graph_DataPreprocessor $dataPreProcessor The data preprocessor
      * @see Image_Graph_DataPreprocessor
      */
@@ -268,6 +272,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
     /**
      * Gets the minimum value the axis will show
+     *
      * @return double The minumum value
      * @access private
      */
@@ -278,6 +283,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
     /**
      * Gets the maximum value the axis will show
+     *
      * @return double The maximum value
      * @access private
      */
@@ -288,6 +294,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
     /**
      * Sets the minimum value the axis will show
+     *
      * @param double $minimum The minumum value to use on the axis
      * @access private
      */
@@ -302,6 +309,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
     /**
      * Sets the maximum value the axis will show
+     *
      * @param double $maximum The maximum value to use on the axis
      * @access private
      */
@@ -316,6 +324,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
     /**
      * Forces the minimum value of the axis
+     *
      * @param double $minimum The minumum value to use on the axis
      * @param bool $userEnforce This value should not be set, used internally
      */
@@ -330,6 +339,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
     /**
      * Forces the maximum value of the axis
+     *
      * @param double $maximum The maximum value to use on the axis
      * @param bool $userEnforce This value should not be set, used internally
      */
@@ -360,6 +370,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
     /** 
      * Return the label distance.
+     *
      * @param int $level The label level to return the distance of 
      * @return int The distance between 2 adjacent labels
      * @access private
@@ -374,9 +385,11 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
         
     /**
      * Sets an interval for when labels are shown on the axis.
+     *
      * By default 'auto' is used, forcing the axis to calculate a approximate
      * best label interval to be used. Specify an array to use user-defined
      * values for labels.
+     *
      * @param mixed $labelInterval The interval with which labels are shown
      * @param int $level The label level to set the interval on 
      */
@@ -400,9 +413,10 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      * 
      * This is used as an alternative (maybe better) method, that using layout's
      * for axis-title generation.
+     *
      * @param string $title The title of this axis
      * @param Image_Graph_Font $font The font used for the title
-	 * @since 0.3.0dev2
+     * @since 0.3.0dev2
      */
     function setTitle($title, $font = false)
     {
@@ -412,6 +426,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
     /**
      * Axis value span     
+     *
      * @return double The span of the axis (i.e. Max-Min)
      * @access private
      */
@@ -422,6 +437,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
     /**
      * Axis span     
+     *
      * @return double The span of the axis (i.e. Max-Min)
      * @access private
      */
@@ -432,6 +448,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     
     /**
      * Get the step each pixel on the canvas will represent on the axis.     
+     *
      * @return double The step a pixel represents
      * @access private
      */
@@ -450,6 +467,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
     /**
      * Preprocessor for values, ie for using logarithmic axis
+     *
      * @param double $value The value to preprocess
      * @return double The preprocessed value
      * @access private
@@ -460,7 +478,8 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     }
 
     /**
-     * Apply the dataset tot he axis
+     * Apply the dataset to the axis
+     *
      * @param Image_Graph_Dataset $dataset The dataset
      * @access private
      */
@@ -477,6 +496,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     
     /**
      * Get the pixel position represented by a value on the canvas
+     *
      * @param double $value the value to get the pixel-point for 
      * @return double The pixel position along the axis
      * @access private
@@ -492,7 +512,9 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
     /**
      * Calculate the label interval
+     *
      * If explicitly defined this will be calucated to an approximate best.
+     *
      * @return double The label interval
      * @access private
      */
@@ -556,8 +578,9 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
     /**
      * Get next label point
+     *
      * @param doubt $currentLabel The current label, if omitted or false, the
-     * first is returned
+     *   first is returned
      * @param int $level The label level to get the next label from 
      * @return double The next label point
      * @access private
@@ -603,7 +626,9 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     
     /**
      * Get the interval with which labels are shown on the axis.
+     *
      * If explicitly defined this will be calucated to an approximate best.
+     *
      * @param int $level The label level to get the label interval for 
      * @return double The label interval
      * @access private
@@ -624,8 +649,10 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
     /** 
      * Get the size in pixels of the axis.
+     *
      * For an x-axis this is the width of the axis including labels, and for an
      * y-axis it is the corrresponding height
+     *
      * @return int The size of the axis
      * @access private 
      */
@@ -697,6 +724,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     
     /**
      * Adds a mark to the axis at the specified value
+     *
      * @param double $value The value
      * @param double $value2 The second value (for a ranged mark) 
      */
@@ -711,6 +739,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     
     /**
      * Is the axis numeric or not?
+     *
      * @return bool True if numeric, false if not
      * @access private
      */
@@ -721,10 +750,12 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     
     /**
      * Set the major tick appearance.
+     *
      * The positions are specified in pixels relative to the axis, meaning that
      * a value of -1 for start will draw the major tick 'line' starting at 1
      * pixel outside (negative) value the axis (i.e. below an x-axis and to the
      * left of a normal y-axis).
+     *
      * @param int $start The start position relative to the axis
      * @param int $end The end position relative to the axis
      * @param int $level The label level to set the tick options for 
@@ -744,6 +775,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
     /**
      * Output an axis tick mark.
+     *
      * @param int $value The value to output
      * @param int $level The label level to draw the tick for 
      * @access private
@@ -851,6 +883,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
     /**
      * Draws axis lines.
+     *
      * @access private
      */
     function _drawAxisLines()
@@ -931,6 +964,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 
     /**
      * Output the axis
+     *
      * @access private
      */
     function _done()

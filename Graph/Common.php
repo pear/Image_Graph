@@ -37,6 +37,7 @@ if (!function_exists('is_a')) {
 
     /**
      * Check if an object is of a given class, this function is available as of PHP 4.2.0, so if it exist it will not be declared
+     *
      * @link http://www.php.net/manual/en/function.is-a.php PHP.net Online Manual for function is_a()
      * @param object $object The object to check class for
      * @param string $class_name The name of the class to check the object for
@@ -119,6 +120,7 @@ class Image_Graph_Common
         
     /**
      * Sets the parent. The parent chain should ultimately be a GraPHP object
+     *
      * @see Image_Graph_Common
      * @param Image_Graph_Common $parent The parent
      * @access private
@@ -139,6 +141,7 @@ class Image_Graph_Common
 
     /**
      * Get the driver
+     *
      * @return Image_Graph_Driver The driver
      * @access private
      */
@@ -153,7 +156,9 @@ class Image_Graph_Common
 
     /**
      * Adds an element to the objects element list.
+     *
      * The new Image_Graph_elements parent is automatically set.
+     *
      * @param Image_Graph_Common $element The new Image_Graph_element
      * @return Image_Graph_Common The new Image_Graph_element
      */
@@ -167,13 +172,16 @@ class Image_Graph_Common
     }
 
     /**
+     * Creates an object from the class and adds it to the objects element list.
+     *
      * Creates an object from the class specified and adds it to the objects
      * element list. If only one parameter is required for the constructor of
      * the class simply pass this parameter as the $params parameter, unless the
      * parameter is an array or a reference to a value, in that case you must
      * 'enclose' the parameter in an array. Similar if the constructor takes
-     * more than one parameter specify the parameters in an array. See {@link
-     * Image_Graph::factory()}
+     * more than one parameter specify the parameters in an array.
+     *
+     * @see Image_Graph::factory()
      * @param string $class The class for the object
      * @param mixed $params The paramaters to pass to the constructor
      * @return Image_Graph_Common The new Image_Graph_element
@@ -191,6 +199,7 @@ class Image_Graph_Common
     
     /**
      * Get the error handling stack
+     *
      * @return PEAR_ErrorStack The package specific error handling stack
      * @access private
      */
@@ -202,6 +211,7 @@ class Image_Graph_Common
 
     /**
      * Shows an error message box on the canvas
+     *
      * @param string $text The error text
      * @param array $params An array containing error specific details
      * @param int $error_code Error code   
@@ -221,6 +231,7 @@ class Image_Graph_Common
 
     /**
      * Returns the total width of the graph's canvas
+     *
      * @see Image_Graph
      * @return int The width of the canvas
      * @access private
@@ -236,6 +247,7 @@ class Image_Graph_Common
 
     /**
      * Returns the total height of the graph's canvas
+     *
      * @see Image_Graph
      * @return int The height of the canvas
      * @access private
@@ -251,8 +263,10 @@ class Image_Graph_Common
 
     /**
      * Causes the object to update all sub elements coordinates
+     *
      * (Image_Graph_Common, does not itself have coordinates, this is basically
      * an abstract method)
+     *
      * @access private
      */
     function _updateCoords()
@@ -267,8 +281,11 @@ class Image_Graph_Common
     }
 
     /**
+     * Causes output to canvas
+     *
      * The last method to call. Calling Done causes output to the canvas. All
      * sub elements done() method will be invoked
+     *
      * @return bool True if successfull, false if errors
      * @access private
      */

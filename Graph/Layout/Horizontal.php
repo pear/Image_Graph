@@ -119,8 +119,10 @@ class Image_Graph_Layout_Horizontal extends Image_Graph_Layout
     }
 
     /**
+     * (Add basic documentation here)
      * 
      * @since 0.3.0dev2
+     * @access private
      */    
     function _getAbsolute(&$part)
     {        

@@ -51,6 +51,11 @@ require_once 'Image/Graph/Plot.php';
 class Image_Graph_Plot_CandleStick extends Image_Graph_Plot 
 {
 
+    /**
+     * (Add basic description here)
+     *
+     * @access private
+     */
     function _drawCandleStick($x, $w, $y_min, $y_open, $y_close, $y_max, $ID) {
                 $this->_getLineStyle();
                 $this->_driver->line($x, min($y_open, $y_close), $x, $y_max);
@@ -64,10 +69,12 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
 
     /**
      * Perform the actual drawing on the legend.
+     *
      * @param int $x0 The top-left x-coordinate
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
      * @param int $y1 The bottom-right y-coordinate
+     * @access private
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
     {

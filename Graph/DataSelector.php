@@ -47,17 +47,18 @@ class Image_Graph_DataSelector
 
     /**
      * Image_Graph_DataSelector [Constructor]
-	 */
+     */
     function &Image_Graph_DataSelector()
     {
     }
 
     /**
      * Check if a specified value should be 'selected', ie shown as a marker
+     *
      * @param array $values The values to check
      * @return bool True if the Values should cause a marker to be shown, false if not
      * @access private
-	 */
+     */
     function _select($values)
     {
         return true;

@@ -70,7 +70,7 @@ require_once 'Image/Graph/Color.php';
  * 
  * This class also handles coordinates and the correct managment of setting the
  * correct coordinates on child elements.
-
+ *
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  * @package Image_Graph
  */
@@ -127,8 +127,8 @@ class Image_Graph extends Image_Graph_Element
      * describing a new driver or a valid {@link Image_Graph_Driver} object
      * @param int $height The height of the graph in pixels
      * @param bool $createTransparent Specifies whether the graph should be
-     * created with a transparent background (fx for PNG's - note: transparent
-     * PNG's is not supported by Internet Explorer!)
+     *   created with a transparent background (fx for PNG's - note: transparent
+     *   PNG's is not supported by Internet Explorer!)
      */
     function &Image_Graph($params, $height = false, $createTransparent = false)
     {        
@@ -220,6 +220,7 @@ class Image_Graph extends Image_Graph_Element
 
     /**
      * Gets a very precise timestamp
+     *
      * @return The number of seconds to a lot of decimals
      * @access private 
      */
@@ -232,15 +233,17 @@ class Image_Graph extends Image_Graph_Element
     }
     
     /**
-     * Hides the logo from the output.
+     * Hides (or unhides) the logo from the output.
      * 
      * The Image_Graph logo is displayed by default [as a small promotion :)].
      * This is often not desireable in a production environment. Use this method
      * to disable the display of the Image_Graph logo.
+     *
+     * @param bool $hideit Hide the logo (true) or unhide it (false)
      */
-    function hideLogo()
+    function hideLogo($hideit = true)
     {
-        $this->_hideLogo = true;
+        $this->_hideLogo = $hideit;
     }
 
     /**
@@ -270,8 +273,8 @@ class Image_Graph extends Image_Graph_Element
     /**
      * Gets the width of this graph.
      * 
-     * The width is returned as 'defined' by the driver. {@link
-     * Image_Graph::width()}
+     * The width is returned as 'defined' by the driver.
+     * {@link Image_Graph::width()}
      * 
      * @return int the width of this graph
      * @access private
@@ -284,8 +287,8 @@ class Image_Graph extends Image_Graph_Element
     /**
      * Gets the height of this graph.
      * 
-     * The height is returned as 'defined' by the driver. {@link
-     * Image_Graph::height()}
+     * The height is returned as 'defined' by the driver.
+     * {@link Image_Graph::height()}
      * 
      * @return int the height of this graph
      * @access private
@@ -312,7 +315,7 @@ class Image_Graph extends Image_Graph_Element
      * Sets the log method for this graph. 
      * 
      * Use this method to enable logging. This causes any errors caught
-     * by either the error handler (@see Image_Graph::displayErrors()}
+     * by either the error handler {@see Image_Graph::displayErrors()}
      * or explicitly by calling {@link Image_Graph_Common::_error()} be
      * logged using the specified logging method. 
      * 
@@ -322,7 +325,7 @@ class Image_Graph extends Image_Graph_Element
      * Logging requires {@link Log}.
      * 
      * @param mixed $log The log method, either a Log object or filename to log
-     * to
+     *   to
      * @since 0.3.0dev2
      */
     function setLog($log)
@@ -417,11 +420,10 @@ class Image_Graph extends Image_Graph_Element
      * 
      * 'gradient' = Image_Graph_Fill_Gradient
      * 
-     * This method can be called statically.
-     * 
      * @param string $class The class for the new object
      * @param mixed $params The paramaters to pass to the constructor
      * @return object A new object for the class 
+     * @static
      */
     function &factory($class, $params = null) 
     {
@@ -671,11 +673,12 @@ class Image_Graph extends Image_Graph_Element
      * instead for easier access.
      * 
      * @param mixed $layout The type of layout, can be either 'Vertical'
-     * or 'Horizontal' (case sensitive)
+     *   or 'Horizontal' (case sensitive)
      * @param Image_Graph_Element $part1 The 1st part of the layout
      * @param Image_Graph_Element $part2 The 2nd part of the layout
      * @param int $percentage The percentage of the layout to split at
      * @return Image_Graph_Layout The newly created layout object
+     * @static
      */
     function &layoutFactory($layout, &$part1, &$part2, $percentage = 50)
     {               
@@ -692,7 +695,9 @@ class Image_Graph extends Image_Graph_Element
      * @param Image_Graph_Element $part1 The 1st (left) part of the layout
      * @param Image_Graph_Element $part2 The 2nd (right) part of the layout
      * @param int $percentage The percentage of the layout to split at
-     * (percentage of total height from the left side)
+     *   (percentage of total height from the left side)
+     * @return Image_Graph_Layout The newly created layout object
+     * @static
      */
     function &horizontal(&$part1, &$part2, $percentage = 50)
     {                       
@@ -707,7 +712,9 @@ class Image_Graph extends Image_Graph_Element
      * @param Image_Graph_Element $part1 The 1st (top) part of the layout
      * @param Image_Graph_Element $part2 The 2nd (bottom) part of the layout
      * @param int $percentage The percentage of the layout to split at
-     * (percentage of total width from the top edge)
+     *   (percentage of total width from the top edge)
+     * @return Image_Graph_Layout The newly created layout object
+     * @static
      */
     function &vertical(&$part1, &$part2, $percentage = 50)
     {                       
@@ -776,6 +783,8 @@ class Image_Graph extends Image_Graph_Element
      * Invoking this method cause all errors on the error stack to be displayed
      * on the graph-output, by calling the {@link Image_Graph::_displayError()}
      * method.
+     *
+     * @access private
      */
     function _displayErrors()
     {
@@ -803,6 +812,8 @@ class Image_Graph extends Image_Graph_Element
      * @param int $x The horizontal position of the error message
      * @param int $y The vertical position of the error message
      * @param array $error The error context
+     *
+     * @access private
      */
     function _displayError($x, $y, $error)
     {                
@@ -824,7 +835,7 @@ class Image_Graph extends Image_Graph_Element
      * Requires {@link Cache}.
      * 
      * @param string $cacheDir The directory where cached files are put. If
-     * false caching is disabled.
+     *   false caching is disabled.
      */
     function cache($cacheDir = 'cache/')
     {
@@ -842,7 +853,6 @@ class Image_Graph extends Image_Graph_Element
      * supported by it).
      * 
      * @param mixed $param The output parameters to pass to the driver
-     * 
      * @return bool Was the output 'good' (true) or 'bad' (false).
      */
     function done($param = false)
@@ -862,7 +872,6 @@ class Image_Graph extends Image_Graph_Element
      * supported by it).
      * 
      * @param mixed $param The output parameters to pass to the driver
-     * 
      * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */

@@ -96,13 +96,14 @@ class Image_Graph_Dataset
 
     /**
      * Image_Graph_Dataset [Constructor]
-	 */
+     */
     function &Image_Graph_Dataset()
     {
     }
 
     /**
      * Sets the name of the data set, used for legending
+     *
      * @param string $name The name of the dataset
      */
     function setName($name)
@@ -112,10 +113,11 @@ class Image_Graph_Dataset
 
     /**
      * Add a point to the dataset
+     *
      * @param int $x The X value to add
      * @param int $y The Y value to add, can be omited
      * @param var $ID The ID of the point
-	 */
+     */
     function addPoint($x, $y = false, $ID = false)
     {
         if (is_array($y)) {
@@ -143,8 +145,9 @@ class Image_Graph_Dataset
 
     /**
      * The number of values in the dataset
+     *
      * @return int The number of values in the dataset     
-	 */
+     */
     function count()
     {
         return $this->_count;
@@ -152,11 +155,12 @@ class Image_Graph_Dataset
 
     /**
      * Gets a X point from the dataset
+     *
      * @param var $x The variable to return an X value from, fx in a vector
-     * function data set
+     *   function data set
      * @return var The X value of the variable
      * @access private
-	 */
+     */
     function _getPointX($x)
     {
         return $x;
@@ -164,11 +168,12 @@ class Image_Graph_Dataset
 
     /**
      * Gets a Y point from the dataset
+     *
      * @param var $x The variable to return an Y value from, fx in a vector
-     * function data set
+     *   function data set
      * @return var The Y value of the variable
      * @access private
-	 */
+     */
     function _getPointY($x)
     {
         return $y;
@@ -176,11 +181,12 @@ class Image_Graph_Dataset
 
     /**
      * Gets a ID from the dataset
+     *
      * @param var $x The variable to return an Y value from, fx in a vector
-     * function data set
+     *   function data set
      * @return var The ID value of the variable
      * @access private
-	 */
+     */
     function _getPointID($x)
     {
         return false;
@@ -188,8 +194,9 @@ class Image_Graph_Dataset
 
     /**
      * The minimum X value
+     *
      * @return var The minimum X value
-	 */
+     */
     function minimumX()
     {
         return $this->_minimumX;
@@ -197,8 +204,9 @@ class Image_Graph_Dataset
 
     /**
      * The maximum X value
+     *
      * @return var The maximum X value
-	 */
+     */
     function maximumX()
     {
         return $this->_maximumX;
@@ -206,8 +214,9 @@ class Image_Graph_Dataset
 
     /**
      * The minimum Y value
+     *
      * @return var The minimum Y value
-	 */
+     */
     function minimumY()
     {
         return $this->_minimumY;
@@ -215,8 +224,9 @@ class Image_Graph_Dataset
 
     /**
      * The maximum Y value
+     *
      * @return var The maximum Y value
-	 */
+     */
     function maximumY()
     {
         return $this->_maximumY;
@@ -224,9 +234,10 @@ class Image_Graph_Dataset
 
     /**
      * The minimum X value
+     *
      * @param var $value The minimum X value
      * @access private
-	 */
+     */
     function _setMinimumX($value)
     {
         $this->_minimumX = $value;
@@ -234,9 +245,10 @@ class Image_Graph_Dataset
 
     /**
      * The maximum X value
+     *
      * @param var $value The maximum X value
      * @access private
-	 */
+     */
     function _setMaximumX($value)
     {
         $this->_maximumX = $value;
@@ -244,9 +256,10 @@ class Image_Graph_Dataset
 
     /**
      * The minimum Y value
+     *
      * @param var $value The minimum X value
      * @access private
-	 */
+     */
     function _setMinimumY($value)
     {
         $this->_minimumY = $value;
@@ -254,9 +267,10 @@ class Image_Graph_Dataset
 
     /**
      * The maximum Y value
+     *
      * @param var $value The maximum X value
      * @access private
-	 */
+     */
     function _setMaximumY($value)
     {
         $this->_maximumY = $value;
@@ -264,9 +278,10 @@ class Image_Graph_Dataset
 
     /**
      * The interval between 2 adjacent X values
+     *
      * @return var The interval
      * @access private
-	 */
+     */
     function _stepX()
     {
         return 1;
@@ -274,9 +289,10 @@ class Image_Graph_Dataset
 
     /**
      * The interval between 2 adjacent Y values
+     *
      * @return var The interval
      * @access private
-	 */
+     */
     function _stepY()
     {
         return 1;
@@ -284,9 +300,10 @@ class Image_Graph_Dataset
 
     /**
      * Reset the intertal dataset pointer
+     *
      * @return var The first X value
      * @access private
-	 */
+     */
     function _reset()
     {
         $this->_posX = $this->_minimumX;
@@ -295,11 +312,12 @@ class Image_Graph_Dataset
 
     /**
      * Get a point close to the internal pointer
+     *
      * @param int Step Number of points next to the internal pointer, negative
-     * Step is towards lower X values, positive towards higher X values
+     *   Step is towards lower X values, positive towards higher X values
      * @return array The point
      * @access private
-	 */
+     */
     function _nearby($step = 0)
     {
         $x = $this->_getPointX($this->_posX + $this->_stepX() * $step);
@@ -314,9 +332,10 @@ class Image_Graph_Dataset
 
     /**
      * Get the next point the internal pointer refers to and advance the pointer
+     *
      * @return array The next point
      * @access private
-	 */
+     */
     function _next()
     {
         if ($this->_posX > $this->_maximumX) {
@@ -333,6 +352,7 @@ class Image_Graph_Dataset
 
     /**
      * Get the average of the dataset's Y points
+     *
      * @return var The Y-average across the dataset
      * @access private
      */
@@ -356,6 +376,7 @@ class Image_Graph_Dataset
 
     /**
      * Get the median of the array passed Y points
+     *
      * @param array $data The data-array to get the median from
      * @param int $quartile The quartile to return the median from
      * @return var The Y-median across the dataset from the specified quartile
@@ -389,6 +410,7 @@ class Image_Graph_Dataset
 
     /**
      * Get the median of the datasets Y points
+     *
      * @param int $quartile The quartile to return the median from
      * @return var The Y-median across the dataset from the specified quartile
      * @access private

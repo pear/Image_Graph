@@ -74,6 +74,7 @@ class Image_Graph_Logo extends Image_Graph_Element
 
     /**
      * Logo [Constructor]
+     *
      * @param string $filename The filename and path of the image to use for logo 
      */
     function &Image_Graph_Logo($fileName, $alignment = IMAGE_GRAPH_ALIGN_TOP_RIGHT)
@@ -85,6 +86,7 @@ class Image_Graph_Logo extends Image_Graph_Element
 
     /**
      * Sets the parent. The parent chain should ultimately be a GraPHP object
+     *
      * @see Image_Graph
      * @param Image_Graph_Common $parent The parent 
      * @access private
@@ -102,6 +104,7 @@ class Image_Graph_Logo extends Image_Graph_Element
 
     /**
      * Output the logo
+     *
      * @access private
      */
     function _done()

@@ -61,6 +61,7 @@ class Image_Graph_Plot_Smoothed_Area extends Image_Graph_Plot_Smoothed_Bezier
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
      * @param int $y1 The bottom-right y-coordinate
+     * @access private
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
     {

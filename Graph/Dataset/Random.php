@@ -53,11 +53,12 @@ class Image_Graph_Dataset_Random extends Image_Graph_Dataset_Trivial
 
     /**
      * RandomDataset [Constructor]
+     *
      * @param int $count The number of points to create
      * @param double $minimum The minimum value the random set can be
      * @param double $maximum The maximum value the random set can be
      * @param bool $includeZero Whether 0 should be included or not as an X
-     * value, may be omitted, default: false</false>
+     *   value, may be omitted, default: false</false>
      */
     function &Image_Graph_Dataset_Random($count, $minimum, $maximum, $includeZero = false)
     {

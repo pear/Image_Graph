@@ -96,6 +96,7 @@ class Image_Graph_Title extends Image_Graph_Layout
 
     /**
      * Set the text
+     *
      * @param string $text The text to display
      */
     function setText($text)
@@ -105,6 +106,7 @@ class Image_Graph_Title extends Image_Graph_Layout
 
     /**
      * Returns the calculated "auto" size   
+     *
      * @return int The calculated auto size 
      * @access private
      */
@@ -116,6 +118,7 @@ class Image_Graph_Title extends Image_Graph_Layout
 
     /**
      * Output the text 
+     *
      * @access private
      */
     function _done()

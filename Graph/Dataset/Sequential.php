@@ -70,9 +70,10 @@ class Image_Graph_Dataset_Sequential extends Image_Graph_Dataset_Trivial
 
     /**
      * Add a point to the dataset
+     *
      * @param int $y The Y value to add, can be omited
      * @param var $ID The ID of the point
-	 */
+     */
     function addPoint($y, $ID = false)
     {
         parent::addPoint($this->count(), $y);
@@ -80,8 +81,9 @@ class Image_Graph_Dataset_Sequential extends Image_Graph_Dataset_Trivial
 
     /**
      * Gets a X point from the dataset
+     *
      * @param var $x The variable to return an X value from, fx in a
-     * vector function data set
+     *   vector function data set
      * @return var The X value of the variable
      * @access private
      */
@@ -102,7 +104,7 @@ class Image_Graph_Dataset_Sequential extends Image_Graph_Dataset_Trivial
     /**
      * The maximum X value
      * @return var The maximum X value
-	 */
+     */
     function maximumX()
     {
         return $this->count();

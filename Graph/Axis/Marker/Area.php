@@ -64,6 +64,9 @@ class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid
      */
     var $_upper = false;
     
+    /**
+     * [Constructor]
+     */
     function &Image_Graph_Axis_Marker_Area() {
         parent::Image_Graph_Grid();
         $this->_lineStyle = false;
@@ -71,6 +74,7 @@ class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid
     
     /**
      * Sets the lower bound of the area (value on the axis)
+     *
      * @param double $lower the lower bound
      */
     function setLowerBound($lower)
@@ -80,6 +84,7 @@ class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid
 
     /**
      * Sets the upper bound of the area (value on the axis)
+     *
      * @param double $upper the upper bound
      */
     function setUpperBound($upper)
@@ -89,6 +94,7 @@ class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid
 
     /**
      * Output the grid
+     *
      * @access private      
      */
     function _done()

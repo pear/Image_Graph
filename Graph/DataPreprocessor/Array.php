@@ -74,6 +74,7 @@ class Image_Graph_DataPreprocessor_Array extends Image_Graph_DataPreprocessor
 
     /**
      * Image_Graph_ArrayData [Constructor].
+     *
      * @param array $array The array to use as a lookup table
      */
     function &Image_Graph_DataPreprocessor_Array($array)
@@ -84,6 +85,7 @@ class Image_Graph_DataPreprocessor_Array extends Image_Graph_DataPreprocessor
 
     /**
      * Process the value
+     *
      * @param var $value The value to process/format
      * @return string The processed value
      * @access private
@@ -98,4 +100,5 @@ class Image_Graph_DataPreprocessor_Array extends Image_Graph_DataPreprocessor
     }
 
 }
+
 ?>

@@ -70,8 +70,9 @@ class Image_Graph_Marker extends Image_Graph_Plotarea_Element
 
     /**
      * Set the 'size' of the marker
+     *
      * @param int $size The 'size' of the marker, the meaning depends on the
-     * specific Marker implementation
+     *   specific Marker implementation
      */
     function setSize($size)
     {
@@ -80,6 +81,7 @@ class Image_Graph_Marker extends Image_Graph_Plotarea_Element
     
     /**
      * Set the secondary marker
+     *
      * @param Marker $secondaryMarker The secondary marker 
      */
     function setSecondaryMarker(& $secondaryMarker)
@@ -90,12 +92,13 @@ class Image_Graph_Marker extends Image_Graph_Plotarea_Element
 
     /**
      * Draw the marker on the canvas
+     *
      * @param int $x The X (horizontal) position (in pixels) of the marker on
-     * the canvas 
+     *   the canvas 
      * @param int $y The Y (vertical) position (in pixels) of the marker on the
-     * canvas
+     *   canvas
      * @param array $values The values representing the data the marker 'points'
-     * to
+     *   to
      * @access private
      */
     function _drawMarker($x, $y, $values = false)
@@ -107,6 +110,7 @@ class Image_Graph_Marker extends Image_Graph_Plotarea_Element
 
     /**
      * Output to the canvas
+     *
      * @access private
      */
     function _done()

@@ -49,6 +49,7 @@ class Image_Graph_Simple extends Image_Graph
    
     /**
      * Image_Graph_Simple [Constructor]
+     *
      * @param int $width The width of the graph in pixels	 
      * @param int $height The height of the graph in pixels	 
      */

@@ -75,8 +75,8 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
      * @param int $rows The number of rows
      * @param int $cols The number of cols
      * @param bool $autoCreate Specifies whether the matrix should automatically
-     * be filled with newly created Image_Graph_Plotares objects, or they will
-     * be added manually
+     *   be filled with newly created Image_Graph_Plotares objects, or they will
+     *   be added manually
      */
     function &Image_Graph_Layout_Matrix($rows, $cols, $autoCreate = true)
     {
@@ -103,6 +103,7 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
      * Pushes the edges on the specified position in the matrix
      * @param int $row The row
      * @param int $col The column
+     * @access private
      */
     function _pushEdges($row, $col)
     {
@@ -129,7 +130,7 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
      * @param int $row The row
      * @param int $col The column
      * @return Image_Graph_Layout The element of position ($row, $col) in the
-     * matrix
+     *   matrix
      */
     function &getEntry($row, $col)
     {
@@ -145,7 +146,7 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
      * @param int $row The row
      * @param int $col The column
      * @param Image_Graph_Layout $element The element to set in the position
-     * ($row, $col) in the matrix
+     *   ($row, $col) in the matrix
      */
     function setEntry($row, $col, $element)
     {

@@ -66,6 +66,7 @@ class Image_Graph_Font extends Image_Graph_Common
 
     /**
      * Set the color of the font
+     *
      * @param mixed $color The color object of the Font 
      */
     function setColor($color)
@@ -75,6 +76,7 @@ class Image_Graph_Font extends Image_Graph_Common
     
     /**
      * Get the font 'array'
+     *
      * @return array The font 'summary' to pass to the driver 
      * @access private 
      */

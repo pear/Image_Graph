@@ -64,9 +64,10 @@ class Image_Graph_DataPreprocessor_Function extends Image_Graph_DataPreprocessor
 
     /**
      * Create a FunctionData preprocessor
+     *
      * @param string $function The name of the PHP function to use as
-     * a preprocessor, this function must take a single parameter and return a
-     * formatted version of this parameter
+     *   a preprocessor, this function must take a single parameter and return a
+     *   formatted version of this parameter
      */
     function &Image_Graph_DataPreprocessor_Function($function)
     {
@@ -76,6 +77,7 @@ class Image_Graph_DataPreprocessor_Function extends Image_Graph_DataPreprocessor
 
     /**
      * Process the value
+     *
      * @param var $value The value to process/format
      * @return string The processed value
      * @access private
@@ -87,4 +89,5 @@ class Image_Graph_DataPreprocessor_Function extends Image_Graph_DataPreprocessor
     }
 
 }
+
 ?>

@@ -51,12 +51,14 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
    
     /**
      * Image_Graph_AxisLogarithmic [Constructor].
+     *
      * Normally a manual creation should not be necessary, axis are
      * created automatically by the {@link Image_Graph_Plotarea} constructor
      * unless explicitly defined otherwise
+     *
      * @param int $type The type (direction) of the Axis, use IMAGE_GRAPH_AXIS_X
-     * for an X-axis (default, may be omitted) and IMAGE_GRAPH_AXIS_Y for Y-
-     * axis)
+     *   for an X-axis (default, may be omitted) and IMAGE_GRAPH_AXIS_Y for Y-
+     *   axis)
      */
     function &Image_Graph_Axis_Logarithmic($type = IMAGE_GRAPH_AXIS_X)
     {
@@ -66,6 +68,7 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
     
     /**
      * Axis value span     
+     *
      * @return double The span of the axis (i.e. Max-Min)
      * @access private
      */
@@ -76,6 +79,7 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
 
     /**
      * Axis span     
+     *
      * @return double The span of the axis (i.e. Max-Min)
      * @access private
      */
@@ -86,7 +90,9 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
 
     /**
      * Forces the minimum value of the axis.
+     *
      * For an logarithimc axis this is always 0     
+     *
      * @param double $minimum The minumum value to use on the axis
      */
     function forceMinimum($minimum)
@@ -96,7 +102,9 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
     
     /**
      * Gets the minimum value the axis will show.
+     *
      * For an logarithimc axis this is always 0     
+     *
      * @return double The minumum value
      * @access private
      */
@@ -107,6 +115,7 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
 
     /**
      * Preprocessor for values, ie for using logarithmic axis
+     *
      * @param double $value The value to preprocess
      * @return double The preprocessed value
      * @access private
@@ -118,8 +127,9 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
 
     /**
      * Get next label point
+     *
      * @param doubt $point The current point, if omitted or false, the first is
-     * returned
+     *   returned
      * @return double The next label point
      * @access private
      */

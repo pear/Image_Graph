@@ -111,6 +111,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
 
     /**
      * Image_Graph_Plotarea [Constructor]
+     *
      * @param string $axisX The class of the X axis (if omitted a std. axis is created)
      * @param string $axisY The class of the Y axis (if omitted a std. axis is created)
      */
@@ -134,6 +135,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
 
     /**
      * Sets the parent. The parent chain should ultimately be a GraPHP object
+     *
      * @see Image_Graph_Common
      * @param Image_Graph_Common $parent The parent
      * @access private
@@ -154,6 +156,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
 
     /**
      * Sets the plot border line style of the element	 
+     *
      * @param Image_Graph_Line $lineStyle The line style of the border 
      */
     function setPlotBorderStyle(& $plotBorderStyle)
@@ -164,6 +167,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
 
     /**
      * Adds an element to the plotarea    
+     *
      * @param Image_Graph_Element $element The element to add
      * @param int $axis The axis to associate the element with, either
      * IMAGE_GRAPH_AXIS_X, IMAGE_GRAPH_AXIS_Y or IMAGE_GRAPH_AXIS_Y_SECONDARY
@@ -235,6 +239,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
 
     /**
      * Get the width of the 'real' plotarea	 
+     *
      * @return int The width of the 'real' plotarea, ie not including space occupied by padding and axis 
      * @access private
      */
@@ -245,8 +250,9 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
 
     /**
      * Get the height of the 'real' plotarea	 
+     *
      * @return int The height of the 'real' plotarea, ie not including space
-     * occupied by padding and axis
+     *   occupied by padding and axis
      * @access private
      */
     function _plotHeight()
@@ -256,6 +262,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
 
     /**
      * Set the extrema of the axis	 
+     *
      * @param Image_Graph_Plot $plot The plot that 'hold' the values 
      * @access private
      */
@@ -304,6 +311,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
 
     /**
      * Left boundary of the background fill area 
+     *
      * @return int Leftmost position on the canvas
      * @access private
      */
@@ -314,6 +322,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
 
     /**
      * Top boundary of the background fill area 
+     *
      * @return int Topmost position on the canvas
      * @access private
      */
@@ -324,6 +333,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
 
     /**
      * Right boundary of the background fill area 
+     *
      * @return int Rightmost position on the canvas
      * @access private
      */
@@ -334,6 +344,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
 
     /**
      * Bottom boundary of the background fill area 
+     *
      * @return int Bottommost position on the canvas
      * @access private
      */
@@ -344,6 +355,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
 
     /**
      * Get the X pixel position represented by a value
+     *
      * @param double Value the value to get the pixel-point for	 
      * @return double The pixel position along the axis
      * @access private
@@ -366,6 +378,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
 
     /**
      * Get the Y pixel position represented by a value
+     *
      * @param double Value the value to get the pixel-point for	 
      * @return double The pixel position along the axis
      * @access private
@@ -417,6 +430,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
 
     /** 
      * Return the minimum value of the specified axis
+     *
      * @param int $axis The axis to return the minimum value of
      * @return double The minimum value of the axis
      * @access private
@@ -433,6 +447,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
 
     /** 
      * Return the maximum value of the specified axis
+     *
      * @param int $axis The axis to return the maximum value of
      * @return double The maximum value of the axis
      * @access private
@@ -449,6 +464,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
 
     /** 
      * Return the label distance for the specified axis.
+     *
      * @param int $axis The axis to return the label distance for
      * @return int The distance between 2 adjacent labels
      * @access private
@@ -477,6 +493,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
 
     /** 
      * Get axis
+     *
      * @param int $Axis The axis to return
      * @return Image_Graph_Axis The axis
      */
@@ -500,6 +517,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
     
     /**
      * Update coordinates
+     *
      * @access private
      */
     function _updateCoords()
@@ -639,6 +657,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
 
     /**
      * Output the plotarea to the canvas
+     *
      * @access private
      */
     function _done()        

@@ -68,9 +68,10 @@ class Image_Graph_DataSelector_EveryNthPoint extends Image_Graph_DataSelector
 
     /**
      * EvertNthPoint [Constructor]
+     *
      * @param int $pointInterval The number of points between every 'show',
-     * default: 10
-	 */
+     *   default: 10
+     */
     function &Image_Graph_DataSelector_EveryNthpoint($pointInterval = 10)
     {
         parent::Image_Graph_DataSelector();
@@ -79,11 +80,12 @@ class Image_Graph_DataSelector_EveryNthPoint extends Image_Graph_DataSelector
 
     /**
      * Check if a specified value should be 'selected', ie shown as a marker
+     *
      * @param array $values The values to check
      * @return bool True if the Values should cause a marker to be shown,
-     * false if not
+     *   false if not
      * @access private     
-	 */
+     */
     function _select($values)
     {
         $oldPointNum = $this->_pointNum;

@@ -60,6 +60,7 @@ class Image_Graph_Axis_Marker_Line extends Image_Graph_Grid
     
     /**
      * Sets the value of the line marker (value on the axis)
+     *
      * @param double $value the value
      */
     function setValue($value)
@@ -69,6 +70,7 @@ class Image_Graph_Axis_Marker_Line extends Image_Graph_Grid
 
     /**
      * Output the grid
+     *
      * @access private      
      */
     function _done()

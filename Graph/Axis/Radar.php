@@ -57,6 +57,7 @@ class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
     /**
      * Specifies the number of pixels, the labels is offsetted from the end of
      * the axis
+     *
      * @var int
      * @access private
      */
@@ -64,7 +65,9 @@ class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
 
     /**
      * Gets the minimum value the axis will show.
+     *
      * This is always 0
+     *
      * @return double The minumum value
      * @access private
      */
@@ -75,7 +78,9 @@ class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
 
     /**
      * Gets the maximum value the axis will show.
+     *
      * This is always the number of labels passed to the constructor.
+     *
      * @return double The maximum value
      * @access private
      */
@@ -86,6 +91,7 @@ class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
     
     /**
      * Get the step each pixel on the canvas will represent on the axis.     
+     *
      * @return double The step a pixel represents
      * @access private
      */
@@ -100,6 +106,7 @@ class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
 
     /**
      * Get the pixel position represented by a value on the canvas
+     *
      * @param double $value the value to get the pixel-point for 
      * @return double The pixel position along the axis
      * @access private
@@ -111,7 +118,9 @@ class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
 
     /** 
      * Get the size in pixels of the axis.
+     *
      * For a radar plot this is always 0
+     *
      * @return int The size of the axis
      * @access private 
      */
@@ -122,6 +131,7 @@ class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
 
     /**
      * Sets the distance from the end of the category lines to the label.
+     *
      * @param int $distance The distance in pixels
      */    
     function setDistanceFromEnd($distance = 5)
@@ -131,6 +141,7 @@ class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
 
     /**
      * Draws axis lines.
+     *
      * @access private
      */
     function _drawAxisLines()
@@ -139,6 +150,7 @@ class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
 
     /**
      * Output an axis tick mark.
+     *
      * @param int $value The value to output
      * @access private
      */

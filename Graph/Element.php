@@ -139,6 +139,7 @@ class Image_Graph_Element extends Image_Graph_Common
     
     /**
      * Resets the elements
+     *
      * @access private
      */
     function _reset()
@@ -148,6 +149,7 @@ class Image_Graph_Element extends Image_Graph_Common
                
     /**
      * Sets the background fill style of the element     
+     *
      * @param Image_Graph_Fill $background The background 
      * @see Image_Graph_Fill
      */
@@ -186,6 +188,7 @@ class Image_Graph_Element extends Image_Graph_Common
     
      /**
      * Gets the background fill style of the element     
+     *
      * @return int A GD fillstyle representing the background style 
      * @see Image_Graph_Fill
      * @access private
@@ -204,6 +207,7 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Sets the border line style of the element	 
+     *
      * @param Image_Graph_Line $borderStyle The line style of the border 
      * @see Image_Graph_Line
      */
@@ -222,7 +226,7 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Sets the border color of the element.
-     *     
+     *
      * See colors.txt in the docs/ folder for a list of available named colors.
      * @param mixed $color The color
      */
@@ -233,6 +237,7 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Gets the border line style of the element	 
+     *
      * @return int A GD linestyle representing the borders line style 
      * @see Image_Graph_Line
      * @access private
@@ -254,6 +259,7 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Sets the line style of the element    
+     *
      * @param Image_Graph_Line $lineStyle The line style of the element 
      * @see Image_Graph_Line
      */
@@ -274,6 +280,7 @@ class Image_Graph_Element extends Image_Graph_Common
      * Sets the line color of the element.
      *     
      * See colors.txt in the docs/ folder for a list of available named colors.
+     *
      * @param mixed $color The color
      */
     function setLineColor($color)
@@ -283,6 +290,7 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Gets the line style of the element	 
+     *
      * @return int A GD linestyle representing the line style 
      * @see Image_Graph_Line
      * @access private
@@ -304,6 +312,7 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Sets the fill style of the element	 
+     *
      * @param Image_Graph_Fill $fillStyle The fill style of the element 
      * @see Image_Graph_Fill
      */
@@ -324,6 +333,7 @@ class Image_Graph_Element extends Image_Graph_Common
      * Sets the fill color of the element.
      *     
      * See colors.txt in the docs/ folder for a list of available named colors.    
+     *
      * @param mixed $color The color
      */
     function setFillColor($color)
@@ -334,6 +344,7 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Gets the fill style of the element	 
+     *
      * @return int A GD filestyle representing the fill style 
      * @see Image_Graph_Fill
      * @access private
@@ -382,6 +393,7 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Sets the font of the element  
+     *
      * @param Image_Graph_Font $font The font of the element 
      * @see Image_Graph_Font
      */
@@ -397,6 +409,7 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Sets the font size  
+     *
      * @param int $size The size of the font 
      */
     function setFontSize($size) {
@@ -405,6 +418,7 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Sets the font angle  
+     *
      * @param int $angle The angle of the font 
      */
     function setFontAngle($angle) {
@@ -418,6 +432,7 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Sets the font color  
+     *
      * @param mixed $color The color of the font 
      */
     function setFontColor($color) {
@@ -426,6 +441,7 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Sets the coordinates of the element	 
+     *
      * @param int $left The leftmost pixel of the element on the canvas 
      * @param int $top The topmost pixel of the element on the canvas 
      * @param int $right The rightmost pixel of the element on the canvas 
@@ -442,10 +458,11 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Moves the element	 
+     *
      * @param int $deltaX Number of pixels to move the element to the right
-     * (negative values move to the left)
+     *   (negative values move to the left)
      * @param int $deltaY Number of pixels to move the element downwards
-     * (negative values move upwards)
+     *   (negative values move upwards)
      * @access private
      */
     function _move($deltaX, $deltaY)
@@ -458,6 +475,7 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Sets the width of the element relative to the left side	 
+     *
      * @param int $width Number of pixels the element should be in width  
      * @access private
      */
@@ -468,6 +486,7 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Sets the height of the element relative to the top    
+     *
      * @param int $width Number of pixels the element should be in height  
      * @access private
      */
@@ -478,6 +497,7 @@ class Image_Graph_Element extends Image_Graph_Common
     
     /**
      * Sets padding of the element    
+     *
      * @param int $padding Number of pixels the element should be padded with  
      */
     function setPadding($padding)
@@ -487,6 +507,7 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * The width of the element on the canvas 
+     *
      * @return int Number of pixels representing the width of the element
      */
     function width()
@@ -496,6 +517,7 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * The height of the element on the canvas 
+     *
      * @return int Number of pixels representing the height of the element
      */
     function height()
@@ -505,6 +527,7 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Left boundary of the background fill area 
+     *
      * @return int Leftmost position on the canvas
      * @access private
      */
@@ -515,6 +538,7 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Top boundary of the background fill area 
+     *
      * @return int Topmost position on the canvas
      * @access private
      */
@@ -525,6 +549,7 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Right boundary of the background fill area 
+     *
      * @return int Rightmost position on the canvas
      * @access private
      */
@@ -535,6 +560,7 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Bottom boundary of the background fill area 
+     *
      * @return int Bottommost position on the canvas
      * @access private
      */
@@ -545,6 +571,7 @@ class Image_Graph_Element extends Image_Graph_Common
     
     /**
      * Returns the filling width of the element on the canvas 
+     *
      * @return int Filling width
      * @access private
      */
@@ -555,6 +582,7 @@ class Image_Graph_Element extends Image_Graph_Common
     
     /**
      * Returns the filling height of the element on the canvas 
+     *
      * @return int Filling height
      * @access private
      */
@@ -565,6 +593,7 @@ class Image_Graph_Element extends Image_Graph_Common
     
     /**
      * Draws a shadow 'around' the element
+     *
      * @access private 
      */
     function _displayShadow()
@@ -626,6 +655,7 @@ class Image_Graph_Element extends Image_Graph_Common
     
     /**
      * Writes text to the canvas.
+     *
      * @param int $x The x position relative to alignment
      * @param int $y The y position relative to alignment
      * @param string $text The text
@@ -649,6 +679,7 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Output the element to the canvas
+     *
      * @see Image_Graph_Common 
      * @access private
      */

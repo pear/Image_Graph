@@ -61,6 +61,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
 
     /**
      * Image_Graph_Axis_Category [Constructor].
+     *
      * @param int $type The type (direction) of the Axis
      */
     function &Image_Graph_Axis_Category($type = IMAGE_GRAPH_AXIS_X)
@@ -72,7 +73,9 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
 
     /**
      * Gets the minimum value the axis will show.
+     *
      * This is always 0
+     *
      * @return double The minumum value
      * @access private
      */
@@ -83,7 +86,9 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
 
     /**
      * Gets the maximum value the axis will show.
+     *
      * This is always the number of labels passed to the constructor.
+     *
      * @return double The maximum value
      * @access private
      */
@@ -94,7 +99,9 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
 
     /**
      * Sets the minimum value the axis will show.
+     *
      * A minimum cannot be set on a SequentialAxis, it is always 0.
+     *
      * @param double Minimum The minumum value to use on the axis
      * @access private
      */
@@ -104,8 +111,10 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
 
     /**
      * Sets the maximum value the axis will show
+     *
      * A maximum cannot be set on a SequentialAxis, it is always the number
      * of labels passed to the constructor.
+     *
      * @param double Maximum The maximum value to use on the axis
      * @access private
      */
@@ -115,7 +124,9 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
     
     /**
      * Forces the minimum value of the axis
+     *
      * A minimum cannot be set on a SequentialAxis, it is always 0.
+     *
      * @param double $minimum The minumum value to use on the axis
      */
     function forceMinimum($minimum)
@@ -124,8 +135,10 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
 
     /**
      * Forces the maximum value of the axis
+     *
      * A maximum cannot be set on a SequentialAxis, it is always the number
      * of labels passed to the constructor.
+     *
      * @param double $maximum The maximum value to use on the axis
      */
     function forceMaximum($maximum)
@@ -133,8 +146,10 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
     }
 
     /**
-     * Sets an interval for when labels are shown on the axis.
+     * Sets an interval for where labels are shown on the axis.
+     *
      * The label interval is rounded to nearest integer value
+     *
      * @param double $labelInterval The interval with which labels are shown
      */
     function setLabelInterval($labelInterval = 'auto')    
@@ -148,6 +163,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
 
     /**
      * Preprocessor for values, ie for using logarithmic axis
+     *
      * @param double $value The value to preprocess
      * @return double The preprocessed value
      * @access private
@@ -165,7 +181,9 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
 
     /**
      * Get the minor label interval with which axis label ticks are drawn.
+     *
      * For a sequential axis this is always disabled (i.e false)
+     *
      * @return double The minor label interval, always false
      * @access private
      */
@@ -176,8 +194,10 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
     
     /** 
      * Get the size in pixels of the axis.
+     *
      * For an x-axis this is the width of the axis including labels, and for an
      * y-axis it is the corrresponding height
+     *
      * @return int The size of the axis
      * @access private 
      */
@@ -217,6 +237,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
     
     /**
      * Apply the dataset to the axis.
+     *
      * This calculates the order of the categories, which is very important
      * for fx. line plots, so that the line does not "go backwards", consider
      * these X-sets:<p>
@@ -230,6 +251,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      * the 0 is before a 1 in the second set, and that it should also be before
      * a 1 in the X set. Hence:<p>
      * X: (0, 1, 2, 3, 4, 5, 6, 7)
+     *
      * @param Image_Graph_Dataset $dataset The dataset
      * @access private
      */
@@ -297,6 +319,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
 
     /** 
      * Return the label distance.
+     *
      * @return int The distance between 2 adjacent labels
      * @access private
      */
@@ -310,8 +333,9 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
     
     /**
      * Get next label point
+     *
      * @param doubt $point The current point, if omitted or false, the first is
-     * returned
+     *   returned
      * @return double The next label point
      * @access private
      */
@@ -335,7 +359,8 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
          
     /**
      * Is the axis numeric or not?
-     * return bool True if numeric, false if not
+     *
+     * @return bool True if numeric, false if not
      * @access private
      */
     function _isNumeric()
@@ -345,6 +370,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
     
     /**
      * Output the axis
+     *
      * @access private
      */
     function _done()

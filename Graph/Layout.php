@@ -77,6 +77,7 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
 
     /**
      * Resets the elements
+     *
      * @access private
      */
     function _reset()   
@@ -86,6 +87,8 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
     }
     
     /**
+     * (Add basic description here)
+     *
      * @since 0.3.0dev2
      * @access private
      */
@@ -107,6 +110,7 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
             
     /**
      * Calculate the edges
+     *
      * @access private
      */
     function _calcEdges()
@@ -169,6 +173,7 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
 
     /**
      * Update coordinates
+     *
      * @access private
      */
     function _updateCoords()
@@ -179,6 +184,7 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
 
     /**
      * Pushes an edge of area a specific distance 'into' the canvas
+     *
      * @param int $edge The edge of the canvas to align relative to
      * @param int $size The number of pixels or the percentage of the canvas total size to occupy relative to the selected alignment edge
      * @access private
@@ -200,6 +206,7 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
 
     /**
      * Sets the coordinates of the element   
+     *
      * @param int $left The leftmost pixel of the element on the canvas 
      * @param int $top The topmost pixel of the element on the canvas 
      * @param int $right The rightmost pixel of the element on the canvas 
@@ -214,6 +221,7 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
 
     /**
      * Returns the calculated "auto" size   
+     *
      * @return int The calculated auto size 
      * @access private
      */

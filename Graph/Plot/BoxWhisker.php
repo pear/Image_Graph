@@ -62,6 +62,7 @@ class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
      * @param int $y_q3 The Y position of the median of the third quartile
      * @param int $y_max The Y position of the maximum value
      * @param int $key The ID tag
+     * @access private
      */
     function _drawBoxWhisker($x, $w, $r, $y_min, $y_q1, $y_med, $y_q3, $y_max, $key = false)
     {
@@ -107,6 +108,7 @@ class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
      * @param int $y1 The bottom-right y-coordinate
+     * @access private
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
     {

@@ -62,6 +62,7 @@ class Image_Graph_Dataset_Function extends Image_Graph_Dataset
 
     /**
      * Image_Graph_FunctionDataset [Constructor]
+     *
      * @param double $minimumX The minimum X value
      * @param double $maximumX The maximum X value
      * @param string $function The name of the function, if must be a single
@@ -81,21 +82,24 @@ class Image_Graph_Dataset_Function extends Image_Graph_Dataset
 
     /**
      * Add a point to the dataset.
+     *
      * You can't add points to a function dataset
+     *
      * @param int $x The X value to add
      * @param int $y The Y value to add, can be omited
      * @param var $ID The ID of the point
-	 */
+     */
     function addPoint($x, $y = false, $ID = false)
     {
     }
 
     /**
      * Gets a Y point from the dataset
+     *
      * @param var $x The variable to apply the function to
      * @return var The function applied to the X value
      * @access private
-  	 */
+     */
     function _getPointY($x)
     {
         $function = $this->_dataFunction;
@@ -104,9 +108,10 @@ class Image_Graph_Dataset_Function extends Image_Graph_Dataset
 
     /**
      * The number of values in the dataset
+     *
      * @return int The number of values in the dataset
      * @access private
-	 */
+     */
     function _count()
     {
         return $this->_count;
@@ -114,9 +119,10 @@ class Image_Graph_Dataset_Function extends Image_Graph_Dataset
 
     /**
      * The interval between 2 adjacent Y values
+     *
      * @return var The interval
      * @access private
-	 */
+     */
     function _stepX()
     {
         return ($this->_maximumX - $this->_minimumX) / $this->_count();
@@ -124,8 +130,9 @@ class Image_Graph_Dataset_Function extends Image_Graph_Dataset
 
     /**
      * Calculates the Y extrema of the function
+     *
      * @access private
-	 */
+     */
     function _calculateMaxima()
     {
         $x = $this->_minimumX;

@@ -52,10 +52,11 @@ class Image_Graph_DataPreprocessor_Sequential extends Image_Graph_DataPreprocess
 
     /**
      * Process the value
+     *
      * @param var $value The value to process/format
      * @return string The processed value     
      * @access private
-	 */
+     */
     function _process($value)
     {
         list ($id, $value) = each($this->_dataArray);

@@ -69,6 +69,7 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
      * @param int $y1 The bottom-right y-coordinate
+     * @access private
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
     {
@@ -79,7 +80,7 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
     /**
      * Set the spacing between 2 neighbouring bars
      * @param int $space The number of pixels between 2 bars, should be a
-     * multipla of 2 (ie an even number)
+     *   multipla of 2 (ie an even number)
      */
     function spacing($space)
     {

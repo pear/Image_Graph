@@ -53,13 +53,14 @@ class Image_Graph_DataPreprocessor
 
     /**
      * Image_Graph_DataPreprocessor [Constructor]. 
-	 */
+     */
     function &Image_Graph_DataPreprocessor()
     {
     }
 
     /**
      * Process the value
+     *
      * @param var $value The value to process/format
      * @return string The processed value
      * @access private

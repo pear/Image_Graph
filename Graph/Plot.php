@@ -94,6 +94,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
 
     /**
      * PlotType [Constructor]
+     *
      * Valid values for multiType are:
      * 
      * 'normal' Plot is normal, multiple datasets are displayes next to one
@@ -107,11 +108,12 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
      * I no title is specified a default is used, which is basically the plot
      * type (fx. for a 'Image_Graph_Plot_Smoothed_Area' default title is
      * 'Smoothed Area')
+     *
      * @param Image_Graph_Dataset $dataset The data set (value containter) to
-     * plot or an array of datasets
+     *   plot or an array of datasets
      * @param string $multiType The type of the plot
-     * @param string $title The title of the plot (used for legends, {@link
-     * Image_Graph_Legend})
+     * @param string $title The title of the plot (used for legends,
+     *   {@link Image_Graph_Legend})
      */
     function &Image_Graph_Plot(& $dataset, $multiType = 'normal', $title = '')
     {
@@ -160,6 +162,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
 
     /**
      * Sets the title of the plot, used for legend
+     *
      * @param string $title The title of the plot
      */
     function setTitle($title)
@@ -169,8 +172,9 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
 
     /**
      * Sets the Y axis to plot the data
+     *
      * @param int $axisY The Y axis (either IMAGE_GRAPH_AXIS_Y or
-     * IMAGE_GRAPH_AXIS_Y_SECONDARY (defaults to IMAGE_GRAPH_AXIS_Y))
+     *   IMAGE_GRAPH_AXIS_Y_SECONDARY (defaults to IMAGE_GRAPH_AXIS_Y))
      * @access private
      */
     function _setAxisY($axisY)
@@ -180,6 +184,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
 
     /**
      * Sets the marker to 'display' data points on the graph
+     *
      * @param Marker $marker The marker
      */
     function &setMarker(& $marker)
@@ -192,6 +197,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
     /**
      * Sets the dataselector to specify which data should be displayed on the
      * plot as markers and which are not
+     *
      * @param DataSelector $dataSelector The dataselector
      */
     function setDataSelector(& $dataSelector)
@@ -201,11 +207,12 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
 
     /**
      * Calculate marker point data
-     * @param Array Point The point to calculate data for
-     * @param Array NextPoint The next point
-     * @param Array PrevPoint The previous point
-     * @param Array Totals The pre-calculated totals, if needed
-     * @return Array An array containing marker point data
+     *
+     * @param array Point The point to calculate data for
+     * @param array NextPoint The next point
+     * @param array PrevPoint The previous point
+     * @param array Totals The pre-calculated totals, if needed
+     * @return array An array containing marker point data
      * @access private
      */
     function _getMarkerData($point, $nextPoint, $prevPoint, & $totals)
@@ -336,6 +343,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
 
     /**
      * Draws markers on the canvas
+     *
      * @access private
      */
     function _drawMarker()
@@ -395,6 +403,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
 
     /**
      * Get the minimum X value from the dataset
+     *
      * @return double The minimum X value
      * @access private
      */
@@ -421,6 +430,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
 
     /**
      * Get the maximum X value from the dataset
+     *
      * @return double The maximum X value
      * @access private
      */
@@ -443,6 +453,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
 
     /**
      * Get the minimum Y value from the dataset
+     *
      * @return double The minimum Y value
      * @access private
      */
@@ -492,6 +503,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
 
     /**
      * Get the maximum Y value from the dataset
+     *
      * @return double The maximum Y value
      * @access private
      */
@@ -539,7 +551,8 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
 
     /**
      * Get the X pixel position represented by a value
-     * @param double $point the value to get the pixel-point for  
+     *
+     * @param double $point The value to get the pixel-point for  
      * @return double The pixel position along the axis
      * @access private
      */
@@ -551,6 +564,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
 
     /**
      * Get the Y pixel position represented by a value
+     *
      * @param double $point the value to get the pixel-point for  
      * @return double The pixel position along the axis
      * @access private
@@ -563,6 +577,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
 
     /**
      * Update coordinates
+     *
      * @access private
      */
     function _updateCoords()
@@ -573,6 +588,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
     
     /**
      * Get the dataset
+     *
      * @return Image_Graph_Dataset The dataset(s)
      */
     function &dataset()
@@ -582,7 +598,9 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
     
     /**
      * Calulate totals
-     * return array An associated array with the totals
+     *
+     * @return array An associated array with the totals
+     * @access private
      */
     function _getTotals()
     {
@@ -620,10 +638,12 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
 
     /**
      * Perform the actual drawing on the legend.
+     *
      * @param int $x0 The top-left x-coordinate
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
      * @param int $y1 The bottom-right y-coordinate
+     * @access private
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
     {
@@ -632,6 +652,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
 
     /**
      * Draw a sample for use with legend
+     *
      * @param array $param The parameters for the legend
      * @access private
      */

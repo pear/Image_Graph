@@ -53,9 +53,10 @@ class Image_Graph_DataSelector_NoZeros extends Image_Graph_DataSelector
 
     /**
      * Check if a specified value should be 'selected', ie shown as a marker
+     *
      * @param array $values The values to check
      * @return bool True if the Values should cause a marker to be shown, false
-     * if not
+     *   if not
      * @access private
 	 */
     function _select($values)

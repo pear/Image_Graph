@@ -61,7 +61,9 @@ class Image_Graph_DataPreprocessor_NumberText extends Image_Graph_DataPreprocess
 
     /**
      * Image_Graph_NumberText [Constructor].
+     *
      * Supported languages see {@link http://pear.php.net/package/Numbers_Words Numbers_Words}
+     *
      * @param string $langugage The language identifier for the language.
      */
     function &Image_Graph_DataPreprocessor_NumberText($language = 'en_US')
@@ -73,10 +75,11 @@ class Image_Graph_DataPreprocessor_NumberText extends Image_Graph_DataPreprocess
 
     /**
      * Process the value
+     *
      * @param var $value The value to process/format
      * @return string The processed value
      * @access private
-	 */
+     */
     function _process($value)
     {
         return Numbers_Words::toWords($value, $this->_language);

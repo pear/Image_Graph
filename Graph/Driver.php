@@ -149,6 +149,7 @@ class Image_Graph_Driver
 
     /**
      * Get the x-point from the relative to absolute coordinates
+     *
      * @param float $x The relative x-coordinate (in percentage of total width) 
      * @return float The x-coordinate as applied to the driver
      * @access private
@@ -160,6 +161,7 @@ class Image_Graph_Driver
 
     /**
      * Get the y-point from the relative to absolute coordinates
+     *
      * @param float $y The relative y-coordinate (in percentage of total width) 
      * @return float The y-coordinate as applied to the driver
      * @access private
@@ -171,6 +173,7 @@ class Image_Graph_Driver
         
     /**
      * Get the width of the canvas
+     *
      * @return int The width
      */
     function getWidth()
@@ -180,6 +183,7 @@ class Image_Graph_Driver
 
     /**
      * Get the height of the canvas
+     *
      * @return int The height
      */
     function getHeight()
@@ -189,6 +193,7 @@ class Image_Graph_Driver
     
     /**
      * Sets the thickness of the line(s) to be drawn
+     *
      * @param int $thickness The actual thickness (in pixels)
      */
     function setLineThickness($thickness)
@@ -198,6 +203,7 @@ class Image_Graph_Driver
     
     /**
      * Sets the color of the line(s) to be drawn
+     *
      * @param mixed $color The color of the line
      */
     function setLineColor($color)
@@ -207,8 +213,10 @@ class Image_Graph_Driver
 
     /**
      * Sets the style of the filling of drawn objects.
+     *
      * This method gives simple access to setFillColor(), setFillImage() and
      * setGradientFill()
+     *
      * @param mixed $fill The fill style
      */
     function setFill($fill)
@@ -224,6 +232,7 @@ class Image_Graph_Driver
     
     /**
      * Sets the color of the filling of drawn objects
+     *
      * @param mixed $color The fill color
      */
     function setFillColor($color)
@@ -233,6 +242,7 @@ class Image_Graph_Driver
 
     /**
      * Sets an image that should be used for filling
+     *
      * @param string $filename The filename of the image to fill with
      */
     function setFillImage($filename)
@@ -241,6 +251,7 @@ class Image_Graph_Driver
 
     /**
      * Sets a gradient fill
+     *
      * @param array $gradient Gradient fill options
      */
     function setGradientFill($gradient)
@@ -259,6 +270,7 @@ class Image_Graph_Driver
      * 'size' = size in pixels
      * 
      * 'angle' = the angle with which to write the text
+     *
      * @param array $font The font options.
      */
     function setFont($fontOptions)
@@ -268,7 +280,9 @@ class Image_Graph_Driver
     
     /**
      * Resets the driver.
-     * Include fillstyle, linestyle, thickness and polygon
+     *
+     * Includes fillstyle, linestyle, thickness and polygon
+     *
      * @access private
      */
     function _reset()
@@ -283,6 +297,7 @@ class Image_Graph_Driver
     
     /**
      * Draw a line
+     *
      * @param int $x0 X start point 
      * @param int $y0 X start point 
      * @param int $x1 X end point 
@@ -296,6 +311,7 @@ class Image_Graph_Driver
 
     /**
      * Adds vertex to a polygon
+     *
      * @param int $x X point 
      * @param int $y Y point 
      */
@@ -310,6 +326,7 @@ class Image_Graph_Driver
 
     /**
      * Adds vertex to a polygon
+     *
      * @param int $x X point 
      * @param int $y Y point 
      */
@@ -328,8 +345,9 @@ class Image_Graph_Driver
 
     /**
      * Draws a polygon
+     *
      * @param bool $connectEnds Specifies wether the start point should be
-     * conencted to the endpoint (closed polygon) or not (connected line)
+     *   conencted to the endpoint (closed polygon) or not (connected line)
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
      */
@@ -340,8 +358,9 @@ class Image_Graph_Driver
 
     /**
      * Draws a polygon
+     *
      * @param bool $connectEnds Specifies wether the start point should be
-     * conencted to the endpoint (closed polygon) or not (connected line)
+     *   conencted to the endpoint (closed polygon) or not (connected line)
      * @param mixed $fillColor The fill color, can be omitted
      * @param mixed $lineColor The line color, can be omitted
      */
@@ -352,6 +371,7 @@ class Image_Graph_Driver
 
     /**
      * Draw a rectangle
+     *
      * @param int $x0 X start point 
      * @param int $y0 X start point 
      * @param int $x1 X end point 
@@ -366,6 +386,7 @@ class Image_Graph_Driver
 
     /**
      * Draw an ellipse
+     *
      * @param int $x Center point x-value 
      * @param int $y Center point y-value
      * @param int $rx X-radius of ellipse 
@@ -380,6 +401,7 @@ class Image_Graph_Driver
 
     /**
      * Draw a pie slice
+     *
      * @param int $x Center point x-value 
      * @param int $y Center point y-value
      * @param int $rx X-radius of pie slice 
@@ -398,6 +420,7 @@ class Image_Graph_Driver
     
     /**
      * Get the width of a text,
+     *
      * @param string $text The text to get the width of
      * @return int The width of the text
      */ 
@@ -407,6 +430,7 @@ class Image_Graph_Driver
 
     /**
      * Get the height of a text,
+     *
      * @param string $text The text to get the height of
      * @return int The height of the text
      */ 
@@ -416,6 +440,7 @@ class Image_Graph_Driver
     
     /**
      * Writes text
+     *
      * @param int $x X-point of text 
      * @param int $y Y-point of text
      * @param string $text The text to write
@@ -429,12 +454,13 @@ class Image_Graph_Driver
     
     /**
      * Overlay image
+     *
      * @param int $x X-point of overlayed image 
      * @param int $y Y-point of overlayed image
      * @param string $filename The filename of the image to overlay  
      * @param int $width The width of the overlayed image (resizing if possible)
      * @param int $height The height of the overlayed image (resizing if
-     * possible)
+     *   possible)
      */
     function overlayImage($x, $y, $filename, $width = false, $height = false)
     {
@@ -442,6 +468,7 @@ class Image_Graph_Driver
     
     /**
      * Output the result of the driver
+     *
      * @param array $param Parameter array
      * @abstract
      */
