@@ -19,7 +19,7 @@
 // $Id$
 
 /**
-* Basic fill-element
+* Class-file for a basic fill-element
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
@@ -46,6 +46,12 @@ define('IMAGE_GRAPH_FILL_RADIAL',  2); // not yet implemented
 /**
 * Base class for a fill-element (e.g. a "solid" fill or a "gradient" fill)
 *
+* This class provides a basic implementation that is used and
+* extended in all derived fill-elements.
+* Fill-elements can be used at various places in Image_Graph. E.g. you
+* can use it for filling a data-element (Image_Graph_Data_Common and
+* derived classes) or a grid-element (Image_Graph_Grid).
+*
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
 */
@@ -60,12 +66,12 @@ class Image_Graph_Fill_Common
     var $_color = array(0, 0, 0, 255);
 
     /**
-    * Attributes for drawing the data element (shading, ...)
+    * Attributes for drawing the data element
     *
     * @var array
     * @access private
     */
-    var $_attributes = array("color" => array(0, 0, 0));
+    var $_attributes = array();
 
     /**
     * Constructor
@@ -84,6 +90,10 @@ class Image_Graph_Fill_Common
 
     /**
     * Set color
+    *
+    * Please note that derived classes which might need more than one color
+    * (e.g. for a gradient fill) might overwrite this function and demand
+    * that $color is not one color but an array of colors.
     *
     * @param  mixed           any color representation supported by Image_Graph_Color::color2RGB()
     * @see    Image_Graph_Color::color2RGB()

@@ -19,7 +19,7 @@
 // $Id$
 
 /**
-* Line data-element for a Image_Graph diagram
+* Class-file for the line data-element
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
@@ -33,7 +33,10 @@
 require_once("Image/Graph/Data/Common.php");
 
 /**
-* Line data-element for a Image_Graph diagram
+* Line data-element
+*
+* This class is used to draw a line in the diagram.
+* Support for stacking is implemented in this element.
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
@@ -112,6 +115,10 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
     /**
     * Draws diagram element
     *
+    * The parameter $drawWhat is needed to be able to first draw the fill
+    * of all line-elements and later draw the lines, in case that stacking
+    * is used.
+    *
     * @param resource     GD-resource to draw to
     * @param int          choose what to draw; use constants IMAGE_GRAPH_DRAW_FILLANDBORDER, IMAGE_GRAPH_DRAW_JUSTFILL or IMAGE_GRAPH_DRAW_JUSTBORDER
     * @access public
@@ -156,7 +163,7 @@ class Image_Graph_Data_Line extends Image_Graph_Data_Common
                 for ($counter=0; $counter<$numData; $counter++) {
                     if (is_null($this->_stackingData[$counter][0]) || is_null($this->_stackingData[$counter][1])) {
                         if (!empty($polygon)) {
-                            // fill polygon
+                           // fill polygon
                             $this->_fill->drawGDPolygon($img, $polygon);
                             // empty point-array so we can start with the next polygon
                             $polygon=array();

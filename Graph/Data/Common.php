@@ -19,7 +19,7 @@
 // $Id$
 
 /**
-* Basic data-element
+* Class-file for a basic data-element
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
@@ -49,7 +49,13 @@ define('IMAGE_GRAPH_DRAW_JUSTFILL',       2);
 define('IMAGE_GRAPH_DRAW_JUSTBORDER',     3);
 
 /**
-* Class template for a data-element (e.g. "line")
+* Base class for a data-element (e.g. "line" or "bar")
+*
+* This class provides a basic implementation that is used and
+* extended in all derived data elements.
+* An instance of this class can be used as a "null output" (not actually
+* drawing anything). This is usually *not* needed, however it might be
+* useful in special cases.
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph

@@ -19,7 +19,7 @@
 // $Id$
 
 /**
-* Solid fill-element for a Image_Graph diagram
+* Class-file for the solid fill-element
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
@@ -35,9 +35,9 @@ require_once("Image/Graph/Fill/Common.php");
 /**
 * Solid fill-element
 *
-* This class is used throughout Image_Graph to perform solid fills of a box
-* (rectangle) or a polygon. It is mainly used for diagram-data-elements (like
-* a bar or a line) and the diagram-grid.
+* This class is used throughout Image_Graph to perform solid fills.
+* It is mainly used for diagram-data-elements (like a bar or a line)
+* and the diagram-grid.
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
@@ -67,7 +67,7 @@ class Image_Graph_Fill_Solid extends Image_Graph_Fill_Common
         $drawColor = Image_Graph_Color::allocateColor($img, $this->_color);
 
         imagefilledrectangle ($img, $pos[0][0], $pos[0][1], $pos[1][0], $pos[1][1], $drawColor);
-    }
+   }
 
     /**
     * Draws fill element, shape: polygon

@@ -19,7 +19,7 @@
 // $Id$
 
 /**
-* Square datamarker-element
+* Class-file for the square datamarker-element
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
@@ -35,6 +35,9 @@ require_once("Image/Graph/DataMarker/Common.php");
 /**
 * Square datamarker-element
 *
+* The shape of this datamarker is a square.
+* The size set by setSize() is the width/height.
+*
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
 * @access   public
@@ -42,16 +45,7 @@ require_once("Image/Graph/DataMarker/Common.php");
 class Image_Graph_DataMarker_Square extends Image_Graph_DataMarker_Common
 {
     /**
-    * size (left to right)
-    *
-    * @var int   size
-    * @see setSize()
-    * @access private
-    */
-    var $_size = 10;
-    
-    /**
-    * Constructor for the class
+    * Constructor
     *
     * @param  array   attributes like color
     * @access public
@@ -65,20 +59,7 @@ class Image_Graph_DataMarker_Square extends Image_Graph_DataMarker_Common
     }
 
     /**
-    * Set size
-    *
-    * @param  int     size
-    * @access public
-    */
-    function setSize($size)
-    {
-        if ($size >= 1) {
-            $this->_size = $size;
-        }
-    }
-    
-    /**
-    * Draws diagram element 
+    * Draws diagram element
     *
     * @param resource         GD-resource to draw to
     * @param array            (array of int) absolute position (x/y), where to draw the marker

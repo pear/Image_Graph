@@ -80,7 +80,18 @@ require_once 'Image/Graph/Data/Common.php';  // include to have IMAGE_GRAPH_DRAW
 require_once("Image/Graph/Color.php");       // extended version of package: PEAR::Image_Color
 
 /**
-* Class for drawing graphs out of numerical data
+* Main class for Graph generation
+*
+* This class is the starting-point if you want to generate graphs. It
+* handles the various objects involved (e.g. axes, title, list of
+* data-elements). It also provides the basic functions to add
+* data-elements (using addData()), for automatic determination of
+* min/max values for the axes, for data-handling and for the final
+* generation of the graph.
+* An instance of Image_Graph is the root for a tree of
+* class-instances that will store data and settings, will provide
+* methods for customizing the appearance of your graph and will finally
+* create the output (graph on a canvas).
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
@@ -241,7 +252,7 @@ class Image_Graph
         $this->axisX  =& new Image_Graph_Axis_X();
         $this->axisY0 =& new Image_Graph_Axis_Y();
         $this->axisY1 =& new Image_Graph_Axis_Y();
-        
+
         $this->gridX  =& new Image_Graph_Grid($this->axisX);
         $this->gridY0 =& new Image_Graph_Grid($this->axisY0);
         $this->gridY1 =& new Image_Graph_Grid($this->axisY1);
@@ -313,7 +324,7 @@ class Image_Graph
         if (!isset($options['font_type'])) {
             $options['fontType'] = 'TTF';
         }
-        
+
         if (!isset($options['font_path'])) {
             $options['font_path'] = './';
         }
@@ -356,8 +367,8 @@ class Image_Graph
     * it will generate an instance of Image_Graph_Data_Line if you supply "line" for
     * $representation). The new object will automatically be added to an internal list
     * of data-objects.
-    * A reference to the object which you just added to the graph will also be returned
-    * by this function. Using that reference you can e.g. call functions like setColor(),
+    * A reference to the object which was added to the graph will also be returned by
+    * this function. Using that reference you can e.g. call functions like setColor(),
     * or whatever the specific data-element might support, to customize the data-element.
     * You can use the array $attributes to supply attribute-data to the data-element upon
     * creation. This might be quite handy if you add several data and don't want to call
@@ -390,7 +401,7 @@ class Image_Graph
         }
         $myNew = &new $dataElementClass($this, $data, $attributes);
         $this->_dataElements[count($this->_dataElements)] =& $myNew;
-        
+
         // the following is only true if axisX is of axistype IMAGE_GRAPH_AXISTYPE_TEXT
         $this->axisX->_bounds['max'] = max($this->axisX->_bounds['max'], count($data));
 
@@ -455,7 +466,7 @@ class Image_Graph
                         if ($bounds_max_auto && !isset($this->{$currAxis}->_boundsEffective['max'])) {
                             $this->{$currAxis}->_boundsEffective['max'] = $currDataElementTemp[0]->_data[0];
                         }
-    
+
                         foreach ($currDataElementTemp as $currDataElementEffective) {
                             if (!is_null($currDataElementEffective->_stackingData)) {
                                 $dataTemp = & $currDataElementEffective->_stackingData[0];
@@ -531,7 +542,7 @@ class Image_Graph
     function _prepareDataElements()
     {
         $tempDataElements = array();
-        
+
         // if string, assume it's "all"
         // everything else would have been converted into an array by stackData()
         if (is_string($this->_stackData)) {
@@ -548,7 +559,7 @@ class Image_Graph
                     $tempDataElements[$internalName][] = & $element;
                 } else {
                     // if data-element does not support stacking
-                    
+
                     $tempDataElements[] = & $element;
                 }
             }
@@ -601,7 +612,7 @@ class Image_Graph
     {
         // do initialisation of axes here
         // can't be done in the constructor of Image_Graph because of problems with references in PHP4
-        
+
         $this->axisX->_graph  = &$this;
         $this->axisY0->_graph = &$this;
         $this->axisY1->_graph = &$this;
@@ -639,7 +650,7 @@ class Image_Graph
                 $borderspaceSum["bottom"] += $textSize['height'];
                 $borderspaceSum['bottom'] += $this->axisX->title->_spacer['top'];
                 $borderspaceSum['bottom'] += $this->axisX->title->_spacer['bottom'];
-                
+
                 $totalTitleWidth = $textSize['width'] +
                                        $this->axisX->title->_spacer['left'] +
                                        $this->axisX->title->_spacer['right'];
@@ -675,7 +686,7 @@ class Image_Graph
                                        $this->{$currAxis}->title->_spacer['top'] +
                                        $this->{$currAxis}->title->_spacer['bottom'];
                     $this->{$currAxis}->_internalTempValues['totalTitleHeight'] = $totalTitleHeight;
-                    
+
                     if ($axisCount == 0)
                     {
                         $borderspaceSum['left'] += $totalTitleWidth;
@@ -799,12 +810,12 @@ class Image_Graph
                 $textY = $this->_pos[1] + $this->_borderspace + $this->diagramTitle->_spacer['top'];
                 $textX = 0;
                 $options = array_merge($this->diagramTitle->_fontOptions, array('x' => $textX, 'y' => $textY));
-                
+
                 $tempText = new Image_Text($this->diagramTitle->_text, $options);
                 $tempText->set('halign', IMAGE_TEXT_ALIGN_CENTER);
                 $tempText->set('canvas', $img);
                 $tempText->init();
-                                
+
                 $tempText->setColor(array ("r" => $this->diagramTitle->_color[0],
                                            "g" => $this->diagramTitle->_color[1],
                                            "b" => $this->diagramTitle->_color[2]));
@@ -817,10 +828,10 @@ class Image_Graph
                 require_once 'Image/Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
                 $textY = $this->_pos[1] + $this->_size[1] - $this->axisX->_internalTempValues['titleHeight'] - $this->_borderspace - $this->axisX->title->_spacer['bottom'];
                 $height = $this->axisX->_internalTempValues['titleHeight'];
-                
+
                 $width = $this->_drawingareaSize[0];
                 $textX = $this->_drawingareaPos[0];
-                
+
                 $options = array_merge($this->axisX->_fontOptions, array('x' => $textX, 'y' => $textY, 'width' => $width, 'height' => $height));
                 $tempText = new Image_Text($this->axisX->title->_text, $options);
                 $tempText->set('halign', IMAGE_TEXT_ALIGN_CENTER);
@@ -900,7 +911,7 @@ class Image_Graph
                       break;
             }
         }
-                
+
         // drawing of numbers for the X-axis
         if (!empty($this->_defaultFontOptions)) { // otherwise we don't have correct settings for font-filename etc.
             require_once 'Image/Text.php'; // already done in _prepareInternalVariables() - but remember it's an require_once
@@ -1028,14 +1039,14 @@ class Image_Graph
                     if ($axisCount == 0) { // axis 0 (left axis)
                         $textX = $this->_drawingareaPos[0]-1
                                  - $this->{$currAxis}->_internalTempValues['maxNumWidth'];
-                        if (($this->{$currAxis}->_tickStyle == IMAGE_GRAPH_TICKS_OUTSIDE) || 
+                        if (($this->{$currAxis}->_tickStyle == IMAGE_GRAPH_TICKS_OUTSIDE) ||
                             ($this->{$currAxis}->_tickStyle == IMAGE_GRAPH_TICKS_BOTH)) {
                             $textX -= $this->{$currAxis}->_internalTempValues['tickSize'];
                         }
                         $textX -= $this->{$currAxis}->_spacer['right'];
                     } else { // axis 1 (right axis)
                         $textX = $this->_drawingareaPos[0] + $this->_drawingareaSize[0]-1;
-                        if (($this->{$currAxis}->_tickStyle == IMAGE_GRAPH_TICKS_OUTSIDE) || 
+                        if (($this->{$currAxis}->_tickStyle == IMAGE_GRAPH_TICKS_OUTSIDE) ||
                             ($this->{$currAxis}->_tickStyle == IMAGE_GRAPH_TICKS_BOTH)) {
                             $textX += $this->{$currAxis}->_internalTempValues['tickSize'];
                         }

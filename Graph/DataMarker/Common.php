@@ -19,7 +19,7 @@
 // $Id$
 
 /**
-* Basic datamarker-element
+* Class-file for a basic datamarker-element
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
@@ -33,7 +33,10 @@
 require_once("Image/Graph/Color.php");
 
 /**
-* Class template for a datamarker-element (e.g. "diamond", "square" or "triangle")
+* Base class for a datamarker-element (e.g. "diamond", "square" or "triangle")
+*
+* This class provides a basic implementation that is used and
+* extended in all derived datamarker-elements.
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
@@ -44,13 +47,22 @@ class Image_Graph_DataMarker_Common
     /**
     * Color for element
     *
-    * @var array (4 ints for R,G,B,A); initially black
+    * @var array              (4 ints for R,G,B,A); initially black
     * @access private
     */
     var $_color = array(0, 0, 0, 255);
 
     /**
-    * Attributes for drawing the data element (shading, ...)
+    * size
+    *
+    * @var int
+    * @see setSize()
+    * @access private
+    */
+    var $_size = 10;
+
+    /**
+    * Attributes for drawing the data element
     *
     * @var array
     * @access private
@@ -58,9 +70,9 @@ class Image_Graph_DataMarker_Common
     var $_attributes = array();
 
     /**
-    * Constructor for the class
+    * Constructor
     *
-    * @param  array   attributes like color (to be extended to also include shading etc.)
+    * @param  array           attributes like color (to be extended to also include shading etc.)
     * @access public
     */
     function Image_Graph_DataMarker_Common($attributes)
@@ -71,7 +83,7 @@ class Image_Graph_DataMarker_Common
         }
         $this->_attributes = $attributes;
     }
-    
+
     /**
     * Set color
     *
@@ -82,6 +94,17 @@ class Image_Graph_DataMarker_Common
     function setColor($color)
     {
         $this->_color = Image_Graph_Color::color2RGB($color);
+    }
+
+    /**
+    * Set size
+    *
+    * @param  int     size
+    * @access public
+    */
+    function setSize($size)
+    {
+        $this->_size = max(1, $size);
     }
 
     /**

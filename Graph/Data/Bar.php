@@ -19,7 +19,7 @@
 // $Id$
 
 /**
-* Bar data-element
+* Class-file for the bar data-element
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
@@ -34,6 +34,9 @@ require_once("Image/Graph/Data/Common.php");
 
 /**
 * Bar data-element
+*
+* This class is used to draw a bar in the diagram.
+* Support for stacking is implemented in this element.
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
@@ -83,7 +86,7 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
             }
         }
     }
-    
+
     /**
     * Checks if two arrays are equal
     *
@@ -91,7 +94,7 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
     * @param array
     * @return boolean   true if both are equal
     * @access private
-    */    
+    */
     function _arraysEqual($arr1, $arr2)
     {
         $equal = true;
@@ -104,7 +107,11 @@ class Image_Graph_Data_Bar extends Image_Graph_Data_Common
     }
 
     /**
-    * Draws diagram element
+    * Draws the data element, using GD-output
+    *
+    * The parameter $drawWhat is needed to be able to first draw the fill
+    * of all bar-elements and later draw the border, in case that stacking
+    * is used.
     *
     * @param resource     GD-resource to draw to
     * @param int          choose what to draw; use constants IMAGE_GRAPH_DRAW_FILLANDBORDER, IMAGE_GRAPH_DRAW_JUSTFILL or IMAGE_GRAPH_DRAW_JUSTBORDER

@@ -19,7 +19,7 @@
 // $Id$
 
 /**
-* Gradient fill-element
+* Class-file for the gradient fill-element
 *
 * @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
 * @package  Image_Graph
@@ -35,10 +35,10 @@ require_once("Image/Graph/Fill/Common.php");
 /**
 * Gradient fill-element
 *
-* This class is used throughout Image_Graph to perform gradient fills of a box
-* (rectangle) or a polygon. It is mainly used for diagram-data-elements (like
-* a bar or a line) and the diagram-grid.
-* Please note that also more than 2 colors can be provided which will result in
+* This class is used throughout Image_Graph to perform gradient fills.
+* It is mainly used for diagram-data-elements (like a bar or a line)
+* and the diagram-grid.
+* Note that also more than 2 colors can be provided which will result in
 * a gradient-fill from one color to the next [...] to the last one (multiple
 * gradients).
 *
@@ -48,7 +48,7 @@ require_once("Image/Graph/Fill/Common.php");
 class Image_Graph_Fill_Gradient extends Image_Graph_Fill_Common
 {
     /**
-    * Constructor for the class
+    * Constructor
     *
     * @param  array           attributes, e.g. "color"
     * @access public
@@ -64,6 +64,10 @@ class Image_Graph_Fill_Gradient extends Image_Graph_Fill_Common
 
     /**
     * Set color
+    *
+    * Note that also more than 2 colors can be provided which will result in
+    * a gradient-fill from one color to the next [...] to the last one (multiple
+    * gradients).
     *
     * @param  array           array of colors
     * @see    Image_Graph_Color::color2RGB()
@@ -180,7 +184,7 @@ class Image_Graph_Fill_Gradient extends Image_Graph_Fill_Common
             if (($lowerLeft[1]-$lowerRight[1]) == 0) {
                 $lowerSlope=0;
             } else {
-                $lowerSlope = ($lowerRight[0]-$lowerLeft[0]) / ($lowerLeft[1]-$lowerRight[1]);
+               $lowerSlope = ($lowerRight[0]-$lowerLeft[0]) / ($lowerLeft[1]-$lowerRight[1]);
             }
             for ($lineCounter=$tempMinY; $lineCounter<$tempMaxY; $lineCounter++)
             {
