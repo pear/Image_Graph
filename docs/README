@@ -73,7 +73,7 @@ See http://pear.php.net/package/Image_Graph/docs for documentation
 History
 -------
 Release history of Image_Graph/GraPHPite (see also ChangeLog for changes)
-0.3.0dev2   xx-Dec-2004 (Driver support)
+0.3.0dev2   13-Jan-2005 (Driver support)
 0.3.0devl   25-Oct-2004 (PEAR - renamed to Image_Graph, merged with 'old' Image_Graph)
 1.2         15-Sep-2004 (Last GraPHPite release)
 1.1         16-Aug-2004

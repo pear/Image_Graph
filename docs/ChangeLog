@@ -3,8 +3,13 @@
 *************************
 Version 0.3.0-dev3 [2005-xxx-xx] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Added possibility to invert axis direction, fx. minimum at top or bottom
+    * Added methods to handle axis label customization (Image_Graph_Axis::setLabelOption() and Image_Graph_Axis::setLabelOptions())
+    * Minor change to the way GD driver(s) calculate height (so that fx. x-axis labels appear printed on the same baseline)
     * Fixed axis so that forceMinimum() works with axis intersection
     * Fixed PDF (PDFlib) driver to display images correctly
+    * Fixed factory method class name alias 'vector', tried to create Image_Graph_Dataset_Vector instead of Image_Graph_Dataset_VectorFunction
+    * Fixed a minor problem in category axis when adding more that one point with the same value, i.e. ('A', 10), ('A', 20)
+    * Added more tests
 
 Version 0.3.0-dev2 [2005-Jan-13] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Added functionality for multi-level labels (ticks, text, etc.) to support for minor and major labels (and more if needed)

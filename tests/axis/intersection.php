@@ -49,7 +49,7 @@ $Graph->setFont($Font);
 // create the plotarea
 $Graph->add(
     Image_Graph::vertical(
-        Image_Graph::factory('title', array('Testing Secondary Axis Intersection', 10)),               
+        Image_Graph::factory('title', array('Testing Axis Intersection', 10)),               
         $Matrix = Image_Graph::factory('Image_Graph_Layout_Matrix', array(3, 3)),           
         5            
     )

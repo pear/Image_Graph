@@ -23,9 +23,7 @@
 // +--------------------------------------------------------------------------+
 
 /**
- * This is a visual test case, testing the setting of the intersection of
- * a x-axis on a secondary y-axis, and the intersection of a secondary-y-
- * axis on the x-axis.
+ * This is a visual test case, testing axis inversion.
  * 
  * @package Image_Graph
  * @subpackage Tests
@@ -39,7 +37,7 @@
 require 'Image/Graph.php';    
 
 // create the graph
-$Graph =& Image_Graph::factory('graph', array(600, 400));
+$Graph =& Image_Graph::factory('graph', array(600, 600));
 // add a TrueType font
 $Font =& $Graph->addNew('ttf_font', 'Gothic');
 // set the font size to 11 pixels
@@ -50,43 +48,45 @@ $Graph->setFont($Font);
 // create the plotarea
 $Graph->add(
     Image_Graph::vertical(
-        Image_Graph::factory('title', array('Testing Secondary Axis Intersection', 10)),               
-        $Matrix = Image_Graph::factory('Image_Graph_Layout_Matrix', array(3, 3)),           
+        Image_Graph::factory('title', array('Testing Axis Inversion', 10)),               
+        $Matrix = Image_Graph::factory('Image_Graph_Layout_Matrix', array(4, 3)),           
         5            
     )
 );
 
 $DS[0] =& Image_Graph::factory('dataset', array(array('0' => 1, '1' => 2, '2' => 0)));
-$DS[1] =& Image_Graph::factory('dataset', array(array('0' => -1, '1' => 2, '2' => 1)));
+$DS[1] =& Image_Graph::factory('dataset', array(array('0' => -1, '1' => 2, '2' => 2)));
 $DS[2] =& Image_Graph::factory('dataset', array(array('0' => 1, '1' => 3, '2' => 2)));
-$DS2[0] =& Image_Graph::factory('dataset', array(array('0' => -1, '1' => 2, '2' => 1)));
-$DS2[1] =& Image_Graph::factory('dataset', array(array('0' => 1, '1' => 3, '2' => 2)));
-$DS2[2] =& Image_Graph::factory('dataset', array(array('0' => 1, '1' => 2, '2' => 1)));
 
-for ($row = 0; $row < 3; $row++) {
+for ($row = 0; $row < 4; $row++) {
     for ($col = 0; $col < 3; $col++) {
         if (isset($DS[$col])) {
             $Plotarea =& $Matrix->getEntry($row, $col);
             $AxisY =& $Plotarea->getAxis(IMAGE_GRAPH_AXIS_Y);
-            $AxisY->setLineColor('silver');
-            
             $AxisX =& $Plotarea->getAxis(IMAGE_GRAPH_AXIS_X);
-            $AxisX->setAxisIntersection(($row < 1 ? 0 : 1), IMAGE_GRAPH_AXIS_Y_SECONDARY);
-            $AxisX->setTitle('Intersect at y2=' . ($row < 1 ? '0' : '1'));
-            
-            $Plot =& $Plotarea->addNew('line', &$DS2[$col]);
-            $Plot->setLineColor('red@0.1');
-            $Plot2 =& $Plotarea->addNew('line', &$DS[$col], IMAGE_GRAPH_AXIS_Y_SECONDARY);
-            $Plot2->setLineColor('green');
-            $Plotarea->setBackgroundColor('blue@0.2');
 
-            $AxisYsec =& $Plotarea->getAxis(IMAGE_GRAPH_AXIS_Y_SECONDARY);                
-            if ($row > 1) {
-                $AxisYsec->setAxisIntersection(1);
-                $AxisYsec->setTitle('Intersect at x=1');
+            if ($row >= 1) {
+                $AxisY->setInverted(true);
+                $AxisY->setTitle('Inverted Y', 'vertical');
             } else {
-                $AxisYsec->setTitle('Intersect at x=max');
+                $AxisY->setTitle('Normal Y', 'vertical');
             }
+            
+            if ($row >= 2) {
+                $AxisX->setInverted(true);
+                $AxisX->setTitle('Inverted X');
+            } else {
+                $AxisX->setTitle('Normal X');
+            }
+            
+            if ($row >= 3) {
+                $AxisX->setAxisIntersection('max');
+                $AxisX->setTitle('Inverted X at Bottom (set X intersection)');
+            }
+            
+            $Plot =& $Plotarea->addNew('line', &$DS[$col]);
+            $Plot->setLineColor('red');
+            $Plotarea->setBackgroundColor('blue@0.2');
         }
     }
 }

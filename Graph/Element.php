@@ -629,9 +629,7 @@ class Image_Graph_Element extends Image_Graph_Common
      */
     function write($x, $y, $text, $alignment = false, $font = false)
     {
-        if ($font === false) {
-            $font = $this->_getFont();
-        }
+        $font = $this->_getFont($font);
 
         if ($alignment === false) {
             $alignment = IMAGE_GRAPH_ALIGN_LEFT + IMAGE_GRAPH_ALIGN_TOP;

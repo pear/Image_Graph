@@ -1001,6 +1001,16 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
             if (isset($this->_font['angle'])) {
                 $angle = $this->_font['angle'];
             }
+            
+            if ($angle == 0) {
+                /*
+                 * if the angle is 0 simply return the size, due to different
+                 * heights for example for x-axis labels, making the labels
+                 * _not_ appear as written on the same baseline
+                 */ 
+                return $this->_font['size'] + 2;
+            }
+            
             $bounds = ImageTTFBBox(
                 $this->_font['size'],
                 $angle,

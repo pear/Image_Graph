@@ -123,7 +123,6 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      */
     var $_intersect = array('value' => 'default', 'axis' => 'default');
     
-    // TODO Make labelOptions propagate to sub-classes where required
     /**
      * The label options
      *
@@ -140,7 +139,8 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
             'showtext' => true,
             'showoffset' => false,
             'font' => array(),
-            'offset' => 0
+            'offset' => 0,
+            'position' => 'outside'
         )
     );
 
@@ -419,9 +419,64 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
     }
 
     /**
+     * Sets options for the label at a specific level.
+     *
+     * Possible options are:
+     * 
+     * 'showtext' true or false whether label text should be shown or not
+     * 
+     * 'showoffset' should the label be shown at an offset, i.e. should the
+     * label be shown at a position so that it does not overlap with prior
+     * levels. Only applies to multilevel labels with text
+     * 
+     * 'font' The font options as an associated array
+     * 
+     * 'position' The position at which the labels are written ('inside' or
+     * 'outside' the axis). NB! This relative position only applies to the
+     * default location of the axis, i.e. if an x-axis is inverted then
+     * 'outside' still refers to the "left" side of a normal y-axis (since this
+     * is normally 'outside') but the actual output will be labels on the
+     * "inside"!
+     *
+     * @param string $option The label option name (see detailed description
+     * for possible values)
+     * @param mixed $value The value for the option
+     * @param int $level The label level to set the interval on
+     */
+    function setLabelOption($option, $value, $level = 1)
+    {
+        if (!isset($this->_labelOptions[$level])) {
+            $this->_labelOptions[$level] = array('type' => 'auto');
+        }
+
+        $this->_labelOptions[$level][$option] = $value;
+    }
+
+    /**
+     * Sets options for the label at a specific level.
+     *
+     * The possible options are specified in {@link Image_Graph_Axis::
+     * setLabelOption()}.
+     *
+     * @param array $options An assciated array with label options
+     * @param int $level The label level to set the interval on
+     */
+    function setLabelOptions($options, $level = 1)
+    {
+        if (is_array($options)) {
+            if (isset($this->_labelOptions[$level])) {
+                $this->_labelOptions[$level] = array_merge($this->_labelOptions[$level], $options);
+            } else {
+                $this->_labelOptions[$level] = $options;
+            }
+                
+        }
+    }    
+    
+    /**
      * Sets the title of this axis.
      *
-     * This is used as an alternative (maybe better) method, that using layout's
+     * This is used as an alternative (maybe better) method, than using layout's
      * for axis-title generation.
      * 
      * To use the current propagated font, but just set it vertically, simply
@@ -603,7 +658,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
         }
 
         foreach($this->_labelOptions as $level => $labelOptions) {
-            if ($labelOptions['type'] !== 'auto') {
+            if ((!isset($labelOptions['type'])) || ($labelOptions['type'] !== 'auto')) {
                 $span = false;
             } elseif ($level == 1) {
                 $span = $this->_axisValueSpan();
@@ -745,8 +800,14 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
             } else {
                 $this->_labelOptions[$level]['offset'] = 0;
             }
-            if ((isset($labelOptions['showtext'])) && ($labelOptions['showtext'] === true)) {
-
+            if (
+                (isset($labelOptions['showtext'])) &&                
+                ($labelOptions['showtext'] === true) &&
+                (
+                    (!isset($labelOptions['position'])) ||
+                    ($labelOptions['position'] == 'outside')
+                )               
+            ) {
                 if (isset($labelOptions['font'])) {
                     $font = $labelOptions['font'];
                 } else {
@@ -962,31 +1023,70 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
                     }
 
                     $font = $this->_getFont($font);
-
-                    if ($this->_type == IMAGE_GRAPH_AXIS_Y) {
-                        $this->write(
-                            $this->_right - 3 - $offset,
-                            $labelPosition,
-                            $labelText,
-                            IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_RIGHT,
-                            $font
-                        );
-                    } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY) {
-                        $this->write(
-                            $this->_left + 3 + $offset,
-                            $labelPosition,
-                            $labelText,
-                            IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_LEFT,
-                            $font
-                        );
+                    
+                    if (
+                        (isset($labelOptions['position'])) && 
+                        ($labelOptions['position'] == 'inside')
+                    ) {
+                        $labelInside = true;
                     } else {
-                        $this->write(
-                            $labelPosition,
-                            $this->_top + 3 + $offset,
-                            $labelText,
-                            IMAGE_GRAPH_ALIGN_CENTER_X | IMAGE_GRAPH_ALIGN_TOP,
-                            $font
-                        );
+                        $labelInside = false;
+                    }
+                                        
+                    if ($this->_type == IMAGE_GRAPH_AXIS_Y) {
+                        if ($labelInside) {
+                            $this->write(
+                                $this->_right + 3 + $offset,
+                                $labelPosition,
+                                $labelText,
+                                IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_LEFT,
+                                $font
+                            );
+                        } else {
+                            $this->write(
+                                $this->_right - 3 - $offset,
+                                $labelPosition,
+                                $labelText,
+                                IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_RIGHT,
+                                $font
+                            );
+                        }
+                    } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY) {
+                        if ($labelInside) {
+                            $this->write(
+                                $this->_left - 3 - $offset,
+                                $labelPosition,
+                                $labelText,
+                                IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_RIGHT,
+                                $font
+                            );
+                        } else {
+                            $this->write(
+                                $this->_left + 3 + $offset,
+                                $labelPosition,
+                                $labelText,
+                                IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_LEFT,
+                                $font
+                            );
+                        }
+                    } else {
+                        if ($labelInside === true) {
+                            $this->write(
+                                $labelPosition,
+                                $this->_top - 3 - $offset,
+                                $labelText,
+                                IMAGE_GRAPH_ALIGN_CENTER_X | IMAGE_GRAPH_ALIGN_BOTTOM,
+                                $font
+                            );
+                        } else {
+                            $this->write(
+                                $labelPosition,
+                                $this->_top + 3 + $offset,
+                                $labelText,
+                                IMAGE_GRAPH_ALIGN_CENTER_X | IMAGE_GRAPH_ALIGN_TOP,
+                                $font
+                            );
+                        }
                     }
                 }
             }

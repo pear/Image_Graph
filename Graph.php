@@ -239,10 +239,8 @@ class Image_Graph extends Image_Graph_Element
      */
     function _getMicroTime()
     {
-        $mtime = microtime();
-        $mtime = explode(' ', $mtime);
-        $mtime = $mtime[1] + $mtime[0];
-        return ($mtime);
+        list($usec, $sec) = explode(' ', microtime()); 
+        return ((float)$usec + (float)$sec); 
     }
 
     /**
@@ -462,7 +460,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 'vector':
-                $class = 'Image_Graph_Dataset_Vector';
+                $class = 'Image_Graph_Dataset_VectorFunction';
                 break;
 
             case 'axis':
@@ -508,7 +506,12 @@ class Image_Graph extends Image_Graph_Element
             }
         }
 
-    	include_once str_replace('_', '/', $class) . '.php';
+        /* A small check whether the class/file should be included or not, since
+         * it appears as if include_once is pretty 'time' consuming
+         */         
+        if (!class_exists($class)) {
+    	   include_once str_replace('_', '/', $class) . '.php';
+        }
 
         if (is_array($params)) {
             switch (count($params)) {
@@ -881,14 +884,17 @@ class Image_Graph extends Image_Graph_Element
 
             $timeEnd = $this->_getMicroTime();
 
-            if ($this->_showTime) {
+            if (($this->_showTime) || 
+                ((isset($param['showtime'])) && ($param['showtime'] === true))
+            ) {
                 $text = 'Generated in ' .
                     sprintf('%0.3f', $timeEnd - $timeStart) . ' sec';
                 $this->write(
                     $this->_right,
                     $this->_bottom,
                     $text,
-                    IMAGE_GRAPH_ALIGN_RIGHT + IMAGE_GRAPH_ALIGN_BOTTOM
+                    IMAGE_GRAPH_ALIGN_RIGHT + IMAGE_GRAPH_ALIGN_BOTTOM,
+                    array('color' => 'red')
                 );
             }
 

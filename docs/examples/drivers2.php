@@ -3,8 +3,8 @@
     include 'Image/Graph.php';
     include 'Image/Graph/Driver.php';
 
-    // create a new GD driver
-    $Driver =& Image_Graph_Driver::factory('gd',
+    // create a new PNG driver
+    $Driver =& Image_Graph_Driver::factory('png',
         array(
             'width' => 600,
             'height' => 400            
