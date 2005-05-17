@@ -6,6 +6,9 @@ Version 0.4.0-alpha [2005-XXX-XX] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Added possibility to specify horizontal title alignment (left, right or center)
     * Fixed an "off-by-one" problem with secondary axis
     * Included all on-line examples in package
+    * Removed some memory leaks mentioned as described in bug #3958 "Memory leaks in Image_Graph 0.3.0-alpha"
+    * Fixed bug #4113 "Image_Graph_Driver_GD::pieSlice() warnings"
+    * Fixed bug #4333 "Legend division by zero error on PieChart"
 
 Version 0.3.0-alpha [2005-Feb-25] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Added possibility to use arrays of the type $data[$id] = array('x' => $x, 'y' => $y) for easy data addition to a dataset

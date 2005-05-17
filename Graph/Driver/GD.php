@@ -1150,12 +1150,22 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
             $polygon[] = ($y + $ry * sin(deg2rad(max($v1, $v2) % 360)));
         }
 
-        if (($fill = $this->_getFillStyle($fillColor, $x - $rx - 1, $y - $ry - 1, $x + $rx + 1, $y + $ry + 1)) !== false) {
+        // If there are fewer than six points in the polygon, then by
+        // definition the slice is actually a line and need not be filled.
+        if (
+            (count($polygon) >= 6) && 
+            (($fill = $this->_getFillStyle($fillColor, $x - $rx - 1, $y - $ry - 1, $x + $rx + 1, $y + $ry + 1)) !== false)
+        ) {
             ImageFilledPolygon($this->_canvas, $polygon, count($polygon) / 2, $fill);
         }
 
         if (($line = $this->_getLineStyle($lineColor)) !== false) {
-            ImagePolygon($this->_canvas, $polygon, count($polygon) / 2, $line);
+            if (count($polygon) < 6) {
+                // The slice is actually a line and should be rendered as such.
+                ImageLine($this->_canvas, $polygon[0], $polygon[1], $polygon[2], $polygon[3], $line);
+            } else {
+                ImagePolygon($this->_canvas, $polygon, count($polygon) / 2, $line);
+            }
         }
 
         parent::pieSlice($x, $y, $rx, $ry, $v1, $v2, $fillColor, $lineColor);

@@ -716,7 +716,8 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
                     $prevPoint = $dataset->_nearby(-2);
                     $nextPoint = $dataset->_nearby();
 
-                    $point = $this->_getMarkerData($point, $nextPoint, $prevPoint, $i);
+                    $tmp = array();
+                    $point = $this->_getMarkerData($point, $nextPoint, $prevPoint, $tmp);
                     if (is_array($point)) {
                         $point['MARKER_X'] = $x+$param['width']/2;
                         $point['MARKER_Y'] = $y;

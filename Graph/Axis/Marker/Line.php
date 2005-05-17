@@ -76,6 +76,8 @@ class Image_Graph_Axis_Marker_Line extends Image_Graph_Grid
      */
     function _done()
     {
+        // TODO Implement a label mechanism when using axis markers.
+        
         if (parent::_done() === false) {
             return false;
         }
