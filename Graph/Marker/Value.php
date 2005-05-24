@@ -144,7 +144,12 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
             break;
 
         case IMAGE_GRAPH_PCT_Y_TOTAL:
-            $value = 100*$values['Y'] / $values['SUM_Y'];
+            if (isset($values['SUM_Y'])) {
+                $value = 100 * $values['Y'] / $values['SUM_Y'];
+            }
+            else {
+                $value = 0;
+            }            
             break;
 
         case IMAGE_GRAPH_POINT_ID:

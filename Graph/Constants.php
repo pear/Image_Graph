@@ -157,7 +157,7 @@ define('IMAGE_GRAPH_PCT_Y_TOTAL', 6);
 /**
  * Defines a ID value should be used
  */
-define('IMAGE_GRAPH_POINT_ID', 6);
+define('IMAGE_GRAPH_POINT_ID', 7);
 
 /**
  * Align text left
