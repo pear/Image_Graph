@@ -1,12 +1,12 @@
 *************************
  Image_Graph - Changelog
 *************************
-Version 0.3.1-alpha [2005-XXX-XX] - Jesper Veggerby <pear.nosey@veggerby.dk>
+Version 0.4.0-alpha [2005-May-24] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Added support for antialiasing images when using GD (both using native GD method and Image_Graph own implementation)
     * Added possibility to specify horizontal title alignment (left, right or center)
     * Fixed an "off-by-one" problem with secondary axis
     * Included all on-line examples in package
-    * Removed some memory leaks mentioned as described in bug #3958 "Memory leaks in Image_Graph 0.3.0-alpha"
+    * Removed some memory leaks as described in bug #3958 "Memory leaks in Image_Graph 0.3.0-alpha"
     * Fixed bug #4113 "Image_Graph_Driver_GD::pieSlice() warnings"
     * Fixed bug #4333 "Legend division by zero error on PieChart"
     * Fixed bug #4417 "Cannot use point ID as marker value"
