@@ -33,34 +33,18 @@ Image_Graph is compatible with both PHP4 and PHP5 and can be used with both GD1 
     </maintainer>
   </maintainers>
   <release>
-    <version>0.3.0</version>
-    <date>2005-02-25</date>
+    <version>0.4.0</version>
+    <date>2005-05-24</date>
     <license>LGPL</license>
     <state>alpha</state>
-    <notes>Added possibility to use arrays of the type $data[$id] = array('x' =&gt; $x, 'y' =&gt; $y) for easy data addition to a dataset
-* Added use of 'null' y-values in line plots (normal and smoothed) causing a break in the line (instead of dropping to zero)
-* Added possibility to make one legend use multiple plotareas
-* Added grouping to drivers (currently only fully supported by SVG driver)
-* Added axis padding (padding inside the plotarea)
-* Added Image_Graph_Axis::setFixedSize() to allow for alignment of axis on different plotareas when in a layout
-* Added possibility to use padding with overlayed legends to make legend _not_ display fx. on-top of y-axis
-* Added/improved support for multi line text using GD drivers
-* Added support for antialiasing images when using GD (GD built in method)
-* Implemented simple shadows (and removed shadow images from distribution)
-* Fixed bug #3346 &quot;double as data&quot;
-* Fixed a problem with normal multi-data bar charts not displaying expected bar width
-* Fixed problem with legends when overlayed
-* Fixed axis not displaying labels after resetting driver
-* Fixed problem in SVG driver with vertical texts
-* Fixed a problem with line axis marker on a secondary y-axis displaying vertically instead of horizontally
-* Fixed problem with logarithmic axis not scaling properly
-* Changed the way coordinates are calculated when adding titles to non-layout objects
-* Changed which changes API causing minor BC breaks
-	- Renamed Image_Graph_Plot_Bar::barWidth() to Image_Graph_Plot_Bar::setBarWidth()
-	- Renamed Image_Graph_Plot_Bar::spacing() to Image_Graph_Plot_Bar::setSpacing()
-	- Removed Image_Graph_Layout_Plotarea, it being completely obsolete with introduction of Image_Graph_Axis::setTitle()
-* Updated header comment blocks to conform to new standards as specified by RFC
-* Performance optimizations</notes>
+    <notes>* Added support for antialiasing images when using GD (both using native GD method and Image_Graph own implementation)
+* Added possibility to specify horizontal title alignment (left, right or center)
+* Fixed an &quot;off-by-one&quot; problem with secondary axis
+* Included all on-line examples in package
+* Removed some memory leaks as described in bug #3958 &quot;Memory leaks in Image_Graph 0.3.0-alpha&quot;
+* Fixed bug #4113 &quot;Image_Graph_Driver_GD::pieSlice() warnings&quot;
+* Fixed bug #4333 &quot;Legend division by zero error on PieChart&quot;
+* Fixed bug #4417 &quot;Cannot use point ID as marker value&quot;</notes>
     <deps>
       <dep type="ext" rel="has" optional="no">gd</dep>
       <dep type="pkg" rel="ge" version="1.3.1" optional="no">PEAR</dep>
@@ -178,6 +162,7 @@ Image_Graph is compatible with both PHP4 and PHP5 and can be used with both GD1 
     <provides type="function" name="Image_Graph_Simple::factory" />
     <provides type="class" name="Image_Graph_Title" extends="Image_Graph_Layout" />
     <provides type="function" name="Image_Graph_Title::setText" />
+    <provides type="function" name="Image_Graph_Title::setAlignment" />
     <provides type="class" name="Image_Graph_Tool" />
     <provides type="function" name="Image_Graph_Tool::mid" />
     <provides type="function" name="Image_Graph_Tool::mirror" />
@@ -390,19 +375,172 @@ Image_Graph is compatible with both PHP4 and PHP5 and can be used with both GD1 
       <file role="doc" baseinstalldir="Image" name="docs/README">
         <replace type="package-info" from="@package_version@" to="version"/>
       </file>
-      <file role="doc" baseinstalldir="Image" name="docs/examples/barchart1.php">
+      <file role="doc" baseinstalldir="Image" name="docs/examples/antialias.php">
         <replace type="package-info" from="@package_version@" to="version"/>
       </file>
-      <file role="doc" baseinstalldir="Image" name="docs/examples/drivers1.php">
+      <file role="doc" baseinstalldir="Image" name="docs/examples/category_axis_explanation.php">
         <replace type="package-info" from="@package_version@" to="version"/>
       </file>
-      <file role="doc" baseinstalldir="Image" name="docs/examples/drivers2.php">
+      <file role="doc" baseinstalldir="Image" name="docs/examples/color_chart.php">
         <replace type="package-info" from="@package_version@" to="version"/>
       </file>
-      <file role="doc" baseinstalldir="Image" name="docs/examples/linechart1.php">
+      <file role="doc" baseinstalldir="Image" name="docs/examples/customize.php">
         <replace type="package-info" from="@package_version@" to="version"/>
       </file>
-      <file role="doc" baseinstalldir="Image" name="docs/examples/piechart1.php">
+      <file role="doc" baseinstalldir="Image" name="docs/examples/datapreprocessor.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/driver_pdf.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/driver_png_svg.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/driver_swf01.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/driver_swf02.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/driver_swf03.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/frontpage_sample.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/gradient_fill_area.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/gradient_pie.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/gradient_step.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/image_fill.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/index.html">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/layout_matrix.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/line_break.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/logo_graph.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/log_axis.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/manual_labels.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/misc01.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/misc02.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/misc03.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/misc04.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/misc05.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/misc06.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/multiple_plots.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/nagative_values.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_all.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_area.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_area_smooth.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_area_stack.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_band.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_bar.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_bar_multiple.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_bar_stacked.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_bar_stacked100pct.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_bar_stacked_negative.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_boxwhisker.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_candlestick.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_impulse.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_impulse_stacked.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_line.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_line_smooth.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_map.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_pie.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_radar.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_radar_smooth.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_scatter.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_step.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/secondary_axis.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/simple_graph.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/vector_function.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/data/colors.txt">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/images/audi-tt-coupe.jpg">
         <replace type="package-info" from="@package_version@" to="version"/>
       </file>
       <file role="doc" baseinstalldir="Image" name="docs/examples/images/audi.png">
@@ -415,6 +553,12 @@ Image_Graph is compatible with both PHP4 and PHP5 and can be used with both GD1 
         <replace type="package-info" from="@package_version@" to="version"/>
       </file>
       <file role="doc" baseinstalldir="Image" name="docs/examples/images/mercedes.png">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/images/modify.jpg">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/images/mountain.jpg">
         <replace type="package-info" from="@package_version@" to="version"/>
       </file>
       <file role="doc" baseinstalldir="Image" name="docs/examples/images/porsche.png">
@@ -956,6 +1100,20 @@ Image_Graph is compatible with both PHP4 and PHP5 and can be used with both GD1 
 	- Removed Image_Graph_Layout_Plotarea, it being completely obsolete with introduction of Image_Graph_Axis::setTitle()
 * Updated header comment blocks to conform to new standards as specified by RFC
 * Performance optimizations</notes>
+    </release>
+    <release>
+      <version>0.4.0</version>
+      <date>2005-05-24</date>
+      <license>LGPL</license>
+      <state>alpha</state>
+      <notes>* Added support for antialiasing images when using GD (both using native GD method and Image_Graph own implementation)
+* Added possibility to specify horizontal title alignment (left, right or center)
+* Fixed an &quot;off-by-one&quot; problem with secondary axis
+* Included all on-line examples in package
+* Removed some memory leaks as described in bug #3958 &quot;Memory leaks in Image_Graph 0.3.0-alpha&quot;
+* Fixed bug #4113 &quot;Image_Graph_Driver_GD::pieSlice() warnings&quot;
+* Fixed bug #4333 &quot;Legend division by zero error on PieChart&quot;
+* Fixed bug #4417 &quot;Cannot use point ID as marker value&quot;</notes>
     </release>
   </changelog>
 </package>
