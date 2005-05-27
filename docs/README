@@ -76,7 +76,7 @@ See http://pear.php.net/package/Image_Graph/docs for documentation
 History
 -------
 Release history of Image_Graph/GraPHPite (see also ChangeLog for changes)
-0.4.0       xx-xxx-2005
+0.4.0       24-May-2005
 0.3.0       25-Feb-2005 (First alpha release of new Image_Graph)
 0.3.0dev4   28-Jan-2005 (Bug fix)
 0.3.0dev3   27-Jan-2005

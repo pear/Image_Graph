@@ -34,9 +34,11 @@
  *
  * This is set by default on Windows systems to %SystemRoot%\Fonts\
  */
-if (isset($_SERVER['SystemRoot'])) {
-    define('IMAGE_GRAPH_SYSTEM_FONT_PATH', $_SERVER['SystemRoot'] . '/Fonts/');
-} else {
-    define('IMAGE_GRAPH_SYSTEM_FONT_PATH', '');
+if (!defined('IMAGE_GRAPH_SYSTEM_FONT_PATH')) {
+    if (isset($_SERVER['SystemRoot'])) {
+        define('IMAGE_GRAPH_SYSTEM_FONT_PATH', $_SERVER['SystemRoot'] . '/Fonts/');
+    } else {
+        define('IMAGE_GRAPH_SYSTEM_FONT_PATH', '');
+    }
 }
 ?>
