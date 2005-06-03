@@ -3,6 +3,7 @@
 *************************
 Version 0.x.x-alpha [2005-xxx-xx] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Added Request #4451 "Unable to define IMAGE_GRAPH_SYSTEM_FONT_PATH outside of Config.php"
+    * Fixed Bug #4484 "SVG output problem with fill and alignment attributes of text"
 
 Version 0.4.0-alpha [2005-May-24] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Added support for antialiasing images when using GD (both using native GD method and Image_Graph own implementation)

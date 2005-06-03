@@ -671,7 +671,7 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
                 'style="' .
                 (isset($this->_font['file']) ?
                     'font-family:' . $this->_font['file'] . ';' : '') .
-                        'font-size:' . $this->_font['size'] . 'px;fill=' .
+                        'font-size:' . $this->_font['size'] . 'px;fill:' .
                         $textColor . ($textOpacity ? ';fill-opacity:' .
                         $textOpacity :
                     ''
