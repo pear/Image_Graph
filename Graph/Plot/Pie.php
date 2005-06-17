@@ -48,6 +48,8 @@ require_once 'Image/Graph/Plot.php';
 class Image_Graph_Plot_Pie extends Image_Graph_Plot
 {
 
+    // TODO Group items together i one pie ("the rest") if less than a certain value/percentage
+
     /**
      * The radius of the 'pie' spacing
      * @access private
@@ -89,7 +91,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
      */
     function _getMarkerData($point, $nextPoint, $prevPoint, &$totals)
     {
-        $point = parent::_getMarkerData($point, $nextPoint, $prevPoint, &$totals);
+        $point = parent::_getMarkerData($point, $nextPoint, $prevPoint, $totals);
 
         $point['ANGLE'] = 360 * (($totals['CURRENT_Y'] +
             ($point['Y'] / 2)) / $totals['ALL_SUM_Y']);
@@ -294,7 +296,11 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
             $totals['CENTER_Y'] = (int) (($this->_top + $this->_bottom) / 2);
             $totals['RADIUS'] = min($this->height(), $this->width()) * 0.75 * 0.5;
             $totals['CURRENT_Y'] = 0;
-    
+
+            if (is_a($this->_fillStyle, "Image_Graph_Fill")) {
+                $this->_fillStyle->_reset();
+            }
+
             $count = 0;
             $keys = array_keys($this->_dataset);
             foreach ($keys as $key) {

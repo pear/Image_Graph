@@ -84,7 +84,7 @@ class Image_Graph_Simple extends Image_Graph
 
         $plotarea->addNew('line_grid', array(), IMAGE_GRAPH_AXIS_Y);
 
-        $plot =& $plotarea->addNew($plotType, &$dataset);
+        $plot =& $plotarea->addNew($plotType, array(&$dataset));
         $plot->setLineColor($lineColor);
         $plot->setFillColor($fillColor);
 

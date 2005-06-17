@@ -96,7 +96,7 @@ class Image_Graph_Driver_GD_JPG extends Image_Graph_Driver_GD
     {
         parent::done($param);
         if (($param === false) || (!isset($param['filename']))) {
-            header('Content-type: image/jpg');
+            header('Content-type: image/jpeg');
             header('Content-Disposition: inline; filename = \"'. basename($_SERVER['PHP_SELF'], '.php') . '.jpg\"');
             ImageJPEG($this->_canvas, '', $this->_quality);
             ImageDestroy($this->_canvas);
