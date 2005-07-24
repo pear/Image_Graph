@@ -10,6 +10,10 @@ PDF support using PDFlib (http://www.pdflib.com/), PEAR's File_PDF does not prov
 SWF created using MING library (http://ming.sourceforge.net/) - can't figure out those darn gradients, libswf in TO-DO, SWF text output doesn't seem to work on Win32
 SVG uses a internal SVG creation method, XML_SVG does not seem to support enough functionality
 
+3rd Party Drivers
+------------------
+There exist (at least one) 3rd party driver. Known driver(s) are:
+- cPdfWriter (http://projects.palos.ro/cPdfWriter/) a PDF driver that includes support for alpha transparency, gradients, and image filling, all LGPL'ed - all PHP. Driver does not comply with PEAR CS. Check it out, it looks pretty cool.
 
 Driver Support Matrix
 ---------------------- 
@@ -24,7 +28,7 @@ V    Angled/sloped text
 S    Smoothed curves
 C    Comments
 
-+    Yes, it is working
+X    Yes, it is working
 -    No, can't be done
 ?    Is it Supported? / Can't get it to work
 !    Not implemented yet
@@ -32,15 +36,17 @@ B    Native Bezier curves
 C    Native quadratic curve splines
 I    Image_Graph implementation
 
-         |   T    A    G    I    O   TTF   V    S    C
----------+-------------------------------------------------------------------------------------------------------
-JPEG     |   -    X    X    X    X    X    X    I
-WBMP     |   -    X    X    X    X    X    X    I
-PNG      |   X    X    X    X    X    X    X    I
-GIF      |   X    X    X    X    X    X    X    I
-SVG      |   -    X    X    -    X    X    X    B
-XMLSVG   |   ?    X    ?    -    -    ?    ?    ?    Uses XML_SVG
-PDF      |   -    -    -    -    !    !    -    ?    Uses File_PDF. Can't get it to work at all - worth the effort?
-PDFlib   |   -    -    -    -    X    X    -    B
-SWF      |   -    X    ?    X    X    -    ?    C
-LIBSWF   |   !    !    !    !    !    -    !	!
+           |   T    A    G    I    O   TTF   V    S    C
+-----------+-------------------------------------------------------------------------------------------------------
+JPEG       |   -    X    X    X    X    X    X    I
+WBMP       |   -    X    X    X    X    X    X    I
+PNG        |   X    X    X    X    X    X    X    I
+GIF        |   X    X    X    X    X    X    X    I
+SVG        |   -    X    X    -    X    X    X    B
+XMLSVG     |   ?    X    ?    -    -    ?    ?    ?    Uses XML_SVG
+PDF        |   -    -    -    -    !    !    -    ?    Uses File_PDF. Can't get it to work at all - worth the effort?
+PDFlib     |   -    -    -    -    X    X    -    B
+SWF        |   -    X    ?    X    X    -    ?    C
+LIBSWF     |   !    !    !    !    !    -    !	  !
+-----------+-------------------------------------------------------------------------------------------------------
+cPdrWriter |   X    X    X    X    ?    X    ?    X

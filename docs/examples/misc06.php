@@ -97,7 +97,7 @@ $Plot->setMarker($Marker);
 // create the 2nd plot ('defects / 1000 units') as a line plot and associate
 // it with the secondary y-axis (implicitly this creates a y-axis of the class
 // Image_Graph_Axis)
-$Plot2 =& $Plotarea->addNew('line', &$Dataset2, IMAGE_GRAPH_AXIS_Y_SECONDARY);
+$Plot2 =& $Plotarea->addNew('line', array(&$Dataset2), IMAGE_GRAPH_AXIS_Y_SECONDARY);
 // set the plot title
 $Plot2->setTitle('Defects');    
 // and line style

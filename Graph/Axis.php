@@ -48,8 +48,6 @@ require_once 'Image/Graph/Plotarea/Element.php';
  class Image_Graph_Axis extends Image_Graph_Plotarea_Element
 {
     
-    // TODO Implement axis as having an angle instead of hardcoded Y = 90, X = 0 degrees
-
     /**
      * The type of the axis, possible values are:
      * <ul>
@@ -123,7 +121,7 @@ require_once 'Image/Graph/Plotarea/Element.php';
 
     /**
      * The number of "pixels" representing 1 unit on the axis
-     * 
+     *
      * This is primarily included for performance reasons
      * @var double
      * @access private
@@ -171,7 +169,7 @@ require_once 'Image/Graph/Plotarea/Element.php';
      * @access private
      */
     var $_fixedSize = false;
-    
+
     /**
      * The label options
      *
@@ -259,7 +257,6 @@ require_once 'Image/Graph/Plotarea/Element.php';
      */
     function &Image_Graph_Axis($type = IMAGE_GRAPH_AXIS_X)
     {
-
         parent::Image_Graph_Element();
         $this->_type = $type;
     }
@@ -502,6 +499,10 @@ require_once 'Image/Graph/Plotarea/Element.php';
      * is normally 'outside') but the actual output will be labels on the
      * "inside"!
      *
+     * 'format' To format the label text according to a sprintf statement
+     *
+     * 'dateformat' To format the label as a date, fx. j. M Y = 29. Jun 2005
+     *
      * @param string $option The label option name (see detailed description
      * for possible values)
      * @param mixed $value The value for the option
@@ -615,8 +616,6 @@ require_once 'Image/Graph/Plotarea/Element.php';
      */
     function _point($value)    
     {
-        // TODO Values aren't properly cropped when "above" maximum or "below" minimum (i.e. graph should be cropped to plotarea!)     
-        
         if ($this->_type == IMAGE_GRAPH_AXIS_X) {
             if ($this->_invert) {
                 return max($this->_left, $this->_right - $this->_axisPadding['high'] - $this->_delta * $this->_value($value));
@@ -625,7 +624,7 @@ require_once 'Image/Graph/Plotarea/Element.php';
             }                
         } else {
             if ($this->_invert) {                
-                return min($this->_botto, $this->_top + $this->_axisPadding['high'] + $this->_delta * $this->_value($value));
+                return min($this->_bottom, $this->_top + $this->_axisPadding['high'] + $this->_delta * $this->_value($value));
             } else {
                 return max($this->_top, $this->_bottom - $this->_axisPadding['low'] - $this->_delta * $this->_value($value));
             }
@@ -898,6 +897,10 @@ require_once 'Image/Graph/Plotarea/Element.php';
                     {
                         if (is_object($this->_dataPreProcessor)) {
                             $labelText = $this->_dataPreProcessor->_process($value);
+                        } elseif (isset($labelOptions['format'])) {
+                            $labelText = sprintf($labelOptions['format'], $value);
+                        } elseif (isset($labelOptions['dateformat'])) {
+                            $labelText = date($labelOptions['dateformat'], $value);
                         } else {
                             $labelText = $value;
                         }
@@ -988,7 +991,7 @@ require_once 'Image/Graph/Plotarea/Element.php';
      * If the minimum values are normally displayed fx. at the bottom setting
      * axis inversion to true, will cause the minimum values to be displayed at
      * the top and maximum at the bottom.
-     * 
+     *
      * @param bool $invert True if the axis is to be inverted, false if not
      * @since 0.3.0dev3
      */
@@ -1019,8 +1022,6 @@ require_once 'Image/Graph/Plotarea/Element.php';
      */
     function setAxisIntersection($intersection, $axis = 'default')
     {
-        // TODO Create a method to align '0' of primary and secondary y-axis
-        
         if ($axis == 'x') {
             $axis = IMAGE_GRAPH_AXIS_X;
         } elseif ($axis = 'y') {
@@ -1103,6 +1104,10 @@ require_once 'Image/Graph/Plotarea/Element.php';
             if ((isset($labelOptions['showtext'])) && ($labelOptions['showtext'] === true)) {
                 if (is_object($this->_dataPreProcessor)) {
                     $labelText = $this->_dataPreProcessor->_process($value);
+                } elseif (isset($labelOptions['format'])) {
+                    $labelText = sprintf($labelOptions['format'], $value);
+                } elseif (isset($labelOptions['dateformat'])) {
+                    $labelText = date($labelOptions['dateformat'], $value);
                 } else {
                     $labelText = $value;
                 }

@@ -381,7 +381,6 @@ class Image_Graph_Element extends Image_Graph_Common
      */
     function _getFont($options = false)
     {
-    	// TODO Look at further optimization here (sample20.php = 416 calls!)
         if (($options === false) && ($this->_defaultFontOptions !== false)) {
             return $this->_defaultFontOptions;
         }

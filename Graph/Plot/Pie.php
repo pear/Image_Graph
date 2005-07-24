@@ -48,8 +48,6 @@ require_once 'Image/Graph/Plot.php';
 class Image_Graph_Plot_Pie extends Image_Graph_Plot
 {
 
-    // TODO Group items together i one pie ("the rest") if less than a certain value/percentage
-
     /**
      * The radius of the 'pie' spacing
      * @access private

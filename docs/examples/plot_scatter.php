@@ -41,7 +41,7 @@ $Legend->setPlotarea($Plotarea);
 // create the dataset
 $Dataset =& Image_Graph::factory('random', array(10, 2, 15, false));
 // create the 1st plot as smoothed area chart using the 1st dataset
-$Plot =& $Plotarea->addNew('Image_Graph_Plot_Dot', &$Dataset);
+$Plot =& $Plotarea->addNew('Image_Graph_Plot_Dot', array(&$Dataset));
 
 // set a line color
 $Plot->setMarker(Image_Graph::factory('Image_Graph_Marker_Box'));

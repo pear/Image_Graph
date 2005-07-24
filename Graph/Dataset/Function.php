@@ -68,7 +68,6 @@ class Image_Graph_Dataset_Function extends Image_Graph_Dataset
      * parameter function like fx sin(x) or cos(x)
      * @param int $points The number of points to create
      */
-    // TODO Implement algorithm for "best-select" of points, i.e $points = "auto"
     function &Image_Graph_Dataset_Function($minimumX, $maximumX, $function, $points)
     {
         parent::Image_Graph_Dataset();

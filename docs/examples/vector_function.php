@@ -51,7 +51,7 @@ $GridY->setLineStyle($LineStyle);
 
 $Dataset =& Image_Graph::factory('vector', array(0, 20, 'tcost', 'tsint', 200));
 // create the 1st plot as smoothed area chart using the 1st dataset
-$Plot =& $Plotarea->addNew('line', &$Dataset);
+$Plot =& $Plotarea->addNew('line', array(&$Dataset));
 $Plot->setLineColor('red');
 $Plot->setTitle('f(t) = { t*cos(t), t*sin(t) }');
 

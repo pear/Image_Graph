@@ -26,7 +26,7 @@ $Driver =& Image_Graph_Driver::factory('png',
     
 
 // create the graph
-$Graph =& Image_Graph::factory('graph', &$Driver);
+$Graph =& Image_Graph::factory('graph', array(&$Driver));
 
 $Font =& $Graph->addNew('ttf_font', 'Gothic');
 $Font->setSize(8);
@@ -54,7 +54,7 @@ $Dataset->addPoint(3, 35);
 $Dataset->addPoint(4, 5);
 $Dataset->addPoint(5, 18);
 $Dataset->addPoint(6, 33);
-$Plot =& $Plotarea->addNew('step', &$Dataset);
+$Plot =& $Plotarea->addNew('step', array(&$Dataset));
 
 $Fill =& Image_Graph::factory('gradient', array(IMAGE_GRAPH_GRAD_VERTICAL, 'darkgreen', 'white'));
 $Plot->setFillStyle($Fill);

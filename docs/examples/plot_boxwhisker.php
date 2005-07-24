@@ -45,7 +45,7 @@ $Dataset =& Image_Graph::factory('dataset');
 $Dataset->addPoint('Security', array(10, 21, 12, 18, 12, 17, 14, 13));
 $Dataset->addPoint('Internal', array(3, 6, 1, 9, 12, 4, 3, 5, 6));
 $Dataset->addPoint('External', array(9, 10, 12, 15, 13, 12, 11, 17));
-$Plot =& $Plotarea->addNew('Image_Graph_Plot_BoxWhisker', &$Dataset);
+$Plot =& $Plotarea->addNew('Image_Graph_Plot_BoxWhisker', array(&$Dataset));
 
 $Fill =& Image_Graph::factory('Image_Graph_Fill_Array');
 $Fill->addColor('red', 'min');

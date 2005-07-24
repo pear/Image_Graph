@@ -23,7 +23,7 @@ require 'Image/Graph/Driver.php';
 $Driver =& Image_Graph_Driver::factory('png', array('width' => 600, 'height' => 300, 'antialias' => true));      
 
 // create the graph
-$Graph =& Image_Graph::factory('graph', &$Driver);
+$Graph =& Image_Graph::factory('graph', array(&$Driver));
 // add a TrueType font
 $Font =& $Graph->addNew('ttf_font', 'Gothic');
 // set the font size to 8 pixels

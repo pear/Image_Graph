@@ -1257,8 +1257,6 @@ class Image_Graph_Driver_GD extends Image_Graph_Driver
      */
     function write($x, $y, $text, $alignment, $color = false)
     {
-        // TODO Make a better method for "baseline" adjustment
-        
         $text = str_replace("\r", '', $text);
         $lines = explode("\n", $text);
 

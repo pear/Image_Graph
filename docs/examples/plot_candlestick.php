@@ -63,7 +63,7 @@ $Grid->setLineColor('lightgray@0.1');
 $Grid =& $Plotarea->addNew('line_grid', null, IMAGE_GRAPH_AXIS_Y); 
 $Grid->setLineColor('lightgray@0.1'); 
 
-$Plot =& $Plotarea->addNew('Image_Graph_Plot_CandleStick', &$Dataset);    
+$Plot =& $Plotarea->addNew('Image_Graph_Plot_CandleStick', array(&$Dataset));    
 $Fill =& Image_Graph::factory('Image_Graph_Fill_Array');
 $Fill->addColor('red@0.4', 'red');
 $Fill->addColor('green@0.4', 'green');

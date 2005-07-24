@@ -54,8 +54,6 @@ require_once 'Image/Graph/Layout.php';
 class Image_Graph_Legend extends Image_Graph_Layout
 {
     
-    // TODO Possibility to wrap legend titles
-
     /**
      * Alignment of the text
      * @var int

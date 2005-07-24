@@ -1,0 +1,78 @@
+********************
+ Image_Graph - TODO
+********************
+
+Image_Graph
+*** Update private tags to protected wherever necessary
+*** Create a simple table element
+*** Create bar-chart-type where bar have individual widths (i.e. in the dataset fx)
+
+Image_Graph_Element
+*** Look at further optimization (line 384) (sample20.php = 416 calls!)
+
+Image_Graph_Legend
+*** Possibility to wrap legend titles
+
+Image_Graph_Plot
+*** Create a method for making legend samples user defined
+
+Image_Graph_Plot_BoxWhisker
+*** Possibility to handle outliers (see http://pear.veggerby.dk/forum/read.php?board=1&id=265)
+
+Image_Graph_Plot_Line
+*** Consider new legend icon
+
+Image_Graph_Plot_Pie
+*** Group items together i one pie ("the rest") if less than a certain value/percentage
+
+Image_Graph_Plot_Smoothed_Radar
+*** Create legend sample for smoothed radar chart
+
+Image_Graph_Axis
+*** Implement axis as having an angle instead of hardcoded Y = 90, X = 0 degrees
+*** Create a method to align '0' of primary and secondary y-axis
+*** Values aren't properly cropped when "above" maximum or "below" minimum (i.e. graph should be cropped to plotarea!)
+
+Image_Graph_Axis_Composite
+*** Implement composite axis (i.e. linear from 0-10, log from 10-1000, and category from 1001, 1004, 10000, ...)
+
+Image_Graph_Axis_Logarithmic
+*** Implement logarithic axis minimum (other that 0)
+
+Image_Graph_Axis_Marker
+*** Implement a label mechanism when using axis markers
+
+Image_Graph_Driver
+*** Implement image maps
+
+Image_Graph_Driver_GD
+*** Make a better method for "baseline" adjustment (line 1260)
+
+Image_Graph_Driver_LibSWF
+*** Create LibSWF support
+
+Image_Graph_Driver_SVG
+*** Linestyles (i.e. fx. dotted) does not work
+*** Make images work in SVG
+*** Pieslices with v2-v1 < 90 "curl" the wrong way
+
+Image_Graph_Driver_SWF
+*** I don't get SWF gradient fill: moveTo/scaleTo/rotateTo
+*** Image fill SWF doesn't seem to work even with JPEG's
+*** Implement SWF::overlayImage
+*** Implement SWF::pieSlice
+*** Implement SWF::textHeight
+*** Implement SWF::textWidth
+*** Implement SWF::write
+*** Scale the image fill in SWF
+*** SWF curve smoothing requires only one control point - this method is not very good!
+
+Image_Graph_Driver_PDFlib
+*** Implement Image_Driver_PDF::pieslice()
+*** Implement linestyles in PDFlib (using pdf_setcolor(.., 'pattern'...); ?
+
+Image_Graph_Driver_XMLSVG
+*** Gradient fill's does not seem to be supported by XML_SVG, investigate
+
+Image_Graph_Dataset_Function
+*** Implement algorithm for "best-select" of points, i.e $points = "auto"

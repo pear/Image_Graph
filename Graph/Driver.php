@@ -48,8 +48,6 @@
 class Image_Graph_Driver
 {
     
-    // TODO Implement image maps
-
     /**
      * The leftmost pixel of the element on the canvas
      * @var int

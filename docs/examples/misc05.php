@@ -56,7 +56,7 @@ $Dataset_TempAvg->addPoint('Sep', 12.1);
 $Dataset_TempAvg->addPoint('Oct', 8.7);
 $Dataset_TempAvg->addPoint('Nov', 4.4);
 $Dataset_TempAvg->addPoint('Dec', 1.8);
-$Plot_TempAvg =& $Plotarea_Weather->addNew('smooth_line', &$Dataset_TempAvg);
+$Plot_TempAvg =& $Plotarea_Weather->addNew('smooth_line', array(&$Dataset_TempAvg));
 $Plot_TempAvg->setLineColor('blue');
 $Plot_TempAvg->setTitle('Average temperature');
 
@@ -73,7 +73,7 @@ $Dataset_TempMin->addPoint('Sep', 7.8);
 $Dataset_TempMin->addPoint('Oct', 5.0);
 $Dataset_TempMin->addPoint('Nov', 1.5);
 $Dataset_TempMin->addPoint('Dec', -0.9);
-$Plot_TempMin =& $Plotarea_Weather->addNew('smooth_line', &$Dataset_TempMin);
+$Plot_TempMin =& $Plotarea_Weather->addNew('smooth_line', array(&$Dataset_TempMin));
 $Plot_TempMin->setLineColor('teal');
 $Plot_TempMin->setTitle('Minimum temperature');
 
@@ -90,7 +90,7 @@ $Dataset_TempMax->addPoint('Sep', 16.3);
 $Dataset_TempMax->addPoint('Oct', 11.8);
 $Dataset_TempMax->addPoint('Nov', 6.9);
 $Dataset_TempMax->addPoint('Dec', 4.1);
-$Plot_TempMax =& $Plotarea_Weather->addNew('smooth_line', &$Dataset_TempMax);
+$Plot_TempMax =& $Plotarea_Weather->addNew('smooth_line', array(&$Dataset_TempMax));
 $Plot_TempMax->setLineColor('red');
 $Plot_TempMax->setTitle('Maximum temperature');
 
@@ -116,7 +116,7 @@ $Dataset_Rainfall->addPoint('Sep', 72);
 $Dataset_Rainfall->addPoint('Oct', 77);
 $Dataset_Rainfall->addPoint('Nov', 80);
 $Dataset_Rainfall->addPoint('Dec', 68);
-$Plot_Rainfall =& $Plotarea_Weather->addNew('bar', &$Dataset_Rainfall, IMAGE_GRAPH_AXIS_Y_SECONDARY);
+$Plot_Rainfall =& $Plotarea_Weather->addNew('bar', array(&$Dataset_Rainfall), IMAGE_GRAPH_AXIS_Y_SECONDARY);
 $Plot_Rainfall->setLineColor('gray');
 $Plot_Rainfall->setFillColor('blue@0.1');
 $Plot_Rainfall->setTitle('Average rainfall');

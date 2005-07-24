@@ -44,7 +44,7 @@ $GridY->setFillColor('lightgrey');
 // create the 1st dataset
 $Dataset1 =& Image_Graph::factory('random', array(8, 70, 100, false));
 // create the 1st plot as smoothed area chart using the 1st dataset
-$Plot1 =& $Plotarea->addNew('Image_Graph_Plot_Smoothed_Area', &$Dataset1);
+$Plot1 =& $Plotarea->addNew('Image_Graph_Plot_Smoothed_Area', array(&$Dataset1));
 // create a vertical gradient fill using red and yellow, ie bottom of graph
 // will be yellow and the "higher" the value the more red it will be, ie a "fire" effect
 $Plot1->setFillStyle(Image_Graph::factory('Image_Graph_Fill_Image', './images/mountain.jpg'));
@@ -65,7 +65,7 @@ $Marker->setDataPreProcessor(Image_Graph::factory('Image_Graph_DataPreprocessor_
 // create the 2nd dataset
 $Dataset2 =& Image_Graph::factory('random', array(8, 30, 80, false));
 // create the 1st plot as smoothed area chart using the 1st dataset
-$Plot2 =& $Plotarea->addNew('bar', &$Dataset2);
+$Plot2 =& $Plotarea->addNew('bar', array(&$Dataset2));
 // create a vertical gradient fill using red and yellow, ie bottom of graph
 // will be yellow and the 'higher' the value the more red it will be, ie a 'fire' effect
 $Plot2->setFillColor('orange@0.6');

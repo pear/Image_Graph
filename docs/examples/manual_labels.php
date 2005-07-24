@@ -28,7 +28,7 @@ $Graph->setFont($Font);
 $Plotarea =& $Graph->addNew('plotarea');
   
 $Dataset =& Image_Graph::factory('random', array(8, 1, 10));
-$Plot =& $Plotarea->addNew('line', &$Dataset);
+$Plot =& $Plotarea->addNew('line', array(&$Dataset));
 
 $LineStyle =& Image_Graph::factory('Image_Graph_Line_Dashed', array('red', 'transparent'));
 //$Plot->setLineColor('red');

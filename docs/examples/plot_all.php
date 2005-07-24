@@ -31,20 +31,20 @@ $Dataset2 =& Image_Graph::factory('random', array(10, 2, 15, false));
 $Dataset3 =& Image_Graph::factory('random', array(10, 2, 15, false));
 
 $Plotarea =& $Matrix->getEntry(0, 0);
-$Plot =& $Plotarea->addNew('line', &$Dataset);
+$Plot =& $Plotarea->addNew('line', array(&$Dataset));
 $Plot->setLineColor('red');
 $Plotarea->addNew('title', array('Image_Graph_Plot_Line', array('size' => 7)));
 $Plotarea->setAxisPadding(10, 'top');
 
 $Plotarea =& $Matrix->getEntry(0, 1);
-$Plot =& $Plotarea->addNew('area', &$Dataset);
+$Plot =& $Plotarea->addNew('area', array(&$Dataset));
 $Plot->setLineColor('gray');
 $Plot->setFillColor('blue@0.2');
 $Plotarea->addNew('title', array('Image_Graph_Plot_Area', array('size' => 7)));
 $Plotarea->setAxisPadding(10, 'top');
 
 $Plotarea =& $Matrix->getEntry(0, 2);
-$Plot =& $Plotarea->addNew('bar', &$Dataset);
+$Plot =& $Plotarea->addNew('bar', array(&$Dataset));
 $Plot->setLineColor('gray');
 $Plot->setFillColor('green@0.2');
 $Plot->setSpacing(2);
@@ -52,21 +52,21 @@ $Plotarea->setAxisPadding(1, 'left');
 $Plotarea->addNew('title', array('Image_Graph_Plot_Bar', array('size' => 7)));
 $Plotarea->setAxisPadding(10, 'top');
   
-    $Plotarea =& $Matrix->getEntry(0, 3);
-    $Plot =& $Plotarea->addNew('smooth_line', &$Dataset);
+$Plotarea =& $Matrix->getEntry(0, 3);
+$Plot =& $Plotarea->addNew('smooth_line', array(&$Dataset));
 $Plot->setLineColor('orange');
 $Plotarea->addNew('title', array('Image_Graph_Plot_Smoothed_Line', array('size' => 7)));
 $Plotarea->setAxisPadding(10, 'top');
-  
-    $Plotarea =& $Matrix->getEntry(1, 0);
-    $Plot =& $Plotarea->addNew('smooth_area', &$Dataset);
+
+$Plotarea =& $Matrix->getEntry(1, 0);
+$Plot =& $Plotarea->addNew('smooth_area', array(&$Dataset));
 $Plot->setLineColor('purple@0.4');
 $Plot->setFillColor('purple@0.2');
 $Plotarea->addNew('title', array('Image_Graph_Plot_Smoothed_Area', array('size' => 7)));
 $Plotarea->setAxisPadding(10, 'top');
 
 $Plotarea =& $Matrix->getEntry(1, 1);
-$Plot =& $Plotarea->addNew('pie', &$Dataset);
+$Plot =& $Plotarea->addNew('pie', array(&$Dataset));
 $Fill =& Image_Graph::factory('Image_Graph_Fill_Array');
 $Fill->addColor('red@0.2');
 $Fill->addColor('blue@0.2');
@@ -81,20 +81,20 @@ $Plot->explode(10, 1);
 $Plotarea->addNew('title', array('Image_Graph_Plot_Pie', array('size' => 7)));
 
 $Plotarea =& $Matrix->getEntry(1, 2);
-$Plot =& $Plotarea->addNew('step', &$Dataset);
+$Plot =& $Plotarea->addNew('step', array(&$Dataset));
 $Plot->setLineColor('yellow@0.5');
 $Plot->setFillColor('yellow@0.3');
 $Plotarea->addNew('title', array('Image_Graph_Plot_Step', array('size' => 7)));
 $Plotarea->setAxisPadding(10, 'top');
 
 $Plotarea =& $Matrix->getEntry(1, 3);
-$Plot =& $Plotarea->addNew('impulse', &$Dataset);
+$Plot =& $Plotarea->addNew('impulse', array(&$Dataset));
 $Plot->setLineColor('blue');  
 $Plotarea->addNew('title', array('Image_Graph_Plot_Impulse', array('size' => 7)));
 $Plotarea->setAxisPadding(10, 'top');
   
     $Plotarea =& $Matrix->getEntry(2, 0);
-    $Plot =& $Plotarea->addNew('scatter', &$Dataset);
+    $Plot =& $Plotarea->addNew('scatter', array(&$Dataset));
 $Marker =& $Plot->addNew('Image_Graph_Marker_Circle');
 $Marker->setSize(4);
 $Marker->setLineColor('green@0.4');
@@ -105,7 +105,7 @@ $Plotarea->setAxisPadding(10, 'top');
   
 $Plotarea =& $Graph->addNew('Image_Graph_Plotarea_Radar');
 $Matrix->setEntry(2, 1, $Plotarea);
-$Plot =& $Plotarea->addNew('Image_Graph_Plot_Radar', &$Dataset);
+$Plot =& $Plotarea->addNew('Image_Graph_Plot_Radar', array(&$Dataset));
 $Plot->setLineColor('orange@0.4');
 $Plot->setFillColor('orange@0.2');
 $Plotarea->addNew('title', array('Image_Graph_Plot_Radar', array('size' => 7)));
@@ -124,7 +124,7 @@ for ($i = 0; $i < 10; $i++) {
     $open = $close;
 }
 $Plotarea =& $Matrix->getEntry(2, 2);
-$Plot =& $Plotarea->addNew('Image_Graph_Plot_CandleStick', &$Dataset1);    
+$Plot =& $Plotarea->addNew('Image_Graph_Plot_CandleStick', array(&$Dataset1));
 $Fill =& Image_Graph::factory('Image_Graph_Fill_Array');
 $Fill->addColor('red@0.4', 'red');
 $Fill->addColor('green@0.4', 'green');
@@ -141,7 +141,7 @@ for ($i = 0; $i < 40; $i++) {
     $v2 = $v1 + rand(10, 20);
     $Dataset1->addPoint($i, array('low' => $v1, 'high' => $v2));
 }
-$Plot =& $Plotarea->addNew('Image_Graph_Plot_Band', $Dataset1);    
+$Plot =& $Plotarea->addNew('Image_Graph_Plot_Band', array($Dataset1));
 // set a line color
 $Plot->setLineColor('gray');
 $Plot->setFillColor('teal@0.2');     
@@ -161,7 +161,7 @@ for ($i = 0; $i < 4; $i++) {
     }
     $Dataset1->addPoint($i, $data);
 }
-$Plot =& $Plotarea->addNew('Image_Graph_Plot_BoxWhisker', $Dataset1);
+$Plot =& $Plotarea->addNew('Image_Graph_Plot_BoxWhisker', array($Dataset1));
 $Plot->setWhiskerSize(3);    
 $Fill =& Image_Graph::factory('Image_Graph_Fill_Array');
 $Fill->addColor('red', 'min');
@@ -179,7 +179,7 @@ $Plotarea->setAxisPadding(10, 'top');
 
 $Plotarea =& $Graph->addNew('Image_Graph_Plotarea_Radar');
 $Matrix->setEntry(3, 1, $Plotarea);
-$Plot =& $Plotarea->addNew('Image_Graph_Plot_Smoothed_Radar', &$Dataset);
+$Plot =& $Plotarea->addNew('Image_Graph_Plot_Smoothed_Radar', array(&$Dataset));
 $Plot->setLineColor('red@0.4');
 $Plot->setFillColor('red@0.2');
 $Plotarea->addNew('title', array('Image_Graph_Plot_Smoothed_Radar', array('size' => 7)));

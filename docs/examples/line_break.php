@@ -64,12 +64,12 @@ $Dataset->addPoint('Nov', 4);
 $Dataset->addPoint('Dec', 14);
 
 // create the line plot
-$Plot1 =& $Plotarea1->addNew('line', &$Dataset);    
+$Plot1 =& $Plotarea1->addNew('line', array(&$Dataset));
 // set line color
-$Plot1->setLineColor('red'); 
+$Plot1->setLineColor('red');
 
 // create the line plot
-$Plot2 =& $Plotarea2->addNew('smooth_line', &$Dataset);    
+$Plot2 =& $Plotarea2->addNew('smooth_line', array(&$Dataset));    
 // set line color
 $Plot2->setLineColor('blue'); 
 

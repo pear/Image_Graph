@@ -72,7 +72,7 @@ $Grid->setFillColor('gray@0.2');
 $Plotarea->setFillColor('gray@0.2');       
 
 // add a line plot to the plotarea based on the function dataset
-$Plot =& $Plotarea->addNew('line', &$DataSet);
+$Plot =& $Plotarea->addNew('line', array(&$DataSet));
 
 // add coins-icon as marker
 $Plot->setMarker(Image_Graph::factory('Image_Graph_Marker_Icon', './images/coins.png'));
@@ -96,7 +96,7 @@ $AxisY->forceMaximum(9500);
 $AxisX->setDataPreprocessor(Image_Graph::factory('Image_Graph_DataPreprocessor_Function', 'XtoYear'));
 $AxisY->setDataPreprocessor(Image_Graph::factory('Image_Graph_DataPreprocessor_Currency', "US$"));    
 
-$Plot2 =& $Plotarea2->addNew('pie', &$DataSet2);
+$Plot2 =& $Plotarea2->addNew('pie', array(&$DataSet2));
 $Plotarea2->hideAxis();
 $Fill =& Image_Graph::factory('Image_Graph_Fill_Array');
 $Fill->addNew('gradient', array(IMAGE_GRAPH_GRAD_RADIAL, 'white', 'red'));

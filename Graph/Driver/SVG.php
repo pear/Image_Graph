@@ -185,8 +185,6 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
             $lineStyle = $this->_lineStyle;
         }
 
-        // TODO Linestyles (i.e. fx. dotted) does not work
-
         if (($lineStyle != 'transparent') && ($lineStyle !== false)) {
             $result = 'stroke-width:' . $this->_thickness . ';';
             $result .= 'stroke:' .$this->_color($lineStyle) . ';';
@@ -562,9 +560,6 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
      */
     function pieSlice($x, $y, $rx, $ry, $v1, $v2, $fillColor = false, $lineColor = false)
     {
-        
-        // TODO Pieslices with v2-v1 < 90 "curl" the wrong way
-        
         $style = $this->_getLineStyle($lineColor) . $this->_getFillStyle($fillColor);
         if ($style != '') {
             $x1 = ($x + $rx * cos(deg2rad(min($v1, $v2) % 360)));
@@ -694,7 +689,6 @@ class Image_Graph_Driver_SVG extends Image_Graph_Driver
      */
     function overlayImage($x, $y, $filename, $width = false, $height = false)
     {
-        // TODO Make images work in SVG
         $filename = 'file:///' . str_replace('\\', '/', $filename);
         $this->_addElement(
             '<image xlink:href="' . $filename . '" x="' . $x . '" y="' . $y .

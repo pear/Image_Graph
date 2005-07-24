@@ -52,7 +52,7 @@ for ($i = 0; $i < 2; $i++) {
 
         $Var = "Plot$i$j";
         $Dataset =& Image_Graph::factory('Image_Graph_Dataset_Random', array(8, 10, 100, $Chart == 'Image_Graph_Plot_Area'));
-        $$Var =& $Plotarea->addNew($Chart, &$Dataset);
+        $$Var =& $Plotarea->addNew($Chart, array(&$Dataset));
     }
 }
 $Plotarea =& $Matrix->getEntry(0, 0);

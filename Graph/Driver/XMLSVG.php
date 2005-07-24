@@ -193,7 +193,6 @@ class Image_Graph_Driver_XMLSVG extends Image_Graph_Driver
 
         if (is_array($fillStyle)) {
             if ($fillStyle['type'] == 'gradient') {
-                // TODO Gradient fill's does not seem to be supported by XML_SVG, investigate
                 $opacity = $this->_opacity($fillStyle['start']);
                 $result = 'fill:' . $this->_color($fillStyle['start']) . ';';
                 if ($opacity = $this->_opacity($fillStyle)) {

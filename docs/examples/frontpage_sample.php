@@ -27,7 +27,7 @@ $Driver =& Image_Graph_Driver::factory('gd',
 );     
 
 // create the graph
-$Graph =& Image_Graph::factory('graph', &$Driver);
+$Graph =& Image_Graph::factory('graph', array(&$Driver));
 
 $Font =& $Graph->addNew('ttf_font', 'Gothic');
 $Font->setSize(7);
@@ -108,8 +108,8 @@ $Dataset_Rainfall->addPoint('Nov', 80);
 $Dataset_Rainfall->addPoint('Dec', 68);
 $Plot_Rainfall =& 
     $Plotarea_Weather->addNew(
-        'bar', 
-        &$Dataset_Rainfall, 
+        'bar',
+        array(&$Dataset_Rainfall),
         IMAGE_GRAPH_AXIS_Y_SECONDARY
     );
 $Plot_Rainfall->setLineColor('gray');
@@ -132,7 +132,7 @@ $Dataset_TempAvg->addPoint('Dec', 1.8);
 $Plot_TempAvg =& 
     $Plotarea_Weather->addNew(
         'Image_Graph_Plot_Smoothed_Line', 
-        &$Dataset_TempAvg
+        array(&$Dataset_TempAvg)
     );
 $Plot_TempAvg->setLineColor('blue');
 $Plot_TempAvg->setTitle('Average temperature');
@@ -153,7 +153,7 @@ $Dataset_TempMin->addPoint('Dec', -0.9);
 $Plot_TempMin =& 
     $Plotarea_Weather->addNew(
         'Image_Graph_Plot_Smoothed_Line', 
-        &$Dataset_TempMin
+        array(&$Dataset_TempMin)
     );
 $Plot_TempMin->setLineColor('teal');
 $Plot_TempMin->setTitle('Minimum temperature');
@@ -174,7 +174,7 @@ $Dataset_TempMax->addPoint('Dec', 4.1);
 $Plot_TempMax =& 
     $Plotarea_Weather->addNew(
         'Image_Graph_Plot_Smoothed_Line', 
-        &$Dataset_TempMax
+        array(&$Dataset_TempMax)
     );
 $Plot_TempMax->setLineColor('red');
 $Plot_TempMax->setTitle('Maximum temperature');   

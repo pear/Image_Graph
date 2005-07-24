@@ -169,7 +169,8 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      */
     function _value($value)
     {
-        $the_value = array_search($value, $this->_labels);
+//        $the_value = array_search($value, $this->_labels);
+        $the_value = $this->_labels[$value];
         if ($the_value !== false) {
             return $the_value + ($this->_pushValues ? 0.5 : 0);
         } else {
@@ -205,7 +206,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
         $this->_driver->setFont($this->_getFont());
 
         $maxSize = 0;
-        foreach($this->_labels as $label) {
+        foreach($this->_labels as $label => $id) {
             $labelPosition = $this->_point($label);
 
             if (is_object($this->_dataPreProcessor)) {
@@ -257,6 +258,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
     function _applyDataset(&$dataset)
     {
         $newLabels = array();
+        $allLabels = array();
 
         $dataset->_reset();
         while ($point = $dataset->_next()) {
@@ -265,24 +267,23 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
             } else {
                 $data = $point['Y'];
             }
-            if (!in_array($data, $this->_labels)) {
-                $newLabels[] = $data;
+            if (!isset($this->_labels[$data])) {
+                $newLabels[$data] = count($newLabels);
                 //$this->_labels[] = $data;
             }
-            $allLabels[] = $data;
+            $allLabels[$data] = count($allLabels);
         }
+
         if (count($this->_labels) == 0) {
             $this->_labels = $newLabels;
         } elseif (is_array($newLabels)) {
             // get all intersecting labels
-            $intersect = array_intersect($allLabels, $this->_labels);
+            $intersect = array_intersect(array_keys($allLabels), array_keys($this->_labels));
             // traverse all new and find their relative position withing the
             // intersec, fx value X0 is before X1 in the intersection, which
             // means that X0 should be placed before X1 in the label array
-            $keys = array_keys($newLabels);
-            foreach($keys as $key) {
-                $newLabel = $newLabels[$key];
-                $key = array_search($newLabel, $allLabels);
+            foreach($newLabels as $newLabel => $id) {
+                $key = $allLabels[$newLabel];
                 reset($intersect);
                 $this_value = false;
                 // intersect indexes are the same as in allLabels!
@@ -297,24 +298,27 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
                     }
                     $first = false;
                 }
+
                 if ($this_value === false) {
                     // the new label was not found before anything in the
                     // intersection -> append it
-                    $this->_labels[] = $newLabel;
+                    $this->_labels[$newLabel] = count($this->_labels);
                 } else {
                     // the new label was found before $this_value in the
                     // intersection, insert the label before this position in
                     // the label array
-                    $key = array_search($this_value, $this->_labels);
-                    $pre = array_slice($this->_labels, 0, $key);
+//                    $key = $this->_labels[$this_value];
+                    $keys = array_keys($this->_labels);
+                    $key = array_search($this_value, $keys);
+                    $pre = array_slice($keys, 0, $key);
                     $pre[] = $newLabel;
-                    $post = array_slice($this->_labels, $key);
-                    $this->_labels = array_merge($pre, $post);
+                    $post = array_slice($keys, $key);
+                    $this->_labels = array_flip(array_merge($pre, $post));
                 }
             }
             unset($keys);
         }
-        $this->_labels = array_values(array_unique($this->_labels));
+//        $this->_labels = array_values(array_unique($this->_labels));
         $this->_calcLabelInterval();
     }
 
@@ -327,8 +331,8 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
     function _labelDistance()
     {
         reset($this->_labels);
-        list(, $l1) = each($this->_labels);
-        list(, $l2) = each($this->_labels);
+        list($l1) = each($this->_labels);
+        list($l2) = each($this->_labels);
         return abs($this->_point($l2) - $this->_point($l1));
     }
 
@@ -348,7 +352,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
         $result = false;
         $count = ($currentLabel === false ? $this->_labelInterval() - 1 : 0);
         while ($count < $this->_labelInterval()) {
-           $result = (list(, $label) = each($this->_labels));
+           $result = (list($label) = each($this->_labels));
            $count++;
         }
         if ($result) {

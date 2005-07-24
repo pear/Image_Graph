@@ -49,8 +49,6 @@ require_once 'Image/Graph/Plot.php';
  */
 class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
 {
-    // TODO Possibility to handle outliers (see http://pear.veggerby.dk/forum/read.php?board=1&id=265)
-    
     /**
      * Whisker circle size
      * @var int

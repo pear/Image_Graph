@@ -22,7 +22,7 @@ require 'Image/Graph/Driver.php';
 $Driver =& Image_Graph_Driver::factory('png', array('width' => 400, 'height' => 300, 'antialias' => true));      
 
 // create the graph
-$Graph =& Image_Graph::factory('graph', &$Driver);
+$Graph =& Image_Graph::factory('graph', array(&$Driver));
  // add a TrueType font
 $Font =& $Graph->addNew('ttf_font', 'Gothic');
 // set the font size to 11 pixels
@@ -61,10 +61,10 @@ $Dataset2->addPoint('Apr', -2);
 $Dataset2->addPoint('May', 3);
 $Dataset2->addPoint('Jul', 1);
 
-$Plot =& $Plotarea->addNew('area', &$Dataset);
+$Plot =& $Plotarea->addNew('area', array(&$Dataset));
 $Plot->setFillColor('red@0.2');
 
-$Plot2 =& $Plotarea->addNew('bar', &$Dataset2);
+$Plot2 =& $Plotarea->addNew('bar', array(&$Dataset2));
 $Plot2->setFillColor('blue@0.2');
 
 // output the Graph

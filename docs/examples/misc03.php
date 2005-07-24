@@ -49,7 +49,7 @@ $Dataset1->addPoint('Poultry', rand(1, 10));
 $Dataset1->addPoint('Camels', rand(1, 10));
 $Dataset1->addPoint('Other', rand(1, 10));
 // create the 1st plot as smoothed area chart using the 1st dataset
-$Plot =& $Plotarea->addNew('pie', &$Dataset1);
+$Plot =& $Plotarea->addNew('pie', array(&$Dataset1));
 $Plotarea->hideAxis();
 
 // create a Y data value marker

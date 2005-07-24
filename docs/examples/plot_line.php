@@ -45,7 +45,7 @@ $Legend->setPlotarea($Plotarea);
 // create a random dataset for sake of simplicity
 $Dataset =& Image_Graph::factory('random', array(10, 2, 15, true));
 // create the plot as line chart using the dataset
-$Plot =& $Plotarea->addNew('line', &$Dataset);
+$Plot =& $Plotarea->addNew('line', array(&$Dataset));
 
 // set a line color
 $Plot->setLineColor('red');                  

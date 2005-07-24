@@ -140,13 +140,10 @@ class Image_Graph_Driver_SWF extends Image_Graph_Driver
             return false;
         } else {
             if ((is_string($fillStyle)) && (file_exists($fillStyle))) {
-                // TODO Image fill SWF doesn't seem to work even with JPEG's
                 //$fill =& new SWFBitmap($fillStyle);
                 //$fill =& $shape->addFill($fill);
                 //$shape->setRightFill($fill);
-                // TODO Scale the image fill in SWF
             } elseif (is_array($fillStyle)) {
-                // TODO I don't get SWF gradient fill: moveTo/scaleTo/rotateTo
 
                 $startColor = Image_Graph_Color::color2rgb($fillStyle['start']);
                 $endColor = Image_Graph_Color::color2rgb($fillStyle['end']);
@@ -380,7 +377,6 @@ class Image_Graph_Driver_SWF extends Image_Graph_Driver
                 $first = $point;
             } else {
                 if (isset($last['P1X'])) {
-                    // TODO SWF curve smoothing requires only one control point - this method is not very good!
                     $polygon->drawCurveTo(
                         ($last['P1X'] + $last['P2X']) / 2 - $first['X'],
                         ($last['P1Y'] + $last['P2Y']) / 2 - $first['Y'],
@@ -499,7 +495,6 @@ class Image_Graph_Driver_SWF extends Image_Graph_Driver
      */
     function pieSlice($x, $y, $rx, $ry, $v1, $v2, $srx = false, $sry = false, $fillColor = false, $lineColor = false)
     {
-        // TODO Implement SWF::pieSlice
         parent::pieSlice($x, $y, $rx, $ry, $v1, $v2, $srx, $sry, $fillColor, $lineColor);
     }
 
@@ -511,7 +506,6 @@ class Image_Graph_Driver_SWF extends Image_Graph_Driver
      */
     function textWidth($text)
     {
-        // TODO Implement SWF::textWidth
 /*        return 10;
         $atext =& new SWFText();
         $atext->setFont($this->_swfFont);
@@ -528,7 +522,6 @@ class Image_Graph_Driver_SWF extends Image_Graph_Driver
      */
     function textHeight($text)
     {
-        // TODO Implement SWF::textHeight
         //return 12;
     }
 
@@ -543,7 +536,6 @@ class Image_Graph_Driver_SWF extends Image_Graph_Driver
      */
     function write($x, $y, $text, $alignment, $color = false)
     {
-        // TODO Implement SWF::write
         /*$font = new SWFFont('BUMP!');
         $atext =& new SWFText();
         $atext->setFont($font);
@@ -567,7 +559,6 @@ class Image_Graph_Driver_SWF extends Image_Graph_Driver
      */
     function overlayImage($x, $y, $filename, $width = false, $height = false, $alignment = false)
     {
-        // TODO Implement SWF::overlayImage
         parent::overlayImage($x, $y, $filename, $width, $height);
     }
 

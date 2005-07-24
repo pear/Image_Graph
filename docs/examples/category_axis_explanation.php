@@ -20,7 +20,7 @@ require 'Image/Graph/Driver.php';
 $Driver =& Image_Graph_Driver::factory('png', array('width' => 500, 'height' => 200, 'antialias' => true));      
 
 // create the graph
-$Graph =& Image_Graph::factory('graph', &$Driver);
+$Graph =& Image_Graph::factory('graph', array(&$Driver));
 
 // add a TrueType font
 $Font =& $Graph->addNew('ttf_font', 'Gothic');
@@ -71,9 +71,9 @@ $Datasets[2]->addPoint('written', 1);
 // 3 |____|___|_2__|_________|________|_____|___4___|___1____|3_|
  
 
-$Plot1 =& $Plotarea->addNew('line', &$Datasets[0]);
-$Plot2 =& $Plotarea->addNew('line', &$Datasets[1]);
-$Plot3 =& $Plotarea->addNew('line', &$Datasets[2]);
+$Plot1 =& $Plotarea->addNew('line', array(&$Datasets[0]));
+$Plot2 =& $Plotarea->addNew('line', array(&$Datasets[1]));
+$Plot3 =& $Plotarea->addNew('line', array(&$Datasets[2]));
 
 $Plot1->setLineColor('red');
 $Plot2->setLineColor('blue');

@@ -36,7 +36,7 @@ $Dataset2->addPoint('Finland', 0);
 $Dataset2->addPoint('Ukraine', 0);
 $Dataset2->addPoint('Cyprus', 0);
 
-$Plot =& $Plotarea->addNew('Image_Graph_Plot_Dot', &$Dataset);
+$Plot =& $Plotarea->addNew('Image_Graph_Plot_Dot', array(&$Dataset));
 $Marker =& $Plot->setMarker(Image_Graph::factory('Image_Graph_Marker_Bubble'));
 
 // set a line color
@@ -51,7 +51,7 @@ $FillArray->addColor('yellow@0.2');
 $FillArray->addColor('red@0.2');
 $FillArray->addColor('orange@0.2');
 
-$Plot2 =& $Plotarea->addNew('line', &$Dataset2);
+$Plot2 =& $Plotarea->addNew('line', array(&$Dataset2));
 $Plot2->setLineColor('red');
 $Marker2 =& $Plot2->setMarker(Image_Graph::factory('Image_Graph_Marker_Circle'));
 $Marker2->setLineColor('blue');

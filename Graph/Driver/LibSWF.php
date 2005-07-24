@@ -49,7 +49,6 @@ require_once 'Image/Graph/Driver.php';
  */
 class Image_Graph_Driver_LibSWF extends Image_Graph_Driver
 {
-    // TODO Create LibSWF support
 
 }
 

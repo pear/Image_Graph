@@ -48,8 +48,6 @@ require_once 'Image/Graph/Axis.php';
 class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
 {
 
-    // TODO Implement logarithic axis minimum (other that 0)
-
     /**
      * Image_Graph_AxisLogarithmic [Constructor].
      *

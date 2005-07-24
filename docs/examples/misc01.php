@@ -87,7 +87,7 @@ $Plot_SmoothedLine->setLineColor('orange');
 // create a 3rd dataset
 $Dataset_BarChart =& Image_Graph::factory('random', array(7, 10, 120, false));
 // create the 3rd plot as line chart using the 2nd dataset
-$Plot_BarChart =& $Plotarea_BarAndLine->addNew('bar', &$Dataset_BarChart);
+$Plot_BarChart =& $Plotarea_BarAndLine->addNew('bar', array(&$Dataset_BarChart));
 // set the fill style of the barchart to the almost transparent BlueAlpha
 $FillArray =& Image_Graph::factory('Image_Graph_Fill_Array');
 $Plot_BarChart->setFillStyle($FillArray);
@@ -102,7 +102,7 @@ $FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_DIAGONALLY_BL_TR, 'white',
 // create the 2nd dataset
 $Dataset_LineMarker =& Image_Graph::factory('random', array(7, 20, 100, false));
 // create the 2nd plot as line chart using the 2nd dataset
-$Plot_LineMarker =& $Plotarea_BarAndLine->addNew('line', &$Dataset_LineMarker);
+$Plot_LineMarker =& $Plotarea_BarAndLine->addNew('line', array(&$Dataset_LineMarker));
 
 $LineStyle =& Image_Graph::factory('Image_Graph_Line_Dotted', array('black', 'transparent')); 
 $Plot_LineMarker->setLineStyle($LineStyle);
@@ -155,9 +155,9 @@ $Plot_BarChart->setTitle('Buy or Sell');
 $Dataset_Radar1 =& Image_Graph::factory('random', array(8, 1, 5));
 $Dataset_Radar2 =& Image_Graph::factory('random', array(8, 1, 5));
 // create the 1st plot as smoothed area chart using the 1st dataset
-$Plot_Radar1 =& $Plotarea_Radar->addNew('Image_Graph_Plot_Radar', &$Dataset_Radar1);
+$Plot_Radar1 =& $Plotarea_Radar->addNew('Image_Graph_Plot_Radar', array(&$Dataset_Radar1));
 $Plot_Radar1->setTitle('Obscurity');
-$Plot_Radar2 =& $Plotarea_Radar->addNew('Image_Graph_Plot_Radar', &$Dataset_Radar2);
+$Plot_Radar2 =& $Plotarea_Radar->addNew('Image_Graph_Plot_Radar', array(&$Dataset_Radar2));
 $Plot_Radar2->setTitle('Clarity');
 	
 //$Dataset_Radar1->setMaximumY(7);

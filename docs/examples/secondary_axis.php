@@ -20,7 +20,7 @@ require 'Image/Graph/Driver.php';
 $Driver =& Image_Graph_Driver::factory('png', array('width' => 400, 'height' => 300, 'antialias' => 'native'));      
 
 // create the graph
-$Graph =& Image_Graph::factory('graph', &$Driver);
+$Graph =& Image_Graph::factory('graph', array(&$Driver));
 // add a TrueType font
 $Font =& $Graph->addNew('ttf_font', 'Gothic');
 // set the font size to 11 pixels
@@ -55,7 +55,7 @@ $GridY2->setFillStyle(
 
 // create a line plot using a random dataset
 $Dataset1 =& Image_Graph::factory('random', array(8, 10, 100, true)); 
-$Plot1 =& $Plotarea->addNew('line', &$Dataset1);
+$Plot1 =& $Plotarea->addNew('line', array(&$Dataset1));
 $Plot1->setLineColor('red');
 
 // create an area plot using a random dataset

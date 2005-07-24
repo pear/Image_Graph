@@ -71,7 +71,6 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
     {
-        // TODO Consider new legend icon
         $y = ($y0 + $y1) / 2;
         $dx = abs($x1 - $x0) / 3;
         $dy = abs($y1 - $y0) / 5;

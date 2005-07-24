@@ -2,11 +2,14 @@
  Image_Graph - Changelog
 *************************
 Version 0.4.1-alpha [2005-xxx-xx] - Jesper Veggerby <pear.nosey@veggerby.dk>
+    * Added label option 'format' and 'dateformat' to Image_Graph_Axis to be able to format a label directly using sprintf() / date()
+    * Performance optimization in Image_Graph_Axis_Category (with regards to heavy usage of array_search())
     * Added Request #4451 "Unable to define IMAGE_GRAPH_SYSTEM_FONT_PATH outside of Config.php"
     * Fixed Bug #4240 "Pie graph - color difference between graph and legend"
     * Fixed Bug #4430 "Call-time pass-by-reference has been deprecated"
     * Fixed Bug #4484 "SVG output problem with fill and alignment attributes of text"
     * Fixed Bug #4586 "Content type image/jpg does not recognized by IE"
+    * Fixed Bug #4876 "mis-type in code -> undefined property"
 
 Version 0.4.0-alpha [2005-May-24] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Added support for antialiasing images when using GD (both using native GD method and Image_Graph own implementation)

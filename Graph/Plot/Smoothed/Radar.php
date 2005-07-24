@@ -50,8 +50,6 @@ require_once 'Image/Graph/Plot/Smoothed/Bezier.php';
 class Image_Graph_Plot_Smoothed_Radar extends Image_Graph_Plot_Smoothed_Bezier
 {
 
-    // TODO Create legend sample for smoothed radar chart
-
     /**
      * Output the plot
      *
