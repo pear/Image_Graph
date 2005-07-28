@@ -20,7 +20,7 @@ include 'Image/Graph.php';
 $Graph =& Image_Graph::factory('graph', array(400, 300));
 
 // add a TrueType font
-$Font =& $Graph->addNew('ttf_font', 'Gothic');
+$Font =& $Graph->addNew('ttf_font', 'Verdana');
 // set the font size to 7 pixels
 $Font->setSize(7);
 

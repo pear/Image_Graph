@@ -33,7 +33,7 @@ require 'Image/Graph.php';
 // create the graph
 $Graph =& Image_Graph::factory('graph', array(800, 600));
 // add a TrueType font
-$Font =& $Graph->addNew('ttf_font', 'Gothic');
+$Font =& $Graph->addNew('ttf_font', 'Verdana');
 // set the font size to 7 pixels
 $Font->setSize(7);
 
@@ -82,11 +82,11 @@ for ($row = 0; $row < 4; $row++) {
             }
             
             if ($col > 1) {
-                $Plot =& $Plotarea->addNew('bar', &$DS[$col]);
+                $Plot =& $Plotarea->addNew('bar', $DS[$col]);
                 $Plot->setLineColor('gray');
                 $Plot->setFillColor('blue@0.2');
             } else {
-                $Plot =& $Plotarea->addNew('line', &$DS[$col]);
+                $Plot =& $Plotarea->addNew('line', $DS[$col]);
                 $Plot->setLineColor('red');
             }
             

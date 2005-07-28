@@ -62,7 +62,7 @@ $Marker2->setSecondaryMarker(Image_Graph::factory('Image_Graph_Marker_Pointing_A
 
 $ValueMarker->setFillColor('white');
 
-$Font =& $Graph->addNew('ttf_font', 'Gothic');
+$Font =& $Graph->addNew('ttf_font', 'Verdana');
 $Font->setSize(8);
 $Graph->setFont($Font);
 $Graph->addNew('title', array('Map Chart Sample', 12));

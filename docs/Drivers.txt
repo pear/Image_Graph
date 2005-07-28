@@ -42,7 +42,7 @@ JPEG       |   -    X    X    X    X    X    X    I
 WBMP       |   -    X    X    X    X    X    X    I
 PNG        |   X    X    X    X    X    X    X    I
 GIF        |   X    X    X    X    X    X    X    I
-SVG        |   -    X    X    -    X    X    X    B
+SVG        |   -    X    X    -    !    X    X    B
 XMLSVG     |   ?    X    ?    -    -    ?    ?    ?    Uses XML_SVG
 PDF        |   -    -    -    -    !    !    -    ?    Uses File_PDF. Can't get it to work at all - worth the effort?
 PDFlib     |   -    -    -    -    X    X    -    B

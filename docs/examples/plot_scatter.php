@@ -19,7 +19,7 @@ require 'Image/Graph.php';
 // create the graph
 $Graph =& Image_Graph::factory('graph', array(400, 300)); 
 // add a TrueType font
-$Font =& $Graph->addNew('ttf_font', 'Gothic');
+$Font =& $Graph->addNew('ttf_font', 'Verdana');
 // set the font size to 11 pixels
 $Font->setSize(8);
 
@@ -39,12 +39,26 @@ $Graph->add(
 $Legend->setPlotarea($Plotarea);        
 
 // create the dataset
-$Dataset =& Image_Graph::factory('random', array(10, 2, 15, false));
+$Dataset1 =& Image_Graph::factory('random', array(10, 2, 9, false));
 // create the 1st plot as smoothed area chart using the 1st dataset
-$Plot =& $Plotarea->addNew('Image_Graph_Plot_Dot', array(&$Dataset));
-
+$Plot1 =& $Plotarea->addNew('Image_Graph_Plot_Dot', array(&$Dataset1));
+$Marker1 =& Image_Graph::factory('Image_Graph_Marker_Cross');
+$Marker1->setFillColor('blue');
+$Marker1->setLineColor('black');
 // set a line color
-$Plot->setMarker(Image_Graph::factory('Image_Graph_Marker_Box'));
+$Plot1->setMarker($Marker1);
+$Plot1->setTitle('Introvert');
+
+// create the dataset
+$Dataset2 =& Image_Graph::factory('random', array(10, 10, 15, false));
+// create the 1st plot as smoothed area chart using the 1st dataset
+$Plot2 =& $Plotarea->addNew('Image_Graph_Plot_Dot', array(&$Dataset2));
+$Marker2 =& Image_Graph::factory('Image_Graph_Marker_Plus');
+$Marker2->setFillColor('green');
+$Marker2->setLineColor('black');
+// set a line color
+$Plot2->setMarker($Marker2);
+$Plot2->setTitle('Extrovert');
 
 // output the Graph
 $Graph->done();

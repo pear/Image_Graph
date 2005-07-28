@@ -20,7 +20,7 @@
  *
  * @category   Images
  * @package    Image_Graph
- * @subpackage Plot
+ * @subpackage Marker
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
  * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
@@ -29,67 +29,60 @@
  */
 
 /**
- * Include file Image/Graph/Plot.php
+ * Include file Image/Graph/Marker.php
  */
-require_once 'Image/Graph/Plot.php';
+require_once 'Image/Graph/Marker.php';
 
 /**
- * Dot / scatter chart (only marker).
- *
- * This plot type only displays a {@link Image_Graph_Marker} for the datapoints.
- * The marker must explicitly be defined using {@link Image_Graph_Plot::
- * setMarker()}.
+ * Data marker as a triangle.
  *
  * @category   Images
  * @package    Image_Graph
- * @subpackage Plot
+ * @subpackage Marker
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
  * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/Image_Graph
  */
-class Image_Graph_Plot_Dot extends Image_Graph_Plot
+class Image_Graph_Marker_Star extends Image_Graph_Marker
 {
 
     /**
-     * Perform the actual drawing on the legend.
+     * Draw the marker on the canvas
      *
-     * @param int $x0 The top-left x-coordinate
-     * @param int $y0 The top-left y-coordinate
-     * @param int $x1 The bottom-right x-coordinate
-     * @param int $y1 The bottom-right y-coordinate
+     * @param int $x The X (horizontal) position (in pixels) of the marker on
+     *   the canvas
+     * @param int $y The Y (vertical) position (in pixels) of the marker on the
+     *   canvas
+     * @param array $values The values representing the data the marker 'points'
+     *   to
      * @access private
      */
-    function _drawLegendSample($x0, $y0, $x1, $y1)
+    function _drawMarker($x, $y, $values = false)
     {
-    	if (isset($this->_marker)) {
-    		$key = key($this->_dataset);
-    		$samplePoint = $this->_dataset[$key]->_nearby();
-    		$this->_marker->_drawMarker(($x0 + $x1) / 2, ($y0 + $y1) / 2, $samplePoint);
-    	}
+        $this->_getFillStyle();
+        $this->_getLineStyle();
+        
+        $d = $this->_size / 5;
+        $x = round($x);
+        $y = round($y);
+        
+        $this->_driver->polygonAdd($x, $y - $this->_size);
+        $this->_driver->polygonAdd($x + round($d), $y - round($d));
+        $this->_driver->polygonAdd($x + $this->_size, $y - round($d));
+        $this->_driver->polygonAdd($x + round(2 * $d), $y + round($d));
+        $this->_driver->polygonAdd($x + round(3 * $d), $y + $this->_size);
+        $this->_driver->polygonAdd($x, $y + round(3 * $d));
+        $this->_driver->polygonAdd($x - round(3 * $d), $y + $this->_size);
+        $this->_driver->polygonAdd($x - round(2 * $d), $y + round($d));
+        $this->_driver->polygonAdd($x - $this->_size, $y - round($d));
+		$this->_driver->polygonAdd($x - round($d), $y - round($d));
+        $this->_driver->polygonEnd(true);
+        
+        parent::_drawMarker($x, $y, $values);
     }
 
-    /**
-     * Output the plot
-     *
-     * @return bool Was the output 'good' (true) or 'bad' (false).
-     * @access private
-     */
-    function _done()
-    {
-        if (Image_Graph_Plot::_done() === false) {
-            return false;
-        }
-
-        $this->_driver->startGroup(get_class($this) . '_' . $this->_title);
-        
-        $this->_drawMarker();
-        
-        $this->_driver->endGroup();
-        
-        return true;
-    }
 }
 
 ?>

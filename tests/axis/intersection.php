@@ -34,7 +34,7 @@ require 'Image/Graph.php';
 // create the graph
 $Graph =& Image_Graph::factory('graph', array(600, 400));
 // add a TrueType font
-$Font =& $Graph->addNew('ttf_font', 'Gothic');
+$Font =& $Graph->addNew('ttf_font', 'Verdana');
 // set the font size to 11 pixels
 $Font->setSize(7);
 
@@ -61,9 +61,9 @@ for ($row = 0; $row < 3; $row++) {
             $AxisX =& $Plotarea->getAxis(IMAGE_GRAPH_AXIS_X);
             if ($row >= 1) {
                 $AxisY->setAxisIntersection(1);
-                $AxisY->setTitle('Intersect at x = 1');
+                $AxisY->setTitle("Intersect\n at x = 1");
             } else {
-                $AxisY->setTitle('Intersect at x = min');
+                $AxisY->setTitle("Intersect\nat x = min");
             }                   
             if ($row >= 2) {
                 $AxisX->setAxisIntersection(1);
@@ -71,7 +71,7 @@ for ($row = 0; $row < 3; $row++) {
             } else {
                 $AxisX->setTitle('Intersect at y = 0');
             }                   
-            $Plot =& $Plotarea->addNew('line', &$DS[$col]);
+            $Plot =& $Plotarea->addNew('line', $DS[$col]);
             $Plot->setLineColor('red');
             $Plotarea->setBackgroundColor('blue@0.2');
         }

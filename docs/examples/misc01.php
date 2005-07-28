@@ -20,7 +20,7 @@ require 'Image/Graph.php';
 // create the graph
 $Graph =& Image_Graph::factory('Image_Graph', array(600, 400));
 // add a TrueType font
-$Font =& $Graph->addNew('ttf_font', 'Gothic');
+$Font =& $Graph->addNew('ttf_font', 'Verdana');
 // set the font size to 11 pixels
 $Font->setSize(8);
 
@@ -81,7 +81,7 @@ $Grid_SmoothedLine->setLineColor('gray');
 // create the 1st dataset
 //$Dataset_SmoothedLine =& new Image_RandomDataset(4, 2, 15, true);
 // create the 1st plot as smoothed area chart using the 1st dataset
-$Plot_SmoothedLine =& $Plotarea_SmoothedLine->addNew('Image_Graph_Plot_Smoothed_Line', &$Dataset_SmoothedLine);
+$Plot_SmoothedLine =& $Plotarea_SmoothedLine->addNew('Image_Graph_Plot_Smoothed_Line', $Dataset_SmoothedLine);
 $Plot_SmoothedLine->setLineColor('orange');
 
 // create a 3rd dataset
@@ -109,20 +109,20 @@ $Plot_LineMarker->setLineStyle($LineStyle);
 
 $Marker =& Image_Graph::factory('Image_Graph_Marker_Array');
 $CrossMarker =& Image_Graph::factory('Image_Graph_Marker_Cross');
-$CircleMarker =& Image_Graph::factory('Image_Graph_Marker_Circle');
+$PlusMarker =& Image_Graph::factory('Image_Graph_Marker_Plus');
+$StarMarker =& Image_Graph::factory('Image_Graph_Marker_Star');
 $Marker->add($CrossMarker);
-$Marker->add($CircleMarker);
+$Marker->add($PlusMarker);
+$Marker->add($StarMarker);
 $Plot_LineMarker->setMarker($Marker);
 
-$LineStyle =& Image_Graph::factory('Image_Graph_Line_Solid', 'purple@0.6');
-$LineStyle->setThickness(7); 
-$CrossMarker->setLineStyle($LineStyle);
-// Create a blue line
-$CircleMarker->setLineColor('brown@0.2');
+$CrossMarker->setLineColor('black');
+$CrossMarker->setFillColor('green');
+$PlusMarker->setLineColor('black');
+$PlusMarker->setFillColor('red');
+$StarMarker->setLineColor('black@0.4');
+$StarMarker->setFillColor('yellow');
 
-$FillCircle =& Image_Graph::factory('gradient', array(IMAGE_GRAPH_GRAD_RADIAL, 'white', 'burlywood'));
-$CircleMarker->setFillStyle($FillCircle);
-			
 // Show arrow heads on the axis
 $AxisX =& $Plotarea_BarAndLine->getAxis(IMAGE_GRAPH_AXIS_X);
 $AxisY =& $Plotarea_BarAndLine->getAxis(IMAGE_GRAPH_AXIS_Y);

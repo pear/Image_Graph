@@ -32,7 +32,7 @@ $Graph =& Image_Graph_Simple::factory(
     'Simple Graph Example',
     'gray',
     'blue@0.2',
-    'Gothic'
+    'Verdana'
 );
 			 
 // output the Graph

@@ -19,7 +19,7 @@ require 'Image/Graph.php';
 // create the graph
 $Graph =& Image_Graph::factory('graph', array(600, 400));
 // add a TrueType font
-$Font =& $Graph->addNew('ttf_font', 'Gothic');
+$Font =& $Graph->addNew('ttf_font', 'Verdana');
 // set the font size to 11 pixels
 $Font->setSize(7);
 
@@ -40,7 +40,7 @@ for ($i = 0; $i < 9; $i++) {
     $Plotarea->addNew('line_grid', false, IMAGE_GRAPH_AXIS_X);
     $Plotarea->addNew('line_grid', false, IMAGE_GRAPH_AXIS_Y);
 
-    $Plot =& $Plotarea->addNew('line', &$Dataset);
+    $Plot =& $Plotarea->addNew('line', $Dataset);
     $Plot->setLineColor('red');
     $Plot->setTitle("x^2");
 }

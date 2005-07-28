@@ -933,6 +933,7 @@ class Image_Graph_Driver_PDFlib extends Image_Graph_Driver
      */
     function _version()
     {
+    	$version = false;
         if (function_exists('pdf_get_majorversion')) {
             $version = pdf_get_majorversion();
         } else {

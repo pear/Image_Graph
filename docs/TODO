@@ -6,6 +6,8 @@ Image_Graph
 *** Update private tags to protected wherever necessary
 *** Create a simple table element
 *** Create bar-chart-type where bar have individual widths (i.e. in the dataset fx)
+*** Implement HTML Image maps
+*** Create a "composite" axis to support different intervals on the same axis (fx. 0-10, 10000-100000, etc)
 
 Image_Graph_Element
 *** Look at further optimization (line 384) (sample20.php = 416 calls!)
@@ -23,7 +25,7 @@ Image_Graph_Plot_Line
 *** Consider new legend icon
 
 Image_Graph_Plot_Pie
-*** Group items together i one pie ("the rest") if less than a certain value/percentage
+*** Group items together in one pie ("the rest") if less than a certain value/percentage
 
 Image_Graph_Plot_Smoothed_Radar
 *** Create legend sample for smoothed radar chart
@@ -37,16 +39,13 @@ Image_Graph_Axis_Composite
 *** Implement composite axis (i.e. linear from 0-10, log from 10-1000, and category from 1001, 1004, 10000, ...)
 
 Image_Graph_Axis_Logarithmic
-*** Implement logarithic axis minimum (other that 0)
+*** Implement logarithic axis minimum (other than 0)
 
 Image_Graph_Axis_Marker
 *** Implement a label mechanism when using axis markers
 
-Image_Graph_Driver
-*** Implement image maps
-
 Image_Graph_Driver_GD
-*** Make a better method for "baseline" adjustment (line 1260)
+*** Make a better method for "baseline" adjustment (~ line 1260)
 
 Image_Graph_Driver_LibSWF
 *** Create LibSWF support

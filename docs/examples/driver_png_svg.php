@@ -30,7 +30,7 @@ $Driver =& Image_Graph_Driver::factory('gd',
     ); 
  
     // create the graph using the GD driver
-$Graph =& Image_Graph::factory('graph', &$Driver);
+$Graph =& Image_Graph::factory('graph', $Driver);
 
 // create a simple graph
 $Graph->add(
@@ -42,12 +42,12 @@ $Graph->add(
 );    
 $Legend->setPlotarea($Plotarea);        
 $Dataset =& Image_Graph::factory('random', array(10, 2, 15, true));       
-$Plot =& $Plotarea->addNew('area', &$Dataset);
+$Plot =& $Plotarea->addNew('area', $Dataset);
 $Plot->setLineColor('gray');
 $Plot->setFillColor('blue@0.2');
 
 // add a TrueType font
-$Font =& $Graph->addNew('ttf_font', 'Gothic');
+$Font =& $Graph->addNew('ttf_font', 'Verdana');
 // set the font size to 11 pixels
 $Font->setSize(8);
 

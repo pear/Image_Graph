@@ -48,6 +48,13 @@ require_once 'Image/Graph/Marker.php';
 class Image_Graph_Marker_Cross extends Image_Graph_Marker
 {
 
+	/**
+	 * The thickness of the plus in pixels (thickness is actually double this)
+	 * @var int
+	 * @access private
+	 */
+	var $_thickness = 2;
+	
     /**
      * Draw the marker on the canvas
      *
@@ -58,22 +65,43 @@ class Image_Graph_Marker_Cross extends Image_Graph_Marker
      */
     function _drawMarker($x, $y, $values = false)
     {
-        $this->_getLineStyle();
-        $this->_driver->line(
-            $x - $this->_size,
-            $y - $this->_size,
-            $x + $this->_size,
-            $y + $this->_size
-        );
-
-        $this->_getLineStyle();
-        $this->_driver->line(
-            $x + $this->_size,
-            $y - $this->_size,
-            $x - $this->_size,
-            $y + $this->_size
-        );
-
+    	if ($this->_thickness > 0) {
+	    	$this->_getLineStyle();
+	        $this->_getFillStyle();
+	        
+	        $d1 = round(0.7071067 * $this->_size); // cos/sin(45 de>)
+	        $d2 = round(0.7071067 * $this->_thickness); // cos/sin(45 deg)
+	        
+	        $this->_driver->polygonAdd($x - $d1 - $d2, $y - $d1 + $d2); 
+	        $this->_driver->polygonAdd($x - $d1 + $d2, $y - $d1 - $d2); 
+	        $this->_driver->polygonAdd($x, $y - 2 * $d2); 
+	        $this->_driver->polygonAdd($x + $d1 - $d2, $y - $d1 - $d2); 
+	        $this->_driver->polygonAdd($x + $d1 + $d2, $y - $d1 + $d2); 
+	        $this->_driver->polygonAdd($x + 2 * $d2, $y); 
+	        $this->_driver->polygonAdd($x + $d1 + $d2, $y + $d1 - $d2); 
+	        $this->_driver->polygonAdd($x + $d1 - $d2, $y + $d1 + $d2); 
+	        $this->_driver->polygonAdd($x, $y + 2 * $d2); 
+	        $this->_driver->polygonAdd($x - $d1 + $d2, $y + $d1 + $d2); 
+	        $this->_driver->polygonAdd($x - $d1 - $d2, $y + $d1 - $d2); 
+	        $this->_driver->polygonAdd($x - 2 * $d2, $y); 
+	        $this->_driver->polygonEnd();
+    	} else {        
+	        $this->_getLineStyle();
+	        $this->_driver->line(
+	            $x - $this->_size,
+	            $y - $this->_size,
+	            $x + $this->_size,
+	            $y + $this->_size
+	        );
+	
+	        $this->_getLineStyle();
+	        $this->_driver->line(
+	            $x + $this->_size,
+	            $y - $this->_size,
+	            $x - $this->_size,
+	            $y + $this->_size
+	        );
+    	}
         parent::_drawMarker($x, $y, $values);
     }
 

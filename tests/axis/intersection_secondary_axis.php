@@ -33,9 +33,9 @@
 require 'Image/Graph.php';    
 
 // create the graph
-$Graph =& Image_Graph::factory('graph', array(600, 400));
+$Graph =& Image_Graph::factory('graph', array(800, 600));
 // add a TrueType font
-$Font =& $Graph->addNew('ttf_font', 'Gothic');
+$Font =& $Graph->addNew('ttf_font', 'Verdana');
 // set the font size to 11 pixels
 $Font->setSize(7);
 
@@ -66,20 +66,20 @@ for ($row = 0; $row < 3; $row++) {
             
             $AxisX =& $Plotarea->getAxis(IMAGE_GRAPH_AXIS_X);
             $AxisX->setAxisIntersection(($row < 1 ? 0 : 1), IMAGE_GRAPH_AXIS_Y_SECONDARY);
-            $AxisX->setTitle('Intersect at y2=' . ($row < 1 ? '0' : '1'));
+            $AxisX->setTitle("Intersect at\ny2=" . ($row < 1 ? '0' : '1'));
             
-            $Plot =& $Plotarea->addNew('line', &$DS2[$col]);
+            $Plot =& $Plotarea->addNew('line', $DS2[$col]);
             $Plot->setLineColor('red@0.1');
-            $Plot2 =& $Plotarea->addNew('line', &$DS[$col], IMAGE_GRAPH_AXIS_Y_SECONDARY);
+            $Plot2 =& $Plotarea->addNew('line', $DS[$col], IMAGE_GRAPH_AXIS_Y_SECONDARY);
             $Plot2->setLineColor('green');
             $Plotarea->setBackgroundColor('blue@0.2');
 
             $AxisYsec =& $Plotarea->getAxis(IMAGE_GRAPH_AXIS_Y_SECONDARY);                
             if ($row > 1) {
                 $AxisYsec->setAxisIntersection(1);
-                $AxisYsec->setTitle('Intersect at x=1');
+                $AxisYsec->setTitle("Intersect\nat x=1");
             } else {
-                $AxisYsec->setTitle('Intersect at x=max');
+                $AxisYsec->setTitle("Intersect\nat x=max");
             }
         }
     }

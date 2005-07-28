@@ -43,7 +43,7 @@ require 'Image/Graph.php';
 // create the graph
 $Graph =& Image_Graph::factory('graph', array(600, 400));
 // add a TrueType font
-$Font =& $Graph->addNew('ttf_font', 'Gothic');
+$Font =& $Graph->addNew('ttf_font', 'Verdana');
 // set the font size to 11 pixels
 $Font->setSize(7);
 
@@ -68,7 +68,7 @@ for ($row = 0; $row < 2; $row++) {
         if (isset($DS[$row][$col])) {
             $Plotarea =& $Matrix->getEntry($row, $col);
 
-            $Plot =& $Plotarea->addNew('area', &$DS[$row][$col]);
+            $Plot =& $Plotarea->addNew('area', $DS[$row][$col]);
             $Plot->setLineColor('gray');
             $Plot->setFillColor('blue@0.2');
         }

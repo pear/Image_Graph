@@ -20,7 +20,7 @@ include 'Image/Graph.php';
 $Graph =& Image_Graph::factory('graph', array(400, 300));
 
 // add a TrueType font
-$Arial =& $Graph->addNew('ttf_font', 'Gothic');
+$Arial =& $Graph->addNew('ttf_font', 'Verdana');
 // set the font size to 8 pixels
 $Arial->setSize(8);
 // set default font color to white

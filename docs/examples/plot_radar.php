@@ -15,11 +15,20 @@
  */
 
 require 'Image/Graph.php';
+require 'Image/Graph/Driver.php';
+
+$Driver =& Image_Graph_Driver::factory('png',
+    array(
+        'width' => 400,
+        'height' => 300,
+        'antialias' => 'native'
+    )
+);
 
 // create the graph
-$Graph =& Image_Graph::factory('graph', array(400, 300)); 
+$Graph =& Image_Graph::factory('graph', $Driver);
 // add a TrueType font
-$Font =& $Graph->addNew('ttf_font', 'Gothic');
+$Font =& $Graph->addNew('ttf_font', 'Verdana');
 // set the font size to 11 pixels
 $Font->setSize(8);
 
@@ -38,7 +47,7 @@ $Graph->add(
 );    
 $Legend->setPlotarea($Plotarea);                
     
-$Plotarea->addNew('Image_Graph_Grid_Lines', IMAGE_GRAPH_AXIS_Y);
+$Plotarea->addNew('Image_Graph_Grid_Polar', IMAGE_GRAPH_AXIS_Y);
 
 // create the dataset
 $DS1 =& Image_Graph::factory('dataset');

@@ -47,7 +47,14 @@ require_once 'Image/Graph/Marker.php';
  */
 class Image_Graph_Marker_Plus extends Image_Graph_Marker
 {
-
+	
+	/**
+	 * The thickness of the plus in pixels (thickness is actually double this)
+	 * @var int
+	 * @access private
+	 */
+	var $_thickness = 2;
+	
     /**
      * Draw the marker on the canvas
      *
@@ -61,10 +68,28 @@ class Image_Graph_Marker_Plus extends Image_Graph_Marker
      */
     function _drawMarker($x, $y, $values = false)
     {
-        $this->_getLineStyle();
-        $this->_driver->line($x - $this->_size, $y, $x + $this->_size, $y);
-        $this->_getLineStyle();
-        $this->_driver->line($x, $y - $this->_size, $x, $y + $this->_size);
+    	if ($this->_thickness > 0) {
+    		$this->_getLineStyle();
+	        $this->_getFillStyle();
+	        $this->_driver->polygonAdd($x - $this->_size, $y - $this->_thickness);
+	        $this->_driver->polygonAdd($x - $this->_thickness, $y - $this->_thickness);
+	        $this->_driver->polygonAdd($x - $this->_thickness, $y - $this->_size);
+	        $this->_driver->polygonAdd($x + $this->_thickness, $y - $this->_size);
+	        $this->_driver->polygonAdd($x + $this->_thickness, $y - $this->_thickness);
+	        $this->_driver->polygonAdd($x + $this->_size, $y - $this->_thickness);
+	        $this->_driver->polygonAdd($x + $this->_size, $y + $this->_thickness);
+	        $this->_driver->polygonAdd($x + $this->_thickness, $y + $this->_thickness);
+	        $this->_driver->polygonAdd($x + $this->_thickness, $y + $this->_size);
+	        $this->_driver->polygonAdd($x - $this->_thickness, $y + $this->_size);
+	        $this->_driver->polygonAdd($x - $this->_thickness, $y + $this->_thickness);
+	        $this->_driver->polygonAdd($x - $this->_size, $y + $this->_thickness);
+	        $this->_driver->polygonEnd();
+    	} else {
+	        $this->_getLineStyle();
+	        $this->_driver->line($x - $this->_size, $y, $x + $this->_size, $y);
+	        $this->_getLineStyle();
+	        $this->_driver->line($x, $y - $this->_size, $x, $y + $this->_size);
+    	}
         parent::_drawMarker($x, $y, $values);
     }
 

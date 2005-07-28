@@ -170,12 +170,14 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
     function _value($value)
     {
 //        $the_value = array_search($value, $this->_labels);
-        $the_value = $this->_labels[$value];
-        if ($the_value !== false) {
-            return $the_value + ($this->_pushValues ? 0.5 : 0);
-        } else {
-            return 0;
-        }
+		if (isset($this->_labels[$value])) {
+	        $the_value = $this->_labels[$value];
+	        if ($the_value !== false) {
+	            return $the_value + ($this->_pushValues ? 0.5 : 0);
+	        } else {
+	            return 0;
+	        }
+		}
     }
 
 

@@ -23,10 +23,10 @@ $Driver =& Image_Graph_Driver::factory('pdflib', array('page' => 'A3', 'align' =
 
 
 // create the graph
-$Graph =& Image_Graph::factory('graph', &$Driver); 
+$Graph =& Image_Graph::factory('graph', $Driver); 
 
 // add a TrueType font
-$Font =& $Graph->addNew('ttf_font', 'Gothic');
+$Font =& $Graph->addNew('ttf_font', 'Verdana');
 // set the font size to 15 pixels
 $Font->setSize(15);
 // add a title using the created font    
@@ -87,13 +87,13 @@ $Grid_SmoothedLine->setLineColor('lightgrey');
 // create the 1st dataset
 //$Dataset_SmoothedLine =& new Image_RandomDataset(4, 2, 15, true);
 // create the 1st plot as smoothed area chart using the 1st dataset
-$Plot_SmoothedLine =& $Plotarea_SmoothedLine->addNew('Image_Graph_Plot_Smoothed_Line', &$Dataset_SmoothedLine);
+$Plot_SmoothedLine =& $Plotarea_SmoothedLine->addNew('Image_Graph_Plot_Smoothed_Line', $Dataset_SmoothedLine);
 $Plot_SmoothedLine->setLineColor('orange');
 
 // create a 3rd dataset
 $Dataset_BarChart =& Image_Graph::factory('random', array(8, 10, 120, false));
 // create the 3rd plot as line chart using the 2nd dataset
-$Plot_BarChart =& $Plotarea_BarAndLine->addNew('bar', &$Dataset_BarChart);
+$Plot_BarChart =& $Plotarea_BarAndLine->addNew('bar', $Dataset_BarChart);
 // set the fill style of the barchart to the almost transparent BlueAlpha
 $FillArray =& Image_Graph::factory('Image_Graph_Fill_Array');
 $Plot_BarChart->setFillStyle($FillArray);
@@ -109,7 +109,7 @@ $FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_VERTICAL, 'white', 'brown'
 // create the 2nd dataset
 $Dataset_LineMarker =& Image_Graph::factory('random', array(8, 20, 100, false));
 // create the 2nd plot as line chart using the 2nd dataset
-$Plot_LineMarker =& $Plotarea_BarAndLine->addNew('line', &$Dataset_LineMarker);
+$Plot_LineMarker =& $Plotarea_BarAndLine->addNew('line', $Dataset_LineMarker);
 
 $Marker =& Image_Graph::factory('Image_Graph_Marker_Array');
 $CrossMarker =& Image_Graph::factory('Image_Graph_Marker_Cross');
@@ -147,7 +147,7 @@ $AxisX->setFont($AxisFontX);
 $Legend_BarAndLine->setFillColor('white');
 $Legend_SmoothedLine->setFillColor('white');    
 
-$Font2 =& $Graph->addNew('ttf_font', 'Gothic');
+$Font2 =& $Graph->addNew('ttf_font', 'Verdana');
 $Font2->setSize(8);
 $Legend_BarAndLine->setFont($Font2);
 $Legend_SmoothedLine->setFont($Font2);
@@ -160,8 +160,8 @@ $Plot_BarChart->setTitle('Data Set 2');
 $Dataset_Radar1 =& Image_Graph::factory('random', array(8, 1, 5));
 $Dataset_Radar2 =& Image_Graph::factory('random', array(8, 1, 5));
 // create the 1st plot as smoothed area chart using the 1st dataset
-$Plot_Radar1 =& $Plotarea_Radar->addNew('Image_Graph_Plot_Radar', &$Dataset_Radar1);
-$Plot_Radar2 =& $Plotarea_Radar->addNew('Image_Graph_Plot_Radar', &$Dataset_Radar2);
+$Plot_Radar1 =& $Plotarea_Radar->addNew('Image_Graph_Plot_Radar', $Dataset_Radar1);
+$Plot_Radar2 =& $Plotarea_Radar->addNew('Image_Graph_Plot_Radar', $Dataset_Radar2);
     
 //$Dataset_Radar1->setMaximumY(7);
 

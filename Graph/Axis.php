@@ -259,6 +259,7 @@ require_once 'Image/Graph/Plotarea/Element.php';
     {
         parent::Image_Graph_Element();
         $this->_type = $type;
+        $this->_fillStyle = 'black';
     }
 
     /**
@@ -1024,9 +1025,9 @@ require_once 'Image/Graph/Plotarea/Element.php';
     {
         if ($axis == 'x') {
             $axis = IMAGE_GRAPH_AXIS_X;
-        } elseif ($axis = 'y') {
+        } elseif ($axis == 'y') {
             $axis = IMAGE_GRAPH_AXIS_Y;
-        } elseif ($axis = 'ysec') {
+        } elseif ($axis == 'ysec') {
             $axis = IMAGE_GRAPH_AXIS_Y_SECONDARY;
         }
         $this->_intersect = array(
@@ -1244,7 +1245,7 @@ require_once 'Image/Graph/Plotarea/Element.php';
     function _drawAxisLines()
     {
         if ($this->_type == IMAGE_GRAPH_AXIS_X) {
-            $this->_getLineStyle();
+            $this->_getLineStyle(); 
             $this->_driver->line(
                 $this->_left,
                 $this->_top,
@@ -1260,10 +1261,11 @@ require_once 'Image/Graph/Plotarea/Element.php';
 
             if ($this->_showArrow) {
                 $this->_getFillStyle();
-                $this->_getLineStyle();
-                $this->_driver->polygonAdd($this->_right - 8, $this->_top + 5);
+                $this->_getLineStyle();                
+                $this->_driver->polygonAdd($this->_right - 7, $this->_top + 4);
                 $this->_driver->polygonAdd($this->_right, $this->_top);
-                $this->_driver->polygonAdd($this->_right - 8, $this->_top - 5);
+                $this->_driver->polygonAdd($this->_right - 7, $this->_top - 4);
+                $this->_driver->polygonAdd($this->_right - 4, $this->_top);
                 $this->_driver->polygonEnd();
             }
         } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY) {
@@ -1285,9 +1287,10 @@ require_once 'Image/Graph/Plotarea/Element.php';
             if ($this->_showArrow) {
                 $this->_getFillStyle();
                 $this->_getLineStyle();
-                $this->_driver->polygonAdd($this->_left - 5, $this->_top + 8);
+                $this->_driver->polygonAdd($this->_left - 4, $this->_top + 7);
                 $this->_driver->polygonAdd($this->_left, $this->_top);
-                $this->_driver->polygonAdd($this->_left + 5, $this->_top + 8);
+                $this->_driver->polygonAdd($this->_left + 4, $this->_top + 7);
+                $this->_driver->polygonAdd($this->_left, $this->_top + 4);
                 $this->_driver->polygonEnd();
             }
         } else {
@@ -1309,9 +1312,10 @@ require_once 'Image/Graph/Plotarea/Element.php';
             if ($this->_showArrow) {
                 $this->_getFillStyle();
                 $this->_getLineStyle();
-                $this->_driver->polygonAdd($this->_right - 5, $this->_top + 8);
+                $this->_driver->polygonAdd($this->_right - 4, $this->_top + 7);
                 $this->_driver->polygonAdd($this->_right, $this->_top);
-                $this->_driver->polygonAdd($this->_right + 5, $this->_top + 8);
+                $this->_driver->polygonAdd($this->_right + 4, $this->_top + 7);
+                $this->_driver->polygonAdd($this->_right, $this->_top + 4);
                 $this->_driver->polygonEnd();
             }
         }

@@ -33,7 +33,7 @@ require 'Image/Graph.php';
 // create the graph
 $Graph =& Image_Graph::factory('graph', array(400, 300));
 // add a TrueType font
-$Font =& $Graph->addNew('ttf_font', 'Gothic');
+$Font =& $Graph->addNew('ttf_font', 'Verdana');
 // set the font size to 11 pixels
 $Font->setSize(7);
 
@@ -77,10 +77,10 @@ $DS2->addPoint('Iceland', 'Denmark');
  * which they exist "before" in the dataset on their first occurence)
  */ 
 
-$Plot =& $Plotarea->addNew('line', &$DS);
+$Plot =& $Plotarea->addNew('line', $DS);
 $Plot->setLineColor('red');
 
-$Plot2 =& $Plotarea->addNew('line', &$DS2);
+$Plot2 =& $Plotarea->addNew('line', $DS2);
 $Plot2->setLineColor('blue');
 
 $Graph->done();

@@ -25,7 +25,7 @@ $Driver =& Image_Graph_Driver::factory('png', array('width' => 600, 'height' => 
 // create the graph
 $Graph =& Image_Graph::factory('graph', array(&$Driver));
 // add a TrueType font
-$Font =& $Graph->addNew('ttf_font', 'Gothic');
+$Font =& $Graph->addNew('ttf_font', 'Verdana');
 // set the font size to 8 pixels
 $Font->setSize(8);
 
