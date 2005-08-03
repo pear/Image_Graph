@@ -74,7 +74,7 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
     function _drawLegendSample($x0, $y0, $x1, $y1)
     {
         $dx = abs($x1 - $x0) / 7;
-        $this->_driver->rectangle($x0 + $dx, $y0, $x1 - $dx, $y1);
+        $this->_canvas->rectangle(array('x0' => $x0 + $dx, 'y0' => $y0, 'x1' => $x1 - $dx, 'y1' => $y1));
     }
 
     /**
@@ -131,7 +131,7 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
             return false;
         }
 
-        $this->_driver->startGroup(get_class($this) . '_' . $this->_title);
+        $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
 
         if ($this->_width == 'auto') {
             $width = $this->_parent->_labelDistance(IMAGE_GRAPH_AXIS_X) / 2;            
@@ -246,11 +246,13 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
                         }
                         $this->_getFillStyle($ID);
                         $this->_getLineStyle($ID);
-                        $this->_driver->rectangle(
-                            min($x1, $x2),
-                            min($y1, $y2),
-                            max($x1, $x2),
-                            max($y1, $y2)
+                        $this->_canvas->rectangle(
+                        	array(
+                        		'x0' => min($x1, $x2),
+                            	'y0' => min($y1, $y2),
+                            	'x1' => max($x1, $x2),
+                            	'y1' => max($y1, $y2)
+                            )
                         );
                     }
                 }
@@ -261,7 +263,7 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
 
         $this->_drawMarker();
         
-        $this->_driver->endGroup();        
+        $this->_canvas->endGroup();        
         return true;
     }
 }

@@ -274,22 +274,26 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
     function _done()
     {
         $this->_getFillStyle();
-        $this->_driver->rectangle(
-            $this->_fillLeft(),
-            $this->_fillTop(),
-            $this->_fillRight(),
-            $this->_fillBottom()
+        $this->_canvas->rectangle(
+        	array(
+        		'x0' => $this->_fillLeft(),
+            	'y0' => $this->_fillTop(),
+            	'x1' => $this->_fillRight(),
+            	'y1' => $this->_fillBottom()
+            )
         );
 
         $scaledWidth = $this->_mapSize['X']*$this->_scale;
         $scaledHeight = $this->_mapSize['Y']*$this->_scale;
 
-        $this->_driver->overlayImage(
-            $this->_plotLeft,
-            $this->_plotTop,
-            $this->_imageMap,
-            $scaledWidth,
-            $scaledHeight
+        $this->_canvas->image(
+        	array(
+            	'x' => $this->_plotLeft,
+            	'y' => $this->_plotTop,
+            	'filename' => $this->_imageMap,
+            	'width' => $scaledWidth,
+            	'height' => $scaledHeight
+            )
         );
 
         return Image_Graph_Layout::_done();

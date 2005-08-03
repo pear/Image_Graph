@@ -75,7 +75,7 @@ class Image_Graph_Grid_Lines extends Image_Graph_Grid
             return false;
         }
 
-        $this->_driver->startGroup(get_class($this));
+        $this->_canvas->startGroup(get_class($this));
         
         $value = false;
 
@@ -101,11 +101,11 @@ class Image_Graph_Grid_Lines extends Image_Graph_Grid
                 $previousSecondaryValue = $secondaryValue;
 
                 $this->_getLineStyle();
-                $this->_driver->line($x1, $y1, $x2, $y2);
+                $this->_canvas->line(array('x0' => $x1, 'y0' => $y1, 'x1' => $x2, 'y1' => $y2));
             }
         }
         
-        $this->_driver->endGroup();
+        $this->_canvas->endGroup();
         
         return true;
     }

@@ -28,7 +28,7 @@
  * @link       http://pear.php.net/package/Image_Graph
  */
 
-require 'Image/Graph.php';    
+require_once 'Image/Graph.php';    
 
 // create the graph
 $Graph =& Image_Graph::factory('graph', array(400, 300));

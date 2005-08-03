@@ -14,10 +14,10 @@
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  */
 
-require 'Image/Graph.php';
-require 'Image/Graph/Driver.php';
+require_once 'Image/Graph.php';
+require_once 'Image/Canvas.php';
 
-$Driver =& Image_Graph_Driver::factory('png',
+$Canvas =& Image_Canvas::factory('png',
     array(
         'width' => 400,
         'height' => 300,
@@ -26,9 +26,9 @@ $Driver =& Image_Graph_Driver::factory('png',
 );
 
 // create the graph
-$Graph =& Image_Graph::factory('graph', $Driver);
+$Graph =& Image_Graph::factory('graph', $Canvas);
 // add a TrueType font
-$Font =& $Graph->addNew('ttf_font', 'Verdana');
+$Font =& $Graph->addNew('font', 'Verdana');
 // set the font size to 11 pixels
 $Font->setSize(8);
 

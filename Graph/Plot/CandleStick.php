@@ -58,13 +58,34 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
     function _drawCandleStick($x, $w, $y_min, $y_open, $y_close, $y_max, $ID) 
     {
         $this->_getLineStyle($ID);
-        $this->_driver->line($x, min($y_open, $y_close), $x, $y_max);
+        $this->_canvas->line(
+        	array(
+				'x0' => $x, 
+				'y0' => min($y_open, $y_close), 
+				'x1' => $x, 
+				'y1' => $y_max
+			)
+		);
         $this->_getLineStyle($ID);
-        $this->_driver->line($x, max($y_open, $y_close), $x, $y_min);
+        $this->_canvas->line(
+        	array(
+				'x0' => $x, 
+				'y0' => max($y_open, $y_close), 
+				'x1' => $x, 
+				'y1' => $y_min
+			)
+		);
     
         $this->_getLineStyle($ID);
         $this->_getFillStyle($ID);
-        $this->_driver->rectangle($x - $w, min($y_open, $y_close), $x + $w, max($y_open, $y_close));
+        $this->_canvas->rectangle(
+        	array(
+				'x0' => $x - $w, 
+				'y0' => min($y_open, $y_close), 
+				'x1' => $x + $w, 
+				'y1' => max($y_open, $y_close)
+			)
+		);
     }
 
     /**
@@ -100,7 +121,7 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
             return false;
         }
 
-        $this->_driver->startGroup(get_class($this) . '_' . $this->_title);
+        $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
 
         if ($this->_multiType == 'stacked100pct') {
             $total = $this->_getTotals();
@@ -142,7 +163,7 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
         unset($keys);
         $this->_drawMarker();
         
-        $this->_driver->endGroup($this->_title);
+        $this->_canvas->endGroup($this->_title);
         
         return true;
     }

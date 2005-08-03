@@ -15,11 +15,11 @@
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  */
 
-include 'Image/Graph.php';
-include 'Image/Graph/Driver.php';
+require_once 'Image/Graph.php';
+require_once 'Image/Canvas.php';
 
-// create a new GD driver
-$Driver =& Image_Graph_Driver::factory('gd',
+// create a new GD canvas
+$Canvas =& Image_Canvas::factory('gd',
     array(
         'width' => 600,
         'height' => 400            
@@ -27,9 +27,9 @@ $Driver =& Image_Graph_Driver::factory('gd',
 );     
 
 // create the graph
-$Graph =& Image_Graph::factory('graph', array(&$Driver));
+$Graph =& Image_Graph::factory('graph', $Canvas);
 
-$Font =& $Graph->addNew('ttf_font', 'Verdana');
+$Font =& $Graph->addNew('font', 'Verdana');
 $Font->setSize(7);
 
 $Graph->setFont($Font);
@@ -264,24 +264,25 @@ $AxisX_Car->setFontSize(6);
 $AxisY_Car =& $Plotarea_Car->getAxis(IMAGE_GRAPH_AXIS_Y);
 $AxisY_Car->forceMaximum(100);
     
-// output the graph using the GD driver
+// output the graph using the GD canvas
 $Graph->done(array('filename' => './output/frontpage_sample.png'));
 
-// create a new SVG driver
-$Driver =& Image_Graph_Driver::factory('svg',
+// create a new SVG canvas
+$Canvas =& Image_Canvas::factory('svg',
     array(
         'width' => 600,
         'height' => 400
     )
 ); 
 // make the graph use this now instead
-$Graph->setDriver($Driver);
+$Graph->setCanvas($Canvas);
 
-// 're'-output the graph, but not using the SVG driver
+// 're'-output the graph, but not using the SVG canvas
 $Graph->done(array('filename' => './output/frontpage_sample.svg'));
 
-// create a new PDF driver
-$Driver =& Image_Graph_Driver::factory('pdflib',
+/*
+// create a new PDF canvas
+$Canvas =& Image_Canvas::factory('pdflib',
     array(
         'page' => 'A4',
         'align' => 'center',
@@ -291,21 +292,22 @@ $Driver =& Image_Graph_Driver::factory('pdflib',
     )
 ); 
 // make the graph use this now instead
-$Graph->setDriver($Driver);
+$Graph->setCanvas($Canvas);
 
-// 're'-output the graph, but not using the PDF driver
+// 're'-output the graph, but not using the PDF canvas
 $Graph->done(array('filename' => './output/frontpage_sample.pdf'));
 
-// create a new SWF driver
-$Driver =& Image_Graph_Driver::factory('swf',
+// create a new SWF canvas
+$Canvas =& Image_Canvas::factory('swf',
     array(
         'width' => 600,
         'height' => 400
     )
 ); 
 // make the graph use this now instead
-$Graph->setDriver($Driver);
+$Graph->setCanvas($Canvas);
 
-// 're'-output the graph, but not using the SWF driver
+// 're'-output the graph, but not using the SWF canvas
 $Graph->done(array('filename' => './output/frontpage_sample.swf'));
+*/
 ?>

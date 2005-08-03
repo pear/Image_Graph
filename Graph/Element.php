@@ -200,9 +200,9 @@ class Image_Graph_Element extends Image_Graph_Common
     function _getBackground()
     {
         if (is_object($this->_background)) {
-            $this->_driver->setFill($this->_background->_getFillStyle());
+            $this->_canvas->setFill($this->_background->_getFillStyle());
         } elseif ($this->_background != null) {
-            $this->_driver->setFill($this->_background);
+            $this->_canvas->setFill($this->_background);
         } else {
             return false;
         }
@@ -250,11 +250,11 @@ class Image_Graph_Element extends Image_Graph_Common
     {
         if (is_object($this->_borderStyle)) {
             $result = $this->_borderStyle->_getLineStyle();
-            $this->_driver->setLineThickness($result['thickness']);
-            $this->_driver->setLineColor($result['color']);
+            $this->_canvas->setLineThickness($result['thickness']);
+            $this->_canvas->setLineColor($result['color']);
         } elseif ($this->_borderStyle != null) {
-            $this->_driver->setLineThickness(1);
-            $this->_driver->setLineColor($this->_borderStyle);
+            $this->_canvas->setLineThickness(1);
+            $this->_canvas->setLineColor($this->_borderStyle);
         } else {
             return false;
         }
@@ -304,15 +304,15 @@ class Image_Graph_Element extends Image_Graph_Common
         if (is_object($this->_lineStyle)) {
             $result = $this->_lineStyle->_getLineStyle($ID);
             if (is_array($result)) {
-                $this->_driver->setLineThickness($result['thickness']);
-                $this->_driver->setLineColor($result['color']);
+                $this->_canvas->setLineThickness($result['thickness']);
+                $this->_canvas->setLineColor($result['color']);
             } else {
-                $this->_driver->setLineThickness(1);
-                $this->_driver->setLineColor($result);
+                $this->_canvas->setLineThickness(1);
+                $this->_canvas->setLineColor($result);
             }
         } elseif ($this->_lineStyle != null) {
-            $this->_driver->setLineThickness(1);
-            $this->_driver->setLineColor($this->_lineStyle);
+            $this->_canvas->setLineThickness(1);
+            $this->_canvas->setLineColor($this->_lineStyle);
         } else {
             return false;
         }
@@ -361,9 +361,9 @@ class Image_Graph_Element extends Image_Graph_Common
     function _getFillStyle($ID = false)
     {
         if (is_object($this->_fillStyle)) {
-            $this->_driver->setFill($this->_fillStyle->_getFillStyle($ID));
+            $this->_canvas->setFill($this->_fillStyle->_getFillStyle($ID));
         } elseif ($this->_fillStyle != null) {
-            $this->_driver->setFill($this->_fillStyle);
+            $this->_canvas->setFill($this->_fillStyle);
         } else {
             return false;
         }
@@ -376,7 +376,7 @@ class Image_Graph_Element extends Image_Graph_Common
      * If not font has been set, the parent font is propagated through it's
      * children.
      *
-     * @return array An associated array used for driver
+     * @return array An associated array used for canvas
      * @access private
      */
     function _getFont($options = false)
@@ -644,16 +644,16 @@ class Image_Graph_Element extends Image_Graph_Common
     function _displayShadow()
     {        
         if (is_array($this->_shadow)) {
-            $this->_driver->startGroup(get_class($this) . '_shadow');
-            $this->_driver->setFillColor($this->_shadow['color']);        
-            $this->_driver->polygonAdd($this->_right + 1, $this->_top + $this->_shadow['size']);
-            $this->_driver->polygonAdd($this->_right + $this->_shadow['size'], $this->_top + $this->_shadow['size']);
-            $this->_driver->polygonAdd($this->_right + $this->_shadow['size'], $this->_bottom + $this->_shadow['size']);
-            $this->_driver->polygonAdd($this->_left + $this->_shadow['size'], $this->_bottom + $this->_shadow['size']);
-            $this->_driver->polygonAdd($this->_left + $this->_shadow['size'], $this->_bottom + 1);
-            $this->_driver->polygonAdd($this->_right + 1, $this->_bottom + 1);
-            $this->_driver->polygonEnd();            
-            $this->_driver->endGroup();
+            $this->_canvas->startGroup(get_class($this) . '_shadow');
+            $this->_canvas->setFillColor($this->_shadow['color']);        
+            $this->_canvas->addVertex(array('x' => $this->_right + 1, 'y' => $this->_top + $this->_shadow['size']));
+            $this->_canvas->addVertex(array('x' => $this->_right + $this->_shadow['size'], 'y' => $this->_top + $this->_shadow['size']));
+            $this->_canvas->addVertex(array('x' => $this->_right + $this->_shadow['size'], 'y' => $this->_bottom + $this->_shadow['size']));
+            $this->_canvas->addVertex(array('x' => $this->_left + $this->_shadow['size'], 'y' => $this->_bottom + $this->_shadow['size']));
+            $this->_canvas->addVertex(array('x' => $this->_left + $this->_shadow['size'], 'y' => $this->_bottom + 1));
+            $this->_canvas->addVertex(array('x' => $this->_right + 1, 'y' => $this->_bottom + 1));
+            $this->_canvas->polygon(array('connect' => true));            
+            $this->_canvas->endGroup();
         }
     }
 
@@ -676,9 +676,27 @@ class Image_Graph_Element extends Image_Graph_Common
         if ($alignment === false) {
             $alignment = IMAGE_GRAPH_ALIGN_LEFT + IMAGE_GRAPH_ALIGN_TOP;
         }
+        
+        $align = array();      
+        
+        if (($alignment & IMAGE_GRAPH_ALIGN_TOP) != 0) {
+        	$align['vertical'] = 'top';
+        } else if (($alignment & IMAGE_GRAPH_ALIGN_BOTTOM) != 0) {       
+        	$align['vertical'] = 'bottom';
+        } else {
+        	$align['vertical'] = 'center';
+        }
 
-        $this->_driver->setFont($font);
-        $this->_driver->write($x, $y, $text, $alignment);
+        if (($alignment & IMAGE_GRAPH_ALIGN_LEFT) != 0) {
+        	$align['horizontal'] = 'left';
+        } else if (($alignment & IMAGE_GRAPH_ALIGN_RIGHT) != 0) {       
+        	$align['horizontal'] = 'right';
+        } else {
+        	$align['horizontal'] = 'center';
+        }
+
+        $this->_canvas->setFont($font);
+        $this->_canvas->addText(array('x' => $x, 'y' => $y, 'text' => $text, 'alignment' => $align));
     }
 
     /**
@@ -693,7 +711,7 @@ class Image_Graph_Element extends Image_Graph_Common
         $background = $this->_getBackground();
         $border = $this->_getBorderStyle();
         if (($background) || ($border)) {
-            $this->_driver->rectangle($this->_left, $this->_top, $this->_right, $this->_bottom);
+            $this->_canvas->rectangle(array('x0' => $this->_left, 'y0' => $this->_top, 'x1' => $this->_right, 'y1' => $this->_bottom));
         }
 
         $result = parent::_done();

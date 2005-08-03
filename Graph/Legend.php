@@ -299,7 +299,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
             return false;
         }
         
-        $this->_driver->startGroup(get_class($this));
+        $this->_canvas->startGroup(get_class($this));
 
         $param = $this->_parameterArray();
 
@@ -311,11 +311,13 @@ class Image_Graph_Legend extends Image_Graph_Layout
         if (strtolower($parent) == 'image_graph_plotarea') {                    
             $this->_getFillStyle();
             $this->_getLineStyle();
-            $this->_driver->rectangle(
-                $this->_left,
-                $this->_top,
-                $this->_right,
-                $this->_bottom
+            $this->_canvas->rectangle(
+            	array(
+                	'x0' => $this->_left,
+                	'y0' => $this->_top,
+                	'x1' => $this->_right,
+                	'y1' => $this->_bottom
+                )
             );
 
             $param = $this->_parameterArray();
@@ -374,7 +376,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
             unset($keys);
         }
         
-        $this->_driver->endGroup();
+        $this->_canvas->endGroup();
         
         return true;
     }

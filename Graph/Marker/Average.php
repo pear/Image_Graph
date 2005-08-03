@@ -71,14 +71,16 @@ class Image_Graph_Marker_Average extends Image_Graph_Marker
                 )
             );
             $this->_getLineStyle();
-            $this->_driver->line($x, $y, $point['X'], $point['Y']);
+            $this->_canvas->line(array('x0' => $x, 'y0' => $y, 'x1' => $point['X'], 'y1' => $point['Y']));
 
             $this->_getLineStyle();
-            $this->_driver->line(
-                $point['X'] - 2,
-                $point['Y'],
-                $point['X'] + 2,
-                $point['Y']
+            $this->_canvas->line(
+            	array(
+                	'x0' => $point['X'] - 2,
+                	'y0' => $point['Y'],
+                	'x1' => $point['X'] + 2,
+                	'y1' => $point['Y']
+                )
             );
         }
         parent::_drawMarker($x, $y, $values);

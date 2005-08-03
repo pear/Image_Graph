@@ -58,7 +58,7 @@ class Image_Graph_Plot_Smoothed_Radar extends Image_Graph_Plot_Smoothed_Bezier
      */
     function _done()
     {
-        $this->_driver->startGroup(get_class($this) . '_' . $this->_title);
+        $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
         if (is_a($this->_parent, 'Image_Graph_Plotarea_Radar')) {
             $keys = array_keys($this->_dataset);
             foreach ($keys as $key) {
@@ -97,37 +97,41 @@ class Image_Graph_Plot_Smoothed_Radar extends Image_Graph_Plot_Smoothed_Bezier
 
 
                         $cp = $this->_getControlPoints($p1, $p0, $p2, $p3);
-                        $this->_driver->splineAdd(
-                            $cp['X'],
-                            $cp['Y'],
-                            $cp['P1X'],
-                            $cp['P1Y'],
-                            $cp['P2X'],
-                            $cp['P2Y']
-                        );
+                        $this->_canvas->addSpline(
+	                    	array(
+	                        	'x' => $cp['X'],
+	                        	'y' => $cp['Y'],
+	                        	'p1x' => $cp['P1X'],
+	                        	'p1y' => $cp['P1Y'],
+	                        	'p2x' => $cp['P2X'],
+	                        	'p2y' => $cp['P2Y']
+	                        )
+	                    );
 
                         $next2last = $p0;
                         $last = $p1;
                     }
 
                     $cp = $this->_getControlPoints($p1_, $plast_, $p2_, $p3_);
-                    $this->_driver->splineAdd(
-                        $cp['X'],
-                        $cp['Y'],
-                        $cp['P1X'],
-                        $cp['P1Y'],
-                        $cp['P2X'],
-                        $cp['P2Y']
+                    $this->_canvas->addSpline(
+                    	array(
+                        	'x' => $cp['X'],
+                        	'y' => $cp['Y'],
+                        	'p1x' => $cp['P1X'],
+                        	'p1y' => $cp['P1Y'],
+                        	'p2x' => $cp['P2X'],
+                        	'p2y' => $cp['P2Y']
+                        )
                     );
                     $this->_getFillStyle($key);
                     $this->_getLineStyle($key);
-                    $this->_driver->splineEnd(true);
+                    $this->_canvas->polygon(array('connect' => true));
                 }
             }
             unset($keys);
         }
         $this->_drawMarker();
-        $this->_driver->endGroup($this->_title);
+        $this->_canvas->endGroup($this->_title);
         return parent::_done();
     }
 

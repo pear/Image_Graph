@@ -14,13 +14,13 @@
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  */
  
-include 'Image/Graph.php';
+require_once 'Image/Graph.php';
 
 // create the graph
 $Graph =& Image_Graph::factory('graph', array(400, 300));
 
 // add a TrueType font
-$Arial =& $Graph->addNew('ttf_font', 'Verdana');
+$Arial =& $Graph->addNew('font', 'Verdana');
 // set the font size to 8 pixels
 $Arial->setSize(8);
 // set default font color to white

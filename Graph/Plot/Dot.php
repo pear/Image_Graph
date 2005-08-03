@@ -82,11 +82,11 @@ class Image_Graph_Plot_Dot extends Image_Graph_Plot
             return false;
         }
 
-        $this->_driver->startGroup(get_class($this) . '_' . $this->_title);
+        $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
         
         $this->_drawMarker();
         
-        $this->_driver->endGroup();
+        $this->_canvas->endGroup();
         
         return true;
     }

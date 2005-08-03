@@ -3,10 +3,10 @@
  * Usage example for Image_Graph.
  * 
  * Main purpose: 
- * Demonstrate switching between drivers
+ * Demonstrate switching between canvass
  * 
  * Other: 
- * PNG and SVG driver usage
+ * PNG and SVG canvas usage
  * 
  * $Id$
  * 
@@ -14,11 +14,11 @@
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  */
  
-include 'Image/Graph.php';
-include 'Image/Graph/Driver.php';
+require_once 'Image/Graph.php';
+require_once 'Image/Canvas.php';
 
-// create a new GD driver
-$Driver =& Image_Graph_Driver::factory('gd',
+// create a new GD canvas
+$Canvas =& Image_Canvas::factory('gd',
     array(
         'filename' => './images/modify.jpg',
         'left' => 400,
@@ -29,8 +29,8 @@ $Driver =& Image_Graph_Driver::factory('gd',
         )
     ); 
  
-    // create the graph using the GD driver
-$Graph =& Image_Graph::factory('graph', $Driver);
+    // create the graph using the GD canvas
+$Graph =& Image_Graph::factory('graph', $Canvas);
 
 // create a simple graph
 $Graph->add(
@@ -47,26 +47,26 @@ $Plot->setLineColor('gray');
 $Plot->setFillColor('blue@0.2');
 
 // add a TrueType font
-$Font =& $Graph->addNew('ttf_font', 'Verdana');
+$Font =& $Graph->addNew('font', 'Verdana');
 // set the font size to 11 pixels
 $Font->setSize(8);
 
 $Graph->setFont($Font);
 $Graph->addNew('title', array('Simple Area Chart Sample', 12));
     
-// output the graph using the GD driver
-$Graph->done(array('filename' => './driversample.png'));
+// output the graph using the GD canvas
+$Graph->done(array('filename' => './canvassample.png'));
 
-// create a new SVG driver
-$Driver =& Image_Graph_Driver::factory('svg',
+// create a new SVG canvas
+$Canvas =& Image_Canvas::factory('svg',
     array(
         'width' => 600,
         'height' => 400
     )
 ); 
 // make the graph use this now instead
-$Graph->setDriver($Driver);
+$Graph->setCanvas($Canvas);
 
-// 're'-output the graph, but not using the SVG driver
-$Graph->done(array('filename' => './driversample.svg'));
+// 're'-output the graph, but not using the SVG canvas
+$Graph->done(array('filename' => './canvassample.svg'));
 ?>

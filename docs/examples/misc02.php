@@ -14,7 +14,7 @@
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  */
 
-include 'Image/Graph.php';
+require_once 'Image/Graph.php';
 
 function XtoYear($Value)
 {
@@ -42,7 +42,7 @@ $DataSet2->addPoint('ABC', 19);
 $DataSet2->addPoint('QED', 26); 
 
 // create and set the plot font
-$Font =& $Graph->addNew('ttf_font', 'Verdana');
+$Font =& $Graph->addNew('font', 'Verdana');
 $Font->setSize(7);
 $Graph->setFont($Font);
 

@@ -64,7 +64,7 @@ class Image_Graph_Figure_Polygon extends Image_Graph_Element
      */
     function addVertex($x, $y)
     {
-        $this->_driver->polygonAdd($x, $y);
+        $this->_canvas->addVertex(array('x' => $x, 'y' => $y));
     }
 
     /**
@@ -79,13 +79,13 @@ class Image_Graph_Figure_Polygon extends Image_Graph_Element
             return false;
         }
 
-        $this->_driver->startGroup(get_class($this));
+        $this->_canvas->startGroup(get_class($this));
            
         $this->_getFillStyle();
         $this->_getLineStyle();
-        $this->_driver->polygonEnd();
+        $this->_canvas->polygon(array('connect' => true));
         
-        $this->_driver->endGroup();
+        $this->_canvas->endGroup();
         return true;
     }
 

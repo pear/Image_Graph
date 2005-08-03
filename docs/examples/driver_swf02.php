@@ -3,7 +3,7 @@
  * Usage example for Image_Graph.
  * 
  * Main purpose: 
- * Demonstrate SWF driver
+ * Demonstrate SWF canvas
  * 
  * Other: 
  * None specific
@@ -14,17 +14,17 @@
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  */
 
-require 'Image/Graph.php';
-require 'Image/Graph/Driver.php';
+require_once 'Image/Graph.php';
+require_once 'Image/Canvas.php';
 
-$Driver =& Image_Graph_Driver::factory('swf', array('width' => 600, 'height' => 400));
+$Canvas =& Image_Canvas::factory('swf', array('width' => 600, 'height' => 400));
 
 
 // create the graph
-$Graph =& Image_Graph::factory('graph', $Driver); 
+$Graph =& Image_Graph::factory('graph', $Canvas); 
 
 // add a TrueType font
-$Font =& $Graph->addNew('ttf_font', 'Verdana');
+$Font =& $Graph->addNew('font', 'Verdana');
 // set the font size to 15 pixels
 $Font->setSize(15);
 // add a title using the created font    
@@ -145,7 +145,7 @@ $AxisX->setFont($AxisFontX);
 $Legend_BarAndLine->setFillColor('white');
 $Legend_SmoothedLine->setFillColor('white');    
 
-$Font2 =& $Graph->addNew('ttf_font', 'Verdana');
+$Font2 =& $Graph->addNew('font', 'Verdana');
 $Font2->setSize(8);
 $Legend_BarAndLine->setFont($Font2);
 $Legend_SmoothedLine->setFont($Font2);

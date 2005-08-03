@@ -74,18 +74,20 @@ class Image_Graph_Figure_Ellipse extends Image_Graph_Element
             return false;
         }
         
-        $this->_driver->startGroup(get_class($this));
+        $this->_canvas->startGroup(get_class($this));
 
         $this->_getFillStyle();
         $this->_getLineStyle();
-        $this->_driver->ellipse(
-            ($this->_left + $this->_right) / 2,
-            ($this->_top + $this->_bottom) / 2,
-            $this->width(),
-            $this->height()
+        $this->_canvas->ellipse(
+        	array(
+        		'x' => ($this->_left + $this->_right) / 2,
+            	'y' => ($this->_top + $this->_bottom) / 2,
+            	'rx' => $this->width(),
+            	'ry' => $this->height()
+            )
         );
         
-        $this->_driver->endGroup();
+        $this->_canvas->endGroup();
         
         return true;
     }

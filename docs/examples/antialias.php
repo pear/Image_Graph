@@ -6,7 +6,7 @@
  * Antialiasing usage
  * 
  * Other: 
- * Setup driver, Many plotareas with one legend, Setup fillarray (filling one
+ * Setup canvas, Many plotareas with one legend, Setup fillarray (filling one
  * plot with different colors depeding on dataset)
  * 
  * $Id$
@@ -16,16 +16,16 @@
  */
  
 // include libraries
-require 'Image/Graph.php';
-require 'Image/Graph/Driver.php';
+require_once 'Image/Graph.php';
+require_once 'Image/Canvas.php';
 
-// create a PNG driver and enable antialiasing (driver implementation)
-$Driver =& Image_Graph_Driver::factory('png', array('width' => 600, 'height' => 300, 'antialias' => true));      
+// create a PNG canvas and enable antialiasing (canvas implementation)
+$Canvas =& Image_Canvas::factory('png', array('width' => 600, 'height' => 300, 'antialias' => 'native'));      
 
 // create the graph
-$Graph =& Image_Graph::factory('graph', array(&$Driver));
+$Graph =& Image_Graph::factory('graph', $Canvas);
 // add a TrueType font
-$Font =& $Graph->addNew('ttf_font', 'Verdana');
+$Font =& $Graph->addNew('font', 'Verdana');
 // set the font size to 8 pixels
 $Font->setSize(8);
 

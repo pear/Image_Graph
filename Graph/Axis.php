@@ -289,7 +289,7 @@ require_once 'Image/Graph/Plotarea/Element.php';
      * If not font has been set, the parent font is propagated through it's
      * children.
      *
-     * @return array An associated array used for driver
+     * @return array An associated array used for canvas
      * @access private
      */
     function _getTitleFont()
@@ -888,7 +888,7 @@ require_once 'Image/Graph/Plotarea/Element.php';
                         $font = $this->_getFont();
                     }
                 }
-                $this->_driver->setFont($font);
+                $this->_canvas->setFont($font);
 
                 $value = false;
                 $maxSize = 0;
@@ -907,9 +907,9 @@ require_once 'Image/Graph/Plotarea/Element.php';
                         }
 
                         if ($this->_type == IMAGE_GRAPH_AXIS_X) {
-                            $maxSize = max($maxSize, $this->_driver->textHeight($labelText));
+                            $maxSize = max($maxSize, $this->_canvas->textHeight($labelText));
                         } else {
-                            $maxSize = max($maxSize, $this->_driver->textWidth($labelText));
+                            $maxSize = max($maxSize, $this->_canvas->textWidth($labelText));
                         }
                     }
                 }
@@ -922,12 +922,12 @@ require_once 'Image/Graph/Plotarea/Element.php';
         }
 
         if ($this->_title) {
-            $this->_driver->setFont($this->_getTitleFont());
+            $this->_canvas->setFont($this->_getTitleFont());
 
             if ($this->_type == IMAGE_GRAPH_AXIS_X) {
-                $totalMaxSize += $this->_driver->textHeight($this->_title);
+                $totalMaxSize += $this->_canvas->textHeight($this->_title);
             } else {
-                $totalMaxSize += $this->_driver->textWidth($this->_title);
+                $totalMaxSize += $this->_canvas->textWidth($this->_title);
             }
             $totalMaxSize += 10;
         }
@@ -1125,7 +1125,7 @@ require_once 'Image/Graph/Plotarea/Element.php';
                             $font = $this->_getFont();
                         }
                     }
-                    $this->_driver->setFont($font);
+                    $this->_canvas->setFont($font);
                     
                     if (
                         (isset($labelOptions['position'])) && 
@@ -1207,31 +1207,37 @@ require_once 'Image/Graph/Plotarea/Element.php';
                 if ($tickStart === 'auto') {
                     $tickStart = -$offset;
                 }
-                $this->_driver->line(
-                    $this->_right + $tickStart,
-                    $labelPosition,
-                    $this->_right + $tickEnd,
-                    $labelPosition
+                $this->_canvas->line(
+                	array(
+                    	'x0' => $this->_right + $tickStart,
+                    	'y0' => $labelPosition,
+                    	'x1' => $this->_right + $tickEnd,
+                    	'y1' => $labelPosition
+                    )
                 );
             } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY) {
                 if ($tickStart === 'auto') {
                     $tickStart = $offset;
                 }
-                $this->_driver->line(
-                    $this->_left - $tickStart,
-                    $labelPosition,
-                    $this->_left - $tickEnd,
-                    $labelPosition
+                $this->_canvas->line(
+                	array(
+                    	'x0' => $this->_left - $tickStart,
+                    	'y0' => $labelPosition,
+                    	'x1' => $this->_left - $tickEnd,
+                    	'y1' => $labelPosition
+                    )
                 );
             } else {
                 if ($tickStart === 'auto') {
                     $tickStart = $offset;
                 }
-                $this->_driver->line(
-                    $labelPosition,
-                    $this->_top - $tickStart,
-                    $labelPosition,
-                    $this->_top - $tickEnd
+                $this->_canvas->line(
+                	array(
+                    	'x0' => $labelPosition,
+                    	'y0' => $this->_top - $tickStart,
+                    	'x1' => $labelPosition,
+                    	'y1' => $this->_top - $tickEnd
+                    )
                 );
             }
         }
@@ -1246,11 +1252,13 @@ require_once 'Image/Graph/Plotarea/Element.php';
     {
         if ($this->_type == IMAGE_GRAPH_AXIS_X) {
             $this->_getLineStyle(); 
-            $this->_driver->line(
-                $this->_left,
-                $this->_top,
-                $this->_right,
-                $this->_top
+            $this->_canvas->line(
+            	array(
+                	'x0' => $this->_left,
+                	'y0' => $this->_top,
+                	'x1' => $this->_right,
+                	'y1' => $this->_top
+                )
             );
 
             if ($this->_title) {
@@ -1262,23 +1270,25 @@ require_once 'Image/Graph/Plotarea/Element.php';
             if ($this->_showArrow) {
                 $this->_getFillStyle();
                 $this->_getLineStyle();                
-                $this->_driver->polygonAdd($this->_right - 7, $this->_top + 4);
-                $this->_driver->polygonAdd($this->_right, $this->_top);
-                $this->_driver->polygonAdd($this->_right - 7, $this->_top - 4);
-                $this->_driver->polygonAdd($this->_right - 4, $this->_top);
-                $this->_driver->polygonEnd();
+                $this->_canvas->addVertex(array('x' => $this->_right - 7, 'y' => $this->_top + 4));
+                $this->_canvas->addVertex(array('x' => $this->_right, 'y' => $this->_top));
+                $this->_canvas->addVertex(array('x' => $this->_right - 7, 'y' => $this->_top - 4));
+                $this->_canvas->addVertex(array('x' => $this->_right - 4, 'y' => $this->_top));
+                $this->_canvas->polygon(array('connect' => true));
             }
         } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY) {
             $this->_getLineStyle();
-            $this->_driver->line(
-                $this->_left,
-                $this->_top,
-                $this->_left,
-                $this->_bottom
+            $this->_canvas->line(
+            	array(
+                	'x0' => $this->_left,
+                	'y0' => $this->_top,
+                	'x1' => $this->_left,
+                	'y1' => $this->_bottom
+                )
             );
 
             if ($this->_title) {
-                $this->_driver->setFont($this->_getTitleFont());
+                $this->_canvas->setFont($this->_getTitleFont());
                 $y = $this->_top + $this->height() / 2;
                 $x = $this->_right;
                 $this->write($x, $y, $this->_title, IMAGE_GRAPH_ALIGN_RIGHT + IMAGE_GRAPH_ALIGN_CENTER_Y, $this->_getTitleFont());
@@ -1287,23 +1297,25 @@ require_once 'Image/Graph/Plotarea/Element.php';
             if ($this->_showArrow) {
                 $this->_getFillStyle();
                 $this->_getLineStyle();
-                $this->_driver->polygonAdd($this->_left - 4, $this->_top + 7);
-                $this->_driver->polygonAdd($this->_left, $this->_top);
-                $this->_driver->polygonAdd($this->_left + 4, $this->_top + 7);
-                $this->_driver->polygonAdd($this->_left, $this->_top + 4);
-                $this->_driver->polygonEnd();
+                $this->_canvas->addVertex(array('x' => $this->_left - 4, 'y' => $this->_top + 7));
+                $this->_canvas->addVertex(array('x' => $this->_left, 'y' => $this->_top));
+                $this->_canvas->addVertex(array('x' => $this->_left + 4, 'y' => $this->_top + 7));
+                $this->_canvas->addVertex(array('x' => $this->_left, 'y' => $this->_top + 4));
+                $this->_canvas->polygon(array('connect' => true));
             }
         } else {
             $this->_getLineStyle();
-            $this->_driver->line(
-                $this->_right,
-                $this->_top,
-                $this->_right,
-                $this->_bottom
+            $this->_canvas->line(
+            	array(
+                	'x0' => $this->_right,
+                	'y0' => $this->_top,
+                	'x1' => $this->_right,
+                	'y1' => $this->_bottom
+                )
             );
 
             if ($this->_title) {
-                $this->_driver->setFont($this->_getTitleFont());
+                $this->_canvas->setFont($this->_getTitleFont());
                 $y = $this->_top + $this->height() / 2;
                 $x = $this->_left;
                 $this->write($x, $y, $this->_title, IMAGE_GRAPH_ALIGN_LEFT + IMAGE_GRAPH_ALIGN_CENTER_Y, $this->_getTitleFont());
@@ -1312,11 +1324,11 @@ require_once 'Image/Graph/Plotarea/Element.php';
             if ($this->_showArrow) {
                 $this->_getFillStyle();
                 $this->_getLineStyle();
-                $this->_driver->polygonAdd($this->_right - 4, $this->_top + 7);
-                $this->_driver->polygonAdd($this->_right, $this->_top);
-                $this->_driver->polygonAdd($this->_right + 4, $this->_top + 7);
-                $this->_driver->polygonAdd($this->_right, $this->_top + 4);
-                $this->_driver->polygonEnd();
+                $this->_canvas->addVertex(array('x' => $this->_right - 4, 'y' => $this->_top + 7));
+                $this->_canvas->addVertex(array('x' => $this->_right, 'y' => $this->_top));
+                $this->_canvas->addVertex(array('x' => $this->_right + 4, 'y' => $this->_top + 7));
+                $this->_canvas->addVertex(array('x' => $this->_right, 'y' => $this->_top + 4));
+                $this->_canvas->polygon(array('connect' => true));
             }
         }
     }
@@ -1343,7 +1355,7 @@ require_once 'Image/Graph/Plotarea/Element.php';
      */
     function _done()
     {
-        $this->_driver->startGroup(get_class($this));        
+        $this->_canvas->startGroup(get_class($this));        
 
         if (parent::_done() === false) {
             return false;
@@ -1351,7 +1363,7 @@ require_once 'Image/Graph/Plotarea/Element.php';
         
         $this->_drawAxisLines();
 
-        $this->_driver->startGroup(get_class($this) . '_ticks');        
+        $this->_canvas->startGroup(get_class($this) . '_ticks');        
         ksort($this->_labelOptions);
         foreach ($this->_labelOptions as $level => $labelOption) {
             $value = false;
@@ -1365,7 +1377,7 @@ require_once 'Image/Graph/Plotarea/Element.php';
                 }
             }
         }
-        $this->_driver->endGroup();        
+        $this->_canvas->endGroup();        
 
         $tickStart = -3;
         $tickEnd = 2;
@@ -1390,30 +1402,30 @@ require_once 'Image/Graph/Plotarea/Element.php';
                 }
                 $this->_getFillStyle();
                 $this->_getLineStyle();
-                $this->_driver->rectangle($x0, $y0, $x1, $y1);
+                $this->_canvas->rectangle(array('x0' => $x0, 'y0' => $y0, 'x1' => $x1, 'y1' => $y1));
             } else {
                 $this->_getFillStyle();
                 $this->_getLineStyle();
                 if ($this->_type == IMAGE_GRAPH_AXIS_X) {
                     $x = $this->_point($mark);
-                    $this->_driver->polygonAdd($x, $this->_top);
-                    $this->_driver->polygonAdd($x - 5, $this->_top + 5);
-                    $this->_driver->polygonAdd($x + 5, $this->_top + 5);
+                    $this->_canvas->addVertex(array('x' => $x, 'y' => $this->_top));
+                    $this->_canvas->addVertex(array('x' => $x - 5, 'y' => $this->_top + 5));
+                    $this->_canvas->addVertex(array('x' => $x + 5, 'y' => $this->_top + 5));
                 } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y) {
                     $y = $this->_point($mark);
-                    $this->_driver->polygonAdd($this->_right, $y);
-                    $this->_driver->polygonAdd($this->_right - 5, $y - 5);
-                    $this->_driver->polygonAdd($this->_right - 5, $y + 5);
+                    $this->_canvas->addVertex(array('x' => $this->_right, 'y' => $y));
+                    $this->_canvas->addVertex(array('x' => $this->_right - 5, 'y' => $y - 5));
+                    $this->_canvas->addVertex(array('x' => $this->_right - 5, 'y' => $y + 5));
                 } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY) {
                     $y = $this->_point($mark);
-                    $this->_driver->polygonAdd($this->_left, $y);
-                    $this->_driver->polygonAdd($this->_left + 5, $y - 5);
-                    $this->_driver->polygonAdd($this->_left + 5, $y + 5);
+                    $this->_canvas->addVertex(array('x' => $this->_left, 'y' => $y));
+                    $this->_canvas->addVertex(array('x' => $this->_left + 5, 'y' => $y - 5));
+                    $this->_canvas->addVertex(array('x' => $this->_left + 5, 'y' => $y + 5));
                 }
-                $this->_driver->polygonEnd();
+                $this->_canvas->polygon(array('connect' => true));
             }
         }
-        $this->_driver->endGroup();        
+        $this->_canvas->endGroup();        
         return true;
     }
 

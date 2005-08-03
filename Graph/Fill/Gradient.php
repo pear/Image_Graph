@@ -112,11 +112,35 @@ class Image_Graph_Fill_Gradient extends Image_Graph_Fill //Image_Graph_Fill_Imag
      */
     function _getFillStyle($ID = false)
     {
+    	switch ($this->_direction) {
+			case IMAGE_GRAPH_GRAD_HORIZONTAL:
+				$direction = 'horizontal';
+				break;
+			case IMAGE_GRAPH_GRAD_VERTICAL:
+				$direction = 'vertical';
+				break;
+			case IMAGE_GRAPH_GRAD_HORIZONTAL_MIRRORED:
+				$direction = 'horizontal_mirror';
+				break;
+			case IMAGE_GRAPH_GRAD_VERTICAL_MIRRORED:
+				$direction = 'vertical_mirror';
+				break;
+			case IMAGE_GRAPH_GRAD_DIAGONALLY_TL_BR:
+			    $direction = 'diagonal_tl_br';
+			    break;
+			case IMAGE_GRAPH_GRAD_DIAGONALLY_BL_TR:
+			    $direction = 'diagonal_bl_tr';
+			    break;
+			case IMAGE_GRAPH_GRAD_RADIAL:
+			    $direction = 'radial';
+			    break;
+    	}
+    	
         return array(
             'type' => 'gradient',
             'start' => $this->_startColor,
             'end' => $this->_endColor,
-            'direction' => $this->_direction
+            'direction' => $direction
         );
     }
 

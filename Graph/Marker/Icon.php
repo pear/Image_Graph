@@ -117,7 +117,14 @@ class Image_Graph_Marker_Icon extends Image_Graph_Marker
     {
         parent::_drawMarker($x, $y, $values);
         if ($this->_filename) {
-            $this->_driver->overlayImage($x, $y, $this->_filename, false, false, IMAGE_GRAPH_ALIGN_CENTER);
+            $this->_canvas->image(
+            	array(
+            		'x' => $x, 
+            		'y' => $y, 
+            		'filename' => $this->_filename, 
+					'alignment' => array('horizontal' => 'center', 'vertical' => 'center')
+				)
+			);
         }
     }
 

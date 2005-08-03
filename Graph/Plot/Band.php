@@ -65,22 +65,22 @@ class Image_Graph_Plot_Band extends Image_Graph_Plot
         $w = round(abs($x1 - $x0) / 5);
         $y = ($y0 + $y1) / 2;
 
-        $this->_driver->polygonAdd($x0, $y - $h * 3);
-        $this->_driver->polygonAdd($x0 + $w, $y - 4 * $h);
-        $this->_driver->polygonAdd($x0 + 2 * $w, $y - $h * 2);
-        $this->_driver->polygonAdd($x0 + 3 * $w, $y - $h * 4);
-        $this->_driver->polygonAdd($x0 + 4 * $w, $y - $h * 3);
-        $this->_driver->polygonAdd($x1, $y - $h * 2);
-        $this->_driver->polygonAdd($x1, $y + $h * 3);
-        $this->_driver->polygonAdd($x0 + 4 * $w, $y + $h);
-        $this->_driver->polygonAdd($x0 + 3 * $w, $y + 2 * $h);
-        $this->_driver->polygonAdd($x0 + 2 * $w, $y + 1 * $h);
-        $this->_driver->polygonAdd($x0 + 1 * $w, $y);
-        $this->_driver->polygonAdd($x0, $y + $h);
+        $this->_canvas->addVertex(array('x' => $x0, 'y' => $y - $h * 3));
+        $this->_canvas->addVertex(array('x' => $x0 + $w, 'y' => $y - 4 * $h));
+        $this->_canvas->addVertex(array('x' => $x0 + 2 * $w, 'y' => $y - $h * 2));
+        $this->_canvas->addVertex(array('x' => $x0 + 3 * $w, 'y' => $y - $h * 4));
+        $this->_canvas->addVertex(array('x' => $x0 + 4 * $w, 'y' => $y - $h * 3));
+        $this->_canvas->addVertex(array('x' => $x1, 'y' => $y - $h * 2));
+        $this->_canvas->addVertex(array('x' => $x1, 'y' => $y + $h * 3));
+        $this->_canvas->addVertex(array('x' => $x0 + 4 * $w, 'y' => $y + $h));
+        $this->_canvas->addVertex(array('x' => $x0 + 3 * $w, 'y' => $y + 2 * $h));
+        $this->_canvas->addVertex(array('x' => $x0 + 2 * $w, 'y' => $y + 1 * $h));
+        $this->_canvas->addVertex(array('x' => $x0 + 1 * $w, 'y' => $y));
+        $this->_canvas->addVertex(array('x' => $x0, 'y' => $y + $h));
 
         $this->_getLineStyle();
         $this->_getFillStyle();
-        $this->_driver->polygonEnd();
+        $this->_canvas->polygon(array('connect' => true));
     }
 
     /**
@@ -101,7 +101,7 @@ class Image_Graph_Plot_Band extends Image_Graph_Plot
 
         $current = array();
 
-        $this->_driver->startGroup(get_class($this) . '_' . $this->_title);
+        $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
         $keys = array_keys($this->_dataset);
         foreach ($keys as $key) {
             $dataset =& $this->_dataset[$key];
@@ -124,21 +124,21 @@ class Image_Graph_Plot_Band extends Image_Graph_Plot
             }
             $lowerBand = array_reverse($lowerBand);
             foreach ($lowerBand as $point) {
-                $this->_driver->polygonAdd($point['X'], $point['Y']);
+                $this->_canvas->addVertex(array('x' => $point['X'], 'y' => $point['Y']));
             }
             foreach ($upperBand as $point) {
-                $this->_driver->polygonAdd($point['X'], $point['Y']);
+                $this->_canvas->addVertex(array('x' => $point['X'], 'y' => $point['Y']));
             }
             unset($upperBand);
             unset($lowerBand);
 
             $this->_getLineStyle($key);
             $this->_getFillStyle($key);
-            $this->_driver->polygonEnd();
+            $this->_canvas->polygon(array('connect' => true));
         }
         unset($keys);
         $this->_drawMarker();
-        $this->_driver->endGroup();
+        $this->_canvas->endGroup();
         return true;
     }
 

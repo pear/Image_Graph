@@ -14,12 +14,12 @@
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  */
 
-include 'Image/Graph.php';
+require_once 'Image/Graph.php';
 
 // create the graph
 $Graph =& Image_Graph::factory('graph', array(600, 400));
 
-$Font =& $Graph->addNew('ttf_font', 'Verdana');
+$Font =& $Graph->addNew('font', 'Verdana');
 $Font->setSize(9);
 
 $Graph->setFont($Font);

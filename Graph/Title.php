@@ -119,12 +119,12 @@ class Image_Graph_Title extends Image_Graph_Layout
     function _getAutoSize()
     {
         if ($this->_defaultFontOptions !== false) {
-            $this->_driver->setFont($this->_defaultFontOptions);
+            $this->_canvas->setFont($this->_defaultFontOptions);
         } else {        
-            $this->_driver->setFont($this->_getFont());
+            $this->_canvas->setFont($this->_getFont());
         }
 
-        return $this->_driver->textHeight($this->_text);
+        return $this->_canvas->textHeight($this->_text);
     }
 
     /**
@@ -146,9 +146,9 @@ class Image_Graph_Title extends Image_Graph_Layout
     function _done()
     {
         if ($this->_defaultFontOptions !== false) {
-            $this->_driver->setFont($this->_defaultFontOptions);
+            $this->_canvas->setFont($this->_defaultFontOptions);
         } else {        
-            $this->_driver->setFont($this->_getFont());
+            $this->_canvas->setFont($this->_getFont());
         }
 
         if (is_a($this->_parent, 'Image_Graph_Plotarea')) {            
@@ -156,14 +156,14 @@ class Image_Graph_Title extends Image_Graph_Layout
                 $this->_parent->_left,
                 $this->_parent->_top,
                 $this->_parent->_right,
-                $this->_parent->_top + $this->_driver->textHeight($this->_text)
+                $this->_parent->_top + $this->_canvas->textHeight($this->_text)
             );
         } elseif (!is_a($this->_parent, 'Image_Graph_Layout')) {
             $this->_setCoords(
                 $this->_parent->_fillLeft(),
                 $this->_parent->_fillTop(),
                 $this->_parent->_fillRight(),
-                $this->_parent->_fillTop() + $this->_driver->textHeight($this->_text)
+                $this->_parent->_fillTop() + $this->_canvas->textHeight($this->_text)
             );
         }
 

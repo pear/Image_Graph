@@ -185,23 +185,25 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
         }
 
         if ($this->_defaultFontOptions !== false) {
-            $this->_driver->setFont($this->_defaultFontOptions);
+            $this->_canvas->setFont($this->_defaultFontOptions);
         } else {        
-            $this->_driver->setFont($this->_getFont());
+            $this->_canvas->setFont($this->_getFont());
         }
 
-        $width = $this->_driver->textWidth($value);
-        $height = $this->_driver->textHeight($value);
+        $width = $this->_canvas->textWidth($value);
+        $height = $this->_canvas->textHeight($value);
         $offsetX = $width/2 + $this->_padding;
         $offsetY = $height/2 + $this->_padding;
 
         $this->_getFillStyle();
         $this->_getBorderStyle();
-        $this->_driver->rectangle(
-            $x - $offsetX,
-            $y - $offsetY,
-            $x + $offsetX,
-            $y + $offsetY
+        $this->_canvas->rectangle(
+        	array(
+        		'x0' => $x - $offsetX,
+            	'y0' => $y - $offsetY,
+            	'x1' => $x + $offsetX,
+            	'y1' => $y + $offsetY
+            )
         );
 
         $this->write($x, $y, $value, IMAGE_GRAPH_ALIGN_CENTER);

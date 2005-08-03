@@ -50,6 +50,27 @@ class Image_Graph_Font extends Image_Graph_Common
 {
 
     /**
+     * The name of the font
+     * @var string
+     * @access private
+     */
+    var $_name = false;
+
+    /**
+     * The angle of the output
+     * @var int
+     * @access private
+     */
+    var $_angle = false;
+
+    /**
+     * The size of the font
+     * @var int
+     * @access private
+     */
+    var $_size = 11;
+    
+    /**
      * The color of the font
      * @var Color
      * @access private
@@ -59,9 +80,15 @@ class Image_Graph_Font extends Image_Graph_Common
     /**
      * Image_Graph_Font [Constructor]
      */
-    function &Image_Graph_Font()
+    function &Image_Graph_Font($name = false, $size = false)
     {
         parent::Image_Graph_Common();
+        if ($name !== false) {
+        	$this->_name = $name;
+        }
+        if ($size !== false) {
+        	$this->_size = $size;
+        }
     }
 
     /**
@@ -74,10 +101,32 @@ class Image_Graph_Font extends Image_Graph_Common
         $this->_color = $color;
     }
 
+	/**
+     * Set the angle slope of the output font.
+     *
+     * 0 = normal, 90 = bottom and up, 180 = upside down, 270 = top and down
+     *
+     * @param int $angle The angle in degrees to slope the text
+     */
+    function setAngle($angle)
+    {
+        $this->_angle = $angle;
+    }
+
+    /**
+     * Set the size of the font
+     *
+     * @param int $size The size in pixels of the font
+     */
+    function setSize($size)
+    {
+        $this->_size = $size;
+    }
+    
     /**
      * Get the font 'array'
      *
-     * @return array The font 'summary' to pass to the driver
+     * @return array The font 'summary' to pass to the canvas
      * @access private
      */
     function _getFont($options = false)
@@ -85,9 +134,21 @@ class Image_Graph_Font extends Image_Graph_Common
         if ($options === false) {
             $options = array();
         }
-        $options['font'] = 1;
+        
+        if ($this->_name !== false) {
+        	$options['name'] = $this->_name;
+        }
+        
         if (!isset($options['color'])) {
             $options['color'] = $this->_color;
+        }
+
+        if (!isset($options['size'])) {
+            $options['size'] = $this->_size;
+        }
+
+        if ((!isset($options['angle'])) && ($this->_angle !== false)) {
+            $options['angle'] = $this->_angle;
         }
         return $options;
     }

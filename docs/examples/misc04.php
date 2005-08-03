@@ -14,7 +14,7 @@
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  */
 
-include 'Image/Graph.php';
+require_once 'Image/Graph.php';
 
 // create the graph
 $Graph =& Image_Graph::factory('graph', array(500, 300));

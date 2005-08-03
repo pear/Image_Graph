@@ -14,11 +14,11 @@
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  */
 
-include 'Image/Graph.php';    
+require_once 'Image/Graph.php';    
 
 $Graph =& Image_Graph::factory('graph', array(800, 800));
 // add a TrueType font
-$Font =& $Graph->addNew('ttf_font', 'Arial');
+$Font =& $Graph->addNew('font', 'Arial');
 // set the font size to 11 pixels
 $Font->setSize(6);
 

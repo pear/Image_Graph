@@ -68,17 +68,17 @@ class Image_Graph_Marker_Star extends Image_Graph_Marker
         $x = round($x);
         $y = round($y);
         
-        $this->_driver->polygonAdd($x, $y - $this->_size);
-        $this->_driver->polygonAdd($x + round($d), $y - round($d));
-        $this->_driver->polygonAdd($x + $this->_size, $y - round($d));
-        $this->_driver->polygonAdd($x + round(2 * $d), $y + round($d));
-        $this->_driver->polygonAdd($x + round(3 * $d), $y + $this->_size);
-        $this->_driver->polygonAdd($x, $y + round(3 * $d));
-        $this->_driver->polygonAdd($x - round(3 * $d), $y + $this->_size);
-        $this->_driver->polygonAdd($x - round(2 * $d), $y + round($d));
-        $this->_driver->polygonAdd($x - $this->_size, $y - round($d));
-		$this->_driver->polygonAdd($x - round($d), $y - round($d));
-        $this->_driver->polygonEnd(true);
+        $this->_canvas->addVertex(array('x' => $x, 'y' => $y - $this->_size));
+        $this->_canvas->addVertex(array('x' => $x + round($d), 'y' => $y - round($d)));
+        $this->_canvas->addVertex(array('x' => $x + $this->_size, 'y' => $y - round($d)));
+        $this->_canvas->addVertex(array('x' => $x + round(2 * $d), 'y' => $y + round($d)));
+        $this->_canvas->addVertex(array('x' => $x + round(3 * $d), 'y' => $y + $this->_size));
+        $this->_canvas->addVertex(array('x' => $x, 'y' => $y + round(3 * $d)));
+        $this->_canvas->addVertex(array('x' => $x - round(3 * $d), 'y' => $y + $this->_size));
+        $this->_canvas->addVertex(array('x' => $x - round(2 * $d), 'y' => $y + round($d)));
+        $this->_canvas->addVertex(array('x' => $x - $this->_size, 'y' => $y - round($d)));
+		$this->_canvas->addVertex(array('x' => $x - round($d), 'y' => $y - round($d)));
+        $this->_canvas->polygon(array('connect' => true));
         
         parent::_drawMarker($x, $y, $values);
     }

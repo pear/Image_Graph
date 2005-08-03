@@ -75,37 +75,37 @@ class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
         // draw circles
         $this->_getLineStyle();
         $this->_getFillStyle('min');
-        $this->_driver->ellipse($x, $y_min, $r, $r);
+        $this->_canvas->ellipse(array('x' => $x, 'y' => $y_min, 'rx' => $r, 'ry' => $r));
 
         $this->_getLineStyle();
         $this->_getFillStyle('quartile1');
-        $this->_driver->ellipse($x, $y_q1, $r, $r);
+        $this->_canvas->ellipse(array('x' => $x, 'y' => $y_q1, 'rx' => $r, 'ry' => $r));
 
         $this->_getLineStyle();
         $this->_getFillStyle('median');
-        $this->_driver->ellipse($x, $y_med, $r, $r);
+        $this->_canvas->ellipse(array('x' => $x, 'y' => $y_med, 'rx' => $r, 'ry' => $r));
 
         $this->_getLineStyle();
         $this->_getFillStyle('quartile3');
-        $this->_driver->ellipse($x, $y_q3, $r, $r);
+        $this->_canvas->ellipse(array('x' => $x, 'y' => $y_q3, $r, 'rx' => $r, 'ry' => $r));
 
         $this->_getLineStyle();
         $this->_getFillStyle('max');
-        $this->_driver->ellipse($x, $y_max, $r, $r);
+        $this->_canvas->ellipse(array('x' => $x, 'y' => $y_max, $r, 'rx' => $r, 'ry' => $r));
 
         // draw box and lines
 
         $this->_getLineStyle();
-        $this->_driver->line($x, $y_min, $x, $y_q1);
+        $this->_canvas->line(array('x0' => $x, 'y0' => $y_min, 'x1' => $x, 'y1' => $y_q1));
         $this->_getLineStyle();
-        $this->_driver->line($x, $y_q3, $x, $y_max);
+        $this->_canvas->line(array('x0' => $x, 'y0' => $y_q3, 'x1' => $x, 'y1' => $y_max));
 
         $this->_getLineStyle();
         $this->_getFillStyle('box');
-        $this->_driver->rectangle($x - $w, $y_q1, $x + $w, $y_q3);
+        $this->_canvas->rectangle(array('x0' => $x - $w, 'y0' => $y_q1, 'x1' => $x + $w, 'y1' => $y_q3));
 
         $this->_getLineStyle();
-        $this->_driver->line($x - $w, $y_med, $x + $w, $y_med);
+        $this->_canvas->line(array('x0' => $x - $w, 'y0' => $y_med, 'x1' => $x + $w, 'y1' => $y_med));
     }
 
     /**
@@ -152,7 +152,7 @@ class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
             return false;
         }
 
-        $this->_driver->startGroup(get_class($this) . '_' . $this->_title);
+        $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
 
         if ($this->_multiType == 'stacked100pct') {
             $total = $this->_getTotals();
@@ -203,7 +203,7 @@ class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
         unset($keys);
         $this->_drawMarker();
 
-        $this->_driver->endGroup();
+        $this->_canvas->endGroup();
         return true;
     }
 

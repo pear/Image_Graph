@@ -74,19 +74,19 @@ class Image_Graph_Marker_Circle extends Image_Graph_Marker
         $dA = 2*pi()/($this->_size*2);
         $angle = 0;
         while ($angle < 2*pi()) {
-            $this->_driver->polygonAdd(
-                $x + $this->_size*cos($angle),
+            $this->_canvas->addVertex(array('x' => 
+                $x + $this->_size*cos($angle), 'y' => 
                 $y - $this->_size*sin($angle)
-            );
+            ));
             $angle += $dA;
         }
 
-        $this->_driver->polygonAdd(
-            $x + $this->_size*cos(0),
+        $this->_canvas->addVertex(array('x' => 
+            $x + $this->_size*cos(0), 'y' => 
             $y - $this->_size*sin(0)
-        );
+        ));
 
-        $this->_driver->polygonEnd();
+        $this->_canvas->polygon(array('connect' => true));
 
         parent::_drawMarker($x, $y, $values);
     }

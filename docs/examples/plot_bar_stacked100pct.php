@@ -30,7 +30,7 @@ class myValueMarker extends Image_Graph_Marker_Value {
 // create the graph
 $Graph =& Image_Graph::factory('graph', array(400, 300)); 
 // add a TrueType font
-$Font =& $Graph->addNew('ttf_font', 'Verdana');
+$Font =& $Graph->addNew('font', 'Verdana');
 // set the font size to 11 pixels
 $Font->setSize(8);
 
@@ -77,7 +77,6 @@ $Plot->setFillStyle($FillArray);
 $Marker =& $Plot->add(new myValueMarker(IMAGE_GRAPH_VALUE_Y));
 // and use the marker on the 1st plot
 $Plot->setMarker($Marker);	
-$Marker->setFont(Image_Graph::factory('Image_Graph_Font_Vertical'));
 
 // output the Graph
 $Graph->done();

@@ -871,7 +871,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
     function _done()
     {
         if ($this->_hasData) {        
-            $this->_driver->startGroup(get_class($this));
+            $this->_canvas->startGroup(get_class($this));
         
             if ($this->_axisX != null) {
                 $this->add($this->_axisX);
@@ -884,14 +884,16 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
             }
     
             $this->_getFillStyle();
-            $this->_driver->rectangle(
-                $this->_plotLeft,
-                $this->_plotTop,
-                $this->_plotRight,
-                $this->_plotBottom
+            $this->_canvas->rectangle(
+            	array(
+            		'x0' => $this->_plotLeft,
+                	'y0' => $this->_plotTop,
+                	'x1' => $this->_plotRight,
+                	'y1' => $this->_plotBottom
+                )
             );
             $result = parent::_done();
-            $this->_driver->endGroup();            
+            $this->_canvas->endGroup();            
             return $result;
         } else {
             // no data -> do nothing at all!

@@ -60,11 +60,11 @@ class Image_Graph_Marker_Diamond extends Image_Graph_Marker
     {
         $this->_getFillStyle();
         $this->_getLineStyle();
-        $this->_driver->polygonAdd($x - $this->_size, $y);
-        $this->_driver->polygonAdd($x, $y - $this->_size);
-        $this->_driver->polygonAdd($x + $this->_size, $y);
-        $this->_driver->polygonAdd($x, $y + $this->_size);
-        $this->_driver->polygonEnd();
+        $this->_canvas->addVertex(array('x' => $x - $this->_size, 'y' => $y));
+        $this->_canvas->addVertex(array('x' => $x, 'y' => $y - $this->_size));
+        $this->_canvas->addVertex(array('x' => $x + $this->_size, 'y' => $y));
+        $this->_canvas->addVertex(array('x' => $x, 'y' => $y + $this->_size));
+        $this->_canvas->polygon(array('connect' => true));
         parent::_drawMarker($x, $y, $values);
     }
 

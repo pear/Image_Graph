@@ -60,11 +60,13 @@ class Image_Graph_Marker_Box extends Image_Graph_Marker
     {
         $this->_getFillStyle();
         $this->_getLineStyle();
-        $this->_driver->rectangle(
-            $x - $this->_size,
-            $y - $this->_size,
-            $x + $this->_size,
-            $y + $this->_size
+        $this->_canvas->rectangle(
+        	array(
+            	'x0' => $x - $this->_size,
+            	'y0' => $y - $this->_size,
+            	'x1' => $x + $this->_size,
+            	'y1' => $y + $this->_size
+            )
         );
         parent::_drawMarker($x, $y, $values);
     }

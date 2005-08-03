@@ -15,7 +15,7 @@
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  */
  
-require 'Image/Graph.php';
+require_once 'Image/Graph.php';
 
 // create the graph
 $Graph =& Image_Graph::factory('graph', array(600, 400));
@@ -62,7 +62,7 @@ $Marker2->setSecondaryMarker(Image_Graph::factory('Image_Graph_Marker_Pointing_A
 
 $ValueMarker->setFillColor('white');
 
-$Font =& $Graph->addNew('ttf_font', 'Verdana');
+$Font =& $Graph->addNew('font', 'Verdana');
 $Font->setSize(8);
 $Graph->setFont($Font);
 $Graph->addNew('title', array('Map Chart Sample', 12));

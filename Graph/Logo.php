@@ -113,29 +113,37 @@ class Image_Graph_Logo extends Image_Graph_Element
             return false;
         }
 
+		$align = array();
+
         if ($this->_alignment & IMAGE_GRAPH_ALIGN_LEFT) {
             $x = $this->_parent->_left + 2;
+            $align['horizontal'] = 'left';
         } elseif ($this->_alignment & IMAGE_GRAPH_ALIGN_RIGHT) {
             $x = $this->_parent->_right - 2;
+            $align['horizontal'] = 'right';
         } else {
             $x = ($this->_parent->_left + $this->_parent->_right) / 2;
+            $align['horizontal'] = 'center';
         }
 
         if ($this->_alignment & IMAGE_GRAPH_ALIGN_TOP) {
             $y = $this->_parent->_top + 2;
+            $align['vertical'] = 'top';
         } elseif ($this->_alignment & IMAGE_GRAPH_ALIGN_BOTTOM) {
             $y = $this->_parent->_bottom - 2;
+            $align['vertical'] = 'bottom';
         } else {
             $y = ($this->_parent->_top + $this->_parent->_bottom) / 2;
+            $align['vertical'] = 'center';
         }
 
-        $this->_driver->overlayImage(
-            $x,
-            $y,
-            $this->_filename,
-            false,
-            false,
-            $this->_alignment
+        $this->_canvas->image(
+            array(
+            	'x' => $x,
+            	'y' => $y,
+            	'filename' => $this->_filename,
+	            'alignment' => $align
+	        )
         );
         return true;
     }

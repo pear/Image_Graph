@@ -33,11 +33,6 @@
 require_once 'PEAR/ErrorStack.php';
 
 /**
- * Include file Image/Graph/Config.php
- */
-require_once 'Image/Graph/Config.php';
-
-/**
  * Include file Image/Graph/Element.php
  */
 require_once 'Image/Graph/Element.php';
@@ -48,16 +43,11 @@ require_once 'Image/Graph/Element.php';
 require_once 'Image/Graph/Constants.php';
 
 /**
- * Include file Image/Graph/Color.php
- */
-require_once 'Image/Graph/Color.php';
-
-/**
  * Main class for the graph creation.
  *
- * This is the main class, it manages the driver and performs the final output
+ * This is the main class, it manages the canvas and performs the final output
  * by sequentialy making the elements output their results. The final output is
- * handled using the {@link Image_Graph_Driver} classes which makes it possible
+ * handled using the {@link Image_Canvas} classes which makes it possible
  * to use different engines (fx GD, PDFlib, libswf, etc) for output to several
  * formats with a non-intersecting API.
  *
@@ -102,14 +92,14 @@ class Image_Graph extends Image_Graph_Element
      * 
      * $Graph =& Image_Graph::factory('graph', array(400, 300));
      * 
-     * This causes a 'png' driver to be created by default. 
+     * This causes a 'png' canvas to be created by default. 
      * 
      * Otherwise use a single parameter either as an associated array or passing
-     * the driver along to the constructor:
+     * the canvas along to the constructor:
      *
-     * 1) Create a new driver with the following parameters:
+     * 1) Create a new canvas with the following parameters:
      *
-     * 'driver' - The driver type, can be any of 'gd', 'jpg', 'png' or 'svg'
+     * 'canvas' - The canvas type, can be any of 'gd', 'jpg', 'png' or 'svg'
      * (more to come) - if omitted the default is 'gd'
      *
      * 'width' - The width of the graph
@@ -119,22 +109,22 @@ class Image_Graph extends Image_Graph_Element
      * An example of this usage:
      * 
      * $Graph =& Image_Graph::factory('graph', arrray(array('width' => 400,
-     * 'height' => 300, 'driver' => 'jpg')));
+     * 'height' => 300, 'canvas' => 'jpg')));
      * 
      * NB! In thïs case remember the "double" array (see {@link Image_Graph::
      * factory()})
      * 
-     * 2) Use the driver specified, pass a valid Image_Graph_Driver as
-     * parameter. Remember to pass by reference, i. e. &amp;$driver, fx.:
+     * 2) Use the canvas specified, pass a valid Image_Canvas as
+     * parameter. Remember to pass by reference, i. e. &amp;$canvas, fx.:
      *
-     * $Graph =& new Image_Graph(&$Driver);
+     * $Graph =& new Image_Graph($Canvas);
      *
      * or using the factory method:
      *
-     * $Graph =& Image_Graph::factory('graph', &$Driver));
+     * $Graph =& Image_Graph::factory('graph', $Canvas));
      *
      * @param mixed $params The width of the graph, an indexed array
-     * describing a new driver or a valid {@link Image_Graph_Driver} object
+     * describing a new canvas or a valid {@link Image_Canvas} object
      * @param int $height The height of the graph in pixels
      * @param bool $createTransparent Specifies whether the graph should be
      *   created with a transparent background (fx for PNG's - note: transparent
@@ -146,15 +136,15 @@ class Image_Graph extends Image_Graph_Element
 
         $this->setFont(Image_Graph::factory('Image_Graph_Font'));
 
-        if (defined('IMAGE_GRAPH_DEFAULT_DRIVER_TYPE')) {
-            $driverType = IMAGE_GRAPH_DEFAULT_DRIVER_TYPE;
+        if (defined('IMAGE_GRAPH_DEFAULT_CANVAS_TYPE')) {
+            $canvasType = IMAGE_GRAPH_DEFAULT_CANVAS_TYPE;
         } else {
-            $driverType = 'png'; // use GD as default, if nothing else is specified
+            $canvasType = 'png'; // use GD as default, if nothing else is specified
         }
 
         if (is_array($params)) {
-            if (isset($params['driver'])) {
-                $driverType = $params['driver'];
+            if (isset($params['canvas'])) {
+                $canvasType = $params['canvas'];
             }
 
             $width = 0;
@@ -167,21 +157,21 @@ class Image_Graph extends Image_Graph_Element
             if (isset($params['height'])) {
                 $height = $params['height'];
             }
-        } elseif (is_a($params, 'Image_Graph_Driver')) {
-            $this->_driver =& $params;
-            $width = $this->_driver->getWidth();
-            $height = $this->_driver->getHeight();
+        } elseif (is_a($params, 'Image_Canvas')) {
+            $this->_canvas =& $params;
+            $width = $this->_canvas->getWidth();
+            $height = $this->_canvas->getHeight();
         }
 
         if (is_int($params)) {
             $width = $params;
         }
 
-        if ($this->_driver == null) {
-            include_once 'Image/Graph/Driver.php';
-            $this->_driver =&
-                Image_Graph_Driver::factory(
-                    $driverType,
+        if ($this->_canvas == null) {
+            include_once 'Image/Canvas.php';
+            $this->_canvas =&
+                Image_Canvas::factory(
+                    $canvasType,
                     array('width' => $width, 'height' => $height)
                 );
         }
@@ -190,43 +180,43 @@ class Image_Graph extends Image_Graph_Element
     }
 
     /**
-     * Gets the driver for this graph.
+     * Gets the canvas for this graph.
      *
-     * The driver is set by either passing it to the constructor {@link
-     * Image_Graph::ImageGraph()} or using the {@link Image_Graph::setDriver()}
+     * The canvas is set by either passing it to the constructor {@link
+     * Image_Graph::ImageGraph()} or using the {@link Image_Graph::setCanvas()}
      * method.
      *
-     * @return Image_Graph_Driver The driver used by this graph
+     * @return Image_Canvas The canvas used by this graph
      * @access private
      * @since 0.3.0dev2
      */
-    function &_getDriver()
+    function &_getCanvas()
     {
-        return $this->_driver;
+        return $this->_canvas;
     }
 
     /**
-     * Sets the driver for this graph.
+     * Sets the canvas for this graph.
      *
-     * Calling this method makes this graph use the newly specified driver for
+     * Calling this method makes this graph use the newly specified canvas for
      * handling output. This method should be called whenever multiple
      * 'outputs' are required. Invoke this method after calls to {@link
-     * Image_Graph:: done()} has been performed, to switch drivers.
+     * Image_Graph:: done()} has been performed, to switch canvass.
      *
-     * @param Image_Graph_Driver $driver The new driver
-     * @return Image_Graph_Driver The new driver
+     * @param Image_Canvas $canvas The new canvas
+     * @return Image_Canvas The new canvas
      * @since 0.3.0dev2
      */
-    function &setDriver(&$driver)
+    function &setCanvas(&$canvas)
     {
-        $this->_driver =& $driver;
+        $this->_canvas =& $canvas;
         $this->_setCoords(
             0,
             0,
-            $this->_driver->getWidth() - 1,
-            $this->_driver->getHeight() - 1
+            $this->_canvas->getWidth() - 1,
+            $this->_canvas->getHeight() - 1
         );
-        return $this->_driver;
+        return $this->_canvas;
     }
 
     /**
@@ -244,25 +234,25 @@ class Image_Graph extends Image_Graph_Element
     /**
      * Gets the width of this graph.
      *
-     * The width is returned as 'defined' by the driver.
+     * The width is returned as 'defined' by the canvas.
      *
      * @return int the width of this graph
      */
     function width()
     {
-        return $this->_driver->getWidth();
+        return $this->_canvas->getWidth();
     }
 
     /**
      * Gets the height of this graph.
      *
-     * The height is returned as 'defined' by the driver.
+     * The height is returned as 'defined' by the canvas.
      *
      * @return int the height of this graph
      */
     function height()
     {
-        return $this->_driver->getHeight();
+        return $this->_canvas->getHeight();
     }
 
     /**
@@ -383,7 +373,11 @@ class Image_Graph extends Image_Graph_Element
      *
      * 'legend' = Image_Graph_Legend
      *
-     * 'ttf_font' = Image_Graph_Font_TTF
+     * 'font' = Image_Graph_Font
+     *
+     * 'ttf_font' = Image_Graph_Font
+     * 
+     * 'Image_Graph_Font_TTF' = Image_Graph_Font (to maintain BC with Image_Graph_Font_TTF)
      *
      * 'gradient' = Image_Graph_Fill_Gradient
      *
@@ -429,7 +423,9 @@ class Image_Graph extends Image_Graph_Element
 			'polar_grid'     => 'Image_Graph_Grid_Polar',
 
 			'legend'         => 'Image_Graph_Legend',
-			'ttf_font'       => 'Image_Graph_Font_TTF',
+			'font'			 => 'Image_Graph_Font',
+			'ttf_font'       => 'Image_Graph_Font',
+			'Image_Graph_Font_TTF' => 'Image_Graph_Font', // BC with Image_Graph_Font_TTF
 			'gradient'       => 'Image_Graph_Fill_Gradient',
 
 			'icon_marker'    => 'Image_Graph_Marker_Icon',
@@ -724,10 +720,10 @@ class Image_Graph extends Image_Graph_Element
      */
     function _displayError($x, $y, $error)
     {
-        $driver =& $error['params']['driver'];
-        if (is_a($driver, 'Image_Graph_Driver')) {
-            $driver->setFont(array('font' => 1, 'color' => 'black'));
-            $driver->write($x, $y, $error['message']);
+        $canvas =& $error['params']['canvas'];
+        if (is_a($canvas, 'Image_Canvas')) {
+            $canvas->setFont(array('font' => 1, 'color' => 'black'));
+            $canvas->write($x, $y, $error['message']);
         }
     }
 
@@ -750,16 +746,16 @@ class Image_Graph extends Image_Graph_Element
     }
 
     /**
-     * Outputs this graph using the driver.
+     * Outputs this graph using the canvas.
      *
      * This causes the graph to make all elements perform their output. Their
-     * result is 'written' to the output using the driver, which also performs
+     * result is 'written' to the output using the canvas, which also performs
      * the actual output, fx. it being to a file or directly to the browser
-     * (in the latter case, the driver will also make sure the correct HTTP
+     * (in the latter case, the canvas will also make sure the correct HTTP
      * headers are sent, making the browser handle the output correctly, if
      * supported by it).
      *
-     * @param mixed $param The output parameters to pass to the driver
+     * @param mixed $param The output parameters to pass to the canvas
      * @return bool Was the output 'good' (true) or 'bad' (false).
      */
     function done($param = false)
@@ -769,16 +765,16 @@ class Image_Graph extends Image_Graph_Element
     }
 
     /**
-     * Outputs this graph using the driver.
+     * Outputs this graph using the canvas.
      *
      * This causes the graph to make all elements perform their output. Their
-     * result is 'written' to the output using the driver, which also performs
+     * result is 'written' to the output using the canvas, which also performs
      * the actual output, fx. it being to a file or directly to the browser
-     * (in the latter case, the driver will also make sure the correct HTTP
+     * (in the latter case, the canvas will also make sure the correct HTTP
      * headers are sent, making the browser handle the output correctly, if
      * supported by it).
      *
-     * @param mixed $param The output parameters to pass to the driver
+     * @param mixed $param The output parameters to pass to the canvas
      * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
@@ -801,11 +797,13 @@ class Image_Graph extends Image_Graph_Element
 
 
             if ($this->_getBackground()) {
-                $this->_driver->rectangle(
-                    $this->_left,
-                    $this->_top,
-                    $this->_right,
-                    $this->_bottom
+                $this->_canvas->rectangle(
+                	array(
+                    	'x0' => $this->_left,
+                    	'y0' => $this->_top,
+                    	'x1' => $this->_right,
+                    	'y1' => $this->_bottom
+                    )
                 );
             }
 
@@ -833,7 +831,11 @@ class Image_Graph extends Image_Graph_Element
 
         }
 
-        return $this->_driver->done($param);
+		if (isset($param['filename'])) {
+        	return $this->_canvas->save($param);
+		} else {
+			return $this->_canvas->show($param);
+		}
     }
 }
 

@@ -74,18 +74,20 @@ class Image_Graph_Figure_Rectangle extends Image_Graph_Element
             return false;
         }
 
-        $this->_driver->startGroup(get_class($this));
+        $this->_canvas->startGroup(get_class($this));
         
         $this->_getFillStyle();
         $this->_getLineStyle();
-        $this->_driver->rectangle(
-            $this->_left,
-            $this->_top,
-            $this->_right,
-            $this->_bottom
+        $this->_canvas->rectangle(
+        	array(
+            	'x0' => $this->_left,
+            	'y0' => $this->_top,
+            	'x1' => $this->_right,
+            	'y1' => $this->_bottom
+            )
         );
         
-        $this->_driver->endGroup();
+        $this->_canvas->endGroup();
         
         return true;
     }

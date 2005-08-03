@@ -15,13 +15,13 @@
  */
 
 
-require 'Image/Graph.php';
+require_once 'Image/Graph.php';
 
 // create the graph
 $Graph =& Image_Graph::factory('graph', array(400, 300));
 
 // add a TrueType font
-$Font =& $Graph->addNew('ttf_font', 'Verdana');
+$Font =& $Graph->addNew('font', 'Verdana');
 // set the font size to 8 pixels
 $Font->setSize(8);
 

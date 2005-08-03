@@ -71,9 +71,9 @@ class Image_Graph_Plot_Radar extends Image_Graph_Plot
             $t = $r * rand(3, $max) / $max;
             $x = $cx + $t * cos($v);
             $y = $cy + $t * sin($v);
-            $this->_driver->polygonAdd($x, $y);
+            $this->_canvas->addVertex(array('x' => $x, 'y' => $y));
         }
-        $this->_driver->polygonEnd();
+        $this->_canvas->polygon(array('connect' => true));
     }
 
     /**
@@ -84,7 +84,7 @@ class Image_Graph_Plot_Radar extends Image_Graph_Plot
      */
     function _done()
     {
-        $this->_driver->startGroup(get_class($this) . '_' . $this->_title);
+        $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
         if (is_a($this->_parent, 'Image_Graph_Plotarea_Radar')) {
             $keys = array_keys($this->_dataset);
             foreach ($keys as $key) {
@@ -94,20 +94,20 @@ class Image_Graph_Plot_Radar extends Image_Graph_Plot
 
                 $dataset->_reset();
                 while ($point = $dataset->_next()) {
-                    $this->_driver->polygonAdd(
-                        $this->_pointX($point),
+                    $this->_canvas->addVertex(array('x' => 
+                        $this->_pointX($point), 'y' => 
                         $this->_pointY($point)
-                    );
+                    ));
                 }
                 $this->_getFillStyle($key);
                 $this->_getLineStyle($key);
-                $this->_driver->polygonEnd();
+                $this->_canvas->polygon(array('connect' => true));
             }
             unset($keys);
         }
         $this->_drawMarker();
 
-        $this->_driver->endGroup();
+        $this->_canvas->endGroup();
         return parent::_done();
     }
 

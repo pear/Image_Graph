@@ -72,34 +72,38 @@ class Image_Graph_Marker_Cross extends Image_Graph_Marker
 	        $d1 = round(0.7071067 * $this->_size); // cos/sin(45 de>)
 	        $d2 = round(0.7071067 * $this->_thickness); // cos/sin(45 deg)
 	        
-	        $this->_driver->polygonAdd($x - $d1 - $d2, $y - $d1 + $d2); 
-	        $this->_driver->polygonAdd($x - $d1 + $d2, $y - $d1 - $d2); 
-	        $this->_driver->polygonAdd($x, $y - 2 * $d2); 
-	        $this->_driver->polygonAdd($x + $d1 - $d2, $y - $d1 - $d2); 
-	        $this->_driver->polygonAdd($x + $d1 + $d2, $y - $d1 + $d2); 
-	        $this->_driver->polygonAdd($x + 2 * $d2, $y); 
-	        $this->_driver->polygonAdd($x + $d1 + $d2, $y + $d1 - $d2); 
-	        $this->_driver->polygonAdd($x + $d1 - $d2, $y + $d1 + $d2); 
-	        $this->_driver->polygonAdd($x, $y + 2 * $d2); 
-	        $this->_driver->polygonAdd($x - $d1 + $d2, $y + $d1 + $d2); 
-	        $this->_driver->polygonAdd($x - $d1 - $d2, $y + $d1 - $d2); 
-	        $this->_driver->polygonAdd($x - 2 * $d2, $y); 
-	        $this->_driver->polygonEnd();
+	        $this->_canvas->addVertex(array('x' => $x - $d1 - $d2, 'y' => $y - $d1 + $d2)); 
+	        $this->_canvas->addVertex(array('x' => $x - $d1 + $d2, 'y' => $y - $d1 - $d2)); 
+	        $this->_canvas->addVertex(array('x' => $x, 'y' => $y - 2 * $d2)); 
+	        $this->_canvas->addVertex(array('x' => $x + $d1 - $d2, 'y' => $y - $d1 - $d2)); 
+	        $this->_canvas->addVertex(array('x' => $x + $d1 + $d2, 'y' => $y - $d1 + $d2)); 
+	        $this->_canvas->addVertex(array('x' => $x + 2 * $d2, 'y' => $y)); 
+	        $this->_canvas->addVertex(array('x' => $x + $d1 + $d2, 'y' => $y + $d1 - $d2)); 
+	        $this->_canvas->addVertex(array('x' => $x + $d1 - $d2, 'y' => $y + $d1 + $d2)); 
+	        $this->_canvas->addVertex(array('x' => $x, 'y' => $y + 2 * $d2)); 
+	        $this->_canvas->addVertex(array('x' => $x - $d1 + $d2, 'y' => $y + $d1 + $d2)); 
+	        $this->_canvas->addVertex(array('x' => $x - $d1 - $d2, 'y' => $y + $d1 - $d2)); 
+	        $this->_canvas->addVertex(array('x' => $x - 2 * $d2, 'y' => $y)); 
+	        $this->_canvas->polygon(array('connect' => true));
     	} else {        
 	        $this->_getLineStyle();
-	        $this->_driver->line(
-	            $x - $this->_size,
-	            $y - $this->_size,
-	            $x + $this->_size,
-	            $y + $this->_size
+	        $this->_canvas->line(
+	        	array(
+	        		'x0' => $x - $this->_size,
+	            	'y0' => $y - $this->_size,
+	            	'x1' => $x + $this->_size,
+	            	'y1' => $y + $this->_size
+	            )
 	        );
 	
 	        $this->_getLineStyle();
-	        $this->_driver->line(
-	            $x + $this->_size,
-	            $y - $this->_size,
-	            $x - $this->_size,
-	            $y + $this->_size
+	        $this->_canvas->line(
+	        	array(
+	            	'x0' => $x + $this->_size,
+	            	'y0' => $y - $this->_size,
+	            	'x1' => $x - $this->_size,
+	            	'y1' => $y + $this->_size
+	            )
 	        );
     	}
         parent::_drawMarker($x, $y, $values);

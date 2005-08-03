@@ -44,34 +44,5 @@ Image_Graph_Axis_Logarithmic
 Image_Graph_Axis_Marker
 *** Implement a label mechanism when using axis markers
 
-Image_Graph_Driver_GD
-*** Make a better method for "baseline" adjustment (~ line 1260)
-
-Image_Graph_Driver_LibSWF
-*** Create LibSWF support
-
-Image_Graph_Driver_SVG
-*** Linestyles (i.e. fx. dotted) does not work
-*** Make images work in SVG
-*** Pieslices with v2-v1 < 90 "curl" the wrong way
-
-Image_Graph_Driver_SWF
-*** I don't get SWF gradient fill: moveTo/scaleTo/rotateTo
-*** Image fill SWF doesn't seem to work even with JPEG's
-*** Implement SWF::overlayImage
-*** Implement SWF::pieSlice
-*** Implement SWF::textHeight
-*** Implement SWF::textWidth
-*** Implement SWF::write
-*** Scale the image fill in SWF
-*** SWF curve smoothing requires only one control point - this method is not very good!
-
-Image_Graph_Driver_PDFlib
-*** Implement Image_Driver_PDF::pieslice()
-*** Implement linestyles in PDFlib (using pdf_setcolor(.., 'pattern'...); ?
-
-Image_Graph_Driver_XMLSVG
-*** Gradient fill's does not seem to be supported by XML_SVG, investigate
-
 Image_Graph_Dataset_Function
 *** Implement algorithm for "best-select" of points, i.e $points = "auto"

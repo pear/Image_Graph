@@ -74,7 +74,16 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
     function _drawLegendSample($x0, $y0, $x1, $y1)
     {
         $y = ($y0 + $y1) / 2;
-        $this->_driver->pieSlice($x1, $y, abs($x1 - $x0) / 2, abs($y1 - $y0) / 2, 45, 315);
+        $this->_canvas->pieslice(
+        	array(
+        		'x' => $x1, 
+        		'y' => $y, 
+        		'rx' => abs($x1 - $x0) / 2, 
+        		'ry' => abs($y1 - $y0) / 2, 
+        		'v1' => 45, 
+        		'v2' => 315
+        	)
+    	);
     }
 
     /**
@@ -268,7 +277,18 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
                 $ID = $point['ID'];
                 $this->_getFillStyle($ID);
                 $this->_getLineStyle($ID);
-                $this->_driver->pieSlice($centerX + $dX, $centerY + $dY, $radius1, $radius1, $angle1, $angle2, $radius0, $radius0);
+                $this->_canvas->pieslice(
+                	array(
+                		'x' => $centerX + $dX, 
+                		'y' => $centerY + $dY, 
+                		'rx' => $radius1, 
+                		'ry' => $radius1, 
+                		'v1' => $angle1, 
+                		'v2' => $angle2, 
+                		'srx' => $radius0, 
+                		'sry' => $radius0
+                	)
+                );
             }
             $number++;
         }
@@ -287,7 +307,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
     {
         if (is_array($this->_dataset)) {
             
-            $this->_driver->startGroup(get_class($this) . '_' . $this->_title);
+            $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
             
             $totals = $this->_getTotals();
             $totals['CENTER_X'] = (int) (($this->_left + $this->_right) / 2);
@@ -309,8 +329,8 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
                 while ($point = $dataset->_next()) {
                     $caption = $point['X'];
     
-                    $this->_driver->setFont($param['font']);
-                    $width = 20 + $param['width'] + $this->_driver->textWidth($caption);
+                    $this->_canvas->setFont($param['font']);
+                    $width = 20 + $param['width'] + $this->_canvas->textWidth($caption);
                     $param['maxwidth'] = max($param['maxwidth'], $width);
                     $x2 = $param['x'] + $width;
                     $y2 = $param['y'] + $param['height']+5;
@@ -322,7 +342,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
                     } elseif ((($param['align'] & IMAGE_GRAPH_ALIGN_VERTICAL) == 0) && ($x2 > $param['right'])) {
                         $param['x'] = $param['left'];
                         $param['y'] = $y2;
-                        $x2 = $param['x'] + 20 + $param['width'] + $this->_driver->textWidth($caption);
+                        $x2 = $param['x'] + 20 + $param['width'] + $this->_canvas->textWidth($caption);
                     }
     
                     $x = $x0 = $param['x'];
@@ -359,7 +379,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
                 }
             }
             unset($keys);
-            $this->_driver->endGroup();
+            $this->_canvas->endGroup();
         }
     }
 

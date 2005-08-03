@@ -31,10 +31,10 @@
 // SPECIFY HERE WHERE A TRUETYPE FONT CAN BE FOUND
 $testFont = 'c:/windows/fonts/Arial.ttf';
 
-include 'Image/Graph/Driver.php';
+require_once 'Image/Graph/Driver.php';
 
 $driver =& Image_Graph_Driver::factory('wbmp', array('width' => 600, 'height' => 600));
 
-include './driver_body.php';
+require_once './driver_body.php';
 
 ?>

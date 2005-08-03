@@ -78,7 +78,7 @@ class Image_Graph_Plot_Smoothed_Line extends Image_Graph_Plot_Smoothed_Bezier
     function _drawLegendSample($x0, $y0, $x1, $y1)
     {
         $this->_addSamplePoints($x0, $y0, $x1, $y1);
-        $this->_driver->polygonEnd(false);
+        $this->_canvas->polygon(array('connect' => false));
     }
 
     /**
@@ -93,7 +93,7 @@ class Image_Graph_Plot_Smoothed_Line extends Image_Graph_Plot_Smoothed_Bezier
             return false;
         }
 
-        $this->_driver->startGroup(get_class($this) . '_' . $this->_title);
+        $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
         $keys = array_keys($this->_dataset);
         foreach ($keys as $key) {
             $dataset =& $this->_dataset[$key];
@@ -103,7 +103,7 @@ class Image_Graph_Plot_Smoothed_Line extends Image_Graph_Plot_Smoothed_Bezier
                 if ($p1['Y'] === null) {
                     if ($numPoints > 1) {
                         $this->_getLineStyle($key);
-                        $this->_driver->splineEnd(false);
+                        $this->_canvas->polygon(array('connect' => false));
                     }
                     $numPoints = 0;
                 } else {
@@ -123,30 +123,32 @@ class Image_Graph_Plot_Smoothed_Line extends Image_Graph_Plot_Smoothed_Bezier
 
                     if ($p2) {
                         $cp = $this->_getControlPoints($p1, $p0, $p2, $p3);
-                        $this->_driver->splineAdd(
-                            $cp['X'],
-                            $cp['Y'],
-                            $cp['P1X'],
-                            $cp['P1Y'],
-                            $cp['P2X'],
-                            $cp['P2Y']
-                        );
-                    } else {
+                        $this->_canvas->addSpline(
+	                    	array(
+	                        	'x' => $cp['X'],
+	                        	'y' => $cp['Y'],
+	                        	'p1x' => $cp['P1X'],
+	                        	'p1y' => $cp['P1Y'],
+	                        	'p2x' => $cp['P2X'],
+	                        	'p2y' => $cp['P2Y']
+	                        )
+	                    );
+					} else {
                         $x = $this->_pointX($p1);
                         $y = $this->_pointY($p1);
-                        $this->_driver->polygonAdd($x, $y);
+                        $this->_canvas->addVertex(array('x' => $x, 'y' => $y));
                     }
                     $numPoints++;
                 }
             }
             if ($numPoints > 1) {
                 $this->_getLineStyle();
-                $this->_driver->splineEnd(false);
+                $this->_canvas->polygon(array('connect' => false));
             }
         }
         unset($keys);
         $this->_drawMarker();
-        $this->_driver->endGroup();
+        $this->_canvas->endGroup();
         return true;
     }
 

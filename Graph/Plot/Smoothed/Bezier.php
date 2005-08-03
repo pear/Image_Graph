@@ -147,7 +147,7 @@ class Image_Graph_Plot_Smoothed_Bezier extends Image_Graph_Plot
     }
 
     /**
-     * Create legend sample data for the driver.
+     * Create legend sample data for the canvas.
      *
      * Common for all smoothed plots
      *
@@ -164,7 +164,7 @@ class Image_Graph_Plot_Smoothed_Bezier extends Image_Graph_Plot
             $v = 2 * pi() * $i / $p;
             $x = $x0 + $i * $dw;
             $y = $cy + 2 * $v * sin($v);
-            $this->_driver->polygonAdd($x, $y);
+            $this->_canvas->addVertex(array('x' => $x, 'y' => $y));
         }
     }
 

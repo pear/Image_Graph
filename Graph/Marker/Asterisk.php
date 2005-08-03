@@ -62,35 +62,43 @@ class Image_Graph_Marker_Asterisk extends Image_Graph_Marker
     function _drawMarker($x, $y, $values = false)
     {
         $this->_getLineStyle();
-        $this->_driver->line(
-            $x - $this->_size,
-            $y - $this->_size,
-            $x + $this->_size,
-            $y + $this->_size
+        $this->_canvas->line(
+        	array(
+            	'x0' => $x - $this->_size,
+            	'y0' => $y - $this->_size,
+            	'x1' => $x + $this->_size,
+            	'y1' => $y + $this->_size
+            )
         );
 
         $this->_getLineStyle();
-        $this->_driver->line(
-            $x + $this->_size,
-            $y - $this->_size,
-            $x - $this->_size,
-            $y + $this->_size
+        $this->_canvas->line(
+        	array(
+            	'x0' => $x + $this->_size,
+            	'y0' => $y - $this->_size,
+            	'x1' => $x - $this->_size,
+            	'y1' => $y + $this->_size
+            )
         );
 
         $this->_getLineStyle();
-        $this->_driver->line(
-            $x - $this->_size,
-            $y,
-            $x + $this->_size,
-            $y
+        $this->_canvas->line(
+        	array(
+            	'x0' => $x - $this->_size,
+            	'y0' => $y,
+            	'x1' => $x + $this->_size,
+            	'y1' => $y
+            )
         );
 
         $this->_getLineStyle();
-        $this->_driver->line(
-            $x,
-            $y - $this->_size,
-            $x,
-            $y + $this->_size
+        $this->_canvas->line(
+        	array(
+            	'x0' => $x,
+            	'y0' => $y - $this->_size,
+            	'x1' => $x,
+            	'y1' => $y + $this->_size
+            )
         );
 
         parent::_drawMarker($x, $y, $values);

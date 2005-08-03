@@ -196,7 +196,7 @@ class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
         $this->write($adX, $adY, $labelText, $align);
 
         $this->_getLineStyle();
-        $this->_driver->line($centerX, $centerY, $dX, $dY);
+        $this->_canvas->line(array('x0' => $centerX, 'y0' => $centerY, 'x1' => $dX, 'y1' => $dY));
     }
 
 }

@@ -60,7 +60,7 @@ class Image_Graph_Plot_Impulse extends Image_Graph_Plot
     function _drawLegendSample($x0, $y0, $x1, $y1)
     {
         $x = ($x0 + $x1) / 2;
-        $this->_driver->line($x, $y0, $x, $y1);
+        $this->_canvas->line(array('x0' => $x, 'y0' => $y0, 'x1' => $x, 'y1' => $y1));
     }
 
     /**
@@ -79,7 +79,7 @@ class Image_Graph_Plot_Impulse extends Image_Graph_Plot
             return false;
         }
         
-        $this->_driver->startGroup(get_class($this) . '_' . $this->_title);
+        $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
         
 
         if ($this->_multiType == 'stacked100pct') {
@@ -177,14 +177,14 @@ class Image_Graph_Plot_Impulse extends Image_Graph_Plot
                         $ID = $key;
                     }
                     $this->_getLineStyle($key);
-                    $this->_driver->line($x1, $y1, $x2, $y2);
+                    $this->_canvas->line(array('x0' => $x1, 'y0' => $y1, 'x1' => $x2, 'y1' => $y2));
                 }
             }
             $number++;
         }
         unset($keys);
         $this->_drawMarker();
-        $this->_driver->endGroup();        
+        $this->_canvas->endGroup();        
         return true;
     }
 

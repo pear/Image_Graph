@@ -77,7 +77,7 @@ class Image_Graph_Grid_Polar extends Image_Graph_Grid
             return false;
         }
 
-        $this->_driver->startGroup(get_class($this));
+        $this->_canvas->startGroup(get_class($this));
         
         $value = false;
 
@@ -99,10 +99,10 @@ class Image_Graph_Grid_Polar extends Image_Graph_Grid
             $r = $r0 * ($value - $this->_primaryAxis->_getMinimum()) / $span;
 
             $this->_getLineStyle();
-            $this->_driver->ellipse($cx, $cy, $r, $r);
+            $this->_canvas->ellipse(array('x' => $cx, 'y' => $cy, 'rx' => $r, 'ry' => $r));
         }
         
-        $this->_driver->endGroup();
+        $this->_canvas->endGroup();
         
         return true;
     }

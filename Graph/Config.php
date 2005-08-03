@@ -27,18 +27,4 @@
  * @link       http://pear.php.net/package/Image_Graph
  */
 
-/**
- * Specfies the path to the system location of TrueType font files.
- *
- * Remember trailing slash!
- *
- * This is set by default on Windows systems to %SystemRoot%\Fonts\
- */
-if (!defined('IMAGE_GRAPH_SYSTEM_FONT_PATH')) {
-    if (isset($_SERVER['SystemRoot'])) {
-        define('IMAGE_GRAPH_SYSTEM_FONT_PATH', $_SERVER['SystemRoot'] . '/Fonts/');
-    } else {
-        define('IMAGE_GRAPH_SYSTEM_FONT_PATH', '');
-    }
-}
 ?>

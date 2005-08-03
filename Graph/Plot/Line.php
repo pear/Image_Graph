@@ -74,11 +74,11 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
         $y = ($y0 + $y1) / 2;
         $dx = abs($x1 - $x0) / 3;
         $dy = abs($y1 - $y0) / 5;
-        $this->_driver->polygonAdd($x0, $y);
-        $this->_driver->polygonAdd($x0 + $dx, $y - $dy * 2);
-        $this->_driver->polygonAdd($x1 - $dx, $y + $dy);
-        $this->_driver->polygonAdd($x1, $y - $dy);
-        $this->_driver->polygonEnd(false);
+        $this->_canvas->addVertex(array('x' => $x0, 'y' => $y));
+        $this->_canvas->addVertex(array('x' => $x0 + $dx, 'y' => $y - $dy * 2));
+        $this->_canvas->addVertex(array('x' => $x1 - $dx, 'y' => $y + $dy));
+        $this->_canvas->addVertex(array('x' => $x1, 'y' => $y - $dy));
+        $this->_canvas->polygon(array('connect' => false));
     }
 
     /**
@@ -97,7 +97,7 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
             return false;
         }
         
-        $this->_driver->startGroup(get_class($this) . '_' . $this->_title);
+        $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
 
         reset($this->_dataset);
 
@@ -132,25 +132,25 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
                 if ($point['Y'] === null) {
                     if ($numPoints > 1) {
                         $this->_getLineStyle($key);
-                        $this->_driver->polygonEnd(false);
+                        $this->_canvas->polygon(array('connect' => false));
                     }
                     $numPoints = 0;
                 } else {
                     $p2['X'] = $this->_pointX($point);
                     $p2['Y'] = $this->_pointY($point);
     
-                    $this->_driver->polygonAdd($p2['X'], $p2['Y']);
+                    $this->_canvas->addVertex(array('x' => $p2['X'], 'y' => $p2['Y']));
                     $numPoints++;
                 }
             }
             if ($numPoints > 1) {
                 $this->_getLineStyle($key);
-                $this->_driver->polygonEnd(false);
+                $this->_canvas->polygon(array('connect' => false));
             }
         }
         unset($keys);
         $this->_drawMarker();
-        $this->_driver->endGroup();
+        $this->_canvas->endGroup();
         return true;
     }
 

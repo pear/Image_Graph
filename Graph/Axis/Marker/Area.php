@@ -110,7 +110,7 @@ class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid
             return false;
         }
 
-        $this->_driver->startGroup(get_class($this));
+        $this->_canvas->startGroup(get_class($this));
         
         $i = 0;
 
@@ -134,19 +134,19 @@ class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid
                 $p4 = array ('X' => $secondaryValue, 'Y' => $this->_upper);
             }
 
-            $this->_driver->polygonAdd($this->_pointX($p1), $this->_pointY($p1));
-            $this->_driver->polygonAdd($this->_pointX($p2), $this->_pointY($p2));
-            $this->_driver->polygonAdd($this->_pointX($p3), $this->_pointY($p3));
-            $this->_driver->polygonAdd($this->_pointX($p4), $this->_pointY($p4));
+            $this->_canvas->addVertex(array('x' => $this->_pointX($p1), 'y' => $this->_pointY($p1)));
+            $this->_canvas->addVertex(array('x' => $this->_pointX($p2), 'y' => $this->_pointY($p2)));
+            $this->_canvas->addVertex(array('x' => $this->_pointX($p3), 'y' => $this->_pointY($p3)));
+            $this->_canvas->addVertex(array('x' => $this->_pointX($p4), 'y' => $this->_pointY($p4)));
 
             $previousSecondaryValue = $secondaryValue;
 
             $this->_getLineStyle();
             $this->_getFillStyle();
-            $this->_driver->polygonEnd();
+            $this->_canvas->polygon(array('connect' => true));
         }
         
-        $this->_driver->endGroup();
+        $this->_canvas->endGroup();
         
         return true;
     }

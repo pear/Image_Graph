@@ -126,7 +126,7 @@ class Image_Graph_Marker_Pointing extends Image_Graph_Marker
             $this->_markerStart->_drawMarker($x, $y, $values);
         }
         $this->_getLineStyle();
-        $this->_driver->line($x, $y, $x + $this->_deltaX, $y + $this->_deltaY);
+        $this->_canvas->line(array('x0' => $x, 'y0' => $y, 'x1' => $x + $this->_deltaX, 'y1' => $y + $this->_deltaY));
         $this->_markerEnd->_setParent($this);
         $this->_markerEnd->_drawMarker(
             $x + $this->_deltaX,

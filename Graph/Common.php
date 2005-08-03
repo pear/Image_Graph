@@ -51,6 +51,11 @@ if (!function_exists('is_a')) {
 }
 
 /**
+ * Include file Image/Canvas.php
+ */
+require_once 'Image/Canvas.php';
+
+/**
  * The ultimate ancestor of all Image_Graph classes.
  *
  * This class contains common functionality needed by all Image_Graph classes.
@@ -84,14 +89,14 @@ class Image_Graph_Common
     var $_elements;
 
     /**
-     * The driver for output.
+     * The canvas for output.
      *
      * Enables support for multiple output formats.
      *
-     * @var Image_Graph_Driver
+     * @var Image_Canvas
      * @access private
      */
-    var $_driver = null;
+    var $_canvas = null;
 
     /**
      * Constructor [Image_Graph_Common]
@@ -127,7 +132,7 @@ class Image_Graph_Common
     function _setParent(& $parent)
     {
         $this->_parent =& $parent;
-        $this->_driver =& $this->_parent->_getDriver();
+        $this->_canvas =& $this->_parent->_getCanvas();
 
         if (is_array($this->_elements)) {
             $keys = array_keys($this->_elements);
@@ -139,20 +144,20 @@ class Image_Graph_Common
     }
 
     /**
-     * Get the driver
+     * Get the canvas
      *
-     * @return Image_Graph_Driver The driver
+     * @return Image_Canvas The canvas
      * @access private
      */
-    function &_getDriver()
+    function &_getCanvas()
     { 
-        if (($this->_driver !== null) || ($this->_driver !== false)) {
-            return $this->_driver;
+        if (($this->_canvas !== null) || ($this->_canvas !== false)) {
+            return $this->_canvas;
         } elseif (is_a($this->_parent, 'Image_Graph_Common')) {
-            $this->_driver =& $this->_parent->_getDriver();
-            return $this->_driver;
+            $this->_canvas =& $this->_parent->_getCanvas();
+            return $this->_canvas;
         } else {
-            $this->_error('Invalid driver');
+            $this->_error('Invalid canvas');
         }
     }
 
@@ -223,9 +228,9 @@ class Image_Graph_Common
     {
         $stack =& $this->_getErrorStack();
         if (!is_array($params)) {
-            $params = array('driver' => &$this->_driver, 'object' => &$this);
+            $params = array('canvas' => &$this->_canvas, 'object' => &$this);
         } else {
-            $params['driver'] =& $this->_driver;
+            $params['canvas'] =& $this->_canvas;
             $params['object'] =& $this;
         }
         $stack->push($error_code, 'error', $params, $text);
@@ -261,7 +266,7 @@ class Image_Graph_Common
      */
     function _done()
     {
-        if (($this->_driver == null) || (!is_a($this->_driver, 'Image_Graph_Driver'))) {
+        if (($this->_canvas == null) || (!is_a($this->_canvas, 'Image_Canvas'))) {
             return false;
         }
 

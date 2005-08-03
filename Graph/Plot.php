@@ -354,7 +354,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
     function _drawMarker()
     {        
         if (($this->_marker) && (is_array($this->_dataset))) {
-            $this->_driver->startGroup(get_class($this) . '_marker');
+            $this->_canvas->startGroup(get_class($this) . '_marker');
             
             $totals = $this->_getTotals();
             $totals['WIDTH'] = $this->width() / ($this->_maximumX() + 2) / 2;
@@ -405,7 +405,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
                 }
             }
             unset($keys);
-            $this->_driver->endGroup();
+            $this->_canvas->endGroup();
         }              
     }
 
@@ -655,7 +655,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
     {
-        $this->_driver->rectangle($x0, $y0, $x1, $y1);
+        $this->_canvas->rectangle(array('x0' => $x0, 'y0' => $y0, 'x1' => $x1, 'y1' => $y1));
     }
 
     /**
@@ -682,8 +682,8 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
 
             $caption = ($dataset->_name ? $dataset->_name : $this->_title);
 
-            $this->_driver->setFont($param['font']);
-            $width = 20 + $param['width'] + $this->_driver->textWidth($caption);
+            $this->_canvas->setFont($param['font']);
+            $width = 20 + $param['width'] + $this->_canvas->textWidth($caption);
             $param['maxwidth'] = max($param['maxwidth'], $width);
             $x2 = $param['x'] + $width;
             $y2 = $param['y'] + $param['height']+5;
@@ -695,7 +695,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
             } elseif ((($param['align'] & IMAGE_GRAPH_ALIGN_VERTICAL) == 0) && ($x2 > $param['right'])) {
                 $param['x'] = $param['left'];
                 $param['y'] = $y2;
-                $x2 = $param['x'] + 20 + $param['width'] + $this->_driver->textWidth($caption);
+                $x2 = $param['x'] + 20 + $param['width'] + $this->_canvas->textWidth($caption);
             }
 
             $x = $x0 = $param['x'];

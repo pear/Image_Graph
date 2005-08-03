@@ -3,7 +3,7 @@
  * Usage example for Image_Graph.
  * 
  * Main purpose: 
- * Demonstrate SWF driver
+ * Demonstrate SWF canvas
  * 
  * Other: 
  * None specific
@@ -14,16 +14,16 @@
  * @author Jesper Veggerby <pear.nosey@veggerby.dk>
  */
 
-require 'Image/Graph.php';
-require 'Image/Graph/Driver.php';
+require_once 'Image/Graph.php';
+require_once 'Image/Canvas.php';
 
-$Driver =& Image_Graph_Driver::factory('swf', array('width' => 600, 'height' => 400));
+$Canvas =& Image_Canvas::factory('swf', array('width' => 600, 'height' => 400));
 
 
 // create the graph
-$Graph =& Image_Graph::factory('graph', $Driver); 
+$Graph =& Image_Graph::factory('graph', $Canvas); 
 // add a TrueType font
-$Font =& $Graph->addNew('ttf_font', 'Verdana');
+$Font =& $Graph->addNew('font', 'Verdana');
 // set the font size to 11 pixels
 $Font->setSize(11);
 

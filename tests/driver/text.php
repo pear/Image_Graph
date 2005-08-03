@@ -32,7 +32,7 @@
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Image_Graph
  */
-include 'Image/Graph/Driver.php';
+require_once 'Image/Graph/Driver.php';
 
 $driver =& Image_Graph_Driver::factory(
     (isset($_GET['driver']) ? $_GET['driver'] : 'png'), 

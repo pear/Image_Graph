@@ -205,7 +205,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      */
      function _size()
      {
-        $this->_driver->setFont($this->_getFont());
+        $this->_canvas->setFont($this->_getFont());
 
         $maxSize = 0;
         foreach($this->_labels as $label => $id) {
@@ -218,19 +218,19 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
             }
 
             if ($this->_type == IMAGE_GRAPH_AXIS_Y) {
-                $maxSize = max($maxSize, $this->_driver->textWidth($labelText));
+                $maxSize = max($maxSize, $this->_canvas->textWidth($labelText));
             } else {
-                $maxSize = max($maxSize, $this->_driver->textHeight($labelText));
+                $maxSize = max($maxSize, $this->_canvas->textHeight($labelText));
             }
         }
 
         if ($this->_title) {
-            $this->_driver->setFont($this->_getTitleFont());
+            $this->_canvas->setFont($this->_getTitleFont());
 
             if ($this->_type == IMAGE_GRAPH_AXIS_X) {
-                $maxSize += $this->_driver->textHeight($this->_title);
+                $maxSize += $this->_canvas->textHeight($this->_title);
             } else {
-                $maxSize += $this->_driver->textWidth($this->_title);
+                $maxSize += $this->_canvas->textWidth($this->_title);
             }
             $maxSize += 10;
         }
@@ -388,18 +388,18 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
             $result = false;
         }
         
-        $this->_driver->startGroup(get_class($this));
+        $this->_canvas->startGroup(get_class($this));
         
         $this->_drawAxisLines();
         
-        $this->_driver->startGroup(get_class($this) . '_ticks');
+        $this->_canvas->startGroup(get_class($this) . '_ticks');
         $label = false;
         while (($label = $this->_getNextLabel($label)) !== false) {
             $this->_drawTick($label);
         }
-        $this->_driver->endGroup();       
+        $this->_canvas->endGroup();       
 
-        $this->_driver->endGroup();
+        $this->_canvas->endGroup();
         return $result;
     }
 

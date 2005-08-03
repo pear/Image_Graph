@@ -32,11 +32,6 @@
  */
 require_once 'Image/Graph/Font.php';
 
-/**
- * Include file Image/Graph/Font/Vertical.php
- */
-require_once 'Image/Graph/Font/Vertical.php';
-
 // Constant declarations
 
 /**
