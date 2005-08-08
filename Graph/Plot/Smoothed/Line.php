@@ -103,7 +103,7 @@ class Image_Graph_Plot_Smoothed_Line extends Image_Graph_Plot_Smoothed_Bezier
                 if ($p1['Y'] === null) {
                     if ($numPoints > 1) {
                         $this->_getLineStyle($key);
-                        $this->_canvas->polygon(array('connect' => false));
+                        $this->_canvas->polygon(array('connect' => false, 'map_vertices' => true));
                     }
                     $numPoints = 0;
                 } else {
@@ -124,26 +124,34 @@ class Image_Graph_Plot_Smoothed_Line extends Image_Graph_Plot_Smoothed_Bezier
                     if ($p2) {
                         $cp = $this->_getControlPoints($p1, $p0, $p2, $p3);
                         $this->_canvas->addSpline(
-	                    	array(
-	                        	'x' => $cp['X'],
-	                        	'y' => $cp['Y'],
-	                        	'p1x' => $cp['P1X'],
-	                        	'p1y' => $cp['P1Y'],
-	                        	'p2x' => $cp['P2X'],
-	                        	'p2y' => $cp['P2Y']
+                            $this->_mergeData(
+                                $p1,
+	                    	  array(
+    	                        	'x' => $cp['X'],
+	                               	'y' => $cp['Y'],
+	                            	'p1x' => $cp['P1X'],
+	                            	'p1y' => $cp['P1Y'],
+	                            	'p2x' => $cp['P2X'],
+	                            	'p2y' => $cp['P2Y']
+                                )
 	                        )
 	                    );
 					} else {
                         $x = $this->_pointX($p1);
                         $y = $this->_pointY($p1);
-                        $this->_canvas->addVertex(array('x' => $x, 'y' => $y));
+                        $this->_canvas->addVertex(
+                            $this->_mergeData(
+                                $p1,
+                                array('x' => $x, 'y' => $y)
+                            )
+                        );
                     }
                     $numPoints++;
                 }
             }
             if ($numPoints > 1) {
                 $this->_getLineStyle();
-                $this->_canvas->polygon(array('connect' => false));
+                $this->_canvas->polygon(array('connect' => false, 'map_vertices' => true));
             }
         }
         unset($keys);

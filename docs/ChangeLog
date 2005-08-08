@@ -1,7 +1,7 @@
 *************************
  Image_Graph - Changelog
 *************************
-Version 0.5.0-alpha [2005-xxx-xx] - Jesper Veggerby <pear.nosey@veggerby.dk>
+Version 0.5.0-alpha [2005-Aug-08] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Major change: removed Image_Graph_Driver and subclasses and uses Image_Canvas instead, which implies:
         - Image_Graph_Color is obsolete, removing dependency on Image_Color (however Image_Canvas still depends on Image_Color)
         - Fonts are simplified (all identified by name) and implemented using Image_Graph_Font class, removing Image_Graph_Font subclasses (only subclasses!), removing Fonts/ folder
@@ -9,6 +9,8 @@ Version 0.5.0-alpha [2005-xxx-xx] - Jesper Veggerby <pear.nosey@veggerby.dk>
         - Image/Graph/Config.php becoming obsolete since only IMAGE_GRAPH_SYSTEM_FONT_PATH was defined here. File kept for future purposes but not used.
         - TTF Fonts (which were most often used) keep BC in 99% of the cases by replacing the 'ttf_font' factory alias mapping to 'Image_Graph_Font' and adding a mapping for 'Image_Graph_Font_TTF' to 'Image_Graph_Font'. Only case not working is when user manually includes Image/Graph/Font/TTF.php and creates and instance using 'new', which should only very, very rarely be the case
         - BC break: If drivers were explicitly created before, they now have to be changed to Image_Canvas objects
+    * Added support for HTML image maps on line-, bar-, area-, smoothed line-, impulse-, band- and pie charts (more to come)
+    * Added 'tohtml' option for output directly in HTML using canvas and imagemap (if any)
     * Added label option 'format' and 'dateformat' to Image_Graph_Axis to be able to format a label directly using sprintf() / date()
     * Changed plus and cross markers to be outlined (by defalut) - visual improvement
     * Added a star marker (Image_Graph_Marker_Star)

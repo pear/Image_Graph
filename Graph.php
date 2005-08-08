@@ -754,6 +754,17 @@ class Image_Graph extends Image_Graph_Element
      * (in the latter case, the canvas will also make sure the correct HTTP
      * headers are sent, making the browser handle the output correctly, if
      * supported by it).
+     * 
+     * Parameters are the ones supported by the canvas, common ones are:
+     * 
+     * 'filename' To output to a file instead of browser
+     * 
+     * 'tohtml' Return a HTML string that encompasses the current graph/canvas - this
+     * implies an implicit save using the following parameters: 'filename' The "temporary"
+     * filename of the graph, 'filepath' A path in the file system where Image_Graph can
+     * store the output (this file must be in DOCUMENT_ROOT scope), 'urlpath' The URL that the
+     * 'filepath' corresponds to (i.e. filepath + filename must be reachable from a browser using
+     * urlpath + filename) 
      *
      * @param mixed $param The output parameters to pass to the canvas
      * @return bool Was the output 'good' (true) or 'bad' (false).
@@ -830,9 +841,14 @@ class Image_Graph extends Image_Graph_Element
             }
 
         }
-
+        
 		if (isset($param['filename'])) {
-        	return $this->_canvas->save($param);
+            if ($param['tohtml']) {
+                return $this->_canvas->toHtml($param);
+            }
+            else {
+                return $this->_canvas->save($param);
+            }
 		} else {
 			return $this->_canvas->show($param);
 		}

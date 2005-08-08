@@ -278,16 +278,19 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
                 $this->_getFillStyle($ID);
                 $this->_getLineStyle($ID);
                 $this->_canvas->pieslice(
-                	array(
-                		'x' => $centerX + $dX, 
-                		'y' => $centerY + $dY, 
-                		'rx' => $radius1, 
-                		'ry' => $radius1, 
-                		'v1' => $angle1, 
-                		'v2' => $angle2, 
-                		'srx' => $radius0, 
-                		'sry' => $radius0
-                	)
+                    $this->_mergeData(
+                        $point,
+                    	array(
+                    		'x' => $centerX + $dX, 
+                    		'y' => $centerY + $dY, 
+                    		'rx' => $radius1, 
+                    		'ry' => $radius1, 
+                    		'v1' => $angle1, 
+                    		'v2' => $angle2, 
+                    		'srx' => $radius0, 
+                    		'sry' => $radius0
+                    	)
+                    )
                 );
             }
             $number++;

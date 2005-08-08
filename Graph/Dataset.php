@@ -114,6 +114,18 @@ class Image_Graph_Dataset
     /**
      * Add a point to the dataset
      *
+     * $ID can contain either the ID of the point, i.e. 'DK', 123, 'George', etc. or it can contain
+     * values used for creation of the HTML image map. This is achieved using is an an associated array
+     * with the following values:
+     * 
+     * 'url' The URL to create the link to
+     * 
+     * 'alt' [optional] The alt text on the link
+     * 
+     * 'target' [optional] The target of the link
+     * 
+     * 'htmltags' [optional] An associated array with html tags (tag as key), fx. 'onMouseOver' => 'history.go(-1);', 'id' => 'thelink'
+     *
      * @param int $x The X value to add
      * @param int $y The Y value to add, can be omited
      * @param var $ID The ID of the point
@@ -194,6 +206,19 @@ class Image_Graph_Dataset
      * @access private
      */
     function _getPointID($x)
+    {
+        return false;
+    }
+    
+    /**
+     * Gets point data from the dataset
+     *
+     * @param var $x The variable to return an Y value from, fx in a vector
+     *   function data set
+     * @return array The data for the point
+     * @access private
+     */
+    function _getPointData($x)
     {
         return false;
     }
@@ -349,10 +374,11 @@ class Image_Graph_Dataset
         $x = $this->_getPointX($this->_posX + $this->_stepX() * $step);
         $y = $this->_getPointY($this->_posX + $this->_stepX() * $step);
         $ID = $this->_getPointID($this->_posX + $this->_stepX() * $step);
+        $data = $this->_getPointData($this->_posX + $this->_stepX() * $step);
         if (($x === false) || ($y === false)) {
             return false;
         } else {
-            return array ('X' => $x, 'Y' => $y, 'ID' => $ID);
+            return array ('X' => $x, 'Y' => $y, 'ID' => $ID, 'data' => $data);
         }
     }
 
@@ -371,9 +397,10 @@ class Image_Graph_Dataset
         $x = $this->_getPointX($this->_posX);
         $y = $this->_getPointY($this->_posX);
         $ID = $this->_getPointID($this->_posX);
+        $data = $this->_getPointData($this->_posX);
         $this->_posX += $this->_stepX();
 
-        return array ('X' => $x, 'Y' => $y, 'ID' => $ID);
+        return array ('X' => $x, 'Y' => $y, 'ID' => $ID, 'data' => $data);
     }
 
     /**

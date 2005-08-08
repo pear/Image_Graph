@@ -88,6 +88,7 @@ class Image_Graph_Plot_Area extends Image_Graph_Plot
         }
 
         $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
+        $base = array();
         if ($this->_multiType == 'stacked') {
             reset($this->_dataset);
             $key = key($this->_dataset);
@@ -95,12 +96,14 @@ class Image_Graph_Plot_Area extends Image_Graph_Plot
 
             $first = $dataset->first();
             $point = array ('X' => $first['X'], 'Y' => '#min_pos#');
+            $base[] = array();
             $base[] = $this->_pointY($point);
             $first = $this->_pointX($point);
             $base[] = $first;
     
             $last = $dataset->last();
             $point = array ('X' => $last['X'], 'Y' => '#min_pos#');
+            $base[] = array();
             $base[] = $this->_pointY($point);
             $base[] = $this->_pointX($point);
                     
@@ -116,7 +119,7 @@ class Image_Graph_Plot_Area extends Image_Graph_Plot
             $dataset->_reset();
             if ($this->_multiType == 'stacked') {
                 $plotarea = array_reverse($base);
-                unset ($base);
+                $base = array();
                 while ($point = $dataset->_next()) {
                     $x = $point['X'];
                     $p = $point;
@@ -129,6 +132,8 @@ class Image_Graph_Plot_Area extends Image_Graph_Plot
                     $y1 = $this->_pointY($p);
                     $plotarea[] = $x1;
                     $plotarea[] = $y1;
+                    $plotarea[] = $point;
+                    $base[] = array();
                     $base[] = $y1;
                     $base[] = $x1;
                     $current[$x] += $point['Y'];
@@ -141,9 +146,11 @@ class Image_Graph_Plot_Area extends Image_Graph_Plot
                         $firstPoint = array ('X' => $point['X'], 'Y' => '#min_pos#');
                         $plotarea[] = $this->_pointX($firstPoint);
                         $plotarea[] = $this->_pointY($firstPoint);
+                        $plotarea[] = array();
                     }
                     $plotarea[] = $this->_pointX($point);
                     $plotarea[] = $this->_pointY($point);
+                    $plotarea[] = $point;
                     $lastPoint = $point;
                     $first = false;
                 }
@@ -151,17 +158,24 @@ class Image_Graph_Plot_Area extends Image_Graph_Plot
                 $endPoint['Y'] = '#min_pos#';
                 $plotarea[] = $this->_pointX($endPoint);
                 $plotarea[] = $this->_pointY($endPoint);
+                $plotarea[] = array();
             }
 
             reset($plotarea);
             while (list(, $x) = each($plotarea)) {
                 list(, $y) = each($plotarea);
-                $this->_canvas->addVertex(array('x' => $x, 'y' => $y));
+                list(, $data) = each($plotarea);
+                $this->_canvas->addVertex(
+                    $this->_mergeData(
+                        $data,
+                        array('x' => $x, 'y' => $y)
+                    )
+                );
             }
 
             $this->_getFillStyle($key);
             $this->_getLineStyle($key);
-            $this->_canvas->polygon(array('connect' => true));
+            $this->_canvas->polygon(array('connect' => true, 'map_vertices' => true));
         }
         unset($keys);
         $this->_drawMarker();

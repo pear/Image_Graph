@@ -168,6 +168,35 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
     {
         $this->_title = $title;
     }
+    
+    /**
+     * Parses the URL mapping data in the point and adds it to the parameter array used by
+     * Image_Canvas
+     * 
+     * @param array $point The data point (from the dataset)
+     * @param array $canvasData The The for the canvas method
+     * @return array The union of the canvas data points and the appropriate points for the dataset
+     * @access private 
+     */
+    function _mergeData($point, $canvasData)
+    {       
+        if (isset($point['data'])) {
+            if (isset($point['data']['url'])) {
+                $canvasData['url'] = $point['data']['url'];
+            }
+            if (isset($point['data']['target'])) {
+                $canvasData['target'] = $point['data']['target']; 
+            }
+            if (isset($point['data']['alt'])) {
+                $canvasData['alt'] = $point['data']['alt']; 
+            }
+            if (isset($point['data']['htmltags'])) {
+                $canvasData['htmltags'] = $point['data']['htmltags']; 
+            }
+        }
+        
+        return $canvasData;        
+    }
 
     /**
      * Sets the Y axis to plot the data

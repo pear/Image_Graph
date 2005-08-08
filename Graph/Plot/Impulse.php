@@ -177,7 +177,17 @@ class Image_Graph_Plot_Impulse extends Image_Graph_Plot
                         $ID = $key;
                     }
                     $this->_getLineStyle($key);
-                    $this->_canvas->line(array('x0' => $x1, 'y0' => $y1, 'x1' => $x2, 'y1' => $y2));
+                    $this->_canvas->line(
+                        $this->_mergeData(
+                            $point,
+                            array(
+                                'x0' => $x1, 
+                                'y0' => $y1, 
+                                'x1' => $x2, 
+                                'y1' => $y2
+                            )
+                        )
+                    );
                 }
             }
             $number++;

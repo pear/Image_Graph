@@ -247,11 +247,14 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
                         $this->_getFillStyle($ID);
                         $this->_getLineStyle($ID);
                         $this->_canvas->rectangle(
-                        	array(
-                        		'x0' => min($x1, $x2),
-                            	'y0' => min($y1, $y2),
-                            	'x1' => max($x1, $x2),
-                            	'y1' => max($y1, $y2)
+                            $this->_mergeData(
+                                $point,
+                            	array(
+                            		'x0' => min($x1, $x2),
+                                	'y0' => min($y1, $y2),
+                                	'x1' => max($x1, $x2),
+                                	'y1' => max($y1, $y2)
+                                )
                             )
                         );
                     }

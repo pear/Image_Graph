@@ -119,22 +119,32 @@ class Image_Graph_Plot_Band extends Image_Graph_Plot
                 $point['Y'] = $data['Y']['low'];
                 $y_low = $this->_pointY($point);
 
-                $upperBand[] = array('X' => $x, 'Y' => $y_high);
-                $lowerBand[] = array('X' => $x, 'Y' => $y_low);
+                $upperBand[] = array('X' => $x, 'Y' => $y_high, 'data' => $point['data']);
+                $lowerBand[] = array('X' => $x, 'Y' => $y_low, 'data' => $point['data']);
             }
             $lowerBand = array_reverse($lowerBand);
             foreach ($lowerBand as $point) {
-                $this->_canvas->addVertex(array('x' => $point['X'], 'y' => $point['Y']));
+                $this->_canvas->addVertex(
+                    $this->_mergeData(
+                        $point['data'],
+                        array('x' => $point['X'], 'y' => $point['Y'])
+                    )
+                );
             }
             foreach ($upperBand as $point) {
-                $this->_canvas->addVertex(array('x' => $point['X'], 'y' => $point['Y']));
+                $this->_canvas->addVertex(                
+                    $this->_mergeData(
+                        $point['data'],
+                        array('x' => $point['X'], 'y' => $point['Y'])
+                    )
+                );
             }
             unset($upperBand);
             unset($lowerBand);
 
             $this->_getLineStyle($key);
             $this->_getFillStyle($key);
-            $this->_canvas->polygon(array('connect' => true));
+            $this->_canvas->polygon(array('connect' => true, 'map_vertices' => true));
         }
         unset($keys);
         $this->_drawMarker();

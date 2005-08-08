@@ -132,20 +132,25 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
                 if ($point['Y'] === null) {
                     if ($numPoints > 1) {
                         $this->_getLineStyle($key);
-                        $this->_canvas->polygon(array('connect' => false));
+                        $this->_canvas->polygon(array('connect' => false, 'map_vertices' => true));
                     }
                     $numPoints = 0;
                 } else {
                     $p2['X'] = $this->_pointX($point);
                     $p2['Y'] = $this->_pointY($point);
     
-                    $this->_canvas->addVertex(array('x' => $p2['X'], 'y' => $p2['Y']));
+                    $this->_canvas->addVertex(
+                        $this->_mergeData(
+                            $point,
+                            array('x' => $p2['X'], 'y' => $p2['Y'])
+                        )
+                    );
                     $numPoints++;
                 }
             }
             if ($numPoints > 1) {
                 $this->_getLineStyle($key);
-                $this->_canvas->polygon(array('connect' => false));
+                $this->_canvas->polygon(array('connect' => false, 'map_vertices' => true));
             }
         }
         unset($keys);
