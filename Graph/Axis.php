@@ -244,6 +244,14 @@ require_once 'Image/Graph/Plotarea/Element.php';
      * @since 0.3.0dev3
      */
     var $_invert = false;
+    
+    /**
+     * Transpose the axis (i.e. is a normal y-axis transposed, so thats it's not show
+     * vertically as normally expected, but instead horizontally)
+     * @var bool
+     * @access private
+     */
+    var $_transpose = false;
 
     /**
      * Image_Graph_Axis [Constructor].
@@ -616,8 +624,10 @@ require_once 'Image/Graph/Plotarea/Element.php';
      * @access private
      */
     function _point($value)    
-    {
-        if ($this->_type == IMAGE_GRAPH_AXIS_X) {
+    {        
+        if ((($this->_type == IMAGE_GRAPH_AXIS_X) && (!$this->_transpose)) ||
+           (($this->_type != IMAGE_GRAPH_AXIS_X) && ($this->_transpose))) 
+        {
             if ($this->_invert) {
                 return max($this->_left, $this->_right - $this->_axisPadding['high'] - $this->_delta * $this->_value($value));
             } else {
@@ -650,29 +660,29 @@ require_once 'Image/Graph/Plotarea/Element.php';
         if (($value === 'min') || ($value < $this->_getMinimum())) {
             if ($this->_type == IMAGE_GRAPH_AXIS_X) {
                 if ($this->_invert) {
-                    return $this->_right;
+                    return ($this->_transpose ? $this->_top : $this->_right);
                 } else {
-                    return $this->_left;
+                    return ($this->_transpose ? $this->_bottom : $this->_left);
                 }
             } else {
                 if ($this->_invert) {
-                    return $this->_top;
+                    return ($this->_transpose ? $this->_right : $this->_top);
                 } else {
-                    return $this->_bottom;
+                    return ($this->_transpose ? $this->_left : $this->_bottom);
                 }
             }
         } elseif (($value === 'max') || ($value > $this->_getMaximum())) {
             if ($this->_type == IMAGE_GRAPH_AXIS_X) {
                 if ($this->_invert) {
-                    return $this->_left;
+                    return ($this->_transpose ? $this->_bottom : $this->_left);
                 } else {
-                    return $this->_right;
+                    return ($this->_transpose ? $this->_top : $this->_right);
                 }
             } else {
                 if ($this->_invert) {
-                    return $this->_bottom;
+                    return ($this->_transpose ? $this->_left : $this->_bottom);
                 } else {
-                    return $this->_top;
+                    return ($this->_transpose ? $this->_right : $this->_top);
                 }
             }
         } 
@@ -692,9 +702,9 @@ require_once 'Image/Graph/Plotarea/Element.php';
         if ($this->_axisValueSpan == 0) {
             $this->_delta = false;
         } elseif ($this->_type == IMAGE_GRAPH_AXIS_X) {
-            $this->_delta = ($this->width() - ($this->_axisPadding['low'] + $this->_axisPadding['high'])) / $this->_axisValueSpan;
+            $this->_delta = (($this->_transpose ? $this->height() : $this->width()) - ($this->_axisPadding['low'] + $this->_axisPadding['high'])) / $this->_axisValueSpan;
         } else {
-            $this->_delta = ($this->height() - ($this->_axisPadding['low'] + $this->_axisPadding['high'])) / $this->_axisValueSpan;
+            $this->_delta = (($this->_transpose ? $this->width() : $this->height()) - ($this->_axisPadding['low'] + $this->_axisPadding['high'])) / $this->_axisValueSpan;
         }
     }        
     
@@ -906,7 +916,9 @@ require_once 'Image/Graph/Plotarea/Element.php';
                             $labelText = $value;
                         }
 
-                        if ($this->_type == IMAGE_GRAPH_AXIS_X) {
+                        if ((($this->_type == IMAGE_GRAPH_AXIS_X) && (!$this->_transpose)) ||
+                           (($this->_type != IMAGE_GRAPH_AXIS_X) && ($this->_transpose)))
+                        {
                             $maxSize = max($maxSize, $this->_canvas->textHeight($labelText));
                         } else {
                             $maxSize = max($maxSize, $this->_canvas->textWidth($labelText));
@@ -924,7 +936,9 @@ require_once 'Image/Graph/Plotarea/Element.php';
         if ($this->_title) {
             $this->_canvas->setFont($this->_getTitleFont());
 
-            if ($this->_type == IMAGE_GRAPH_AXIS_X) {
+            if ((($this->_type == IMAGE_GRAPH_AXIS_X) && (!$this->_transpose)) ||
+               (($this->_type != IMAGE_GRAPH_AXIS_X) && ($this->_transpose)))
+            {
                 $totalMaxSize += $this->_canvas->textHeight($this->_title);
             } else {
                 $totalMaxSize += $this->_canvas->textWidth($this->_title);
@@ -1137,58 +1151,121 @@ require_once 'Image/Graph/Plotarea/Element.php';
                     }
                                         
                     if ($this->_type == IMAGE_GRAPH_AXIS_Y) {
-                        if ($labelInside) {
-                            $this->write(
-                                $this->_right + 3 + $offset,
-                                $labelPosition,
-                                $labelText,
-                                IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_LEFT,
-                                $font
-                            );
-                        } else {
-                            $this->write(
-                                $this->_right - 3 - $offset,
-                                $labelPosition,
-                                $labelText,
-                                IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_RIGHT,
-                                $font
-                            );
+                        if ($this->_transpose) {
+                            if ($labelInside) {
+                                $this->write(
+                                    $labelPosition,
+                                    $this->_top - 3 - $offset,
+                                    $labelText,
+                                    IMAGE_GRAPH_ALIGN_BOTTOM | IMAGE_GRAPH_ALIGN_CENTER_X,
+                                    $font
+                                );
+                            } else {
+                                $this->write(
+                                    $labelPosition,
+                                    $this->_top + 3 + $offset,                                                                   
+                                    $labelText,
+                                    IMAGE_GRAPH_ALIGN_TOP | IMAGE_GRAPH_ALIGN_CENTER_X,
+                                    $font
+                                );
+                            }
+                        }
+                        else {                        
+                            if ($labelInside) {
+                                $this->write(
+                                    $this->_right + 3 + $offset,
+                                    $labelPosition,
+                                    $labelText,
+                                    IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_LEFT,
+                                    $font
+                                );
+                            } else {
+                                $this->write(
+                                    $this->_right - 3 - $offset,
+                                    $labelPosition,
+                                    $labelText,
+                                    IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_RIGHT,
+                                    $font
+                                );
+                            }
                         }
                     } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY) {
-                        if ($labelInside) {
-                            $this->write(
-                                $this->_left - 3 - $offset,
-                                $labelPosition,
-                                $labelText,
-                                IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_RIGHT,
-                                $font
-                            );
-                        } else {
-                            $this->write(
-                                $this->_left + 3 + $offset,
-                                $labelPosition,
-                                $labelText,
-                                IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_LEFT,
-                                $font
-                            );
+                        if ($this->_transpose) {
+                            if ($labelInside) {
+                                $this->write(
+                                    $labelPosition,
+                                    $this->_bottom + 3 + $offset,
+                                    $labelText,
+                                    IMAGE_GRAPH_ALIGN_TOP | IMAGE_GRAPH_ALIGN_CENTER_X,
+                                    $font
+                                );
+                            } else {
+                                $this->write(
+                                    $labelPosition,
+                                    $this->_bottom - 3 - $offset,                                                                   
+                                    $labelText,
+                                    IMAGE_GRAPH_ALIGN_BOTTOM | IMAGE_GRAPH_ALIGN_CENTER_X,
+                                    $font
+                                );
+                            }
+                        }
+                        else {
+                            if ($labelInside) {
+                                $this->write(
+                                    $this->_left - 3 - $offset,
+                                    $labelPosition,
+                                    $labelText,
+                                    IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_RIGHT,
+                                    $font
+                                );
+                            } else {
+                                $this->write(
+                                    $this->_left + 3 + $offset,
+                                    $labelPosition,
+                                    $labelText,
+                                    IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_LEFT,
+                                    $font
+                                );
+                            }
                         }
                     } else {
-                        if ($labelInside === true) {
-                            $this->write(
-                                $labelPosition,
-                                $this->_top - 3 - $offset,
-                                $labelText,
-                                IMAGE_GRAPH_ALIGN_CENTER_X | IMAGE_GRAPH_ALIGN_BOTTOM,
-                                $font
-                            );
-                        } else {
-                            $this->write(
-                                $labelPosition,
-                                $this->_top + 3 + $offset,
-                                $labelText,
-                                IMAGE_GRAPH_ALIGN_CENTER_X | IMAGE_GRAPH_ALIGN_TOP,
-                                $font
-                            );
+                        if ($this->_transpose) {
+                            if ($labelInside) {
+                                $this->write(
+                                    $this->_right + 3 + $offset,
+                                    $labelPosition,
+                                    $labelText,
+                                    IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_LEFT,
+                                    $font
+                                );
+                            } else {
+                                $this->write(
+                                    $this->_right - 3 - $offset,                                                                   
+                                    $labelPosition,
+                                    $labelText,
+                                    IMAGE_GRAPH_ALIGN_CENTER_Y | IMAGE_GRAPH_ALIGN_RIGHT,
+                                    $font
+                                );
+                            }
+                        }
+                        else {
+                            if ($labelInside === true) {
+                                $this->write(
+                                    $labelPosition,
+                                    $this->_top - 3 - $offset,
+                                    $labelText,
+                                    IMAGE_GRAPH_ALIGN_CENTER_X | IMAGE_GRAPH_ALIGN_BOTTOM,
+                                    $font
+                                );
+                            } else {
+                                $this->write(
+                                    $labelPosition,
+                                    $this->_top + 3 + $offset,
+                                    $labelText,
+                                    IMAGE_GRAPH_ALIGN_CENTER_X | IMAGE_GRAPH_ALIGN_TOP,
+                                    $font
+                                );
+                            }
                         }
                     }
                 }
@@ -1207,38 +1284,74 @@ require_once 'Image/Graph/Plotarea/Element.php';
                 if ($tickStart === 'auto') {
                     $tickStart = -$offset;
                 }
-                $this->_canvas->line(
-                	array(
-                    	'x0' => $this->_right + $tickStart,
-                    	'y0' => $labelPosition,
-                    	'x1' => $this->_right + $tickEnd,
-                    	'y1' => $labelPosition
-                    )
-                );
+                if ($this->_transpose) {
+                    $this->_canvas->line(
+                        array(
+                            'x0' => $labelPosition,
+                            'y0' => $this->_top + $tickStart,
+                            'x1' => $labelPosition,
+                            'y1' => $this->_top + $tickEnd
+                        )
+                    );
+                }
+                else {
+                    $this->_canvas->line(
+                    	array(
+                        	'x0' => $this->_right + $tickStart,
+                        	'y0' => $labelPosition,
+                        	'x1' => $this->_right + $tickEnd,
+                        	'y1' => $labelPosition
+                        )
+                    );
+                }
             } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY) {
                 if ($tickStart === 'auto') {
                     $tickStart = $offset;
                 }
-                $this->_canvas->line(
-                	array(
-                    	'x0' => $this->_left - $tickStart,
-                    	'y0' => $labelPosition,
-                    	'x1' => $this->_left - $tickEnd,
-                    	'y1' => $labelPosition
-                    )
-                );
+                if ($this->_transpose) {
+                    $this->_canvas->line(
+                        array(
+                            'x0' => $labelPosition,
+                            'y0' => $this->_top - $tickStart,
+                            'x1' => $labelPosition,
+                            'y1' => $this->_top - $tickEnd
+                        )
+                    );
+                }
+                else {
+                    $this->_canvas->line(
+                    	array(
+                        	'x0' => $this->_left - $tickStart,
+                        	'y0' => $labelPosition,
+                        	'x1' => $this->_left - $tickEnd,
+                        	'y1' => $labelPosition
+                        )
+                    );
+                }
             } else {
                 if ($tickStart === 'auto') {
                     $tickStart = $offset;
                 }
-                $this->_canvas->line(
-                	array(
-                    	'x0' => $labelPosition,
-                    	'y0' => $this->_top - $tickStart,
-                    	'x1' => $labelPosition,
-                    	'y1' => $this->_top - $tickEnd
-                    )
-                );
+                if ($this->_transpose) {
+                    $this->_canvas->line(
+                        array(
+                            'x0' => $this->_right + $tickStart,
+                            'y0' => $labelPosition,
+                            'x1' => $this->_right + $tickEnd,
+                            'y1' => $labelPosition
+                        )
+                    );
+                }
+                else {
+                    $this->_canvas->line(
+                    	array(
+                        	'x0' => $labelPosition,
+                        	'y0' => $this->_top - $tickStart,
+                        	'x1' => $labelPosition,
+                        	'y1' => $this->_top - $tickEnd
+                        )
+                    );
+                }
             }
         }
     }
@@ -1252,83 +1365,113 @@ require_once 'Image/Graph/Plotarea/Element.php';
     {
         if ($this->_type == IMAGE_GRAPH_AXIS_X) {
             $this->_getLineStyle(); 
-            $this->_canvas->line(
-            	array(
-                	'x0' => $this->_left,
-                	'y0' => $this->_top,
-                	'x1' => $this->_right,
-                	'y1' => $this->_top
-                )
-            );
+            
+            if ($this->_transpose) {
+                $data = array(
+                        'x0' => $this->_right,
+                        'y0' => $this->_top,
+                        'x1' => $this->_right,
+                        'y1' => $this->_bottom
+                    );
+            } else {
+                $data = array(
+                        'x0' => $this->_left,
+                        'y0' => $this->_top,
+                        'x1' => $this->_right,
+                        'y1' => $this->_top
+                    );
+            }
+                
+            if ($this->_showArrow) {
+                $data['end1'] = 'arrow2';
+                $data['size1'] = 7;
+            } 
+            
+            $this->_canvas->line($data);
 
             if ($this->_title) {
-                $y = $this->_bottom;
-                $x = $this->_left + $this->width() / 2;
-                $this->write($x, $y, $this->_title, IMAGE_GRAPH_ALIGN_CENTER_X + IMAGE_GRAPH_ALIGN_BOTTOM, $this->_getTitleFont());
-            }
-
-            if ($this->_showArrow) {
-                $this->_getFillStyle();
-                $this->_getLineStyle();                
-                $this->_canvas->addVertex(array('x' => $this->_right - 7, 'y' => $this->_top + 4));
-                $this->_canvas->addVertex(array('x' => $this->_right, 'y' => $this->_top));
-                $this->_canvas->addVertex(array('x' => $this->_right - 7, 'y' => $this->_top - 4));
-                $this->_canvas->addVertex(array('x' => $this->_right - 4, 'y' => $this->_top));
-                $this->_canvas->polygon(array('connect' => true));
+                if ($this->_transpose) {
+                    $y = $this->_bottom;
+                    $x = $this->_left + $this->width() / 2;
+                    $this->write($x, $y, $this->_title, IMAGE_GRAPH_ALIGN_CENTER_X + IMAGE_GRAPH_ALIGN_BOTTOM, $this->_getTitleFont());
+                }
+                else {
+                    $y = $this->_top + $this->height() / 2;
+                    $x = $this->_right;
+                    $this->write($x, $y, $this->_title, IMAGE_GRAPH_ALIGN_RIGHT + IMAGE_GRAPH_ALIGN_CENTER_Y, $this->_getTitleFont());
+                }
             }
         } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY) {
             $this->_getLineStyle();
-            $this->_canvas->line(
-            	array(
-                	'x0' => $this->_left,
-                	'y0' => $this->_top,
-                	'x1' => $this->_left,
-                	'y1' => $this->_bottom
-                )
-            );
+            
+            if ($this->_transpose) {
+                $data = array(
+                        'x0' => $this->_left,
+                        'y0' => $this->_bottom,
+                        'x1' => $this->_right,
+                        'y1' => $this->_bottom
+                    );
+            } else {
+                $data = array(
+                        'x0' => $this->_left,
+                        'y0' => $this->_top,
+                        'x1' => $this->_left,
+                        'y1' => $this->_bottom
+                    );
+            }
+            if ($this->_showArrow) {
+                $data['end1'] = 'arrow2';
+                $data['size1'] = 7;
+            } 
+            $this->_canvas->line($data);
 
             if ($this->_title) {
-                $this->_canvas->setFont($this->_getTitleFont());
-                $y = $this->_top + $this->height() / 2;
-                $x = $this->_right;
-                $this->write($x, $y, $this->_title, IMAGE_GRAPH_ALIGN_RIGHT + IMAGE_GRAPH_ALIGN_CENTER_Y, $this->_getTitleFont());
-            }
-
-            if ($this->_showArrow) {
-                $this->_getFillStyle();
-                $this->_getLineStyle();
-                $this->_canvas->addVertex(array('x' => $this->_left - 4, 'y' => $this->_top + 7));
-                $this->_canvas->addVertex(array('x' => $this->_left, 'y' => $this->_top));
-                $this->_canvas->addVertex(array('x' => $this->_left + 4, 'y' => $this->_top + 7));
-                $this->_canvas->addVertex(array('x' => $this->_left, 'y' => $this->_top + 4));
-                $this->_canvas->polygon(array('connect' => true));
+                if ($this->_transpose) {
+                    $y = $this->_bottom;
+                    $x = $this->_left + $this->width() / 2;
+                    $this->write($x, $y, $this->_title, IMAGE_GRAPH_ALIGN_CENTER_X + IMAGE_GRAPH_ALIGN_BOTTOM, $this->_getTitleFont());
+                }
+                else {
+                    $y = $this->_top + $this->height() / 2;
+                    $x = $this->_right;
+                    $this->write($x, $y, $this->_title, IMAGE_GRAPH_ALIGN_RIGHT + IMAGE_GRAPH_ALIGN_CENTER_Y, $this->_getTitleFont());
+                }
             }
         } else {
             $this->_getLineStyle();
-            $this->_canvas->line(
-            	array(
-                	'x0' => $this->_right,
-                	'y0' => $this->_top,
-                	'x1' => $this->_right,
-                	'y1' => $this->_bottom
-                )
-            );
+            
+            if ($this->_transpose) {
+                $data = array(
+                        'x0' => $this->_left,
+                        'y0' => $this->_top,
+                        'x1' => $this->_right,
+                        'y1' => $this->_top
+                    );
+            } else {
+                $data = array(
+                        'x0' => $this->_right,
+                        'y0' => $this->_top,
+                        'x1' => $this->_right,
+                        'y1' => $this->_bottom
+                    );
+            }
+            if ($this->_showArrow) {
+                $data['end1'] = 'arrow2';
+                $data['size1'] = 7;
+            } 
+            $this->_canvas->line($data);            
 
             if ($this->_title) {
-                $this->_canvas->setFont($this->_getTitleFont());
-                $y = $this->_top + $this->height() / 2;
-                $x = $this->_left;
-                $this->write($x, $y, $this->_title, IMAGE_GRAPH_ALIGN_LEFT + IMAGE_GRAPH_ALIGN_CENTER_Y, $this->_getTitleFont());
-            }
-
-            if ($this->_showArrow) {
-                $this->_getFillStyle();
-                $this->_getLineStyle();
-                $this->_canvas->addVertex(array('x' => $this->_right - 4, 'y' => $this->_top + 7));
-                $this->_canvas->addVertex(array('x' => $this->_right, 'y' => $this->_top));
-                $this->_canvas->addVertex(array('x' => $this->_right + 4, 'y' => $this->_top + 7));
-                $this->_canvas->addVertex(array('x' => $this->_right, 'y' => $this->_top + 4));
-                $this->_canvas->polygon(array('connect' => true));
+                if ($this->_transpose) {
+                    $y = $this->_top;
+                    $x = $this->_left + $this->width() / 2;
+                    $this->write($x, $y, $this->_title, IMAGE_GRAPH_ALIGN_CENTER_X + IMAGE_GRAPH_ALIGN_TOP, $this->_getTitleFont());
+                }
+                else {
+                    $y = $this->_top + $this->height() / 2;
+                    $x = $this->_left;
+                    $this->write($x, $y, $this->_title, IMAGE_GRAPH_ALIGN_LEFT + IMAGE_GRAPH_ALIGN_CENTER_Y, $this->_getTitleFont());
+                }
             }
         }
     }
@@ -1385,44 +1528,101 @@ require_once 'Image/Graph/Plotarea/Element.php';
         foreach ($this->_marks as $mark) {
             if (is_array($mark)) {
                 if ($this->_type == IMAGE_GRAPH_AXIS_X) {
-                    $x0 = $this->_point($mark[0]);
-                    $y0 = $this->_top + $tickStart;
-                    $x1 = $this->_point($mark[1]);
-                    $y1 = $this->_top + $tickEnd;
+                    if ($this->_transpose) {
+                        $x0 = $this->_right + $tickStart;
+                        $y0 = $this->_point($mark[1]);
+                        $x1 = $this->_right + $tickEnd;
+                        $y1 = $this->_point($mark[0]);
+                    }
+                    else {
+                        $x0 = $this->_point($mark[0]);
+                        $y0 = $this->_top + $tickStart;
+                        $x1 = $this->_point($mark[1]);
+                        $y1 = $this->_top + $tickEnd;
+                    }
                 } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y) {
-                    $x0 = $this->_right + $tickStart;
-                    $y0 = $this->_point($mark[1]);
-                    $x1 = $this->_right + $tickEnd;
-                    $y1 = $this->_point($mark[0]);
+                    if ($this->_transpose) {
+                        $x0 = $this->_point($mark[0]);
+                        $y0 = $this->_top + $tickStart;
+                        $x1 = $this->_point($mark[1]);
+                        $y1 = $this->_top + $tickEnd;
+                    }
+                    else {
+                        $x0 = $this->_right + $tickStart;
+                        $y0 = $this->_point($mark[1]);
+                        $x1 = $this->_right + $tickEnd;
+                        $y1 = $this->_point($mark[0]);
+                    }
                 } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY) {
-                    $x0 = $this->_left + $tickStart;
-                    $y0 = $this->_point($mark[1]);
-                    $x1 = $this->_left + $tickEnd;
-                    $y1 = $this->_point($mark[0]);
+                    if ($this->_transpose) {
+                        $x0 = $this->_point($mark[0]);
+                        $y0 = $this->_bottom + $tickStart;
+                        $x1 = $this->_point($mark[1]);
+                        $y1 = $this->_bottom + $tickEnd;
+                    }
+                    else {
+                        $x0 = $this->_left + $tickStart;
+                        $y0 = $this->_point($mark[1]);
+                        $x1 = $this->_left + $tickEnd;
+                        $y1 = $this->_point($mark[0]);
+                    }                        
                 }
                 $this->_getFillStyle();
                 $this->_getLineStyle();
                 $this->_canvas->rectangle(array('x0' => $x0, 'y0' => $y0, 'x1' => $x1, 'y1' => $y1));
             } else {
+                if ($this->_type == IMAGE_GRAPH_AXIS_X) {
+                    if ($this->_transpose) {
+                        $x0 = $this->_right + 5;
+                        $y0 = $this->_point($mark);
+                        $x1 = $this->_right + 15;
+                        $y1 = $y0;
+                    }
+                    else {
+                        $x0 = $this->_point($mark);
+                        $y0 = $this->_top - 5;
+                        $x1 = $x0;
+                        $y1 = $this->_top - 15;
+                    }
+                } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y) {
+                    if ($this->_transpose) {
+                        $x0 = $this->_point($mark);
+                        $y0 = $this->_top - 5;
+                        $x1 = $x0;
+                        $y1 = $this->_top - 15;
+                    }
+                    else {
+                        $x0 = $this->_right + 5;
+                        $y0 = $this->_point($mark);
+                        $x1 = $this->_right + 15;
+                        $y1 = $y0;
+                    }
+                } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY) {
+                    if ($this->_transpose) {
+                        $x0 = $this->_point($mark);
+                        $y0 = $this->_bottom + 5;
+                        $x1 = $x0;
+                        $y1 = $this->_bottom + 15;
+                    }
+                    else {
+                        $x0 = $this->_left - 5;
+                        $y0 = $this->_point($mark);
+                        $x1 = $this->_left - 15;
+                        $y1 = $y0;
+                    }                        
+                }
                 $this->_getFillStyle();
                 $this->_getLineStyle();
-                if ($this->_type == IMAGE_GRAPH_AXIS_X) {
-                    $x = $this->_point($mark);
-                    $this->_canvas->addVertex(array('x' => $x, 'y' => $this->_top));
-                    $this->_canvas->addVertex(array('x' => $x - 5, 'y' => $this->_top + 5));
-                    $this->_canvas->addVertex(array('x' => $x + 5, 'y' => $this->_top + 5));
-                } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y) {
-                    $y = $this->_point($mark);
-                    $this->_canvas->addVertex(array('x' => $this->_right, 'y' => $y));
-                    $this->_canvas->addVertex(array('x' => $this->_right - 5, 'y' => $y - 5));
-                    $this->_canvas->addVertex(array('x' => $this->_right - 5, 'y' => $y + 5));
-                } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY) {
-                    $y = $this->_point($mark);
-                    $this->_canvas->addVertex(array('x' => $this->_left, 'y' => $y));
-                    $this->_canvas->addVertex(array('x' => $this->_left + 5, 'y' => $y - 5));
-                    $this->_canvas->addVertex(array('x' => $this->_left + 5, 'y' => $y + 5));
-                }
-                $this->_canvas->polygon(array('connect' => true));
+                $this->_canvas->line(
+                    array(
+                        'x0' => $x0,
+                        'y0' => $y0, 
+                        'x1' => $x1, 
+                        'y1' => $y1, 
+                        'end0' => 'arrow2',
+                        'size0' => 5                        
+                    )
+                );
             }
         }
         $this->_canvas->endGroup();        

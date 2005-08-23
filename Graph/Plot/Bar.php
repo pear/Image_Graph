@@ -140,7 +140,7 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
         } elseif ($this->_width['unit'] == 'px') {
             $width = $this->_width['width'] / 2;
         }
-        
+       
         if ($this->_multiType == 'stacked100pct') {
             $total = $this->_getTotals();
         }
@@ -154,18 +154,34 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
             $dataset =& $this->_dataset[$key];
             $dataset->_reset();
             while ($point = $dataset->_next()) {
-
-                $x1 = $this->_pointX($point) - $width;
-                $x2 = $this->_pointX($point) + $width;
                 
-                if ($x2 - $this->_space > $x1 + $this->_space) {
-                    /*
-                     * Take bar spacing into account _only_ if the space doesn't
-                     * turn the bar "inside-out", i.e. if the actual bar width
-                     * is smaller than the space between the bars
-                     */
-                    $x2 -= $this->_space;
-                    $x1 += $this->_space;
+                if ($this->_parent->_horizontal) {
+                    $y1 = $this->_pointY($point) - $width;
+                    $y2 = $this->_pointY($point) + $width;
+                    
+                    if ($y2 - $this->_space > $y1 + $this->_space) {
+                        /*
+                         * Take bar spacing into account _only_ if the space doesn't
+                         * turn the bar "inside-out", i.e. if the actual bar width
+                         * is smaller than the space between the bars
+                         */
+                        $y2 -= $this->_space;
+                        $y1 += $this->_space;
+                    }
+                }
+                else {               
+                    $x1 = $this->_pointX($point) - $width;
+                    $x2 = $this->_pointX($point) + $width;
+                    
+                    if ($x2 - $this->_space > $x1 + $this->_space) {
+                        /*
+                         * Take bar spacing into account _only_ if the space doesn't
+                         * turn the bar "inside-out", i.e. if the actual bar width
+                         * is smaller than the space between the bars
+                         */
+                        $x2 -= $this->_space;
+                        $x1 += $this->_space;
+                    }
                 }                   
                     
 
@@ -216,8 +232,13 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
                     }
                 } else {
                     if (count($this->_dataset) > 1) {
-                        $w = 2 * ($width - $this->_space) / count($this->_dataset);
-                        $x2 = ($x1 = ($x1 + $x2) / 2  - ($width - $this->_space) + $number * $w) + $w;
+                        $w = 2 * ($width - $this->_space) / count($this->_dataset);                        
+                        if ($this->_parent->_horizontal) {
+                            $y2 = ($y1 = ($y1 + $y2) / 2  - ($width - $this->_space) + $number * $w) + $w;
+                        }
+                        else {
+                            $x2 = ($x1 = ($x1 + $x2) / 2  - ($width - $this->_space) + $number * $w) + $w;
+                        }
                     }
                     $p0 = array('X' => $point['X'], 'Y' => 0);
                     $p1 = $point;
@@ -236,10 +257,16 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
                         $p1['Y'] = '#max_neg#';
                     }
 
-                    $y1 = $this->_pointY($p0);
-                    $y2 = $this->_pointY($p1);
+                    if ($this->_parent->_horizontal) {
+                        $x1 = $this->_pointX($p0);
+                        $x2 = $this->_pointX($p1);
+                    }
+                    else {                       
+                        $y1 = $this->_pointY($p0);
+                        $y2 = $this->_pointY($p1);
+                    }
 
-                    if ($y1 != $y2) {
+                    if (($y1 != $y2) && ($x1 != $x2)) {
                         $ID = $point['ID'];
                         if (($ID === false) && (count($this->_dataset) > 1)) {
                             $ID = $key;

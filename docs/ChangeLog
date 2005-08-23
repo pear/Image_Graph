@@ -1,6 +1,9 @@
 *************************
  Image_Graph - Changelog
 *************************
+Version 0.6.0-alpha [2005-xxx-xx] - Jesper Veggerby <pear.nosey@veggerby.dk>
+    * Added Request #5031 "Horizontal Bar graphs required" - all plot types (except radar and pie) support horizontal, it is the "Plotarea" that is horizontal
+
 Version 0.5.0-alpha [2005-Aug-08] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Major change: removed Image_Graph_Driver and subclasses and uses Image_Canvas instead, which implies:
         - Image_Graph_Color is obsolete, removing dependency on Image_Color (however Image_Canvas still depends on Image_Color)

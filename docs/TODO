@@ -7,7 +7,6 @@ Image_Graph
 *** Create a simple table element
 *** Create bar-chart-type where bar have individual widths (i.e. in the dataset fx)
 *** Implement HTML Image maps
-*** Create a "composite" axis to support different intervals on the same axis (fx. 0-10, 10000-100000, etc)
 
 Image_Graph_Element
 *** Look at further optimization (line 384) (sample20.php = 416 calls!)
@@ -31,7 +30,6 @@ Image_Graph_Plot_Smoothed_Radar
 *** Create legend sample for smoothed radar chart
 
 Image_Graph_Axis
-*** Implement axis as having an angle instead of hardcoded Y = 90, X = 0 degrees
 *** Create a method to align '0' of primary and secondary y-axis
 *** Values aren't properly cropped when "above" maximum or "below" minimum (i.e. graph should be cropped to plotarea!)
 

@@ -217,17 +217,21 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
                 $labelText = $label;
             }
 
-            if ($this->_type == IMAGE_GRAPH_AXIS_Y) {
-                $maxSize = max($maxSize, $this->_canvas->textWidth($labelText));
-            } else {
+            if ((($this->_type == IMAGE_GRAPH_AXIS_X) && (!$this->_transpose)) ||
+               (($this->_type != IMAGE_GRAPH_AXIS_X) && ($this->_transpose)))
+            {
                 $maxSize = max($maxSize, $this->_canvas->textHeight($labelText));
+            } else {
+                $maxSize = max($maxSize, $this->_canvas->textWidth($labelText));
             }
         }
 
         if ($this->_title) {
             $this->_canvas->setFont($this->_getTitleFont());
 
-            if ($this->_type == IMAGE_GRAPH_AXIS_X) {
+            if ((($this->_type == IMAGE_GRAPH_AXIS_X) && (!$this->_transpose)) ||
+               (($this->_type != IMAGE_GRAPH_AXIS_X) && ($this->_transpose)))
+            {
                 $maxSize += $this->_canvas->textHeight($this->_title);
             } else {
                 $maxSize += $this->_canvas->textWidth($this->_title);

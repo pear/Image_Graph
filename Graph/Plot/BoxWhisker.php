@@ -70,7 +70,7 @@ class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
      * @param int $key The ID tag
      * @access private
      */
-    function _drawBoxWhisker($x, $w, $r, $y_min, $y_q1, $y_med, $y_q3, $y_max, $key = false)
+    function _drawBoxWhiskerV($x, $w, $r, $y_min, $y_q1, $y_med, $y_q3, $y_max, $key = false)
     {
         // draw circles
         $this->_getLineStyle();
@@ -106,6 +106,58 @@ class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
 
         $this->_getLineStyle();
         $this->_canvas->line(array('x0' => $x - $w, 'y0' => $y_med, 'x1' => $x + $w, 'y1' => $y_med));
+    }
+
+    /**
+     * Draws a box & whisker
+     *
+     * @param int $y The x position
+     * @param int $h The width of the box
+     * @param int $r The radius of the circle markers
+     * @param int $x_min The Y position of the minimum value
+     * @param int $x_q1 The Y position of the median of the first quartile
+     * @param int $x_med The Y position of the median
+     * @param int $x_q3 The Y position of the median of the third quartile
+     * @param int $x_max The Y position of the maximum value
+     * @param int $key The ID tag
+     * @access private
+     */
+    function _drawBoxWhiskerH($y, $h, $r, $x_min, $x_q1, $x_med, $x_q3, $x_max, $key = false)
+    {
+        // draw circles
+        $this->_getLineStyle();
+        $this->_getFillStyle('min');
+        $this->_canvas->ellipse(array('x' => $x_min, 'y' => $y, 'rx' => $r, 'ry' => $r));
+
+        $this->_getLineStyle();
+        $this->_getFillStyle('quartile1');
+        $this->_canvas->ellipse(array('x' => $x_q1, 'y' => $y, 'rx' => $r, 'ry' => $r));
+
+        $this->_getLineStyle();
+        $this->_getFillStyle('median');
+        $this->_canvas->ellipse(array('x' => $x_med, 'y' => $y, 'rx' => $r, 'ry' => $r));
+
+        $this->_getLineStyle();
+        $this->_getFillStyle('quartile3');
+        $this->_canvas->ellipse(array('x' => $x_q3, 'y' => $y, $r, 'rx' => $r, 'ry' => $r));
+
+        $this->_getLineStyle();
+        $this->_getFillStyle('max');
+        $this->_canvas->ellipse(array('x' => $x_max, 'y' => $y, $r, 'rx' => $r, 'ry' => $r));
+
+        // draw box and lines
+
+        $this->_getLineStyle();
+        $this->_canvas->line(array('x0' => $x_min, 'y0' => $y, 'x1' => $x_q1, 'y1' => $y));
+        $this->_getLineStyle();
+        $this->_canvas->line(array('x0' => $x_q3, 'y0' => $y, 'x1' => $x_max, 'y1' => $y));
+
+        $this->_getLineStyle();
+        $this->_getFillStyle('box');
+        $this->_canvas->rectangle(array('x0' => $x_q1, 'y0' => $y - $h, 'x1' => $x_q3, 'y1' => $y + $h));
+
+        $this->_getLineStyle();
+        $this->_canvas->line(array('x0' => $x_med, 'y0' => $y - $h, 'x1' => $x_med, 'y1' => $y + $h));
     }
 
     /**
@@ -172,32 +224,62 @@ class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
             $dataset =& $this->_dataset[$key];
             $dataset->_reset();
             while ($data = $dataset->_next()) {
-                $point['X'] = $data['X'];
-                $y = $data['Y'];
-
-                $min = min($y);
-                $max = max($y);
-                $q1 = $dataset->_median($y, 'first');
-                $med = $dataset->_median($y, 'second');
-                $q3 = $dataset->_median($y, 'third');
-
-                $point['Y'] = $min;
-                $x = $this->_pointX($point);
-                $y_min = $this->_pointY($point);
-
-                $point['Y'] = $max;
-                $y_max = $this->_pointY($point);
-
-                $point['Y'] = $q1;
-                $y_q1 = $this->_pointY($point);
-
-                $point['Y'] = $med;
-                $y_med = $this->_pointY($point);
-
-                $point['Y'] = $q3;
-                $y_q3 = $this->_pointY($point);
-
-                $this->_drawBoxWhisker($x, $width, $r, $y_min, $y_q1, $y_med, $y_q3, $y_max, $key);
+                if ($this->_parent->_horizontal) {
+                    $point['X'] = $data['X'];
+                    $y = $data['Y'];
+    
+                    $min = min($y);
+                    $max = max($y);
+                    $q1 = $dataset->_median($y, 'first');
+                    $med = $dataset->_median($y, 'second');
+                    $q3 = $dataset->_median($y, 'third');
+    
+                    $point['Y'] = $min;
+                    $y = $this->_pointY($point);
+                    $x_min = $this->_pointX($point);
+    
+                    $point['Y'] = $max;
+                    $x_max = $this->_pointX($point);
+    
+                    $point['Y'] = $q1;
+                    $x_q1 = $this->_pointX($point);
+    
+                    $point['Y'] = $med;
+                    $x_med = $this->_pointX($point);
+    
+                    $point['Y'] = $q3;
+                    $x_q3 = $this->_pointX($point);
+    
+                    $this->_drawBoxWhiskerH($y, $width, $r, $x_min, $x_q1, $x_med, $x_q3, $x_max, $key);
+                }
+                else {
+                    $point['X'] = $data['X'];
+                    $y = $data['Y'];
+    
+                    $min = min($y);
+                    $max = max($y);
+                    $q1 = $dataset->_median($y, 'first');
+                    $med = $dataset->_median($y, 'second');
+                    $q3 = $dataset->_median($y, 'third');
+    
+                    $point['Y'] = $min;
+                    $x = $this->_pointX($point);
+                    $y_min = $this->_pointY($point);
+    
+                    $point['Y'] = $max;
+                    $y_max = $this->_pointY($point);
+    
+                    $point['Y'] = $q1;
+                    $y_q1 = $this->_pointY($point);
+    
+                    $point['Y'] = $med;
+                    $y_med = $this->_pointY($point);
+    
+                    $point['Y'] = $q3;
+                    $y_q3 = $this->_pointY($point);
+    
+                    $this->_drawBoxWhiskerV($x, $width, $r, $y_min, $y_q1, $y_med, $y_q3, $y_max, $key);
+                }
             }
         }
         unset($keys);

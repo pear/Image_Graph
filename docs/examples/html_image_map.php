@@ -19,7 +19,9 @@
 require_once 'Image/Graph.php';
 require_once 'Image/Canvas.php';
 
-$Canvas =& Image_Canvas::factory('png', array('width' => 400, 'height' => 300, 'usemap' => true));      
+$Canvas =& Image_Canvas::factory('png', array('width' => 400, 'height' => 300, 'usemap' => true));
+
+// This is how you get the ImageMap object, fx. to save map to file (using toHtml())      
 $Imagemap = $Canvas->getImageMap();
 
 // create the graph
@@ -74,7 +76,10 @@ foreach($months as $month) {
         array(
             'url' => 'http://pear.veggerby.dk/' . $month . '/',
             'alt' => $month . ' 2005',
-            'target' => '_blank'
+            'target' => '_blank',
+            'htmltags' => array(
+                'onMouseOver' => 'alert("Hello, World!");'
+            )
         )
     );
 }
@@ -89,14 +94,15 @@ $Plot3 =& $Plotarea->addNew('area', array(&$Dataset3));
 $Plot3->setFillColor('yellow@0.2');
 
 // output the Graph
-print $Graph->done(
+$output = $Graph->done(
     array(
         'tohtml' => true,
+        'border' => 0,
         'filename' => 'imagemap.png',
         'filepath' => './',
         'urlpath' => ''
     )
 );
 
-print '<pre>' . htmlspecialchars($Imagemap->toHtml(array('name' => 'imagemap'))) . '</pre>';
+print $output . '<pre>' . htmlspecialchars($output) . '</pre>';
 ?>

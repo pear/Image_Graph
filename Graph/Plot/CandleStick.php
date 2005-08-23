@@ -55,7 +55,45 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
      *
      * @access private
      */
-    function _drawCandleStick($x, $w, $y_min, $y_open, $y_close, $y_max, $ID) 
+    function _drawCandleStickH($y, $h, $x_min, $x_open, $x_close, $x_max, $ID) 
+    {
+        $this->_getLineStyle($ID);
+        $this->_canvas->line(
+            array(
+                'x0' => min($x_open, $x_close), 
+                'y0' => $y, 
+                'x1' => $x_min, 
+                'y1' => $y
+            )
+        );
+        $this->_getLineStyle($ID);
+        $this->_canvas->line(
+            array(
+                'x0' => max($x_open, $x_close), 
+                'y0' => $y, 
+                'x1' => $x_max, 
+                'y1' => $y
+            )
+        );
+    
+        $this->_getLineStyle($ID);
+        $this->_getFillStyle($ID);
+        $this->_canvas->rectangle(
+            array(
+                'x0' => min($x_open, $x_close), 
+                'y0' => $y - $h, 
+                'x1' => max($x_open, $x_close), 
+                'y1' => $y + $h
+            )
+        );
+    }
+
+    /**
+     * (Add basic description here)
+     *
+     * @access private
+     */
+    function _drawCandleStickV($x, $w, $y_min, $y_open, $y_close, $y_max, $ID) 
     {
         $this->_getLineStyle($ID);
         $this->_canvas->line(
@@ -63,7 +101,7 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
 				'x0' => $x, 
 				'y0' => min($y_open, $y_close), 
 				'x1' => $x, 
-				'y1' => $y_max
+				'y1' => $y_max  
 			)
 		);
         $this->_getLineStyle($ID);
@@ -102,7 +140,7 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
         $x = round(($x0 + $x1) / 2);
         $h = abs($y1 - $y0) / 4;
         $w = round(abs($x1 - $x0) / 5);
-        $this->_drawCandleStick($x, $w, $y1, $y1 - $h, $y0 + $h, $y0, 'green');
+        $this->_drawCandleStickV($x, $w, $y1, $y1 - $h, $y0 + $h, $y0, 'green');
     }
 
     /**
@@ -135,29 +173,56 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
             $dataset =& $this->_dataset[$key];
             $dataset->_reset();
             while ($data = $dataset->_next()) {
-                $point['X'] = $data['X'];
-                $y = $data['Y'];
-
-                $point['Y'] = $data['Y']['open'];
-                $x = $this->_pointX($point);
-                $y_open = $this->_pointY($point);
-
-                $point['Y'] = $data['Y']['close'];
-                $y_close = $this->_pointY($point);
-
-                $point['Y'] = $data['Y']['min'];
-                $y_min = $this->_pointY($point);
-
-                $point['Y'] = $data['Y']['max'];
-                $y_max = $this->_pointY($point);
-
-                if ($data['Y']['close'] < $data['Y']['open']) {
-                    $ID = 'red';
-                } else {
-                    $ID = 'green';
+                if ($this->_parent->_horizontal) {
+                    $point['X'] = $data['X'];
+                    //$y = $data['Y'];
+    
+                    $point['Y'] = $data['Y']['open'];
+                    $y = $this->_pointY($point);
+                    $x_open = $this->_pointX($point);
+    
+                    $point['Y'] = $data['Y']['close'];
+                    $x_close = $this->_pointX($point);
+    
+                    $point['Y'] = $data['Y']['min'];
+                    $x_min = $this->_pointX($point);
+    
+                    $point['Y'] = $data['Y']['max'];
+                    $x_max = $this->_pointX($point);
+    
+                    if ($data['Y']['close'] < $data['Y']['open']) {
+                        $ID = 'red';
+                    } else {
+                        $ID = 'green';
+                    }
+    
+                    $this->_drawCandleStickH($y, $width, $x_min, $x_open, $x_close, $x_max, $ID);
                 }
-
-                $this->_drawCandleStick($x, $width, $y_min, $y_open, $y_close, $y_max, $ID);
+                else {
+                    $point['X'] = $data['X'];
+                    //$y = $data['Y'];
+    
+                    $point['Y'] = $data['Y']['open'];
+                    $x = $this->_pointX($point);
+                    $y_open = $this->_pointY($point);
+    
+                    $point['Y'] = $data['Y']['close'];
+                    $y_close = $this->_pointY($point);
+    
+                    $point['Y'] = $data['Y']['min'];
+                    $y_min = $this->_pointY($point);
+    
+                    $point['Y'] = $data['Y']['max'];
+                    $y_max = $this->_pointY($point);
+    
+                    if ($data['Y']['close'] < $data['Y']['open']) {
+                        $ID = 'red';
+                    } else {
+                        $ID = 'green';
+                    }
+    
+                    $this->_drawCandleStickV($x, $width, $y_min, $y_open, $y_close, $y_max, $ID);
+                }
             }
         }
         unset($keys);

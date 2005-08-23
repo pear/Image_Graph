@@ -109,18 +109,59 @@ class Image_Graph_Plot_Band extends Image_Graph_Plot
             $upperBand = array();
             $lowerBand = array();
             while ($data = $dataset->_next()) {
-                $point['X'] = $data['X'];
-                $y = $data['Y'];
-
-                $point['Y'] = $data['Y']['high'];
-                $x = $this->_pointX($point);
-                $y_high = $this->_pointY($point);
-
-                $point['Y'] = $data['Y']['low'];
-                $y_low = $this->_pointY($point);
-
-                $upperBand[] = array('X' => $x, 'Y' => $y_high, 'data' => $point['data']);
-                $lowerBand[] = array('X' => $x, 'Y' => $y_low, 'data' => $point['data']);
+                if ($this->_parent->_horizontal) {
+                    $point['X'] = $data['X'];
+    
+                    $point['Y'] = $data['Y']['high'];
+                    $y = $this->_pointY($point);
+                    $x_high = $this->_pointX($point);
+    
+                    $point['Y'] = $data['Y']['low'];
+                    $x_low = $this->_pointX($point);
+       
+                    $data = array('X' => $x_high, 'Y' => $y);
+                    if (isset($point['data'])) {
+                        $data['data'] = $point['data'];
+                    } else {
+                        $data['data'] = array();
+                    }             
+                    $upperBand[] = $data;
+                    
+                    $data = array('X' => $x_low, 'Y' => $y);
+                    if (isset($point['data'])) {
+                        $data['data'] = $point['data'];
+                    } else {
+                        $data['data'] = array();
+                    }              
+                    $lowerBand[] = $data;
+                }
+                else {
+                    $point['X'] = $data['X'];
+                    $y = $data['Y'];
+    
+                    $point['Y'] = $data['Y']['high'];
+                    $x = $this->_pointX($point);
+                    $y_high = $this->_pointY($point);
+    
+                    $point['Y'] = $data['Y']['low'];
+                    $y_low = $this->_pointY($point);
+       
+                    $data = array('X' => $x, 'Y' => $y_high);
+                    if (isset($point['data'])) {
+                        $data['data'] = $point['data'];
+                    } else {
+                        $data['data'] = array();
+                    }             
+                    $upperBand[] = $data;
+                    
+                    $data = array('X' => $x, 'Y' => $y_low);
+                    if (isset($point['data'])) {
+                        $data['data'] = $point['data'];
+                    } else {
+                        $data['data'] = array();
+                    }              
+                    $lowerBand[] = $data;
+                }
             }
             $lowerBand = array_reverse($lowerBand);
             foreach ($lowerBand as $point) {
