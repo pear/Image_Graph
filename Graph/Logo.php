@@ -76,7 +76,7 @@ class Image_Graph_Logo extends Image_Graph_Element
      *
      * @param string $filename The filename and path of the image to use for logo
      */
-    function &Image_Graph_Logo($filename, $alignment = IMAGE_GRAPH_ALIGN_TOP_RIGHT)
+    function Image_Graph_Logo($filename, $alignment = IMAGE_GRAPH_ALIGN_TOP_RIGHT)
     {
         parent::Image_Graph_Element();
         $this->_filename = $filename;

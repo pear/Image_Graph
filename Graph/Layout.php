@@ -68,7 +68,7 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
     /**
      * Image_Graph_Layout [Constructor]
      */
-    function &Image_Graph_Layout()
+    function Image_Graph_Layout()
     {
         parent::Image_Graph_Element();
         $this->_padding = 2;

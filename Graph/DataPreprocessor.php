@@ -53,7 +53,7 @@ class Image_Graph_DataPreprocessor
     /**
      * Image_Graph_DataPreprocessor [Constructor].
      */
-    function &Image_Graph_DataPreprocessor()
+    function Image_Graph_DataPreprocessor()
     {
     }
 

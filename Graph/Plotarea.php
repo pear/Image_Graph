@@ -129,7 +129,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
      * @param string $axisY The class of the Y axis (if omitted a std. axis is created)
      * @param string $direction The direction of the plotarea - 'horizontal' or 'vertical' (default)
      */
-    function &Image_Graph_Plotarea($axisX = 'Image_Graph_Axis_Category', $axisY = 'Image_Graph_Axis', $direction = 'vertical')
+    function Image_Graph_Plotarea($axisX = 'Image_Graph_Axis_Category', $axisY = 'Image_Graph_Axis', $direction = 'vertical')
     {
         parent::Image_Graph_Layout();
 

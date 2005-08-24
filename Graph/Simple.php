@@ -52,7 +52,7 @@ class Image_Graph_Simple extends Image_Graph
      * @param int $width The width of the graph in pixels
      * @param int $height The height of the graph in pixels
      */
-    function &Image_Graph_Simple($width, $height, $plotType, $data, $title, $lineColor = 'black', $fillColor = 'white', $font = false)
+    function Image_Graph_Simple($width, $height, $plotType, $data, $title, $lineColor = 'black', $fillColor = 'white', $font = false)
     {
         parent::Image_Graph($width, $height);
 
@@ -102,7 +102,7 @@ class Image_Graph_Simple extends Image_Graph
      */
     function &factory($width, $height, $plotType, $data, $title, $lineColor = 'black', $fillColor = 'white', $font = false)
     {
-        return Image_Graph::factory('Image_Graph_Simple',
+        $obj =& Image_Graph::factory('Image_Graph_Simple',
             array(
                 $width,
                 $height,
@@ -114,6 +114,7 @@ class Image_Graph_Simple extends Image_Graph
                 $font
             )
         );
+        return $obj;
     }
 
 }

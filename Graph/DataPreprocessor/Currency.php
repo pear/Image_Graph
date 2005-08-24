@@ -56,7 +56,7 @@ class Image_Graph_DataPreprocessor_Currency extends Image_Graph_DataPreprocessor
      *
      * @param string $currencySymbol The symbol representing the currency
      */
-    function &Image_Graph_DataPreprocessor_Currency($currencySymbol)
+    function Image_Graph_DataPreprocessor_Currency($currencySymbol)
     {
         parent::Image_Graph_DataPreprocessor_Formatted("$currencySymbol %0.2f");
     }

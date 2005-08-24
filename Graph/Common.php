@@ -101,7 +101,7 @@ class Image_Graph_Common
     /**
      * Constructor [Image_Graph_Common]
      */
-    function &Image_Graph_Common()
+    function Image_Graph_Common()
     {
     }
 
@@ -158,6 +158,8 @@ class Image_Graph_Common
             return $this->_canvas;
         } else {
             $this->_error('Invalid canvas');
+            $result = null;
+            return $result;
         }
     }
 
@@ -198,22 +200,11 @@ class Image_Graph_Common
         include_once 'Image/Graph.php';
         $element =& Image_Graph::factory($class, $params);
         if ($additional === false) {
-            return $this->add($element);
+            $obj =& $this->add($element);
         } else {
-            return $this->add($element, $additional);
+            $obj =& $this->add($element, $additional);
         }
-    }
-
-    /**
-     * Get the error handling stack
-     *
-     * @return PEAR_ErrorStack The package specific error handling stack
-     * @access private
-     */
-    function &_getErrorStack()
-    {
-        $stack =& PEAR_ErrorStack::singleton('Image_Graph');
-        return $stack;
+        return $obj;
     }
 
     /**
@@ -226,14 +217,7 @@ class Image_Graph_Common
      */
     function _error($text, $params = false, $error_code = IMAGE_GRAPH_ERROR_GENERIC)
     {
-        $stack =& $this->_getErrorStack();
-        if (!is_array($params)) {
-            $params = array('canvas' => &$this->_canvas, 'object' => &$this);
-        } else {
-            $params['canvas'] =& $this->_canvas;
-            $params['object'] =& $this;
-        }
-        $stack->push($error_code, 'error', $params, $text);
+        // TODO Refactor error handling        
     }
 
     /**

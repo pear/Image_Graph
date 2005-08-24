@@ -88,6 +88,7 @@ class Image_Graph_Fill_Array extends Image_Graph_Fill
             $this->_fillStyles[$id] =& $style;
         }
         reset($this->_fillStyles);
+        return $style;
     }
 
     /**

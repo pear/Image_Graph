@@ -56,7 +56,7 @@ class Image_Graph_Figure_Rectangle extends Image_Graph_Element
      * @param int $width The width in pixels of the box on the canvas
      * @param int $height The height in pixels of the box on the canvas
      */
-    function &Image_Graph_Figure_Rectangle($x, $y, $width, $height)
+    function Image_Graph_Figure_Rectangle($x, $y, $width, $height)
     {
         parent::Image_Graph_Element();
         $this->_setCoords($x, $y, $x + $width, $y + $height);

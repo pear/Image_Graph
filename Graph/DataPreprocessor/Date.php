@@ -63,7 +63,7 @@ class Image_Graph_DataPreprocessor_Date extends Image_Graph_DataPreprocessor
      * @param string $format See  {@link http://www.php.net/manual/en/function.date.php
      *   PHP Manual} for a description
      */
-    function &Image_Graph_DataPreprocessor_Date($format)
+    function Image_Graph_DataPreprocessor_Date($format)
     {
         parent::Image_Graph_DataPreprocessor();
         $this->_format = $format;

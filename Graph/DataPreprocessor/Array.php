@@ -76,7 +76,7 @@ class Image_Graph_DataPreprocessor_Array extends Image_Graph_DataPreprocessor
      *
      * @param array $array The array to use as a lookup table
      */
-    function &Image_Graph_DataPreprocessor_Array($array)
+    function Image_Graph_DataPreprocessor_Array($array)
     {
         parent::Image_Graph_DataPreprocessor();
         $this->_dataArray = $array;

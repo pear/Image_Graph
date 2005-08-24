@@ -51,7 +51,7 @@ class Image_Graph_Marker_ReversePinpoint extends Image_Graph_Marker_Icon
     /**
      * Create the marker as a reverse pin point
      */
-    function &Image_Graph_Marker_ReversePinpoint()
+    function Image_Graph_Marker_ReversePinpoint()
     {
         parent::Image_Graph_Marker_Icon(
             dirname(__FILE__).'/../Images/Icons/pinpointr.png'

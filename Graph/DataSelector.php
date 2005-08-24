@@ -46,7 +46,7 @@ class Image_Graph_DataSelector
     /**
      * Image_Graph_DataSelector [Constructor]
      */
-    function &Image_Graph_DataSelector()
+    function Image_Graph_DataSelector()
     {
     }
 

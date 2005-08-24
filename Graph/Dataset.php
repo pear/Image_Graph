@@ -97,7 +97,7 @@ class Image_Graph_Dataset
     /**
      * Image_Graph_Dataset [Constructor]
      */
-    function &Image_Graph_Dataset()
+    function Image_Graph_Dataset()
     {
     }
 

@@ -63,7 +63,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      *
      * @param int $type The type (direction) of the Axis
      */
-    function &Image_Graph_Axis_Category($type = IMAGE_GRAPH_AXIS_X)
+    function Image_Graph_Axis_Category($type = IMAGE_GRAPH_AXIS_X)
     {
         parent::Image_Graph_Axis($type);
         $this->_labels = array();
@@ -128,7 +128,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      *
      * @param double $minimum The minumum value to use on the axis
      */
-    function forceMinimum($minimum)
+    function forceMinimum($minimum, $userEnforce = true)
     {
     }
 
@@ -140,7 +140,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      *
      * @param double $maximum The maximum value to use on the axis
      */
-    function forceMaximum($maximum)
+    function forceMaximum($maximum, $userEnforce = true)
     {
     }
 
@@ -151,7 +151,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      *
      * @param double $labelInterval The interval with which labels are shown
      */
-    function setLabelInterval($labelInterval = 'auto')
+    function setLabelInterval($labelInterval = 'auto', $level = 1)
     {
         if ($labelInterval == 'auto') {
             parent::setLabelInterval(1);
@@ -334,7 +334,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      * @return int The distance between 2 adjacent labels
      * @access private
      */
-    function _labelDistance()
+    function _labelDistance($level = 1)
     {
         reset($this->_labels);
         list($l1) = each($this->_labels);
@@ -350,7 +350,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      * @return double The next label point
      * @access private
      */
-    function _getNextLabel($currentLabel = false)
+    function _getNextLabel($currentLabel = false, $level = 1)
     {
         if ($currentLabel === false) {
             reset($this->_labels);

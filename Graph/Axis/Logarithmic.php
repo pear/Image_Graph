@@ -59,7 +59,7 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
      *   for an X-axis (default, may be omitted) and IMAGE_GRAPH_AXIS_Y for Y-
      *   axis)
      */
-    function &Image_Graph_Axis_Logarithmic($type = IMAGE_GRAPH_AXIS_X)
+    function Image_Graph_Axis_Logarithmic($type = IMAGE_GRAPH_AXIS_X)
     {
         parent::Image_Graph_Axis($type);
         $this->showLabel(IMAGE_GRAPH_LABEL_MINIMUM + IMAGE_GRAPH_LABEL_MAXIMUM);

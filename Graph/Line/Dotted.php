@@ -57,7 +57,7 @@ class Image_Graph_Line_Dotted extends Image_Graph_Line_Formatted
      * @param mixed $color1 The color representing the dots
      * @param mixed $color2 The color representing the spaces
      */
-    function &Image_Graph_Line_Dotted($color1, $color2)
+    function Image_Graph_Line_Dotted($color1, $color2)
     {
         parent::Image_Graph_Line_Formatted(array ($color1, $color2));
     }

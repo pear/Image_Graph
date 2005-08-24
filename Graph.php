@@ -28,11 +28,6 @@
  */
 
 /**
- * Include file PEAR/ErrorStack.php - for error handling
- */
-require_once 'PEAR/ErrorStack.php';
-
-/**
  * Include file Image/Graph/Element.php
  */
 require_once 'Image/Graph/Element.php';
@@ -130,7 +125,7 @@ class Image_Graph extends Image_Graph_Element
      *   created with a transparent background (fx for PNG's - note: transparent
      *   PNG's is not supported by Internet Explorer!)
      */
-    function &Image_Graph($params, $height = false, $createTransparent = false)
+    function Image_Graph($params, $height = false, $createTransparent = false)
     {
         parent::Image_Graph_Element();
 
@@ -287,12 +282,6 @@ class Image_Graph extends Image_Graph_Element
      */
     function setLog($log)
     {
-        $stack =& $this->_getErrorStack();
-        if (is_string($log)) {
-            include_once 'Log.php';
-            $log =& Log::factory('file', $log, 'Image_Graph Error Log');
-        }
-        $stack->setLogger($log);
     }
 
     /**
@@ -442,23 +431,25 @@ class Image_Graph extends Image_Graph_Element
 
         include_once str_replace('_', '/', $class) . '.php';
 
+        $obj = null;
+
         if (is_array($params)) {
             switch (count($params)) {
             case 1:
-                return new $class(
+                $obj =& new $class(
                     $params[0]
                 );
                 break;
 
             case 2:
-                return new $class(
+                $obj =& new $class(
                     $params[0],
                     $params[1]
                 );
                 break;
 
             case 3:
-                return new $class(
+                $obj =& new $class(
                     $params[0],
                     $params[1],
                     $params[2]
@@ -466,7 +457,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 4:
-                return new $class(
+                $obj =& new $class(
                     $params[0],
                     $params[1],
                     $params[2],
@@ -475,7 +466,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 5:
-                return new $class(
+                $obj =& new $class(
                     $params[0],
                     $params[1],
                     $params[2],
@@ -485,7 +476,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 6:
-                return new $class(
+                $obj =& new $class(
                     $params[0],
                     $params[1],
                     $params[2],
@@ -496,7 +487,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 7:
-                return new $class(
+                $obj =& new $class(
                     $params[0],
                     $params[1],
                     $params[2],
@@ -508,7 +499,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 8:
-                return new $class(
+                $obj =& new $class(
                     $params[0],
                     $params[1],
                     $params[2],
@@ -521,7 +512,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 9:
-                return new $class(
+                $obj =& new $class(
                     $params[0],
                     $params[1],
                     $params[2],
@@ -535,7 +526,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 10:
-                return new $class(
+                $obj =& new $class(
                     $params[0],
                     $params[1],
                     $params[2],
@@ -550,17 +541,18 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             default:
-                return new $class();
+                $obj =& new $class();
                 break;
 
             }
         } else {
             if ($params == null) {
-                return new $class();
+                $obj =& new $class();
             } else {
-                return new $class($params);
+                $obj =& new $class($params);
             }
     	}
+        return $obj;
     }
 
     /**
@@ -587,7 +579,8 @@ class Image_Graph extends Image_Graph_Element
     {
         include_once "Image/Graph/Layout/$layout.php";
         $class = "Image_Graph_Layout_$layout";
-        return new $class($part1, $part2, $percentage);
+        $obj =& new $class($part1, $part2, $percentage);
+        return $obj;
     }
 
     /**
@@ -604,7 +597,8 @@ class Image_Graph extends Image_Graph_Element
      */
     function &horizontal(&$part1, &$part2, $percentage = 50)
     {
-        return Image_Graph::layoutFactory('Horizontal', $part1, $part2, $percentage);
+        $obj =& Image_Graph::layoutFactory('Horizontal', $part1, $part2, $percentage);
+        return $obj;
     }
 
     /**
@@ -621,7 +615,8 @@ class Image_Graph extends Image_Graph_Element
      */
     function &vertical(&$part1, &$part2, $percentage = 50)
     {
-        return Image_Graph::layoutFactory('Vertical', $part1, $part2, $percentage);
+        $obj =& Image_Graph::layoutFactory('Vertical', $part1, $part2, $percentage);
+        return $obj;
     }
 
     /**
@@ -690,18 +685,7 @@ class Image_Graph extends Image_Graph_Element
      * @access private
      */
     function _displayErrors()
-    {
-        $stack =& $this->_getErrorStack();
-        if ($stack->hasErrors()) {
-            $errors = $stack->getErrors();
-            if (is_array($errors)) {
-                $y = 0;
-                foreach ($errors as $error) {
-                    $this->_displayError(0, $y, $error);
-                    $y += 20;
-                }
-            }
-        }
+    {        
     }
 
     /**
@@ -720,11 +704,6 @@ class Image_Graph extends Image_Graph_Element
      */
     function _displayError($x, $y, $error)
     {
-        $canvas =& $error['params']['canvas'];
-        if (is_a($canvas, 'Image_Canvas')) {
-            $canvas->setFont(array('font' => 1, 'color' => 'black'));
-            $canvas->write($x, $y, $error['message']);
-        }
     }
 
     /**

@@ -68,7 +68,7 @@ class Image_Graph_DataPreprocessor_Function extends Image_Graph_DataPreprocessor
      *   a preprocessor, this function must take a single parameter and return a
      *   formatted version of this parameter
      */
-    function &Image_Graph_DataPreprocessor_Function($function)
+    function Image_Graph_DataPreprocessor_Function($function)
     {
         parent::Image_Graph_DataPreprocessor();
         $this->_dataFunction = $function;

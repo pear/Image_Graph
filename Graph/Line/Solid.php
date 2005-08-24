@@ -69,7 +69,7 @@ class Image_Graph_Line_Solid extends Image_Graph_Common
      *
      * @param mixed $color The color of the line
      */
-    function &Image_Graph_Line_Solid($color)
+    function Image_Graph_Line_Solid($color)
     {
         parent::Image_Graph_Common();
         $this->_color = $color;

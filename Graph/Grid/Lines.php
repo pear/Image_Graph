@@ -53,7 +53,7 @@ class Image_Graph_Grid_Lines extends Image_Graph_Grid
     /**
      * GridLines [Constructor]
      */
-    function &Image_Graph_Grid_Lines()
+    function Image_Graph_Grid_Lines()
     {
         parent::Image_Graph_Grid();
         $this->_lineStyle = 'lightgrey';

@@ -74,7 +74,7 @@ class Image_Graph_Fill_Image extends Image_Graph_Fill
      *
      * @param string $filename The filename and path of the image to use for filling
      */
-    function &Image_Graph_Fill_Image($filename)
+    function Image_Graph_Fill_Image($filename)
     {
         parent::Image_Graph_Fill();
         $this->_filename = $filename;

@@ -55,7 +55,7 @@ class Image_Graph_Grid_Polar extends Image_Graph_Grid
     /**
      * GridLines [Constructor]
      */
-    function &Image_Graph_Grid_Polar()
+    function Image_Graph_Grid_Polar()
     {
         parent::Image_Graph_Grid();
         $this->_lineStyle = 'lightgrey';

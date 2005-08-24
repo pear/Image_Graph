@@ -88,7 +88,7 @@ class Image_Graph_Layout_Horizontal extends Image_Graph_Layout
      * @param Image_Graph_Element $part2 The 2nd part of the layout
      * @param int $percentage The percentage of the layout to split at
      */
-    function &Image_Graph_Layout_Horizontal(& $part1, & $part2, $percentage = 50)
+    function Image_Graph_Layout_Horizontal(& $part1, & $part2, $percentage = 50)
     {
         parent::Image_Graph_Layout();
         if (!is_a($part1, 'Image_Graph_Layout')) {
