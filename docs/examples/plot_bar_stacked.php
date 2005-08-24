@@ -6,7 +6,8 @@
  * Show stacked bar chart
  * 
  * Other: 
- * None specific
+ * Data selector
+ * Fill style array (no ID) working in sync with legend
  * 
  * $Id$
  * 
@@ -40,9 +41,9 @@ $Graph->add(
 $Legend->setPlotarea($Plotarea);        
     
 // create the dataset
-$Datasets[] =& Image_Graph::factory('random', array(10, 2, 15, false));
-$Datasets[] =& Image_Graph::factory('random', array(10, 2, 15, false));
-$Datasets[] =& Image_Graph::factory('random', array(10, 2, 15, false));
+$Datasets[] =& Image_Graph::factory('random', array(10, 0, 4, false));
+$Datasets[] =& Image_Graph::factory('random', array(10, 0, 4, false));
+$Datasets[] =& Image_Graph::factory('random', array(10, 0, 4, false));
 
 
 // create the 1st plot as smoothed area chart using the 1st dataset
@@ -64,6 +65,8 @@ $Plot->setFillStyle($FillArray);
 $Marker =& $Plot->addNew('Image_Graph_Marker_Value', IMAGE_GRAPH_VALUE_Y);
 // and use the marker on the 1st plot
 $Plot->setMarker($Marker);	
+
+$Plot->setDataSelector(Image_Graph::factory('Image_Graph_DataSelector_NoZeros'));
 
 // output the Graph
 $Graph->done();

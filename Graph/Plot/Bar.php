@@ -266,13 +266,14 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
                         $y2 = $this->_pointY($p1);
                     }
 
+                    $ID = $point['ID'];
+                    if (($ID === false) && (count($this->_dataset) > 1)) {
+                        $ID = $key;
+                    }
+                    $this->_getFillStyle($ID);
+                    $this->_getLineStyle($ID);
+
                     if (($y1 != $y2) && ($x1 != $x2)) {
-                        $ID = $point['ID'];
-                        if (($ID === false) && (count($this->_dataset) > 1)) {
-                            $ID = $key;
-                        }
-                        $this->_getFillStyle($ID);
-                        $this->_getLineStyle($ID);
                         $this->_canvas->rectangle(
                             $this->_mergeData(
                                 $point,
