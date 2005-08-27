@@ -9,9 +9,9 @@ Many different plot types are supported: Bar, line, area, step, impulse, scatter
 
 The graph is highly customizable, making it possible to get the exact look and feel that is required.
 
-The output is controlled by a driver mechanism, which facilitates easy output to many different output formats, amongst others, GD (PNG, JPEG, GIF, WBMP), PDF (using PDFLib), ShockWave Flash (using Ming) and Scalable Vector Graphics (SVG).
+The output is controlled by a Image_Canvas, which facilitates easy output to many different output formats, amongst others, GD (PNG, JPEG, GIF, WBMP), PDF (using PDFLib), Scalable Vector Graphics (SVG).
 
-Image_Graph is compatible with both PHP4 and PHP5 and can be used with both GD1 and GD2 (GD2 is recommended)</description>
+Image_Graph is compatible with both PHP4 and PHP5.</description>
   <maintainers>
     <maintainer>
       <user>nosey</user>
@@ -33,37 +33,17 @@ Image_Graph is compatible with both PHP4 and PHP5 and can be used with both GD1 
     </maintainer>
   </maintainers>
   <release>
-    <version>0.5.0</version>
-    <date>2005-08-08</date>
+    <version>0.6.0</version>
+    <date>2005-08-27</date>
     <license>LGPL</license>
     <state>alpha</state>
-    <notes>* Major change: removed Image_Graph_Driver and subclasses and uses Image_Canvas instead, which implies:
-    - Image_Graph_Color is obsolete, removing dependency on Image_Color (however Image_Canvas still depends on Image_Color)
-    - Fonts are simplified (all identified by name) and implemented using Image_Graph_Font class, removing Image_Graph_Font subclasses (only subclasses!), removing Fonts/ folder
-    - Added dependency on Image_Canvas
-    - Image/Graph/Config.php becoming obsolete since only IMAGE_GRAPH_SYSTEM_FONT_PATH was defined here. File kept for future purposes but not used.
-    - TTF Fonts (which were most often used) keep BC in 99% of the cases by replacing the 'ttf_font' factory alias mapping to 'Image_Graph_Font' and adding a mapping for 'Image_Graph_Font_TTF' to 'Image_Graph_Font'. Only case not working is when user manually includes Image/Graph/Font/TTF.php and creates and instance using 'new', which should only very, very rarely be the case
-    - BC break: If drivers were explicitly created before, they now have to be changed to Image_Canvas objects
-* Added support for HTML image maps on line-, bar-, area-, smoothed line-, impulse-, band- and pie charts (more to come)
-* Added 'tohtml' option for output directly in HTML using canvas and imagemap (if any)
-* Added label option 'format' and 'dateformat' to Image_Graph_Axis to be able to format a label directly using sprintf() / date()
-* Changed plus and cross markers to be outlined (by defalut) - visual improvement
-* Added a star marker (Image_Graph_Marker_Star)
-* Added legends to scatter/dot plots - the marker now shows in legends
-* Performance optimization in Image_Graph_Axis_Category (with regards to heavy usage of array_search())
-* Improved appearance of axis arrows
-* Fixed Bug #4240 &quot;Pie graph - color difference between graph and legend&quot;
-* Fixed Bug #4430 &quot;Call-time pass-by-reference has been deprecated&quot;
-* Fixed Bug #4876 &quot;mis-type in code -&gt; undefined property&quot;
-* Bugs fixed/Features added in Image_Canvas
-    * Added Request #4451 &quot;Unable to define IMAGE_GRAPH_SYSTEM_FONT_PATH outside of Config.php&quot;
-    * Fixed Bug #4484 &quot;SVG output problem with fill and alignment attributes of text&quot;
-    * Fixed Bug #4586 &quot;Content type image/jpg does not recognized by IE&quot;</notes>
+    <notes>* Added possibility to set starting angle of pie chart (at which angle does the first pieslice start) and the direction of the pies (clockwise or counter-clockwise)
+    * Added Request #5031 &quot;Horizontal Bar graphs required&quot; - all plot types (except radar and pie) support horizontal, it is the &quot;Plotarea&quot; that is horizontal
+    * Fixed Bug #5035 &quot;Legend and graph color mismatch when using zeros in stacked bar&quot;
+    * Fixed Bug #5066 &quot;Reference Notices&quot;</notes>
     <deps>
-      <dep type="ext" rel="has" optional="no">gd</dep>
       <dep type="pkg" rel="ge" version="1.3.1" optional="no">PEAR</dep>
       <dep type="pkg" rel="ge" version="0.2.1" optional="no">Image_Canvas</dep>
-      <dep type="pkg" rel="has" optional="yes">Log</dep>
       <dep type="pkg" rel="has" optional="yes">Numbers_Roman</dep>
       <dep type="pkg" rel="has" optional="yes">Numbers_Words</dep>
     </deps>
@@ -255,6 +235,7 @@ Image_Graph is compatible with both PHP4 and PHP5 and can be used with both GD1 
     <provides type="class" name="Image_Graph_Plot_Line" extends="Image_Graph_Plot" />
     <provides type="class" name="Image_Graph_Plot_Pie" extends="Image_Graph_Plot" />
     <provides type="function" name="Image_Graph_Plot_Pie::explode" />
+    <provides type="function" name="Image_Graph_Plot_Pie::setStartingAngle" />
     <provides type="class" name="Image_Graph_Plot_Radar" extends="Image_Graph_Plot" />
     <provides type="class" name="Image_Graph_Plot_Step" extends="Image_Graph_Plot" />
     <provides type="class" name="Image_Graph_Plot_Smoothed_Area" extends="Image_Graph_Plot_Smoothed_Bezier" />
@@ -330,6 +311,9 @@ Image_Graph is compatible with both PHP4 and PHP5 and can be used with both GD1 
       <file role="doc" baseinstalldir="Image" name="docs/examples/html_image_map.php">
         <replace type="package-info" from="@package_version@" to="version"/>
       </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/imagemap.png">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
       <file role="doc" baseinstalldir="Image" name="docs/examples/image_fill.php">
         <replace type="package-info" from="@package_version@" to="version"/>
       </file>
@@ -376,6 +360,9 @@ Image_Graph is compatible with both PHP4 and PHP5 and can be used with both GD1 
         <replace type="package-info" from="@package_version@" to="version"/>
       </file>
       <file role="doc" baseinstalldir="Image" name="docs/examples/plot_all.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="Image" name="docs/examples/plot_all_horizontal.php">
         <replace type="package-info" from="@package_version@" to="version"/>
       </file>
       <file role="doc" baseinstalldir="Image" name="docs/examples/plot_area.php">
@@ -795,36 +782,6 @@ Image_Graph is compatible with both PHP4 and PHP5 and can be used with both GD1 
       <file role="test" baseinstalldir="Image" name="tests/axis/logarithmic.php">
         <replace type="package-info" from="@package_version@" to="version"/>
       </file>
-      <file role="test" baseinstalldir="Image" name="tests/driver/driver_body.php">
-        <replace type="package-info" from="@package_version@" to="version"/>
-      </file>
-      <file role="test" baseinstalldir="Image" name="tests/driver/gif.php">
-        <replace type="package-info" from="@package_version@" to="version"/>
-      </file>
-      <file role="test" baseinstalldir="Image" name="tests/driver/gradients.php">
-        <replace type="package-info" from="@package_version@" to="version"/>
-      </file>
-      <file role="test" baseinstalldir="Image" name="tests/driver/jpg.php">
-        <replace type="package-info" from="@package_version@" to="version"/>
-      </file>
-      <file role="test" baseinstalldir="Image" name="tests/driver/pdf.php">
-        <replace type="package-info" from="@package_version@" to="version"/>
-      </file>
-      <file role="test" baseinstalldir="Image" name="tests/driver/pear-icon.png">
-        <replace type="package-info" from="@package_version@" to="version"/>
-      </file>
-      <file role="test" baseinstalldir="Image" name="tests/driver/png.php">
-        <replace type="package-info" from="@package_version@" to="version"/>
-      </file>
-      <file role="test" baseinstalldir="Image" name="tests/driver/svg.php">
-        <replace type="package-info" from="@package_version@" to="version"/>
-      </file>
-      <file role="test" baseinstalldir="Image" name="tests/driver/text.php">
-        <replace type="package-info" from="@package_version@" to="version"/>
-      </file>
-      <file role="test" baseinstalldir="Image" name="tests/driver/wbmp.php">
-        <replace type="package-info" from="@package_version@" to="version"/>
-      </file>
       <file role="test" baseinstalldir="Image" name="tests/plot/area.php">
         <replace type="package-info" from="@package_version@" to="version"/>
       </file>
@@ -838,6 +795,21 @@ Image_Graph is compatible with both PHP4 and PHP5 and can be used with both GD1 
         <replace type="package-info" from="@package_version@" to="version"/>
       </file>
       <file role="test" baseinstalldir="Image" name="tests/plot/step.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="Image" name="tests/plot/horizontal/area.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="Image" name="tests/plot/horizontal/bar.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="Image" name="tests/plot/horizontal/impulse.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="Image" name="tests/plot/horizontal/line.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="Image" name="tests/plot/horizontal/step.php">
         <replace type="package-info" from="@package_version@" to="version"/>
       </file>
       <file role="php" baseinstalldir="Image" name="Graph.php">
@@ -1016,6 +988,16 @@ Image_Graph is compatible with both PHP4 and PHP5 and can be used with both GD1 
     * Added Request #4451 &quot;Unable to define IMAGE_GRAPH_SYSTEM_FONT_PATH outside of Config.php&quot;
     * Fixed Bug #4484 &quot;SVG output problem with fill and alignment attributes of text&quot;
     * Fixed Bug #4586 &quot;Content type image/jpg does not recognized by IE&quot;</notes>
+    </release>
+    <release>
+      <version>0.6.0</version>
+      <date>2005-08-27</date>
+      <license>LGPL</license>
+      <state>alpha</state>
+      <notes>* Added possibility to set starting angle of pie chart (at which angle does the first pieslice start) and the direction of the pies (clockwise or counter-clockwise)
+    * Added Request #5031 &quot;Horizontal Bar graphs required&quot; - all plot types (except radar and pie) support horizontal, it is the &quot;Plotarea&quot; that is horizontal
+    * Fixed Bug #5035 &quot;Legend and graph color mismatch when using zeros in stacked bar&quot;
+    * Fixed Bug #5066 &quot;Reference Notices&quot;</notes>
     </release>
   </changelog>
 </package>
