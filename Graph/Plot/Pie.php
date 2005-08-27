@@ -63,6 +63,20 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
     var $_explode = false;
 
     /**
+     * The starting angle of the plot
+     * @access private
+     * @var int
+     */
+    var $_startingAngle = 0;
+
+    /**
+     * The angle direction (1 = CCW, -1 = CW)
+     * @access private
+     * @var int
+     */
+    var $_angleDirection = 1;
+
+    /**
      * Perform the actual drawing on the legend.
      *
      * @param int $x0 The top-left x-coordinate
@@ -211,6 +225,23 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
             $this->_explode[$x] = $explode;
         }
     }
+    
+    /**
+     * Set the starting angle of the plot
+     * 
+     * East is 0 degrees
+     * South is 90 degrees
+     * West is 180 degrees
+     * North is 270 degrees
+     * 
+     * It is also possible to specify the direction of the plot angles (i.e. clockwise 'cw' or 
+     * counterclockwise 'ccw')
+     */
+    function setStartingAngle($angle = 0, $direction = 'ccw') 
+    {
+        $this->_startingAngle = ($angle % 360);
+        $this->_angleDirection = ($direction == 'ccw' ? 1 : -1);
+    }
 
     /**
      * Output the plot
@@ -239,7 +270,11 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
             $centerX = (int) (($this->_left + $this->_right) / 2);
             $centerY = (int) (($this->_top + $this->_bottom) / 2);
             $diameter = min($this->height(), $this->width()) * 0.75;
-            $currentY = 0; //rand(0, 100)*$totalY/100;
+            if ($this->_angleDirection < 0) {
+                $currentY = $totalY;
+            } else {                
+                $currentY = 0; //rand(0, 100)*$totalY/100;
+            }            
             $dataset->_reset();
 
             if (count($this->_dataset) == 1) {
@@ -253,9 +288,9 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
             }
 
             while ($point = $dataset->_next()) {
-                $angle1 = 360 * ($currentY / $totalY);
-                $currentY += $point['Y'];
-                $angle2 = 360 * ($currentY / $totalY);
+                $angle1 = 360 * ($currentY / $totalY) + $this->_startingAngle;
+                $currentY += $this->_angleDirection * $point['Y'];
+                $angle2 = 360 * ($currentY / $totalY) + $this->_startingAngle;
 
                 $x = $point['X'];
                 $id = $point['ID'];

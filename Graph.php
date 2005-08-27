@@ -348,6 +348,8 @@ class Image_Graph extends Image_Graph_Element
      *
      * 'vector' = Image_Graph_Dataset_VectorFunction
      *
+     * 'category' = Image_Graph_Axis_Category
+     *
      * 'axis' = Image_Graph_Axis
      *
      * 'axis_log' = Image_Graph_Axis_Logarithmic
@@ -402,6 +404,7 @@ class Image_Graph extends Image_Graph_Element
 			'function'       => 'Image_Graph_Dataset_Function',
 			'vector'         => 'Image_Graph_Dataset_VectorFunction',
 
+            'category'       => 'Image_Graph_Axis_Category',
 			'axis'           => 'Image_Graph_Axis',
 			'axis_log'       => 'Image_Graph_Axis_Logarithmic',
 

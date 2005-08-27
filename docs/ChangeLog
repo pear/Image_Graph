@@ -1,7 +1,8 @@
 *************************
  Image_Graph - Changelog
 *************************
-Version 0.6.0-alpha [2005-xxx-xx] - Jesper Veggerby <pear.nosey@veggerby.dk>
+Version 0.6.0-alpha [2005-Aug-27] - Jesper Veggerby <pear.nosey@veggerby.dk>
+    * Added possibility to set starting angle of pie chart (at which angle does the first pieslice start) and the direction of the pies (clockwise or counter-clockwise)
     * Added Request #5031 "Horizontal Bar graphs required" - all plot types (except radar and pie) support horizontal, it is the "Plotarea" that is horizontal
     * Fixed Bug #5035 "Legend and graph color mismatch when using zeros in stacked bar"
     * Fixed Bug #5066 "Reference Notices"

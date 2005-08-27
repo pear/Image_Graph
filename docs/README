@@ -45,8 +45,11 @@ Functionality includes:
 
 Requirements
 ------------
-The only system requirement is PHP4/PHP5 support with GD 2 support.
-Full GD 1.x support, with functionality tradeof.
+The only system requirement is PHP4/PHP5 support.
+
+Through Image_Canvas is GD 2 support required (by default since it is most often
+used). Full GD 1.x support, with functionality tradeof.
+
 For PDF support, PDFlib is required (planned File_PDF support when released in 
 working version). For SWF support, Ming is required (planned libswf support as
 well).
@@ -76,7 +79,7 @@ See http://pear.php.net/package/Image_Graph/docs for documentation
 History
 -------
 Release history of Image_Graph/GraPHPite (see also ChangeLog for changes)
-0.6.0       xx-xxx-2005
+0.6.0       27-Aug-2005
 0.5.0       08-Aug-2005 (First release using Image_Canvas)
 0.4.0       24-May-2005
 0.3.0       25-Feb-2005 (First alpha release of new Image_Graph)

@@ -6,7 +6,6 @@ Image_Graph
 *** Update private tags to protected wherever necessary
 *** Create a simple table element
 *** Create bar-chart-type where bar have individual widths (i.e. in the dataset fx)
-*** Implement HTML Image maps
 
 Image_Graph_Element
 *** Look at further optimization (line 384) (sample20.php = 416 calls!)
