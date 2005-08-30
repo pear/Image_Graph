@@ -404,8 +404,8 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
 
                     $x = $point['X'];
                     $y = $point['Y'];
-                    if ((!is_object($this->_dataSelector)) ||
-                        ($this->_dataSelector->_select($point)))
+                    if (((!is_object($this->_dataSelector)) ||
+                        ($this->_dataSelector->_select($point))) && ($point['Y'] != null))
                     {
 
                         $point = $this->_getMarkerData(

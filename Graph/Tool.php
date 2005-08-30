@@ -115,6 +115,144 @@ class Image_Graph_Tool
             3 * (1 - $t) * pow($t, 2) * $p3 +
             pow($t, 3) * $p4;
     }
+    
+    /**
+     * For a given point (x,y) return a point rotated by a given angle aroung the center (xy,yc)
+     *
+     * @param int $x x coordinate of the point to rotate
+     * @param int $y y coordinate of the point to rotate
+     * @param int $xc x coordinate of the center of the rotation
+     * @param int $yc y coordinate of the center of the rotation
+     * @param int $angle angle of the rotation
+     * @return array the coordinate of the new point
+     * @static
+     */
+    function rotate($x, $y, $xc, $yc, $angle)
+    {
+        $cos = cos(deg2rad($angle));
+        $sin = sin(deg2rad($angle));
+        $xr= $x - $xc;
+        $yr= $y - $yc;
+        $x1= $xc + $cos * $xr - $sin * $yr;
+        $y1= $yc + $sin * $xr + $cos * $yr;
+        return array((int) $x1,(int) $y1);
+    }
+
+    /**
+     * If a number is close 0 zero (i.e. 0 within $decimal decimals) it is rounded down to zero
+     * 
+     * @param double $value The value to round
+     * @param int $decimal The number of decimals
+     * @return double The value or zero if "close enough" to zero
+     * @static
+     */
+    function close2zero($value, $decimal)
+    {
+        if (abs($value) < pow(10, -$decimal)) {
+            return 0;
+        }
+        else {
+            return $value;
+        }
+    }
+    
+    /**
+     * Calculate the dimensions and center point (of gravity) for an arc
+     * 
+     * @param int $v1 The angle at which the arc starts
+     * @param int $v2 The angle at which the arc ends
+     * @return array An array with the dimensions in a fraction of a circle width radius 1 'rx', 'ry' and the
+     * center point of gravity ('cx', 'cy')
+     * @static
+     */
+    function calculateArcDimensionAndCenter($v1, $v2)
+    { 
+        // $v2 always larger than $v1
+        $r1x = Image_Graph_Tool::close2zero(cos(deg2rad($v1)), 3); 
+        $r2x = Image_Graph_Tool::close2zero(cos(deg2rad($v2)), 3);
+        
+        $r1y = Image_Graph_Tool::close2zero(sin(deg2rad($v1)), 3);
+        $r2y = Image_Graph_Tool::close2zero(sin(deg2rad($v2)), 3);
+    
+        // $rx = how many percent of the x-diameter of the entire ellipse does the arc x-diameter occupy: 1 entire width, 0 no width
+        // $cx = at what percentage of the diameter does the center lie
+        
+        // if the arc passes through 0/360 degrees the "highest" of r1x and r2x is replaced by 1!
+        if ((($v1 <= 0) && ($v2 >= 0)) || (($v1 <= 360) && ($v2 >= 360))) {
+            $r1x = min($r1x, $r2x);
+            $r2x = 1;
+        } 
+        
+        // if the arc passes through 180 degrees the "lowest" of r1x and r2x is replaced by -1!
+        if ((($v1 <= 180) && ($v2 >= 180)) || (($v1 <= 540) && ($v2 >= 540))) {
+            $r1x = max($r1x, $r2x);
+            $r2x = -1;
+        }
+        
+        if ($r1x >= 0) { // start between [270; 360] or [0; 90]        
+            if ($r2x >= 0) {
+                $rx = max($r1x, $r2x) / 2;
+                $cx = 0; // center lies 0 percent along this "vector"
+            }
+            else {
+                $rx = abs($r1x - $r2x) / 2;
+                $cx = abs($r2x / 2) / $rx;
+            }
+        }
+        else {  // start between ]90; 270[
+            if ($r2x < 0) {
+                $rx = max(abs($r1x), abs($r2x)) / 2;
+                $cx = $rx;
+            }
+            else {
+                $rx = abs($r1x - $r2x) / 2;
+                $cx = abs($r1x / 2) / $rx;
+            }
+        }
+        
+        // $ry = how many percent of the y-diameter of the entire ellipse does the arc y-diameter occupy: 1 entire, 0 none
+        // $cy = at what percentage of the y-diameter does the center lie
+    
+        // if the arc passes through 90 degrees the "lowest" of r1x and r2x is replaced by -1!
+        if ((($v1 <= 90) && ($v2 >= 90)) || (($v1 <= 450) && ($v2 >= 450))) {
+            $r1y = min($r1y, $r2y);
+            $r2y = 1;
+        }
+        
+        // if the arc passes through 270 degrees the "highest" of r1y and r2y is replaced by -1!
+        if ((($v1 <= 270) && ($v2 >= 270)) || (($v1 <= 630) && ($v2 >= 630))) {
+            $r1y = max($r1y, $r2y);
+            $r2y = -1;
+        } 
+            
+        if ($r1y >= 0) { // start between [0; 180]        
+            if ($r2y >= 0) {
+                $ry = max($r1y, $r2y) / 2;
+                $cy = 0; // center lies 0 percent along this "vector"
+            }
+            else {
+                $ry = abs($r1y - $r2y) / 2;
+                $cy = abs($r2y / 2) / $ry;
+            }
+        }
+        else {  // start between ]180; 360[
+            if ($r2y < 0) {
+                $ry = max(abs($r1y), abs($r2y)) / 2;
+                $cy = $ry;
+            }
+            else {
+                $ry = abs($r1y - $r2y) / 2;
+                $cy = abs($r1y / 2) / $ry;
+            }
+        }
+        
+        return array(
+            'rx' => $rx,
+            'cx' => $cx,
+            'ry' => $ry,
+            'cy' => $cy
+        );
+    }
 
 }
 

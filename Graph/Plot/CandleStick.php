@@ -168,6 +168,7 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
         $number = 0;
         $width = floor(0.8 * $this->_parent->_labelDistance(IMAGE_GRAPH_AXIS_X) / 2);
 
+        $lastClosed = false;
         $keys = array_keys($this->_dataset);
         foreach ($keys as $key) {
             $dataset =& $this->_dataset[$key];
@@ -176,12 +177,16 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
                 if ($this->_parent->_horizontal) {
                     $point['X'] = $data['X'];
                     //$y = $data['Y'];
-    
-                    $point['Y'] = $data['Y']['open'];
+
+                    if (isset($data['Y']['open'])) {                       
+                        $point['Y'] = $data['Y']['open'];
+                    } else {
+                        $point['Y'] = $lastClosed;
+                    }
                     $y = $this->_pointY($point);
                     $x_open = $this->_pointX($point);
     
-                    $point['Y'] = $data['Y']['close'];
+                    $lastClosed = $point['Y'] = $data['Y']['close'];
                     $x_close = $this->_pointX($point);
     
                     $point['Y'] = $data['Y']['min'];
@@ -202,11 +207,15 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
                     $point['X'] = $data['X'];
                     //$y = $data['Y'];
     
-                    $point['Y'] = $data['Y']['open'];
+                    if (isset($data['Y']['open'])) {                       
+                        $point['Y'] = $data['Y']['open'];
+                    } else {
+                        $point['Y'] = $lastClosed;
+                    }
                     $x = $this->_pointX($point);
                     $y_open = $this->_pointY($point);
     
-                    $point['Y'] = $data['Y']['close'];
+                    $lastClosed = $point['Y'] = $data['Y']['close'];
                     $y_close = $this->_pointY($point);
     
                     $point['Y'] = $data['Y']['min'];
