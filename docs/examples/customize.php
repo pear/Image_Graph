@@ -99,7 +99,9 @@ $AxisY->setLabelOptions(
         )
     ), 2
 );  
-$AxisY->setLabelOption('showoffset', true, 1);  
+$AxisY->setLabelOption('showoffset', true, 1);
+
+$AxisX->showArrow();  
 
 $Legend =& $Plotarea->addNew('legend');
 $Legend->setFillColor('white@0.7');

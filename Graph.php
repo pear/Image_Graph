@@ -27,6 +27,12 @@
  * @link       http://pear.php.net/package/Image_Graph
  */
 
+
+/**
+ * Include PEAR.php
+ */
+require_once 'PEAR.php';
+
 /**
  * Include file Image/Graph/Element.php
  */
@@ -204,6 +210,10 @@ class Image_Graph extends Image_Graph_Element
      */
     function &setCanvas(&$canvas)
     {
+        if (!is_a($this->_canvas, 'Image_Canvas')) {
+            return $this->_error('The canvas introduced is not an Image_Canvas object');
+        }
+        
         $this->_canvas =& $canvas;
         $this->_setCoords(
             0,
@@ -580,6 +590,22 @@ class Image_Graph extends Image_Graph_Element
      */
     function &layoutFactory($layout, &$part1, &$part2, $percentage = 50)
     {
+        if (($layout != 'Vertical') && ($layout != 'Horizontal')) {
+            return $this->_error('Layouts must be either \'Horizontal\' or \'Vertical\'');
+        }
+        
+        if (!(is_a($part1, 'Image_Graph_Element'))) {
+            return $this->_error('Part 1 is not a valid Image_Graph element');
+        }
+        
+        if (!(is_a($part2, 'Image_Graph_Element'))) {
+            return $this->_error('Part 2 is not a valid Image_Graph element');
+        }
+        
+        if ((!is_numeric($percentage)) || ($percentage < 0) || ($percentage > 100)) {
+            return $this->_error('Percentage has to be a number between 0 and 100');
+        }
+        
         include_once "Image/Graph/Layout/$layout.php";
         $class = "Image_Graph_Layout_$layout";
         $obj =& new $class($part1, $part2, $percentage);
@@ -688,7 +714,8 @@ class Image_Graph extends Image_Graph_Element
      * @access private
      */
     function _displayErrors()
-    {        
+    {
+        return true;
     }
 
     /**
@@ -707,24 +734,6 @@ class Image_Graph extends Image_Graph_Element
      */
     function _displayError($x, $y, $error)
     {
-    }
-
-    /**
-     * Enable caching of the output.
-     *
-     * Any change at all to any part of the graph makes it output again. Do
-     * *NOT* use caching with plots using {@link Image_Graph_Dataset_Random},
-     * since the graph will (always) change. The specified cache directory must
-     * exist prior to caching.
-     *
-     * Requires {@link Cache}.
-     *
-     * @param string $cacheDir The directory where cached files are put. If
-     *   false caching is disabled.
-     */
-    function cache($cacheDir = 'cache/')
-    {
-        $this->_cache = $cacheDir;
     }
 
     /**
@@ -753,7 +762,10 @@ class Image_Graph extends Image_Graph_Element
      */
     function done($param = false)
     {
-        $this->_reset();
+        $result = $this->_reset();
+        if (PEAR::isError($result)) {
+            return $result;
+        }
         return $this->_done($param);
     }
 
@@ -773,57 +785,58 @@ class Image_Graph extends Image_Graph_Element
      */
     function _done($param = false)
     {
-        $useCached = false;
         $timeStart = $this->_getMicroTime();
 
-        if ($useCached === false) {
-            if ($this->_shadow) {
-                $this->setPadding(20);
-                $this->_setCoords(
-                    $this->_left,
-                    $this->_top,
-                    $this->_right - 10,
-                    $this->_bottom - 10);
-            }
+        if ($this->_shadow) {
+            $this->setPadding(20);
+            $this->_setCoords(
+                $this->_left,
+                $this->_top,
+                $this->_right - 10,
+                $this->_bottom - 10);
+        }
 
-            $this->_updateCoords();
-
-
-            if ($this->_getBackground()) {
-                $this->_canvas->rectangle(
-                	array(
-                    	'x0' => $this->_left,
-                    	'y0' => $this->_top,
-                    	'x1' => $this->_right,
-                    	'y1' => $this->_bottom
-                    )
-                );
-            }
-
-            $result = parent::_done();
-
-            if ($this->_displayErrors) {
-                $this->_displayErrors();
-            }
-
-            $timeEnd = $this->_getMicroTime();
-
-            if (($this->_showTime) || 
-                ((isset($param['showtime'])) && ($param['showtime'] === true))
-            ) {
-                $text = 'Generated in ' .
-                    sprintf('%0.3f', $timeEnd - $timeStart) . ' sec';
-                $this->write(
-                    $this->_right,
-                    $this->_bottom,
-                    $text,
-                    IMAGE_GRAPH_ALIGN_RIGHT + IMAGE_GRAPH_ALIGN_BOTTOM,
-                    array('color' => 'red')
-                );
-            }
-
+        $result =  $this->_updateCoords();        
+        if (PEAR::isError($result)) {
+            return $result;
         }
         
+        if ($this->_getBackground()) {
+            $this->_canvas->rectangle(
+            	array(
+                	'x0' => $this->_left,
+                	'y0' => $this->_top,
+                	'x1' => $this->_right,
+                	'y1' => $this->_bottom
+                )
+            );
+        }
+
+        $result = parent::_done();
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        if ($this->_displayErrors) {
+            $this->_displayErrors();
+        }
+
+        $timeEnd = $this->_getMicroTime();
+
+        if (($this->_showTime) || 
+            ((isset($param['showtime'])) && ($param['showtime'] === true))
+        ) {
+            $text = 'Generated in ' .
+                sprintf('%0.3f', $timeEnd - $timeStart) . ' sec';
+            $this->write(
+                $this->_right,
+                $this->_bottom,
+                $text,
+                IMAGE_GRAPH_ALIGN_RIGHT + IMAGE_GRAPH_ALIGN_BOTTOM,
+                array('color' => 'red')
+            );
+        }
+               
 		if (isset($param['filename'])) {
             if ($param['tohtml']) {
                 return $this->_canvas->toHtml($param);

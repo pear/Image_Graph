@@ -3,7 +3,7 @@
  * Usage example for Image_Graph.
  * 
  * Main purpose: 
- * Show all plot types (horizontal)
+ * Show all plot types (horizontal, axis inverted)
  * 
  * Other: 
  * Matrix layout, Axis customization
@@ -28,17 +28,20 @@ $Matrix =& $Graph->addNew('Image_Graph_Layout_Matrix', array(5, 4, false));
 
 for ($i = 0; $i < 5; $i++) {
     for ($j = 0; $j < 4; $j++) {
-        $Matrix->setEntry(
-            $i, $j,             
-            Image_Graph::factory(
-                'plotarea', 
-                array(
-                    'Image_Graph_Axis_Category',
-                    'Image_Graph_Axis',
-                    'horizontal'
-                )
+        $Plotarea =& Image_Graph::factory(
+            'plotarea', 
+            array(
+                'Image_Graph_Axis_Category',
+                'Image_Graph_Axis',
+                'horizontal'
             )
         );
+        $AxisX =& $Plotarea->getAxis('x');
+        $AxisX->setInverted(true);
+        $AxisY =& $Plotarea->getAxis('y');
+        $AxisY->setInverted(true);
+        
+        $Matrix->setEntry($i, $j, $Plotarea);
     }
 }
     

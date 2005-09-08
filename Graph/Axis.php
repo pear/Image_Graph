@@ -1365,6 +1365,7 @@ require_once 'Image/Graph/Plotarea/Element.php';
     {
         if ($this->_type == IMAGE_GRAPH_AXIS_X) {
             $this->_getLineStyle(); 
+            $this->_getFillStyle(); 
             
             if ($this->_transpose) {
                 $data = array(
@@ -1403,6 +1404,7 @@ require_once 'Image/Graph/Plotarea/Element.php';
             }
         } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY) {
             $this->_getLineStyle();
+            $this->_getFillStyle(); 
             
             if ($this->_transpose) {
                 $data = array(
@@ -1414,9 +1416,9 @@ require_once 'Image/Graph/Plotarea/Element.php';
             } else {
                 $data = array(
                         'x0' => $this->_left,
-                        'y0' => $this->_top,
+                        'y0' => $this->_bottom,
                         'x1' => $this->_left,
-                        'y1' => $this->_bottom
+                        'y1' => $this->_top
                     );
             }
             if ($this->_showArrow) {
@@ -1439,7 +1441,8 @@ require_once 'Image/Graph/Plotarea/Element.php';
             }
         } else {
             $this->_getLineStyle();
-            
+            $this->_getFillStyle(); 
+                        
             if ($this->_transpose) {
                 $data = array(
                         'x0' => $this->_left,
@@ -1450,9 +1453,9 @@ require_once 'Image/Graph/Plotarea/Element.php';
             } else {
                 $data = array(
                         'x0' => $this->_right,
-                        'y0' => $this->_top,
+                        'y0' => $this->_bottom,
                         'x1' => $this->_right,
-                        'y1' => $this->_bottom
+                        'y1' => $this->_top
                     );
             }
             if ($this->_showArrow) {

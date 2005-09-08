@@ -326,49 +326,97 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
             if ((isset($point['AX'])) && ($point['AX'] > 0)) {
                 $point['ANGLE'] = pi() - $point['ANGLE'];
             }
-
-            $point['MARKER_X1'] = $this->_pointX($point) -
-                (isset($totals['WIDTH']) ? $totals['WIDTH'] : 0);
-
-            $point['MARKER_X2'] = $this->_pointX($point) +
-                (isset($totals['WIDTH']) ? $totals['WIDTH'] : 0);
-
-            $point['COLUMN_WIDTH'] = abs($point['MARKER_X2'] -
-                $point['MARKER_X1']) / count($this->_dataset);
-
-            $point['MARKER_X'] = $point['MARKER_X1'] +
-                ((isset($totals['NUMBER']) ? $totals['NUMBER'] : 0) + 0.5) *
-                $point['COLUMN_WIDTH'];
-
-            $point['MARKER_Y'] = $this->_pointY($point);
-
-            if ($this->_multiType == 'stacked') {
-                $point['MARKER_X'] =
-                    ($point['MARKER_X1'] + $point['MARKER_X2']) / 2;
-
-                $P1 = array('Y' => $totals['SUM_Y'][$x]);
-                $P2 = array('Y' => $totals['SUM_Y'][$x] + $point['Y']);
-
-                $point['MARKER_Y'] =
-                    ($this->_pointY($P1) + $this->_pointY($P2)) / 2;
-            } elseif ($this->_multiType == 'stacked100pct') {
-                $x = $point['X'];
-                if ($totals['TOTAL_Y'][$x] != 0) {
+            
+            if ($this->_parent->_horizontal) {                
+                $point['MARKER_Y1'] = $this->_pointY($point) -
+                    (isset($totals['WIDTH']) ? $totals['WIDTH'] : 0);
+    
+                $point['MARKER_Y2'] = $this->_pointY($point) +
+                    (isset($totals['WIDTH']) ? $totals['WIDTH'] : 0);
+    
+                $point['COLUMN_WIDTH'] = abs($point['MARKER_Y2'] -
+                    $point['MARKER_Y1']) / count($this->_dataset);
+    
+                $point['MARKER_Y'] = $point['MARKER_Y1'] +
+                    ((isset($totals['NUMBER']) ? $totals['NUMBER'] : 0) + 0.5) *
+                    $point['COLUMN_WIDTH'];
+    
+                $point['MARKER_X'] = $this->_pointX($point);
+    
+                if ($this->_multiType == 'stacked') {
+                    $point['MARKER_Y'] =
+                        ($point['MARKER_Y1'] + $point['MARKER_Y2']) / 2;
+    
+                    $P1 = array('Y' => $totals['SUM_Y'][$x]);
+                    $P2 = array('Y' => $totals['SUM_Y'][$x] + $point['Y']);
+    
+                    $point['MARKER_X'] =
+                        ($this->_pointX($P1) + $this->_pointX($P2)) / 2;
+                } elseif ($this->_multiType == 'stacked100pct') {
+                    $x = $point['X'];
+                    if ($totals['TOTAL_Y'][$x] != 0) {
+                        $point['MARKER_Y'] =
+                            ($point['MARKER_Y1'] + $point['MARKER_Y2']) / 2;
+    
+                        $P1 = array(
+                            'Y' => 100 * $totals['SUM_Y'][$x] / $totals['TOTAL_Y'][$x]
+                        );
+    
+                        $P2 = array(
+                            'Y' => 100 * ($totals['SUM_Y'][$x] + $point['Y']) / $totals['TOTAL_Y'][$x]
+                        );
+    
+                        $point['MARKER_X'] =
+                            ($this->_pointX($P1) + $this->_pointX($P2)) / 2;
+                    } else {
+                        $point = false;
+                    }
+                }
+            }
+            else {
+                $point['MARKER_X1'] = $this->_pointX($point) -
+                    (isset($totals['WIDTH']) ? $totals['WIDTH'] : 0);
+    
+                $point['MARKER_X2'] = $this->_pointX($point) +
+                    (isset($totals['WIDTH']) ? $totals['WIDTH'] : 0);
+    
+                $point['COLUMN_WIDTH'] = abs($point['MARKER_X2'] -
+                    $point['MARKER_X1']) / count($this->_dataset);
+    
+                $point['MARKER_X'] = $point['MARKER_X1'] +
+                    ((isset($totals['NUMBER']) ? $totals['NUMBER'] : 0) + 0.5) *
+                    $point['COLUMN_WIDTH'];
+    
+                $point['MARKER_Y'] = $this->_pointY($point);
+    
+                if ($this->_multiType == 'stacked') {
                     $point['MARKER_X'] =
                         ($point['MARKER_X1'] + $point['MARKER_X2']) / 2;
-
-                    $P1 = array(
-                        'Y' => 100 * $totals['SUM_Y'][$x] / $totals['TOTAL_Y'][$x]
-                    );
-
-                    $P2 = array(
-                        'Y' => 100 * ($totals['SUM_Y'][$x] + $point['Y']) / $totals['TOTAL_Y'][$x]
-                    );
-
+    
+                    $P1 = array('Y' => $totals['SUM_Y'][$x]);
+                    $P2 = array('Y' => $totals['SUM_Y'][$x] + $point['Y']);
+    
                     $point['MARKER_Y'] =
                         ($this->_pointY($P1) + $this->_pointY($P2)) / 2;
-                } else {
-                    $point = false;
+                } elseif ($this->_multiType == 'stacked100pct') {
+                    $x = $point['X'];
+                    if ($totals['TOTAL_Y'][$x] != 0) {
+                        $point['MARKER_X'] =
+                            ($point['MARKER_X1'] + $point['MARKER_X2']) / 2;
+    
+                        $P1 = array(
+                            'Y' => 100 * $totals['SUM_Y'][$x] / $totals['TOTAL_Y'][$x]
+                        );
+    
+                        $P2 = array(
+                            'Y' => 100 * ($totals['SUM_Y'][$x] + $point['Y']) / $totals['TOTAL_Y'][$x]
+                        );
+    
+                        $point['MARKER_Y'] =
+                            ($this->_pointY($P1) + $this->_pointY($P2)) / 2;
+                    } else {
+                        $point = false;
+                    }
                 }
             }
             return $point;

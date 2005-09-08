@@ -175,7 +175,7 @@ class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
         $h = abs($y1 - $y0) / 9;
         $w = round(abs($x1 - $x0) / 5);
         $r = 2;//round(abs($x1 - $x0) / 13);
-        $this->_drawBoxWhisker($x, $w, $r, $y1, $y1 - 2 * $h, $y1 - 4 * $h, $y0 + 3 * $h, $y0);
+        $this->_drawBoxWhiskerV($x, $w, $r, $y1, $y1 - 2 * $h, $y1 - 4 * $h, $y0 + 3 * $h, $y0);
     }
     
     /**

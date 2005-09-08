@@ -6,6 +6,10 @@ Version x.y.z-alpha [2005-xxx-xx] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Added Image_Graph_DataSelector_Values (thanks Paolo)
     * Modified Image_Graph_Plot_CandleStick, it is now only necessary to specify 'open' for first point (other 'open' = previous 'close')
     * Fixed markers so that y values equal to null never shows markers
+    * Fixed problem in Image_Graph_Plot_BoxWhisker causing an undefined method
+    * Fixed problem with markers and horizontal plots
+    * Fixed problem with axis not showing arrow-ends even if enabled
+    * Fixed problem with an error "Call to a member function on a non-object..." in Common.php
 
 Version 0.6.0-alpha [2005-Aug-27] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Added possibility to set starting angle of pie chart (at which angle does the first pieslice start) and the direction of the pies (clockwise or counter-clockwise)

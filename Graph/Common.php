@@ -116,10 +116,14 @@ class Image_Graph_Common
             $keys = array_keys($this->_elements);
             foreach ($keys as $key) {
                 $this->_elements[$key]->_setParent($this);
-                $this->_elements[$key]->_reset();
+                $result =& $this->_elements[$key]->_reset();
+                if (PEAR::isError($result)) {
+                    return $result;
+                }
             }
             unset($keys);
         }
+        return true;
     }
 
     /**
@@ -137,7 +141,9 @@ class Image_Graph_Common
         if (is_array($this->_elements)) {
             $keys = array_keys($this->_elements);
             foreach ($keys as $key) {
-                $this->_elements[$key]->_setParent($this);
+                if (is_object($this->_elements[$key])) {
+                    $this->_elements[$key]->_setParent($this);
+                }
             }
             unset($keys);
         }
@@ -216,8 +222,18 @@ class Image_Graph_Common
      * @access private
      */
     function _error($text, $params = false, $error_code = IMAGE_GRAPH_ERROR_GENERIC)
-    {
-        // TODO Refactor error handling        
+    {       
+        foreach ($params as $name => $key) {
+            if (isset($parameters)) {
+                $parameters .= ' ';
+            }
+            $parameters .= $name . '=' . $key;
+        }        
+        $error =& PEAR::raiseError(
+            $text .
+            ($error_code != IMAGE_GRAPH_ERROR_GENERIC ? ' error:' . IMAGE_GRAPH_ERROR_GENERIC : '') .
+            (isset($parameters) ? ' parameters:[' . $parameters . ']' : '')            
+        );         
     }
 
     /**
