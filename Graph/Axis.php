@@ -728,6 +728,7 @@ require_once 'Image/Graph/Plotarea/Element.php';
             return true;
         }
 
+        $span = 0;
         foreach($this->_labelOptions as $level => $labelOptions) {
             if ((!isset($labelOptions['type'])) || ($labelOptions['type'] !== 'auto')) {
                 $span = false;

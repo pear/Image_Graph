@@ -581,17 +581,14 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
         case IMAGE_GRAPH_AXIS_X:
         case 'x':
             return $this->_axisX;
-            break;
 
         case IMAGE_GRAPH_AXIS_Y:
         case 'y':
             return $this->_axisY;
-            break;
 
         case IMAGE_GRAPH_AXIS_Y_SECONDARY:
         case 'ysec':
             return $this->_axisYSecondary;
-            break;
 
         }
         return null;

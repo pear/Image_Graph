@@ -71,6 +71,8 @@ class Image_Graph_Grid_Bars extends Image_Graph_Grid
         $i = 0;
         $value = false;
 
+        $previousValue = 0;
+
         $secondaryPoints = $this->_getSecondaryAxisPoints();
 
         while (($value = $this->_primaryAxis->_getNextLabel($value)) !== false) {

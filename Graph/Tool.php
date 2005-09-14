@@ -253,7 +253,39 @@ class Image_Graph_Tool
             'cy' => $cy
         );
     }
+    
+    /**
+     * Calculate linear regression on a dataset
+     * @param array $data The data to calculate regression upon
+     * @return array The slope and intersection of the "best-fit" line
+     * @static
+     */    
+    function calculateLinearRegression(&$data)
+    {
+        $sumX = 0; 
+        $sumY = 0;
+        foreach ($data as $point) {
+            $sumX += $point['X'];
+            $sumY += $point['Y'];
+        }        
+        $meanX = $sumX / count($data);
+        $meanY = $sumY / count($data);
 
+        $sumXX = 0;
+        $sumYY = 0;
+        $sumXY = 0;
+        foreach ($data as $point) {
+            $sumXX += ($point['X'] - $meanX) * ($point['X'] - $meanX);
+            $sumYY += ($point['Y'] - $meanY) * ($point['Y'] - $meanY);
+            $sumXY += ($point['X'] - $meanX) * ($point['Y'] - $meanY);
+        }        
+
+        $result = array();
+        $result['slope'] = ($sumXY / $sumXX);
+        $result['intersection'] = $meanY - ($result['slope'] * $meanX);
+        return $result;
+    }
+    
 }
 
 ?>
