@@ -109,7 +109,7 @@ class Image_Graph extends Image_Graph_Element
      * 
      * An example of this usage:
      * 
-     * $Graph =& Image_Graph::factory('graph', arrray(array('width' => 400,
+     * $Graph =& Image_Graph::factory('graph', array(array('width' => 400,
      * 'height' => 300, 'canvas' => 'jpg')));
      * 
      * NB! In thïs case remember the "double" array (see {@link Image_Graph::
@@ -838,7 +838,7 @@ class Image_Graph extends Image_Graph_Element
         }
                
 		if (isset($param['filename'])) {
-            if ($param['tohtml']) {
+            if ((isset($param['tohtml'])) && ($param['tohtml'])) {
                 return $this->_canvas->toHtml($param);
             }
             else {
