@@ -163,8 +163,8 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
      * @access private
      */
     function _intersectPoint($value)
-    {
-        if ($value <= 0) {
+    {        
+        if (($value <= 0) && ($value !== 'max') && ($value !== 'min')) {
             $value = 1;
         }
         return parent::_intersectPoint($value);
