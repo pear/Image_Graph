@@ -114,8 +114,13 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
     {
         $point = parent::_getMarkerData($point, $nextPoint, $prevPoint, $totals);
 
-        $point['ANGLE'] = 360 * (($totals['CURRENT_Y'] +
-            ($point['Y'] / 2)) / $totals['ALL_SUM_Y']);
+        $y = $totals['CURRENT_Y'];
+        
+        if ($this->_angleDirection < 0) {
+            $y = $totals['ALL_SUM_Y'] - $y;
+        }
+
+        $point['ANGLE'] = 360 * (($y + ($point['Y'] / 2)) / $totals['ALL_SUM_Y']) + $this->_startingAngle;
         $totals['CURRENT_Y'] += $point['Y'];
 
         $point['ANG_X'] = cos(deg2rad($point['ANGLE']));
