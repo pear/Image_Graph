@@ -80,7 +80,7 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
             foreach ($keys as $x) {
                 $y =& $dataArray[$x];
                 if ((is_array($y)) && (isset($y['x'])) && (isset($y['y']))) {
-                    $this->addPoint($y['x'], $y['y'], $x);
+                    $this->addPoint($y['x'], $y['y'], (isset($y['id']) ? $y['id'] : $x));
                 } else {
                     $this->addPoint($x, $y, $x);
                 }
