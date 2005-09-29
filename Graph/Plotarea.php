@@ -562,9 +562,25 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
      */
     function hideAxis()
     {
-        $this->_axisX = $this->_axisY = $this->_axisYSecondary = null;
+        if ($this->_axisX != null) {
+            $this->_axisX->hide();
+        }            
+        if ($this->_axisY != null) {
+            $this->_axisY->hide();
+        }            
+        if ($this->_axisYSecondary != null) {
+            $this->_axisYSecondary->hide();
+        }            
     }
 
+    /**
+     * Clears/removes the axis
+     */
+    function clearAxis()
+    {
+        $this->_axisX = $this->_axisY = $this->_axisYSecondary = null;
+    }
+        
     /**
      * Get axis.
      * 
