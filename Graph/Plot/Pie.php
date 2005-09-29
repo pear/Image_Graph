@@ -77,6 +77,13 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
     var $_angleDirection = 1;
 
     /**
+     * The diameter of the pie plot
+     * @access private
+     * @var int
+     */
+    var $_diameter = false;
+
+    /**
      * Perform the actual drawing on the legend.
      *
      * @param int $x0 The top-left x-coordinate
@@ -167,7 +174,9 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
 
             $totals['CURRENT_Y'] = 0;
             $number = 0;
-            $diameter = min($this->height(), $this->width()) * 0.75;
+            
+            $diameter = $this->_getDiameter();
+            
             $keys = array_keys($this->_dataset);
             foreach ($keys as $key) {
                 $dataset =& $this->_dataset[$key];
@@ -247,6 +256,47 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
         $this->_startingAngle = ($angle % 360);
         $this->_angleDirection = ($direction == 'ccw' ? 1 : -1);
     }
+    
+    /**
+     * Set the diameter of the pie plot (i.e. the number of pixels the
+     * pie plot should be across)
+     * 
+     * Use 'max' for the maximum possible diameter
+     * 
+     * Use negative values for the maximum possible - minus this value (fx -2
+     * to leave 1 pixel at each side)
+     * 
+     * @param mixed @diameter The number of pixels
+     */
+    function setDiameter($diameter)
+    {
+        $this->_diameter = $diameter;
+    }
+    
+    /**
+     * Get the diameter of the plot
+     * @return int The number of pixels the diameter is
+     * @access private
+     */
+    function _getDiameter()
+    {
+        $diameter = 0;
+        if ($this->_diameter === false) {
+            $diameter = min($this->height(), $this->width()) * 0.75;
+        }
+        else {
+            if ($this->_diameter === 'max') {
+                $diameter = min($this->height(), $this->width());
+            }
+            elseif ($this->_diameter < 0) {
+                $diameter = min($this->height(), $this->width()) + $this->_diameter;
+            } else {
+                $diameter = $this->_diameter;
+            }
+        }
+        return $diameter;
+    }
+     
 
     /**
      * Output the plot
@@ -274,7 +324,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
 
             $centerX = (int) (($this->_left + $this->_right) / 2);
             $centerY = (int) (($this->_top + $this->_bottom) / 2);
-            $diameter = min($this->height(), $this->width()) * 0.75;
+            $diameter = $this->_getDiameter();
             if ($this->_angleDirection < 0) {
                 $currentY = $totalY;
             } else {                
