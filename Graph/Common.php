@@ -97,6 +97,14 @@ class Image_Graph_Common
      * @access private
      */
     var $_canvas = null;
+    
+    /**
+     * Is the object visible?
+     * 
+     * @var bool
+     * @access private
+     */
+    var $_visible = true;
 
     /**
      * Constructor [Image_Graph_Common]
@@ -115,10 +123,12 @@ class Image_Graph_Common
         if (is_array($this->_elements)) {
             $keys = array_keys($this->_elements);
             foreach ($keys as $key) {
-                $this->_elements[$key]->_setParent($this);
-                $result =& $this->_elements[$key]->_reset();
-                if (PEAR::isError($result)) {
-                    return $result;
+                if (is_object($this->_elements[$key])) {
+                    $this->_elements[$key]->_setParent($this);
+                    $result =& $this->_elements[$key]->_reset();
+                    if (PEAR::isError($result)) {
+                        return $result;
+                    }
                 }
             }
             unset($keys);
@@ -148,6 +158,14 @@ class Image_Graph_Common
             unset($keys);
         }
     }
+
+    /**
+     * Hide the element
+     */
+    function hide()
+    {
+        $this->_visible = false;
+    }        
 
     /**
      * Get the canvas
@@ -273,7 +291,7 @@ class Image_Graph_Common
         if (is_array($this->_elements)) {
             $keys = array_keys($this->_elements);
             foreach ($keys as $key) {
-                if ($this->_elements[$key]->_done() === false) {
+                if (($this->_elements[$key]->_visible) && ($this->_elements[$key]->_done() === false)) {
                     return false;
                 }
             }
