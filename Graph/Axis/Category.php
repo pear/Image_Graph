@@ -205,6 +205,10 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      */
      function _size()
      {
+        if (!$this->_visible) {
+            return 0;
+        }
+        
         $this->_canvas->setFont($this->_getFont());
 
         $maxSize = 0;

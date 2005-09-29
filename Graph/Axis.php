@@ -868,6 +868,10 @@ require_once 'Image/Graph/Plotarea/Element.php';
      */
     function _size()
     {
+        if (!$this->_visible) {
+            return 0;
+        }
+        
         if ($this->_fixedSize !== false) {
             return $this->_fixedSize;
         }
