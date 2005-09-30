@@ -1,16 +1,27 @@
 *************************
  Image_Graph - Changelog
 *************************
-Version x.y.z-alpha [2005-xxx-xx] - Jesper Veggerby <pear.nosey@veggerby.dk>
+Version 0.7.0-alpha [2005-Sep-30] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Added Image_Graph_Plot_Odo (thanks Maxime Delorme)
     * Added Image_Graph_DataSelector_Values (thanks Paolo)
     * Added best-fit line plot (Image_Graph_Plot_Fit_Line)
+    * Added possibility to specify the pie plot diameter
     * Modified Image_Graph_Plot_CandleStick, it is now only necessary to specify 'open' for first point (other 'open' = previous 'close')
+    * Changed Image_Graph_Plotarea::hideAxis() to actually hide the axis, not remove them
+    * Added Image_Graph_Plotarea::clearAxis() to remove the axis
     * Fixed markers so that y values equal to null never shows markers
     * Fixed problem in Image_Graph_Plot_BoxWhisker causing an undefined method
     * Fixed problem with markers and horizontal plots
     * Fixed problem with axis not showing arrow-ends even if enabled
     * Fixed problem with an error "Call to a member function on a non-object..." in Common.php        
+    * Fixed a problem with Image_Graph_Dataset_Trivial when supplying a datarray as constructor parameter and Image_Graph_Fill_Array
+    * Fixed Bug #5421 "Documentation for Image_Graph constructor wrong"
+    * Fixed Bug #5502 "Axis_Logarithmic::setAxisIntersection('max') is broken"    
+    * Fixed Bug #5504 "PHP Notice: Undefined index: tohtml"
+    * Fixed PHP notice with Image_Graph::done() when using output to file
+    * Fixed so it is possible to use array(R, G, B, a?) as fill color
+    * Fixed issue with markers not rotating along with plot when using setStartingAngle()
+    * Fixed trivial dataset so that it is possible to use 'id' as key when populating dataset in constructor
 
 Version 0.6.0-alpha [2005-Aug-27] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Added possibility to set starting angle of pie chart (at which angle does the first pieslice start) and the direction of the pies (clockwise or counter-clockwise)

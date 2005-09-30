@@ -118,7 +118,8 @@ class Image_Graph_Legend extends Image_Graph_Layout
      * @return array Default parameter array
      * @access private
      */
-    function _parameterArray($simulate = false) {
+    function _parameterArray($simulate = false)
+    {
         $param['left'] = $this->_left + $this->_padding;
         $param['top'] = $this->_top + $this->_padding;
         $param['right'] = $this->_right - $this->_padding;

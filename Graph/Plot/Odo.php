@@ -360,7 +360,8 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
      *
      * @access private
      */
-    function _drawAxis(){
+    function _drawAxis()
+    {
         //draw outline
         $this->_getLineStyle();
         $this->_canvas->pieslice(
@@ -579,7 +580,8 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
      *
      * @access private
      */
-    function _drawRange(){
+    function _drawRange()
+    {
         if($this->_range){
             $radius0 = $this->_radius * (1 - $this->_radiusPercent/100);
             foreach ($this->_range as $range) {

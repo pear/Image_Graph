@@ -763,7 +763,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
             $width = 20 + $param['width'] + $this->_canvas->textWidth($caption);
             $param['maxwidth'] = max($param['maxwidth'], $width);
             $x2 = $param['x'] + $width;
-            $y2 = $param['y'] + $param['height']+5;
+            $y2 = $param['y'] + $param['height'] + 5;
 
             if ((($param['align'] & IMAGE_GRAPH_ALIGN_VERTICAL) != 0) && ($y2 > $param['bottom'])) {
                 $param['y'] = $param['top'];
