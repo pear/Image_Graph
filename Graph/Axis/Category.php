@@ -271,6 +271,8 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
         $allLabels = array();
 
         $dataset->_reset();
+        $count = 0;
+        $count_new = 0;
         while ($point = $dataset->_next()) {
             if ($this->_type == IMAGE_GRAPH_AXIS_X) {
                 $data = $point['X'];
@@ -278,15 +280,15 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
                 $data = $point['Y'];
             }
             if (!isset($this->_labels[$data])) {
-                $newLabels[$data] = count($newLabels);
+                $newLabels[$data] = $count_new++;
                 //$this->_labels[] = $data;
             }
-            $allLabels[$data] = count($allLabels);
+            $allLabels[$data] = $count++;
         }
 
         if (count($this->_labels) == 0) {
-            $this->_labels = $newLabels;
-        } elseif (is_array($newLabels)) {
+            $this->_labels = $newLabels;           
+        } elseif ((is_array($newLabels)) && (count($newLabels) > 0)) {           
             // get all intersecting labels
             $intersect = array_intersect(array_keys($allLabels), array_keys($this->_labels));
             // traverse all new and find their relative position withing the
@@ -328,6 +330,13 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
             }
             unset($keys);
         }
+
+        $labels = array_keys($this->_labels);
+        $i = 0;
+        foreach ($labels as $label) {
+            $this->_labels[$label] = $i++;
+        }
+
 //        $this->_labels = array_values(array_unique($this->_labels));
         $this->_calcLabelInterval();
     }
