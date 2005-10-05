@@ -267,10 +267,13 @@ class Image_Graph_Common
         if (is_array($this->_elements)) {
             $keys = array_keys($this->_elements);
             foreach ($keys as $key) {
-                $this->_elements[$key]->_updateCoords();
+                if (is_object($this->_elements[$key])) {
+                    $this->_elements[$key]->_updateCoords();
+                }
             }
             unset($keys);
         }
+        return true;
     }
 
     /**

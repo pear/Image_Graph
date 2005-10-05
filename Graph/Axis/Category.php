@@ -417,6 +417,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
         $this->_canvas->endGroup();       
 
         $this->_canvas->endGroup();
+        
         return $result;
     }
 

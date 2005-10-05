@@ -47,12 +47,30 @@ require_once 'Image/Graph/DataSelector.php';
  */
 class Image_Graph_DataSelector_Values extends Image_Graph_DataSelector {
 
+    /**
+     * The array with values that should be included
+     * @var array
+     * @access private
+     */
     var $_values;
 
+    /**
+     * ValueArray [Constructor]
+     *
+     * @param array $valueArray The array to use as filter (default empty) 
+     */
     function &Image_Graph_DataSelector_Values($values)
     {
         parent::Image_Graph_DataSelector();
-        $this->_values = &$values;
+        $this->_values = $values;
+    }
+
+    /**
+     * Sets the array to use
+     */
+    function setValueArray($values)
+    {
+        $this->_values = $values;
     }
 
     /**
@@ -64,9 +82,9 @@ class Image_Graph_DataSelector_Values extends Image_Graph_DataSelector {
      * @access private
      */
      function _select($values)
-    {
-        return ( in_array($values['Y'], $this->_PlotValue) );
-    }
+     {
+        return ( in_array($values['Y'], $this->_values) );
+     }
 }
 
 ?>

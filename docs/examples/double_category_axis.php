@@ -34,69 +34,67 @@ $Graph->add(
     )
 );
 
+//$DS =& Image_Graph::factory('dataset');
+//$DS->addPoint('Apache', 'Open Source');
+//$DS->addPoint('BSD', 'Open Source');
+//$DS->addPoint('Linux', 'Open Source');
+//$DS->addPoint('Microsoft', 'Proprietary');
+//$DS->addPoint('Micro', 'Proprietary');
+//$DS->addPoint('Minisoft', 'Proprie');
+//$DS->addPoint('Millisoft', 'Prop');
+//
+//$DS2 =& Image_Graph::factory('dataset');
+//$DS->addPoint('Apache', 'Open Source');
+//$DS->addPoint('BSD', 'Open Source');
+//$DS->addPoint('Linux', 'Open Source');
+//$DS->addPoint('Microsoft', 'Proprietary');
+//$DS->addPoint('Micro', 'Proprietary');
+//$DS->addPoint('Minisoft', 'Proprie');
+//$DS->addPoint('Miniority', 'Proprias');
+//
+//$Plot =& $Plotarea->addNew('scatter', $DS);
+//$Marker =& Image_Graph::factory('Image_Graph_Marker_Plus');
+//$Marker->setFillColor('red');
+//$Marker->setLineColor('black');
+//$Plot->setMarker($Marker);
+//
+//$Plot2 =& $Plotarea->addNew('scatter', $DS2);
+//$Marker =& Image_Graph::factory('Image_Graph_Marker_Cross');
+//$Marker->setFillColor('blue');
+//$Marker->setLineColor('black');
+//$Plot2->setMarker($Marker);
+//
+//$Graph->done();
+
 $DS =& Image_Graph::factory('dataset');
-$DS->addPoint('Apache', 'Open Source');
-$DS->addPoint('BSD', 'Open Source');
-$DS->addPoint('Linux', 'Open Source');
-$DS->addPoint('Microsoft', 'Proprietary');
-$DS->addPoint('Micro', 'Proprietary');
-$DS->addPoint('Minisoft', 'Proprie');
-$DS->addPoint('Millisoft', 'Prop');
+$DS->addPoint('Germany', 'England');
+$DS->addPoint('Denmark', 'France');
+$DS->addPoint('Sweden', 'Denmark');
+$DS->addPoint('England', 'France');
+$DS->addPoint('Norway', 'Finland');
+$DS->addPoint('Denmark', 'Finland');
+$DS->addPoint('Iceland', 'Germany');
+$DS->addPoint('Norway', 'France');
 
 $DS2 =& Image_Graph::factory('dataset');
-$DS->addPoint('Apache', 'Open Source');
-$DS->addPoint('BSD', 'Open Source');
-$DS->addPoint('Linux', 'Open Source');
-$DS->addPoint('Microsoft', 'Proprietary');
-$DS->addPoint('Micro', 'Proprietary');
-$DS->addPoint('Minisoft', 'Proprie');
-$DS->addPoint('Miniority', 'Proprias');
+$DS2->addPoint('Sweden', 'France');
+$DS2->addPoint('Austria', 'Germany');
+$DS2->addPoint('Norway', 'Holland');
+$DS2->addPoint('Denmark', 'Germany');
+$DS2->addPoint('Sweden', 'Holland');
+$DS2->addPoint('Iceland', 'Denmark');
 
 $Plot =& $Plotarea->addNew('scatter', $DS);
-//$Plot->setLineColor('red');
-
-$Plot2 =& $Plotarea->addNew('scatter', $DS2);
 $Marker =& Image_Graph::factory('Image_Graph_Marker_Cross');
 $Marker->setFillColor('blue');
 $Marker->setLineColor('black');
 $Plot->setMarker($Marker);
 
-$Marker =& Image_Graph::factory('Image_Graph_Marker_Cross');
-$Marker->setFillColor('red');
-$Marker->setLineColor('black');
-$Plot2->setMarker($Marker);
+$Plot2 =& $Plotarea->addNew('scatter', $DS2);
+$Marker2 =& Image_Graph::factory('Image_Graph_Marker_Plus');
+$Marker2->setFillColor('yellow');
+$Marker2->setLineColor('black');
+$Plot2->setMarker($Marker2);
 
 $Graph->done();
-
-//$DS =& Image_Graph::factory('dataset');
-//$DS->addPoint('Germany', 'England');
-//$DS->addPoint('Denmark', 'France');
-//$DS->addPoint('Sweden', 'Denmark');
-//$DS->addPoint('England', 'France');
-//$DS->addPoint('Norway', 'Finland');
-//$DS->addPoint('Denmark', 'Finland');
-//$DS->addPoint('Iceland', 'Germany');
-//$DS->addPoint('Norway', 'France');
-//
-//$DS2 =& Image_Graph::factory('dataset');
-//$DS2->addPoint('Sweden', 'France');
-//$DS2->addPoint('Austria', 'Germany');
-//$DS2->addPoint('Norway', 'Holland');
-//$DS2->addPoint('Denmark', 'Germany');
-//$DS2->addPoint('Sweden', 'Holland');
-//$DS2->addPoint('Iceland', 'Denmark');
-//
-//$Plot =& $Plotarea->addNew('scatter', $DS);
-//$Marker =& Image_Graph::factory('Image_Graph_Marker_Cross');
-//$Marker->setFillColor('blue');
-//$Marker->setLineColor('black');
-//$Plot->setMarker($Marker);
-//
-//$Plot2 =& $Plotarea->addNew('scatter', $DS2);
-//$Marker2 =& Image_Graph::factory('Image_Graph_Marker_Plus');
-//$Marker2->setFillColor('yellow');
-//$Marker2->setLineColor('black');
-//$Plot2->setMarker($Marker2);
-//
-//$Graph->done();
 ?>

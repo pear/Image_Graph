@@ -560,15 +560,15 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
     /**
      * Hides the axis
      */
-    function hideAxis()
+    function hideAxis($axis = false)
     {
-        if ($this->_axisX != null) {
+        if (((!$axis) || ($axis === $this->_axisX) || ($axis === 'x')) && ($this->_axisX != null)) {
             $this->_axisX->hide();
         }            
-        if ($this->_axisY != null) {
+        if (((!$axis) || ($axis === $this->_axisY) || ($axis === 'y')) && ($this->_axisY != null)) {
             $this->_axisY->hide();
         }            
-        if ($this->_axisYSecondary != null) {
+        if (((!$axis) || ($axis === $this->_axisYSecondary) || ($axis === 'y_sec')) && ($this->_axisYSecondary != null)) {
             $this->_axisYSecondary->hide();
         }            
     }
@@ -616,8 +616,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
      * @access private
      */
     function _updateCoords()
-    {
-        
+    {       
         if (is_array($this->_elements)) {
             $keys = array_keys($this->_elements);
             foreach ($keys as $key) {
@@ -658,7 +657,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
             $intersectX = $this->_axisX->_getAxisIntersection();
             $sizeX = $this->_axisX->_size();
             $this->_axisX->_setCoords($left, $top, $right, $bottom);
-            $this->_axisX->_updateCoords();
+            $this->_axisX->_updateCoords();            
         }
         
         if ($this->_axisY !== null) {
@@ -677,7 +676,6 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
         
         $axisCoordAdd = array('left' => 0, 'right' => 0, 'top' => 0, 'bottom' => 0);
              
-        
         if ($this->_axisY != null) {
             if ($this->_axisX != null) {                
                 $pos = $this->_axisX->_intersectPoint($intersectY['value']);                
@@ -686,8 +684,8 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
             }
 
             if ($this->_horizontal) {
-                if (($pos - $sizeY) > $bottom) {
-                    $axisCoordAdd['bottom'] = ($pos - $sizeY) - $bottom;
+                if (($pos + $sizeY) > $bottom) {
+                    $axisCoordAdd['bottom'] = ($pos + $sizeY) - $bottom;                    
                     // the y-axis position needs to be recalculated!                
                 } else {            
                     // top & bottom may need to be adjusted when the x-axis has been
@@ -727,7 +725,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
             }
             
             if ($this->_horizontal) {
-                if (($pos + $sizeYsec) < $top) {
+                if (($pos - $sizeYsec) < $top) {
                     $axisCoordAdd['top'] = $top - ($pos - $sizeYsec);
                     // the secondary y-axis position need to be recalculated
                 } else {
@@ -778,8 +776,8 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
             }
              
             if ($this->_horizontal) {
-                if (($pos + $sizeX) < $left) {
-                    $axisCoordAdd['bottom'] = $left - ($pos - $sizeX);
+                if (($pos - $sizeX) < $left) {
+                    $axisCoordAdd['left'] = $left - ($pos - $sizeX);
                     $pos = $left + $sizeX;
                 }
                           
@@ -787,7 +785,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
                     $pos - $sizeX,
                     $top + $axisCoordAdd['top'],
                     $pos,
-                    $bottom - $axisCoordAdd['right']
+                    $bottom - $axisCoordAdd['bottom']
                 );
                 $this->_axisX->_updateCoords();
             }

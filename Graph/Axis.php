@@ -1317,9 +1317,9 @@ require_once 'Image/Graph/Plotarea/Element.php';
                     $this->_canvas->line(
                         array(
                             'x0' => $labelPosition,
-                            'y0' => $this->_top - $tickStart,
+                            'y0' => $this->_bottom - $tickStart,
                             'x1' => $labelPosition,
-                            'y1' => $this->_top - $tickEnd
+                            'y1' => $this->_bottom - $tickEnd
                         )
                     );
                 }
@@ -1403,8 +1403,8 @@ require_once 'Image/Graph/Plotarea/Element.php';
                 }
                 else {
                     $y = $this->_top + $this->height() / 2;
-                    $x = $this->_right;
-                    $this->write($x, $y, $this->_title, IMAGE_GRAPH_ALIGN_RIGHT + IMAGE_GRAPH_ALIGN_CENTER_Y, $this->_getTitleFont());
+                    $x = $this->_left;
+                    $this->write($x, $y, $this->_title, IMAGE_GRAPH_ALIGN_LEFT + IMAGE_GRAPH_ALIGN_CENTER_Y, $this->_getTitleFont());
                 }
             }
         } elseif ($this->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY) {
@@ -1434,9 +1434,9 @@ require_once 'Image/Graph/Plotarea/Element.php';
 
             if ($this->_title) {
                 if ($this->_transpose) {
-                    $y = $this->_bottom;
+                    $y = $this->_top;
                     $x = $this->_left + $this->width() / 2;
-                    $this->write($x, $y, $this->_title, IMAGE_GRAPH_ALIGN_CENTER_X + IMAGE_GRAPH_ALIGN_BOTTOM, $this->_getTitleFont());
+                    $this->write($x, $y, $this->_title, IMAGE_GRAPH_ALIGN_CENTER_X + IMAGE_GRAPH_ALIGN_TOP, $this->_getTitleFont());
                 }
                 else {
                     $y = $this->_top + $this->height() / 2;
@@ -1471,9 +1471,9 @@ require_once 'Image/Graph/Plotarea/Element.php';
 
             if ($this->_title) {
                 if ($this->_transpose) {
-                    $y = $this->_top;
+                    $y = $this->_bottom;
                     $x = $this->_left + $this->width() / 2;
-                    $this->write($x, $y, $this->_title, IMAGE_GRAPH_ALIGN_CENTER_X + IMAGE_GRAPH_ALIGN_TOP, $this->_getTitleFont());
+                    $this->write($x, $y, $this->_title, IMAGE_GRAPH_ALIGN_CENTER_X + IMAGE_GRAPH_ALIGN_BOTTOM, $this->_getTitleFont());
                 }
                 else {
                     $y = $this->_top + $this->height() / 2;
@@ -1634,6 +1634,7 @@ require_once 'Image/Graph/Plotarea/Element.php';
             }
         }
         $this->_canvas->endGroup();        
+
         return true;
     }
 

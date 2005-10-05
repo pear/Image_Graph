@@ -144,8 +144,7 @@ $ArrayData =& Image_Graph::factory('Image_Graph_DataPreprocessor_Array',
 // use the data label array on the X axis
 $AxisX->setDataPreprocessor($ArrayData);    
 $AxisX->setFontAngle('vertical');
-$AxisX->setAxisIntersection('max');
-$AxisX->setLabelOption('position', 'inside');
+$AxisX->setTitle('Very obvious', array('angle' => 0, 'size' => 10));
 
 $Plotarea_BarAndLine->setAxisPadding(array('left' => 20, 'right' => 20));
            

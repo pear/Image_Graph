@@ -112,22 +112,31 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
             $total = $this->_getTotals();
         }
 
-        $width = $this->width() / ($this->_maximumX() + 2) / 2;
+        if ($this->_parent->_horizontal) {
+            $width = $this->height() / ($this->_maximumX() + 2) / 2;
+        }
+        else {
+            $width = $this->width() / ($this->_maximumX() + 2) / 2;
+        }
 
         reset($this->_dataset);
         $key = key($this->_dataset);
         $dataset =& $this->_dataset[$key];
 
         $first = $dataset->first();
-        $point = array ('X' => $first['X'], 'Y' => '#min_pos#');
-        $base[] = $this->_pointY($point) + ($this->_parent->_horizontal ? $width : 0);
-        $first = $this->_pointX($point) - ($this->_parent->_horizontal ? 0 : $width);
-        $base[] = $first;
-
         $last = $dataset->last();
+
+        $point = array ('X' => $first['X'], 'Y' => '#min_pos#');
+        $firstY = $this->_pointY($point) + ($this->_parent->_horizontal ? $width : 0);
+        $base[] = $firstY; 
+        $firstX = $this->_pointX($point) - ($this->_parent->_horizontal ? 0 : $width);
+        $base[] = $firstX;
+        
         $point = array ('X' => $last['X'], 'Y' => '#min_pos#');
-        $base[] = $this->_pointY($point);// - ($this->_parent->_horizontal ? $width : 0);
+        $base[] = $this->_pointY($point) - ($this->_parent->_horizontal ? $width : 0);
         $base[] = $this->_pointX($point) + ($this->_parent->_horizontal ? 0 : $width);
+
+        $first = ($this->_parent->_horizontal ? $firstY : $firstX);
 
         $keys = array_keys($this->_dataset);
         foreach ($keys as $key) {
@@ -152,10 +161,18 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
                 $current[$x] += $point['Y'];
                 $point = $p;
 
-                $x0 = $last;
-                $y0 = $this->_pointY($point);
-                $last = $x1 = $this->_pointX($point) + $width;
-                $y1 = $this->_pointY($point);
+                if ($this->_parent->_horizontal) {
+                    $x0 = $this->_pointX($point);
+                    $y0 = $last;
+                    $x1 = $this->_pointX($point);
+                    $last = $y1 = $this->_pointY($point) - $width;
+                }
+                else {
+                    $x0 = $last;
+                    $y0 = $this->_pointY($point);
+                    $last = $x1 = $this->_pointX($point) + $width;
+                    $y1 = $this->_pointY($point);
+                }            
                 $polygon[] = $x0; $base[] = $y0;
                 $polygon[] = $y0; $base[] = $x0;
                 $polygon[] = $x1; $base[] = $y1;

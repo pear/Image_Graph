@@ -796,11 +796,11 @@ class Image_Graph extends Image_Graph_Element
                 $this->_bottom - 10);
         }
 
-        $result =  $this->_updateCoords();        
+        $result = $this->_updateCoords();        
         if (PEAR::isError($result)) {
             return $result;
         }
-        
+
         if ($this->_getBackground()) {
             $this->_canvas->rectangle(
             	array(

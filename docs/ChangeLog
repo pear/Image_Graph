@@ -1,6 +1,12 @@
 *************************
  Image_Graph - Changelog
 *************************
+Version 0.7.1-alpha [2005-xxx-xx] - Jesper Veggerby <pear.nosey@veggerby.dk>
+     * Fixed Bug #5415 "Axis's wrong when plot is Dot/Scatter"
+     * Fixed Bug #5607 "X Axis Labels align to right"
+     * Fixed a problem with horizontal plots and axis labels and titles not showing/aligning properly
+     * Fixed a problem with horizontal Step plot
+     
 Version 0.7.0-alpha [2005-Sep-30] - Jesper Veggerby <pear.nosey@veggerby.dk>
     * Added Image_Graph_Plot_Odo (thanks Maxime Delorme)
     * Added Image_Graph_DataSelector_Values (thanks Paolo)
