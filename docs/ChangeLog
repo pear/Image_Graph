@@ -1,7 +1,7 @@
 *************************
  Image_Graph - Changelog
 *************************
-Version 0.7.1-alpha [2005-xxx-xx] - Jesper Veggerby <pear.nosey@veggerby.dk>
+Version 0.7.1-alpha [2005-Oct-05] - Jesper Veggerby <pear.nosey@veggerby.dk>
      * Fixed Bug #5415 "Axis's wrong when plot is Dot/Scatter"
      * Fixed Bug #5607 "X Axis Labels align to right"
      * Fixed a problem with horizontal plots and axis labels and titles not showing/aligning properly
