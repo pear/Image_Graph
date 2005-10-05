@@ -1396,7 +1396,7 @@ require_once 'Image/Graph/Plotarea/Element.php';
             $this->_canvas->line($data);
 
             if ($this->_title) {
-                if ($this->_transpose) {
+                if (!$this->_transpose) {
                     $y = $this->_bottom;
                     $x = $this->_left + $this->width() / 2;
                     $this->write($x, $y, $this->_title, IMAGE_GRAPH_ALIGN_CENTER_X + IMAGE_GRAPH_ALIGN_BOTTOM, $this->_getTitleFont());
