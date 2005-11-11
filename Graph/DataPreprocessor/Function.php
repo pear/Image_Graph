@@ -84,7 +84,7 @@ class Image_Graph_DataPreprocessor_Function extends Image_Graph_DataPreprocessor
     function _process($value)
     {
         $function = $this->_dataFunction;
-        return $function ($value);
+        return call_user_func($function, $value);
     }
 
 }
