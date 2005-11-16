@@ -616,19 +616,21 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
      * @access private
      */
     function _updateCoords()
-    {       
+    {               
         if (is_array($this->_elements)) {
             $keys = array_keys($this->_elements);
             foreach ($keys as $key) {
                 $element =& $this->_elements[$key];
-                if (is_a($element, 'Image_Graph_Plot')) {
+                if (is_a($element, 'Image_Graph_Plot')) { 
                     if (((is_a($element, 'Image_Graph_Plot_Bar')) ||
                         (is_a($element, 'Image_Graph_Plot_Step')) ||
                         (is_a($element, 'Image_Graph_Plot_Dot')) ||
                         (is_a($element, 'Image_Graph_Plot_CandleStick')) ||
                         (is_a($element, 'Image_Graph_Plot_BoxWhisker')) ||
                         (is_a($element, 'Image_Graph_Plot_Impulse'))) &&
-                        ($this->_axisX != null))
+                        ($this->_axisX != null) &&
+                        (strtolower(get_class($this->_axisX)) != 'image_graph_axis') // do not push plot if x-axis is linear
+                        )
                     {
                        $this->_axisX->_pushValues();
                     }
