@@ -244,6 +244,9 @@ class Image_Graph_Common
         foreach ($params as $name => $key) {
             if (isset($parameters)) {
                 $parameters .= ' ';
+            } 
+            else {
+                $parameters = '';
             }
             $parameters .= $name . '=' . $key;
         }        
