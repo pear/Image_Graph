@@ -639,7 +639,8 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
         if (is_array($this->_dataset)) {
 
             $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
-
+            $this->_clip(true);
+            
             $totals = $this->_getTotals();
             $totals['CENTER_X'] = (int) (($this->_left + $this->_right) / 2);
             $totals['CENTER_Y'] = (int) (($this->_top + $this->_bottom) / 2);
@@ -710,6 +711,7 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
                 }
             }
             unset($keys);
+            $this->_clip(false);
             $this->_canvas->endGroup();
         }
     }

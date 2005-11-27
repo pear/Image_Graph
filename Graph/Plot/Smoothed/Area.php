@@ -85,6 +85,8 @@ class Image_Graph_Plot_Smoothed_Area extends Image_Graph_Plot_Smoothed_Bezier
         }
 
         $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
+        $this->_clip(true);
+        
         $keys = array_keys($this->_dataset);
         foreach ($keys as $key) {
             $dataset =& $this->_dataset[$key];
@@ -133,6 +135,7 @@ class Image_Graph_Plot_Smoothed_Area extends Image_Graph_Plot_Smoothed_Bezier
         }
         unset($keys);
         $this->_drawMarker();
+        $this->_clip(false);
         $this->_canvas->endGroup();
         return true;
     }

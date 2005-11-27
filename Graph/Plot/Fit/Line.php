@@ -84,6 +84,7 @@ class Image_Graph_Plot_Fit_Line extends Image_Graph_Plot
         }
 
         $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
+        $this->_clip(true);
         $keys = array_keys($this->_dataset);
         foreach ($keys as $key) {
             $dataset =& $this->_dataset[$key];
@@ -107,6 +108,7 @@ class Image_Graph_Plot_Fit_Line extends Image_Graph_Plot
                 )
             );
         }
+        $this->_clip(false);
         $this->_canvas->endGroup();
         
         return true;

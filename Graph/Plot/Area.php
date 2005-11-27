@@ -86,8 +86,11 @@ class Image_Graph_Plot_Area extends Image_Graph_Plot
         if (parent::_done() === false) {
             return false;
         }
-
+        
         $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
+
+        $this->_clip(true);        
+
         $base = array();
         if ($this->_multiType == 'stacked') {
             reset($this->_dataset);
@@ -179,7 +182,10 @@ class Image_Graph_Plot_Area extends Image_Graph_Plot
         }
         unset($keys);
         $this->_drawMarker();
+        $this->_clip(false);
+                
         $this->_canvas->endGroup();
+
         return true;
     }
 

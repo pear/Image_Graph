@@ -133,6 +133,8 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
 
         $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
 
+        $this->_clip(true);        
+
         if ($this->_width == 'auto') {
             $width = $this->_parent->_labelDistance(IMAGE_GRAPH_AXIS_X) / 2;            
         } elseif ($this->_width['unit'] == '%') {
@@ -293,8 +295,11 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
         unset($keys);
 
         $this->_drawMarker();
+
+        $this->_clip(false);        
         
         $this->_canvas->endGroup();        
+
         return true;
     }
 }

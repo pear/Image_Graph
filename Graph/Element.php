@@ -467,6 +467,27 @@ class Image_Graph_Element extends Image_Graph_Common
     }
 
     /**
+     * Clip the canvas to the coordinates of the element
+     * 
+     * @param $enable bool Whether clipping should be enabled or disabled
+     * @access protected
+     */
+    function _clip($enable)
+    {
+        $this->_canvas->setClipping(
+            ($enable ?
+                array(
+                    'x0' => min($this->_left, $this->_right),
+                    'y0' => min($this->_top, $this->_bottom),
+                    'x1' => max($this->_left, $this->_right),
+                    'y1' => max($this->_top, $this->_bottom)
+                )
+                : false
+            )
+        );
+    }
+
+    /**
      * Sets the coordinates of the element
      *
      * @param int $left The leftmost pixel of the element on the canvas

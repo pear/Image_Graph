@@ -59,6 +59,7 @@ class Image_Graph_Plot_Smoothed_Radar extends Image_Graph_Plot_Smoothed_Bezier
     function _done()
     {
         $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
+        $this->_clip(true);
         if (is_a($this->_parent, 'Image_Graph_Plotarea_Radar')) {
             $keys = array_keys($this->_dataset);
             foreach ($keys as $key) {
@@ -131,6 +132,7 @@ class Image_Graph_Plot_Smoothed_Radar extends Image_Graph_Plot_Smoothed_Bezier
             unset($keys);
         }
         $this->_drawMarker();
+        $this->_clip(false);
         $this->_canvas->endGroup($this->_title);
         return parent::_done();
     }

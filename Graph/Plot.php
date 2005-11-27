@@ -704,16 +704,22 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
             $dataset->_reset();
             while ($point = $dataset->_next()) {
                 $x = $point['X'];
-                $total['ALL_SUM_Y'] += $point['Y'];
-                if (isset($total['TOTAL_Y'][$x])) {
-                    $total['TOTAL_Y'][$x] += $point['Y'];
-                } else {
-                    $total['TOTAL_Y'][$x] = $point['Y'];
+                
+                if (is_numeric($point['Y'])) {
+                    $total['ALL_SUM_Y'] += $point['Y'];
+                    if (isset($total['TOTAL_Y'][$x])) {
+                        $total['TOTAL_Y'][$x] += $point['Y'];
+                    } else {
+                        $total['TOTAL_Y'][$x] = $point['Y'];
+                    }
                 }
-                if (isset($total['TOTAL_X'][$x])) {
-                    $total['TOTAL_X'][$x] += $point['X'];
-                } else {
-                    $total['TOTAL_X'][$x] = $point['X'];
+                
+                if (is_numeric($point['X'])) {
+                    if (isset($total['TOTAL_X'][$x])) {
+                        $total['TOTAL_X'][$x] += $point['X'];
+                    } else {
+                        $total['TOTAL_X'][$x] = $point['X'];
+                    }
                 }
             }
         }

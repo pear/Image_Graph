@@ -85,6 +85,7 @@ class Image_Graph_Plot_Radar extends Image_Graph_Plot
     function _done()
     {
         $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
+        $this->_clip(true);
         if (is_a($this->_parent, 'Image_Graph_Plotarea_Radar')) {
             $keys = array_keys($this->_dataset);
             foreach ($keys as $key) {
@@ -107,7 +108,8 @@ class Image_Graph_Plot_Radar extends Image_Graph_Plot
         }
         $this->_drawMarker();
 
-        $this->_canvas->endGroup();
+        $this->_clip(false);
+        $this->_canvas->endGroup();        
         return parent::_done();
     }
 

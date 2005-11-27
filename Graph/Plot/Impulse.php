@@ -80,7 +80,7 @@ class Image_Graph_Plot_Impulse extends Image_Graph_Plot
         }
         
         $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
-        
+        $this->_clip(true);       
 
         if ($this->_multiType == 'stacked100pct') {
             $total = $this->_getTotals();
@@ -194,6 +194,7 @@ class Image_Graph_Plot_Impulse extends Image_Graph_Plot
         }
         unset($keys);
         $this->_drawMarker();
+        $this->_clip(false);
         $this->_canvas->endGroup();        
         return true;
     }

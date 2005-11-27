@@ -1,6 +1,16 @@
 *************************
  Image_Graph - Changelog
 *************************
+Version 0.x.x alpha [2005-xxx-xx] - Jesper Veggerby <pear.nosey@veggerby.dk>
+     * Added Pie chart support for grouping items with values below a specified threshold in a "the rest" group
+     * Added possibility to set color of axis ticks (thanks to bdondo from forum)
+     * Added clipping support, causing forceMinimum() and forceMaximum() to show expected results
+     * Modified axis arrows, so that an axis with all negative values, the arrow will be shown at the minimum value instead of maximum
+     * Fixed a bug with Image_Graph_DataPreprocessor_Function not working, when callback function is an object method
+     * Fixed a bug with Candlestick, Band and Box & Whisker plots not working when using markers
+     * Fixed Bug #6024 "Undefined variable: parameters"
+     * Fixed Bug #6085 "Graph doesn't understand a numeric variable extracted from the GET method."
+     
 Version 0.7.1-alpha [2005-Oct-05] - Jesper Veggerby <pear.nosey@veggerby.dk>
      * Fixed Bug #5415 "Axis's wrong when plot is Dot/Scatter"
      * Fixed Bug #5607 "X Axis Labels align to right"

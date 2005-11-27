@@ -93,7 +93,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      */
     function _getMaximum()
     {
-        return count($this->_labels) - ($this->_pushValues ? 0 : 1);
+        return count($this->_labels) - 1;
     }
 
     /**

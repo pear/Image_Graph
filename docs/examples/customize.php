@@ -96,7 +96,7 @@ $AxisY->setLabelOptions(
         'font' => array(
             'size' => 3,
             'color' => 'red'
-        )
+        )       
     ), 2
 );  
 $AxisY->setLabelOption('showoffset', true, 1);
