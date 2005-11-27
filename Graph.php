@@ -162,9 +162,7 @@ class Image_Graph extends Image_Graph_Element
             $this->_canvas =& $params;
             $width = $this->_canvas->getWidth();
             $height = $this->_canvas->getHeight();
-        }
-
-        if (is_int($params)) {
+        } elseif (is_numeric($params)) {
             $width = $params;
         }
 
