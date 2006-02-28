@@ -1172,9 +1172,9 @@ require_once 'Image/Graph/Plotarea/Element.php';
                             } else {
                                 $this->write(
                                     $labelPosition,
-                                    $this->_top + 3 + $offset,                                                                   
+                                    $this->_top + 6 + $offset + $font['size'] * (substr_count($labelText, "\n") + 1),                                                                   
                                     $labelText,
-                                    IMAGE_GRAPH_ALIGN_TOP | IMAGE_GRAPH_ALIGN_CENTER_X,
+                                    IMAGE_GRAPH_ALIGN_BOTTOM | IMAGE_GRAPH_ALIGN_CENTER_X,
                                     $font
                                 );
                             }
@@ -1203,9 +1203,9 @@ require_once 'Image/Graph/Plotarea/Element.php';
                             if ($labelInside) {
                                 $this->write(
                                     $labelPosition,
-                                    $this->_bottom + 3 + $offset,
+                                    $this->_bottom + 6 + $offset + $font['size'] * (substr_count($labelText, "\n") + 1),
                                     $labelText,
-                                    IMAGE_GRAPH_ALIGN_TOP | IMAGE_GRAPH_ALIGN_CENTER_X,
+                                    IMAGE_GRAPH_ALIGN_BOTTOM | IMAGE_GRAPH_ALIGN_CENTER_X,
                                     $font
                                 );
                             } else {
@@ -1266,12 +1266,12 @@ require_once 'Image/Graph/Plotarea/Element.php';
                                     IMAGE_GRAPH_ALIGN_CENTER_X | IMAGE_GRAPH_ALIGN_BOTTOM,
                                     $font
                                 );
-                            } else {
+                            } else {                                
                                 $this->write(
                                     $labelPosition,
-                                    $this->_top + 3 + $offset,
+                                    $this->_top + 6 + $offset + $font['size'] * (substr_count($labelText, "\n") + 1),
                                     $labelText,
-                                    IMAGE_GRAPH_ALIGN_CENTER_X | IMAGE_GRAPH_ALIGN_TOP,
+                                    IMAGE_GRAPH_ALIGN_CENTER_X | IMAGE_GRAPH_ALIGN_BOTTOM,
                                     $font
                                 );
                             }

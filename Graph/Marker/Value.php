@@ -72,7 +72,7 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
     function Image_Graph_Marker_Value($useValue = IMAGE_GRAPH_VALUE_X)
     {
         parent::Image_Graph_Marker();
-        $this->_padding = 2;
+        $this->_padding = array('left' => 2, 'top' => 2, 'right' => 2, 'bottom' => 2);
         $this->_useValue = $useValue;
         $this->_fillStyle = 'white';
         $this->_borderStyle = 'black';
@@ -192,8 +192,8 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
 
         $width = $this->_canvas->textWidth($value);
         $height = $this->_canvas->textHeight($value);
-        $offsetX = $width/2 + $this->_padding;
-        $offsetY = $height/2 + $this->_padding;
+        $offsetX = $width/2 + $this->_padding['left'];
+        $offsetY = $height/2 + $this->_padding['top'];
 
         $this->_getFillStyle();
         $this->_getBorderStyle();

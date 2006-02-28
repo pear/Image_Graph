@@ -119,7 +119,7 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
      */
     function _fillLeft()
     {
-        return $this->_left + $this->_padding;
+        return $this->_left + $this->_padding['left'];
     }
 
     /**
@@ -130,7 +130,7 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
      */
     function _fillTop()
     {
-        return $this->_top + $this->_padding;
+        return $this->_top + $this->_padding['top'];
     }
 
     /**
@@ -141,7 +141,7 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
      */
     function _fillRight()
     {
-        return $this->_right - $this->_padding;
+        return $this->_right - $this->_padding['right'];
     }
 
     /**
@@ -152,7 +152,7 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
      */
     function _fillBottom()
     {
-        return $this->_bottom - $this->_padding;
+        return $this->_bottom - $this->_padding['bottom'];
     }
 
     /**

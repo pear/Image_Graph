@@ -146,7 +146,7 @@ class Image_Graph_Element extends Image_Graph_Common
      * @var int
      * @access private
      */
-    var $_padding = 0;
+    var $_padding = array('left' => 0, 'top' => 0, 'right' => 0, 'bottom' => 0);
 
     /**
      * Sets the background fill style of the element
@@ -562,11 +562,26 @@ class Image_Graph_Element extends Image_Graph_Common
     /**
      * Sets padding of the element
      *
-     * @param int $padding Number of pixels the element should be padded with
+     * @param mixed $padding Number of pixels the element should be padded with
+     * or an array of paddings (left, top, right and bottom as index)
      */
     function setPadding($padding)
     {
-        $this->_padding = $padding;
+        if (is_array($padding)) {
+            $this->_padding = array();
+            $this->_padding['left'] = (isset($padding['left']) ? $padding['left'] : 0);         
+            $this->_padding['top'] = (isset($padding['top']) ? $padding['top'] : 0);         
+            $this->_padding['right'] = (isset($padding['right']) ? $padding['right'] : 0);         
+            $this->_padding['bottom'] = (isset($padding['bottom']) ? $padding['bottom'] : 0);         
+        }
+        else {
+            $this->_padding = array(
+                'left' => $padding,
+                'top' => $padding,
+                'right' => $padding,
+                'bottom' => $padding
+            );
+        }
     }
 
     /**
@@ -597,7 +612,7 @@ class Image_Graph_Element extends Image_Graph_Common
      */
     function _fillLeft()
     {
-        return $this->_left + $this->_padding;
+        return $this->_left + $this->_padding['left'];
     }
 
     /**
@@ -608,7 +623,7 @@ class Image_Graph_Element extends Image_Graph_Common
      */
     function _fillTop()
     {
-        return $this->_top + $this->_padding;
+        return $this->_top + $this->_padding['top'];
     }
 
     /**
@@ -619,7 +634,7 @@ class Image_Graph_Element extends Image_Graph_Common
      */
     function _fillRight()
     {
-        return $this->_right - $this->_padding;
+        return $this->_right - $this->_padding['right'];
     }
 
     /**
@@ -630,7 +645,7 @@ class Image_Graph_Element extends Image_Graph_Common
      */
     function _fillBottom()
     {
-        return $this->_bottom - $this->_padding;
+        return $this->_bottom - $this->_padding['bottom'];
     }
 
     /**

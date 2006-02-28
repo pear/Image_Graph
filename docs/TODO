@@ -22,15 +22,11 @@ Image_Graph_Plot_BoxWhisker
 Image_Graph_Plot_Line
 *** Consider new legend icon
 
-Image_Graph_Plot_Pie
-*** Group items together in one pie ("the rest") if less than a certain value/percentage
-
 Image_Graph_Plot_Smoothed_Radar
 *** Create legend sample for smoothed radar chart
 
 Image_Graph_Axis
 *** Create a method to align '0' of primary and secondary y-axis
-*** Values aren't properly cropped when "above" maximum or "below" minimum (i.e. graph should be cropped to plotarea!)
 
 Image_Graph_Axis_Composite
 *** Implement composite axis (i.e. linear from 0-10, log from 10-1000, and category from 1001, 1004, 10000, ...)

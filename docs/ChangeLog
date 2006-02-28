@@ -1,7 +1,7 @@
 *************************
  Image_Graph - Changelog
 *************************
-Version 0.x.x alpha [2005-xxx-xx] - Jesper Veggerby <pear.nosey@veggerby.dk>
+Version 0.7.2-alpha [2006-Fec-28] - Jesper Veggerby <pear.nosey@veggerby.dk>
      * Added Pie chart support for grouping items with values below a specified threshold in a "the rest" group
      * Added possibility to set color of axis ticks (thanks to bdondo from forum)
      * Added clipping support, causing forceMinimum() and forceMaximum() to show expected results
@@ -10,6 +10,12 @@ Version 0.x.x alpha [2005-xxx-xx] - Jesper Veggerby <pear.nosey@veggerby.dk>
      * Fixed a bug with Candlestick, Band and Box & Whisker plots not working when using markers
      * Fixed Bug #6024 "Undefined variable: parameters"
      * Fixed Bug #6085 "Graph doesn't understand a numeric variable extracted from the GET method."
+     * Fixed Bug #6919 "Isolated points in linegraphs with breaks drawn incorrectly"
+     * Fixed Bug #6921 "Marker not drawn for points with Y value == 0"
+     * Fixed Bug #6941 "Logarithmic axis values between 0 and 1"
+     * Fixed Request #5985 "Logarithmic Axis Minimum Value"
+     * Fixed a problem with labels not appearing on the same baseline
+     * Added possibility to specify padding on all edges of an element separately
      
 Version 0.7.1-alpha [2005-Oct-05] - Jesper Veggerby <pear.nosey@veggerby.dk>
      * Fixed Bug #5415 "Axis's wrong when plot is Dot/Scatter"

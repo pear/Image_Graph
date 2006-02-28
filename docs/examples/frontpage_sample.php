@@ -277,7 +277,7 @@ $Canvas =& Image_Canvas::factory('svg',
 // make the graph use this now instead
 $Graph->setCanvas($Canvas);
 
-// 're'-output the graph, but not using the SVG canvas
+// 're'-output the graph, but now using the SVG canvas
 $Graph->done(array('filename' => './output/frontpage_sample.svg'));
 
 /*
@@ -294,7 +294,7 @@ $Canvas =& Image_Canvas::factory('pdflib',
 // make the graph use this now instead
 $Graph->setCanvas($Canvas);
 
-// 're'-output the graph, but not using the PDF canvas
+// 're'-output the graph, but now using the PDF canvas
 $Graph->done(array('filename' => './output/frontpage_sample.pdf'));
 
 // create a new SWF canvas
@@ -307,7 +307,7 @@ $Canvas =& Image_Canvas::factory('swf',
 // make the graph use this now instead
 $Graph->setCanvas($Canvas);
 
-// 're'-output the graph, but not using the SWF canvas
+// 're'-output the graph, but now using the SWF canvas
 $Graph->done(array('filename' => './output/frontpage_sample.swf'));
 */
 ?>

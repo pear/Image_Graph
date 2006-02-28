@@ -34,30 +34,14 @@ Image_Graph is compatible with both PHP4 and PHP5.
   </maintainer>
   </maintainers>
  <release>
-  <version>0.7.0</version>
-  <date>2005-09-30</date>
+  <version>0.7.1</version>
+  <date>2005-10-05</date>
   <license>LGPL</license>
   <state>alpha</state>
-  <notes>* Added Image_Graph_Plot_Odo (thanks Maxime Delorme)
-* Added Image_Graph_DataSelector_Values (thanks Paolo)
-* Added best-fit line plot (Image_Graph_Plot_Fit_Line)
-* Added possibility to specify the pie plot diameter
-* Modified Image_Graph_Plot_CandleStick, it is now only necessary to specify &apos;open&apos; for first point (other &apos;open&apos; = previous &apos;close&apos;)
-* Changed Image_Graph_Plotarea::hideAxis() to actually hide the axis, not remove them
-* Added Image_Graph_Plotarea::clearAxis() to remove the axis
-* Fixed markers so that y values equal to null never shows markers
-* Fixed problem in Image_Graph_Plot_BoxWhisker causing an undefined method
-* Fixed problem with markers and horizontal plots
-* Fixed problem with axis not showing arrow-ends even if enabled
-* Fixed problem with an error &quot;Call to a member function on a non-object...&quot; in Common.php
-* Fixed a problem with Image_Graph_Dataset_Trivial when supplying a datarray as constructor parameter and Image_Graph_Fill_Array
-* Fixed Bug #5421 &quot;Documentation for Image_Graph constructor wrong&quot;
-* Fixed Bug #5502 &quot;Axis_Logarithmic::setAxisIntersection(&apos;max&apos;) is broken&quot;    
-* Fixed Bug #5504 &quot;PHP Notice: Undefined index: tohtml&quot;
-* Fixed PHP notice with Image_Graph::done() when using output to file
-* Fixed so it is possible to use array(R, G, B, a?) as fill color
-* Fixed issue with markers not rotating along with plot when using setStartingAngle()
-* Fixed trivial dataset so that it is possible to use &apos;id&apos; as key when populating dataset in constructor
+  <notes>* Fixed Bug #5415 &quot;Axis&apos;s wrong when plot is Dot/Scatter&quot;
+* Fixed Bug #5607 &quot;X Axis Labels align to right&quot;
+* Fixed a problem with horizontal plots and axis labels and titles not showing/aligning properly
+* Fixed a problem with horizontal Step plot
   </notes>
   <deps>
    <dep type="pkg" rel="ge" version="1.3.1" optional="no">PEAR</dep>
@@ -181,6 +165,7 @@ Image_Graph is compatible with both PHP4 and PHP5.
   <provides type="class" name="Image_Graph_DataSelector_EveryNthPoint" extends="Image_Graph_DataSelector" />
   <provides type="class" name="Image_Graph_DataSelector_NoZeros" extends="Image_Graph_DataSelector" />
   <provides type="class" name="Image_Graph_DataSelector_Values" extends="Image_Graph_DataSelector" />
+  <provides type="function" name="Image_Graph_DataSelector_Values::setValueArray" />
   <provides type="class" name="Image_Graph_Dataset_Function" extends="Image_Graph_Dataset" />
   <provides type="function" name="Image_Graph_Dataset_Function::addPoint" />
   <provides type="class" name="Image_Graph_Dataset_Random" extends="Image_Graph_Dataset_Trivial" />
@@ -327,6 +312,9 @@ Image_Graph is compatible with both PHP4 and PHP5.
    <file role="doc" baseinstalldir="Image" name="docs/examples/double_category_axis.php">
     <replace type="package-info" from="@package_version@" to="version"/>
    </file>
+   <file role="doc" baseinstalldir="Image" name="docs/examples/driver_filepdf.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
    <file role="doc" baseinstalldir="Image" name="docs/examples/driver_pdf.php">
     <replace type="package-info" from="@package_version@" to="version"/>
    </file>
@@ -352,6 +340,9 @@ Image_Graph is compatible with both PHP4 and PHP5.
     <replace type="package-info" from="@package_version@" to="version"/>
    </file>
    <file role="doc" baseinstalldir="Image" name="docs/examples/gradient_step.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="doc" baseinstalldir="Image" name="docs/examples/horizontal.php">
     <replace type="package-info" from="@package_version@" to="version"/>
    </file>
    <file role="doc" baseinstalldir="Image" name="docs/examples/html_image_map.php">
@@ -1114,6 +1105,17 @@ Image_Graph is compatible with both PHP4 and PHP5.
 * Fixed so it is possible to use array(R, G, B, a?) as fill color
 * Fixed issue with markers not rotating along with plot when using setStartingAngle()
 * Fixed trivial dataset so that it is possible to use &apos;id&apos; as key when populating dataset in constructor
+    </notes>
+   </release>
+   <release>
+    <version>0.7.1</version>
+    <date>2005-10-05</date>
+    <license>LGPL</license>
+    <state>alpha</state>
+    <notes>* Fixed Bug #5415 &quot;Axis&apos;s wrong when plot is Dot/Scatter&quot;
+* Fixed Bug #5607 &quot;X Axis Labels align to right&quot;
+* Fixed a problem with horizontal plots and axis labels and titles not showing/aligning properly
+* Fixed a problem with horizontal Step plot
     </notes>
    </release>
  </changelog>

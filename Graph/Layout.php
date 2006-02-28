@@ -71,7 +71,7 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
     function Image_Graph_Layout()
     {
         parent::Image_Graph_Element();
-        $this->_padding = 2;
+        $this->_padding = array('left' => 2, 'top' => 2, 'right' => 2, 'bottom' => 2);
     }
 
     /**
@@ -146,10 +146,10 @@ class Image_Graph_Layout extends Image_Graph_Plotarea_Element
             );
 
             $this->_setCoords(
-                $left + $this->_padding,
-                $top + $this->_padding,
-                $right - $this->_padding,
-                $bottom - $this->_padding
+                $left + $this->_padding['left'],
+                $top + $this->_padding['top'],
+                $right - $this->_padding['right'],
+                $bottom - $this->_padding['bottom']
             );
         }
     }

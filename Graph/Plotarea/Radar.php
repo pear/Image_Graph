@@ -54,7 +54,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
     function Image_Graph_Plotarea_Radar()
     {
         parent::Image_Graph_Element();
-        $this->_padding = 10;
+        $this->_padding = array('left' => 10, 'top' => 10, 'right' => 10, 'bottom' => 10);
         $this->_axisX =& Image_Graph::factory('Image_Graph_Axis_Radar');
         $this->_axisX->_setParent($this);
         $this->_axisY =& Image_Graph::factory('Image_Graph_Axis', IMAGE_GRAPH_AXIS_Y);

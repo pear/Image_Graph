@@ -115,7 +115,7 @@ class Image_Graph_Layout_Horizontal extends Image_Graph_Layout
             $this->_percentage = max(0, min(100, $percentage));
         }
         $this->_split();
-        $this->_padding = 0;
+        $this->_padding = array('left' => 0, 'top' => 0, 'right' => 0, 'bottom' => 0);
     }
 
     /**

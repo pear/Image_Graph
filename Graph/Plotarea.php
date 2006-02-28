@@ -133,7 +133,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
     {
         parent::Image_Graph_Layout();
 
-        $this->_padding = 5;
+        $this->_padding = array('left' => 5, 'top' => 5, 'right' => 5, 'bottom' => 5);;
 
         include_once 'Image/Graph.php';
 
@@ -645,10 +645,10 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
         $pctWidth = (int) ($this->width() * 0.05);
         $pctHeight = (int) ($this->height() * 0.05);
 
-        $left = $this->_left + $this->_padding;
-        $top = $this->_top + $this->_padding;
-        $right = $this->_right - $this->_padding;
-        $bottom = $this->_bottom - $this->_padding;
+        $left = $this->_left + $this->_padding['left'];
+        $top = $this->_top + $this->_padding['top'];
+        $right = $this->_right - $this->_padding['right'];
+        $bottom = $this->_bottom - $this->_padding['bottom'];
         
         // temporary place holder for axis point calculations
         $axisPoints['x'] = array($left, $top, $right, $bottom);

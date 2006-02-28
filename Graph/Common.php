@@ -241,14 +241,16 @@ class Image_Graph_Common
      */
     function _error($text, $params = false, $error_code = IMAGE_GRAPH_ERROR_GENERIC)
     {       
-        foreach ($params as $name => $key) {
-            if (isset($parameters)) {
-                $parameters .= ' ';
-            } 
-            else {
-                $parameters = '';
+        if ((is_array($params)) && (count($params) > 0)) {
+            foreach ($params as $name => $key) {
+                if (isset($parameters)) {
+                    $parameters .= ' ';
+                } 
+                else {
+                    $parameters = '';
+                }
+                $parameters .= $name . '=' . $key;
             }
-            $parameters .= $name . '=' . $key;
         }        
         $error =& PEAR::raiseError(
             $text .
