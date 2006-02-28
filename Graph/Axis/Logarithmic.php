@@ -81,31 +81,6 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
     }
 
     /**
-     * Forces the minimum value of the axis.
-     *
-     * For an logarithimc axis this is always 0
-     *
-     * @param double $minimum The minumum value to use on the axis
-     */
-    function forceMinimum($minimum)
-    {
-        parent::forceMinimum(0);
-    }
-
-    /**
-     * Gets the minimum value the axis will show.
-     *
-     * For an logarithimc axis this is always 0
-     *
-     * @return double The minumum value
-     * @access private
-     */
-    function _getMinimum()
-    {
-        return 0;
-    }
-
-    /**
      * Preprocessor for values, ie for using logarithmic axis
      *
      * @param double $value The value to preprocess
@@ -114,7 +89,7 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
      */
     function _value($value)
     {
-        return log10($value);
+        return log10($value) - log10($this->_minimum);
     }
 
     /**
@@ -148,7 +123,7 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
             return pow(10, $base+1);
         }
 
-        return 1;
+        return max(1, $this->_minimum);
     }
 
     /**
