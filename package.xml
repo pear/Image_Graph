@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
-<package version="1.0" packagerversion="1.4.1">
+<package version="1.0" packagerversion="1.4.7">
  <name>Image_Graph</name>
  <summary>A package for displaying (numerical) data as a graph/chart/plot.</summary>
  <description>Image_Graph provides a set of classes that creates graphs/plots/charts based on (numerical) data.
@@ -34,18 +34,29 @@ Image_Graph is compatible with both PHP4 and PHP5.
   </maintainer>
   </maintainers>
  <release>
-  <version>0.7.1</version>
-  <date>2005-10-05</date>
+  <version>0.7.2</version>
+  <date>2006-03-02</date>
   <license>LGPL</license>
   <state>alpha</state>
-  <notes>* Fixed Bug #5415 &quot;Axis&apos;s wrong when plot is Dot/Scatter&quot;
-* Fixed Bug #5607 &quot;X Axis Labels align to right&quot;
-* Fixed a problem with horizontal plots and axis labels and titles not showing/aligning properly
-* Fixed a problem with horizontal Step plot
+  <notes>* Added Pie chart support for grouping items with values below a specified threshold in a &quot;the rest&quot; group
+* Added possibility to set color of axis ticks (thanks to bdondo from forum)
+* Added clipping support, causing forceMinimum() and forceMaximum() to show expected results
+* Modified axis arrows, so that an axis with all negative values, the arrow will be shown at the minimum value instead of maximum
+* Fixed a bug with Image_Graph_DataPreprocessor_Function not working, when callback function is an object method
+* Fixed a bug with Candlestick, Band and Box &amp; Whisker plots not working when using markers
+* Fixed Bug #6024 &quot;Undefined variable: parameters&quot;
+* Fixed Bug #6085 &quot;Graph doesn&apos;t understand a numeric variable extracted from the GET method.&quot;
+* Fixed Bug #6919 &quot;Isolated points in linegraphs with breaks drawn incorrectly&quot;
+* Fixed Bug #6921 &quot;Marker not drawn for points with Y value == 0&quot;
+* Fixed Bug #6941 &quot;Logarithmic axis values between 0 and 1&quot;
+* Fixed Request #5985 &quot;Logarithmic Axis Minimum Value&quot;
+* Fixed a problem with labels not appearing on the same baseline
+* Added possibility to specify padding on all edges of an element separately
+* Updated some API documentation entries
   </notes>
   <deps>
    <dep type="pkg" rel="ge" version="1.3.1" optional="no">PEAR</dep>
-   <dep type="pkg" rel="ge" version="0.2.1" optional="no">Image_Canvas</dep>
+   <dep type="pkg" rel="ge" version="0.3.0" optional="no">Image_Canvas</dep>
    <dep type="pkg" rel="has" optional="yes">Numbers_Roman</dep>
    <dep type="pkg" rel="has" optional="yes">Numbers_Words</dep>
   </deps>
@@ -146,7 +157,6 @@ Image_Graph is compatible with both PHP4 and PHP5.
   <provides type="function" name="Image_Graph_Axis_Category::forceMaximum" />
   <provides type="function" name="Image_Graph_Axis_Category::setLabelInterval" />
   <provides type="class" name="Image_Graph_Axis_Logarithmic" extends="Image_Graph_Axis" />
-  <provides type="function" name="Image_Graph_Axis_Logarithmic::forceMinimum" />
   <provides type="class" name="Image_Graph_Axis_Radar" extends="Image_Graph_Axis_Category" />
   <provides type="function" name="Image_Graph_Axis_Radar::setDistanceFromEnd" />
   <provides type="class" name="Image_Graph_Axis_Marker_Area" extends="Image_Graph_Grid" />
@@ -260,6 +270,7 @@ Image_Graph is compatible with both PHP4 and PHP5.
   <provides type="function" name="Image_Graph_Plot_Pie::explode" />
   <provides type="function" name="Image_Graph_Plot_Pie::setStartingAngle" />
   <provides type="function" name="Image_Graph_Plot_Pie::setDiameter" />
+  <provides type="function" name="Image_Graph_Plot_Pie::setRestGroup" />
   <provides type="class" name="Image_Graph_Plot_Radar" extends="Image_Graph_Plot" />
   <provides type="class" name="Image_Graph_Plot_Step" extends="Image_Graph_Plot" />
   <provides type="class" name="Image_Graph_Plot_Fit_Line" extends="Image_Graph_Plot" />
@@ -269,6 +280,9 @@ Image_Graph is compatible with both PHP4 and PHP5.
   <provides type="class" name="Image_Graph_Plot_Smoothed_Radar" extends="Image_Graph_Plot_Smoothed_Bezier" />
   <provides type="class" name="Image_Graph_Plotarea_Element" extends="Image_Graph_Element" />
   <provides type="class" name="Image_Graph_Plotarea_Map" extends="Image_Graph_Plotarea" />
+  <provides type="function" name="Image_Graph_Plotarea_Map::hideAxis" />
+  <provides type="function" name="Image_Graph_Plotarea_Map::addMappoint" />
+  <provides type="function" name="Image_Graph_Plotarea_Map::addPoint" />
   <provides type="class" name="Image_Graph_Plotarea_Radar" extends="Image_Graph_Plotarea" />
   <provides type="class" name="Image_Graph" extends="Image_Graph_Element" />
   <provides type="function" name="Image_Graph::setCanvas" />
@@ -278,6 +292,9 @@ Image_Graph is compatible with both PHP4 and PHP5.
   <provides type="function" name="Image_Graph::setLog" />
   <provides type="function" name="Image_Graph::factory" />
   <provides type="function" name="Image_Graph::layoutFactory" />
+  <provides type="function" name="Image_Graph::horizontal" />
+  <provides type="function" name="Image_Graph::vertical" />
+  <provides type="function" name="Image_Graph::done" />
   <filelist>
    <file role="doc" baseinstalldir="Image" name="docs/ChangeLog">
     <replace type="package-info" from="@package_version@" to="version"/>
@@ -291,6 +308,9 @@ Image_Graph is compatible with both PHP4 and PHP5.
    <file role="doc" baseinstalldir="Image" name="docs/README">
     <replace type="package-info" from="@package_version@" to="version"/>
    </file>
+   <file role="doc" baseinstalldir="Image" name="docs/examples/all_negative.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
    <file role="doc" baseinstalldir="Image" name="docs/examples/antialias.php">
     <replace type="package-info" from="@package_version@" to="version"/>
    </file>
@@ -298,6 +318,9 @@ Image_Graph is compatible with both PHP4 and PHP5.
     <replace type="package-info" from="@package_version@" to="version"/>
    </file>
    <file role="doc" baseinstalldir="Image" name="docs/examples/category_axis_explanation.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="doc" baseinstalldir="Image" name="docs/examples/clipping.php">
     <replace type="package-info" from="@package_version@" to="version"/>
    </file>
    <file role="doc" baseinstalldir="Image" name="docs/examples/color_chart.php">
@@ -369,7 +392,13 @@ Image_Graph is compatible with both PHP4 and PHP5.
    <file role="doc" baseinstalldir="Image" name="docs/examples/log_axis.php">
     <replace type="package-info" from="@package_version@" to="version"/>
    </file>
+   <file role="doc" baseinstalldir="Image" name="docs/examples/log_axis_forcemin.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
    <file role="doc" baseinstalldir="Image" name="docs/examples/log_axis_intersect.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="doc" baseinstalldir="Image" name="docs/examples/log_axis_low.php">
     <replace type="package-info" from="@package_version@" to="version"/>
    </file>
    <file role="doc" baseinstalldir="Image" name="docs/examples/manual_labels.php">
@@ -466,6 +495,9 @@ Image_Graph is compatible with both PHP4 and PHP5.
     <replace type="package-info" from="@package_version@" to="version"/>
    </file>
    <file role="doc" baseinstalldir="Image" name="docs/examples/plot_pie.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_pie_rest.php">
     <replace type="package-info" from="@package_version@" to="version"/>
    </file>
    <file role="doc" baseinstalldir="Image" name="docs/examples/plot_pie_rotate.php">
@@ -1116,6 +1148,28 @@ Image_Graph is compatible with both PHP4 and PHP5.
 * Fixed Bug #5607 &quot;X Axis Labels align to right&quot;
 * Fixed a problem with horizontal plots and axis labels and titles not showing/aligning properly
 * Fixed a problem with horizontal Step plot
+    </notes>
+   </release>
+   <release>
+    <version>0.7.2</version>
+    <date>2006-03-02</date>
+    <license>LGPL</license>
+    <state>alpha</state>
+    <notes>* Added Pie chart support for grouping items with values below a specified threshold in a &quot;the rest&quot; group
+* Added possibility to set color of axis ticks (thanks to bdondo from forum)
+* Added clipping support, causing forceMinimum() and forceMaximum() to show expected results
+* Modified axis arrows, so that an axis with all negative values, the arrow will be shown at the minimum value instead of maximum
+* Fixed a bug with Image_Graph_DataPreprocessor_Function not working, when callback function is an object method
+* Fixed a bug with Candlestick, Band and Box &amp; Whisker plots not working when using markers
+* Fixed Bug #6024 &quot;Undefined variable: parameters&quot;
+* Fixed Bug #6085 &quot;Graph doesn&apos;t understand a numeric variable extracted from the GET method.&quot;
+* Fixed Bug #6919 &quot;Isolated points in linegraphs with breaks drawn incorrectly&quot;
+* Fixed Bug #6921 &quot;Marker not drawn for points with Y value == 0&quot;
+* Fixed Bug #6941 &quot;Logarithmic axis values between 0 and 1&quot;
+* Fixed Request #5985 &quot;Logarithmic Axis Minimum Value&quot;
+* Fixed a problem with labels not appearing on the same baseline
+* Added possibility to specify padding on all edges of an element separately
+* Updated some API documentation entries
     </notes>
    </release>
  </changelog>
