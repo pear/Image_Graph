@@ -135,8 +135,7 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
                         $this->_canvas->polygon(array('connect' => false, 'map_vertices' => true));
                     }
                     else {
-                        // ugly "visibility" override hack to avoid depending on new Image_Canvas
-                        $this->_canvas->_reset();
+                        $this->_canvas->reset();
                     }
                     $numPoints = 0;
                 } else {
@@ -157,8 +156,7 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
                 $this->_canvas->polygon(array('connect' => false, 'map_vertices' => true));
             }
             else {
-                // ugly "visibility" override hack to avoid depending on new Image_Canvas
-                $this->_canvas->_reset();
+                $this->_canvas->reset();
             }
         }
         unset($keys);
