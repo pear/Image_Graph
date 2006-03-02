@@ -31,9 +31,6 @@ Image_Graph_Axis
 Image_Graph_Axis_Composite
 *** Implement composite axis (i.e. linear from 0-10, log from 10-1000, and category from 1001, 1004, 10000, ...)
 
-Image_Graph_Axis_Logarithmic
-*** Implement logarithic axis minimum (other than 0)
-
 Image_Graph_Axis_Marker
 *** Implement a label mechanism when using axis markers
 

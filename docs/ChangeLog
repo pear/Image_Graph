@@ -1,7 +1,7 @@
 *************************
  Image_Graph - Changelog
 *************************
-Version 0.7.2-alpha [2006-Fec-28] - Jesper Veggerby <pear.nosey@veggerby.dk>
+Version 0.7.2-alpha [2006-Mar-02] - Jesper Veggerby <pear.nosey@veggerby.dk>
      * Added Pie chart support for grouping items with values below a specified threshold in a "the rest" group
      * Added possibility to set color of axis ticks (thanks to bdondo from forum)
      * Added clipping support, causing forceMinimum() and forceMaximum() to show expected results
@@ -16,6 +16,7 @@ Version 0.7.2-alpha [2006-Fec-28] - Jesper Veggerby <pear.nosey@veggerby.dk>
      * Fixed Request #5985 "Logarithmic Axis Minimum Value"
      * Fixed a problem with labels not appearing on the same baseline
      * Added possibility to specify padding on all edges of an element separately
+     * Updated some API documentation entries
      
 Version 0.7.1-alpha [2005-Oct-05] - Jesper Veggerby <pear.nosey@veggerby.dk>
      * Fixed Bug #5415 "Axis's wrong when plot is Dot/Scatter"
