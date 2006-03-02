@@ -63,6 +63,8 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
     {
         parent::Image_Graph_Axis($type);
         $this->showLabel(IMAGE_GRAPH_LABEL_MINIMUM + IMAGE_GRAPH_LABEL_MAXIMUM);
+        $this->_minimum = 1;
+        $this->_minimumSet = true;
     }
 
     /**
