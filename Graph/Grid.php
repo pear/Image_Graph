@@ -72,6 +72,20 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
      * @access private
      */
     var $_secondaryAxis = null;
+    
+    /**
+     * The starting point of the grid
+     * @var mixed
+     * @access private
+     */
+    var $_gridStart = '#min#';
+    
+    /**
+     * The ending point of the grid
+     * @var mixed
+     * @access private
+     */
+    var $_gridEnd = '#max#';
 
     /**
      * Set the primary axis: the grid should 'refer' to
@@ -111,7 +125,7 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
             }
             $secondaryAxisPoints[] = $firstValue;
         } else {
-            $secondaryAxisPoints = array ('#min#', '#max#');
+            $secondaryAxisPoints = array ($this->_gridStart, $this->_gridEnd);
         }
         return $secondaryAxisPoints;
     }
@@ -169,7 +183,21 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
         );
         parent::_updateCoords();
     }
-
+    
+    /**
+     * Sets the starting and ending points of the grid,
+     * these defaults to 'min' and 'max' which signals that the grid should
+     * span the entire the perpendicular axis
+     * @param mixed $start The starting value, use 'min' to start and "beginning"  of the perpendicular axis
+     * @param mixed $end The starting value, use 'min' to start and "end" of the perpendicular axis
+     */
+    function setAxisPoints($start = 'min', $end = 'max')
+    {
+        // no check for 'max' since it would make no sense
+        $this->_gridStart = ($start === 'min' ? '#min#' : $start);
+        // same - no check for 'min' 
+        $this->_gridEnd = ($end === 'max' ? '#max#' : $end);
+    }
 }
 
 ?>
