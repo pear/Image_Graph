@@ -572,7 +572,8 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
      */
     function &setRangeMarkerFillStyle(&$rangeMarkerFillStyle)
     {
-        $this->_rangeFillStyle = $rangeMarkerFillStyle;
+        $this->_rangeFillStyle = &$rangeMarkerFillStyle;
+        return $rangeMarkerFillStyle;
     }
 
     /**
