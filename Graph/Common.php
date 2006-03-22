@@ -124,7 +124,8 @@ class Image_Graph_Common
             $keys = array_keys($this->_elements);
             foreach ($keys as $key) {
                 if (is_object($this->_elements[$key])) {
-                    $this->_elements[$key]->_setParent($this);
+                    $this_ =& $this;
+                    $this->_elements[$key]->_setParent($this_);
                     $result =& $this->_elements[$key]->_reset();
                     if (PEAR::isError($result)) {
                         return $result;
