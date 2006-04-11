@@ -29,9 +29,9 @@
  */
 
 /**
- * Include file Image/Graph/Element.php
+ * Include file Image/Graph/Plotarea/Element.php
  */
-require_once 'Image/Graph/Element.php';
+require_once 'Image/Graph/Plotarea/Element.php';
 
 /**
  * A grid displayed on the plotarea.
