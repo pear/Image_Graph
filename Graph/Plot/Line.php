@@ -160,8 +160,9 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
             }
         }
         unset($keys);
-        $this->_drawMarker();
         $this->_clip(false);
+
+        $this->_drawMarker();
         $this->_canvas->endGroup();
         return true;
     }

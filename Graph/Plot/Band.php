@@ -192,9 +192,9 @@ class Image_Graph_Plot_Band extends Image_Graph_Plot
             $this->_canvas->polygon(array('connect' => true, 'map_vertices' => true));
         }
         unset($keys);
-        $this->_drawMarker();
         $this->_clip(false);        
 
+        $this->_drawMarker();
         $this->_canvas->endGroup();
 
         return true;

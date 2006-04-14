@@ -106,9 +106,9 @@ class Image_Graph_Plot_Radar extends Image_Graph_Plot
             }
             unset($keys);
         }
-        $this->_drawMarker();
-
         $this->_clip(false);
+
+        $this->_drawMarker();
         $this->_canvas->endGroup();        
         return parent::_done();
     }

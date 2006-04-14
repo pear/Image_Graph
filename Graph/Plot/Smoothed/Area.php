@@ -134,8 +134,9 @@ class Image_Graph_Plot_Smoothed_Area extends Image_Graph_Plot_Smoothed_Bezier
             $this->_canvas->polygon(array('connect' => true));
         }
         unset($keys);
-        $this->_drawMarker();
         $this->_clip(false);
+  
+        $this->_drawMarker();
         $this->_canvas->endGroup();
         return true;
     }

@@ -131,8 +131,9 @@ class Image_Graph_Plot_Smoothed_Radar extends Image_Graph_Plot_Smoothed_Bezier
             }
             unset($keys);
         }
-        $this->_drawMarker();
         $this->_clip(false);
+
+        $this->_drawMarker();
         $this->_canvas->endGroup($this->_title);
         return parent::_done();
     }

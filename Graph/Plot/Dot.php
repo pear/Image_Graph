@@ -83,13 +83,7 @@ class Image_Graph_Plot_Dot extends Image_Graph_Plot
         }
 
         $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
-
-        $this->_clip(true);
-                
         $this->_drawMarker();
-        
-        $this->_clip(false);
-        
         $this->_canvas->endGroup();
         
         return true;

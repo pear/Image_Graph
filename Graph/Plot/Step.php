@@ -190,8 +190,9 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
             $this->_canvas->polygon(array('connect' => true));
         }
         unset($keys);
-        $this->_drawMarker();
         $this->_clip(false);
+
+        $this->_drawMarker();
         $this->_canvas->endGroup();
         return true;
     }

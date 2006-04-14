@@ -293,11 +293,9 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
             $number ++;
         }
         unset($keys);
-
-        $this->_drawMarker();
-
         $this->_clip(false);        
         
+        $this->_drawMarker();
         $this->_canvas->endGroup();        
 
         return true;

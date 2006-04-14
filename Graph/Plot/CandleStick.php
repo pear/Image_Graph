@@ -237,10 +237,9 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
             }
         }
         unset($keys);
-        $this->_drawMarker();
-        
         $this->_clip(false);        
         
+        $this->_drawMarker();       
         $this->_canvas->endGroup($this->_title);
         
         return true;
