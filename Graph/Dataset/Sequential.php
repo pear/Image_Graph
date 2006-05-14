@@ -75,7 +75,7 @@ class Image_Graph_Dataset_Sequential extends Image_Graph_Dataset_Trivial
      */
     function addPoint($y, $ID = false)
     {
-        parent::addPoint($this->count(), $y);
+        parent::addPoint($this->count(), $y, $ID);
     }
 
     /**
