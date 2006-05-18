@@ -754,7 +754,11 @@ class Image_Graph extends Image_Graph_Element
      * store the output (this file must be in DOCUMENT_ROOT scope), 'urlpath' The URL that the
      * 'filepath' corresponds to (i.e. filepath + filename must be reachable from a browser using
      * urlpath + filename) 
-     *
+     * 
+     * 'output' = 'none' Forces the graph to be drawn, but no output is sent to
+     * the browser. This allows working with an existing canvas after graphs has
+     * been drawn
+     * 
      * @param mixed $param The output parameters to pass to the canvas
      * @return bool Was the output 'good' (true) or 'bad' (false).
      */
@@ -765,7 +769,7 @@ class Image_Graph extends Image_Graph_Element
             return $result;
         }
         return $this->_done($param);
-    }
+    }   
 
     /**
      * Outputs this graph using the canvas.
@@ -834,17 +838,19 @@ class Image_Graph extends Image_Graph_Element
                 array('color' => 'red')
             );
         }
-               
-		if (isset($param['filename'])) {
-            if ((isset($param['tohtml'])) && ($param['tohtml'])) {
-                return $this->_canvas->toHtml($param);
-            }
-            else {
-                return $this->_canvas->save($param);
-            }
-		} else {
-			return $this->_canvas->show($param);
-		}
+
+        if ((!isset($params['output'])) || ($params['output'] !== 'none')) {               
+    		if (isset($param['filename'])) {
+                if ((isset($param['tohtml'])) && ($param['tohtml'])) {
+                    return $this->_canvas->toHtml($param);
+                }
+                else {
+                    return $this->_canvas->save($param);
+                }
+    		} else {
+    			return $this->_canvas->show($param);
+    		}
+        }
     }
 }
 
