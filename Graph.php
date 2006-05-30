@@ -839,7 +839,7 @@ class Image_Graph extends Image_Graph_Element
             );
         }
 
-        if ((!isset($params['output'])) || ($params['output'] !== 'none')) {               
+        if ((!isset($param['output'])) || ($param['output'] !== 'none')) {               
     		if (isset($param['filename'])) {
                 if ((isset($param['tohtml'])) && ($param['tohtml'])) {
                     return $this->_canvas->toHtml($param);
