@@ -3,10 +3,6 @@
 *************************
 Version 0.x.x-alpha [x-y-z]
      * Fixed Bug #11812 "forceMaximum method" (uwesteinm)
-     * Fixed Bug #12745 "area tag not xhtml-compatible" (uwesteinm)
-     * Fixed Bug #12084 "Typos in PDF.php and SVG.php" (uwesteinm)
-     * Fixed Request #12122 "Add output driver for Flash (swf)" (uwesteinm)
-     * Fixed Req #12064 "Update @link in doc blocks" (uwesteinm)
 
 Version 0.7.2-alpha [2006-Mar-02] - Jesper Veggerby <pear.nosey@veggerby.dk>
      * Added Pie chart support for grouping items with values below a specified threshold in a "the rest" group
