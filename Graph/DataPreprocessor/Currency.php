@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage DataPreprocessor
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id$
+ * @version    SVN: $Id$
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -37,13 +38,14 @@ require_once 'Image/Graph/DataPreprocessor/Formatted.php';
  * Format data as a currency.
  *
  * Uses the {@link Image_Graph_DataPreprocessor_Formatted} to represent the
- * values as a currency, i.e. 10 => € 10.00
+ * values as a currency, i.e. 10 => ï¿½ 10.00
  *
  * @category   Images
  * @package    Image_Graph
  * @subpackage DataPreprocessor
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/Image_Graph

@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage DataSelector
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id$
+ * @version    SVN: $Id$
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -40,12 +41,14 @@ require_once 'Image/Graph/DataSelector.php';
  * @package    Image_Graph
  * @subpackage DataSelector
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/Image_Graph
  */
-class Image_Graph_DataSelector_Values extends Image_Graph_DataSelector {
+class Image_Graph_DataSelector_Values extends Image_Graph_DataSelector
+{
 
     /**
      * The array with values that should be included
@@ -57,7 +60,7 @@ class Image_Graph_DataSelector_Values extends Image_Graph_DataSelector {
     /**
      * ValueArray [Constructor]
      *
-     * @param array $valueArray The array to use as filter (default empty) 
+     * @param array $values The array to use as filter (default empty) 
      */
     function &Image_Graph_DataSelector_Values($values)
     {
@@ -67,6 +70,10 @@ class Image_Graph_DataSelector_Values extends Image_Graph_DataSelector {
 
     /**
      * Sets the array to use
+     *
+     * @param array $values Values to use
+     *
+     * @return void
      */
     function setValueArray($values)
     {
@@ -77,14 +84,15 @@ class Image_Graph_DataSelector_Values extends Image_Graph_DataSelector {
      * Check if a specified value should be 'selected', ie shown as a marker
      *
      * @param array $values The values to check
-     * @return bool True if the Values should cause a marker to be shown, false
-     *   if not
+     *
+     * @return bool True if the Values should cause a marker to be shown,
+     *   false if not
      * @access private
      */
-     function _select($values)
-     {
+    function _select($values)
+    {
         return ( in_array($values['Y'], $this->_values) );
-     }
+    }
 }
 
 ?>

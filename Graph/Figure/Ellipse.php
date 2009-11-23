@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Figure
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id$
+ * @version    SVN: $Id$
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -40,7 +41,8 @@ require_once 'Image/Graph/Element.php';
  * @package    Image_Graph
  * @subpackage Figure
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/Image_Graph
@@ -51,8 +53,8 @@ class Image_Graph_Figure_Ellipse extends Image_Graph_Element
     /**
      * Ellipse [Constructor]
      *
-     * @param int $x The center pixel of the ellipse on the canvas
-     * @param int $y The center pixel of the ellipse on the canvas
+     * @param int $x       The center pixel of the ellipse on the canvas
+     * @param int $y       The center pixel of the ellipse on the canvas
      * @param int $radiusX The width in pixels of the box on the canvas
      * @param int $radiusY The height in pixels of the box on the canvas
      */
@@ -79,11 +81,11 @@ class Image_Graph_Figure_Ellipse extends Image_Graph_Element
         $this->_getFillStyle();
         $this->_getLineStyle();
         $this->_canvas->ellipse(
-        	array(
-        		'x' => ($this->_left + $this->_right) / 2,
-            	'y' => ($this->_top + $this->_bottom) / 2,
-            	'rx' => $this->width(),
-            	'ry' => $this->height()
+            array(
+                'x' => ($this->_left + $this->_right) / 2,
+                'y' => ($this->_top + $this->_bottom) / 2,
+                'rx' => $this->width(),
+                'ry' => $this->height()
             )
         );
         

@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Dataset
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id$
+ * @version    SVN: $Id$
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -40,7 +41,8 @@ require_once 'Image/Graph/Dataset.php';
  * @package    Image_Graph
  * @subpackage Dataset
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/Image_Graph
@@ -103,9 +105,11 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
      * 
      * 'htmltags' [optional] An associated array with html tags (tag as key), fx. 'onMouseOver' => 'history.go(-1);', 'id' => 'thelink'
      *
-     * @param int $x The X value to add
-     * @param int $y The Y value to add, can be omited
+     * @param int $x  The X value to add
+     * @param int $y  The Y value to add, can be omited
      * @param var $ID The ID of the point
+     *
+     * @return void
      */
     function addPoint($x, $y = false, $ID = false)
     {
@@ -127,7 +131,7 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
     /**
      * The first point
      *
-     * @return array The last point
+     * @return array The first point
      */
     function first()
     {
@@ -138,7 +142,7 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
     /**
      * The last point
      *
-     * @return array The first point
+     * @return array The last point
      */
     function last()
     {
@@ -150,6 +154,7 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
      *
      * @param var $x The variable to return an X value from, fx in a
      *   vector function data set
+     *
      * @return var The X value of the variable
      * @access private
      */
@@ -167,6 +172,7 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
      *
      * @param var $x The variable to return an Y value from, fx in a
      *   vector function data set
+     *
      * @return var The Y value of the variable
      * @access private
      */
@@ -184,6 +190,7 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
      *
      * @param var $x The variable to return an Y value from, fx in a
      *   vector function data set
+     *
      * @return var The ID value of the variable
      * @access private
      */
@@ -201,6 +208,7 @@ class Image_Graph_Dataset_Trivial extends Image_Graph_Dataset
      *
      * @param var $x The variable to return an Y value from, fx in a vector
      *   function data set
+     *
      * @return array The data for the point
      * @access private
      */

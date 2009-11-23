@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage DataPreprocessor
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id$
+ * @version    SVN: $Id$
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -41,7 +42,8 @@ require_once 'Image/Graph/DataPreprocessor/Array.php';
  * @package    Image_Graph
  * @subpackage DataPreprocessor
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/Image_Graph
@@ -53,6 +55,7 @@ class Image_Graph_DataPreprocessor_Sequential extends Image_Graph_DataPreprocess
      * Process the value
      *
      * @param var $value The value to process/format
+     *
      * @return string The processed value
      * @access private
      */

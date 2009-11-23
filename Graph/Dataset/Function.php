@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Dataset
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id$
+ * @version    SVN: $Id$
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -44,7 +45,8 @@ require_once 'Image/Graph/Dataset.php';
  * @package    Image_Graph
  * @subpackage Dataset
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/Image_Graph
@@ -65,8 +67,8 @@ class Image_Graph_Dataset_Function extends Image_Graph_Dataset
      * @param double $minimumX The minimum X value
      * @param double $maximumX The maximum X value
      * @param string $function The name of the function, if must be a single
-     * parameter function like fx sin(x) or cos(x)
-     * @param int $points The number of points to create
+     *   parameter function like fx sin(x) or cos(x)
+     * @param int    $points   The number of points to create
      */
     function Image_Graph_Dataset_Function($minimumX, $maximumX, $function, $points)
     {
@@ -83,9 +85,11 @@ class Image_Graph_Dataset_Function extends Image_Graph_Dataset
      *
      * You can't add points to a function dataset
      *
-     * @param int $x The X value to add
-     * @param int $y The Y value to add, can be omited
+     * @param int $x  The X value to add
+     * @param int $y  The Y value to add, can be omited
      * @param var $ID The ID of the point
+     *
+     * @return void
      */
     function addPoint($x, $y = false, $ID = false)
     {
@@ -95,6 +99,7 @@ class Image_Graph_Dataset_Function extends Image_Graph_Dataset
      * Gets a Y point from the dataset
      *
      * @param var $x The variable to apply the function to
+     *
      * @return var The function applied to the X value
      * @access private
      */
@@ -129,6 +134,7 @@ class Image_Graph_Dataset_Function extends Image_Graph_Dataset
     /**
      * Calculates the Y extrema of the function
      *
+     * @return void
      * @access private
      */
     function _calculateMaxima()

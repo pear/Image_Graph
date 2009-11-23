@@ -24,7 +24,7 @@
  * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
  * @copyright 2003-2009 The PHP Group
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version   CVS: $Id$
+ * @version   SVN: $Id$
  * @link      http://pear.php.net/package/Image_Graph
  */
 

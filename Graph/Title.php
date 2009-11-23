@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Text
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id$
+ * @version    SVN: $Id$
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -40,7 +41,8 @@ require_once 'Image/Graph/Layout.php';
  * @package    Image_Graph
  * @subpackage Text
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/Image_Graph
@@ -82,7 +84,7 @@ class Image_Graph_Title extends Image_Graph_Layout
      *
      * 'color' The font-face color
      *
-     * @param sting $text The text to represent the title
+     * @param sting $text        The text to represent the title
      * @param mixed $fontOptions The font to use in the title
      */
     function Image_Graph_Title($text, $fontOptions = false)
@@ -104,6 +106,8 @@ class Image_Graph_Title extends Image_Graph_Layout
      * Set the text
      *
      * @param string $text The text to display
+     *
+     * @return void
      */
     function setText($text)
     {
@@ -131,6 +135,8 @@ class Image_Graph_Title extends Image_Graph_Layout
      * Set the alignment of the legend
      *
      * @param int $alignment The alignment
+     *
+     * @return void
      */
     function setAlignment($alignment)
     {

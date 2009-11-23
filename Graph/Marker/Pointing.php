@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Marker
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id$
+ * @version    SVN: $Id$
  * @link       http://pear.php.net/package/Image_Graph
  */
  
@@ -42,7 +43,8 @@ require_once 'Image/Graph/Marker.php';
  * @package    Image_Graph
  * @subpackage Marker
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/Image_Graph
@@ -100,6 +102,8 @@ class Image_Graph_Marker_Pointing extends Image_Graph_Marker
      *
      * @param Marker $markerStart The starting marker that represents 'the tip
      *   of the pin'
+     *
+     * @return void
      */
     function setMarkerStart(& $markerStart)
     {
@@ -114,8 +118,9 @@ class Image_Graph_Marker_Pointing extends Image_Graph_Marker
      *   the canvas
      * @param int $y The Y (vertical) position (in pixels) of the marker on the
      *   canvas
-     * @param array $values The values representing the data the marker 'points'
-     *   to
+     * @param array $values The values representing the data the marker 'points' to
+     *
+     * @return void
      * @access private
      */
     function _drawMarker($x, $y, $values = false)

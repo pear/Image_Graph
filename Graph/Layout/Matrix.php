@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Layout
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id$
+ * @version    SVN: $Id$
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -40,7 +41,8 @@ require_once 'Image/Graph/Layout.php';
  * @package    Image_Graph
  * @subpackage Layout
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/Image_Graph
@@ -72,8 +74,8 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
     /**
      * Image_Graph_Layout_Matrix [Constructor]
      *
-     * @param int $rows The number of rows
-     * @param int $cols The number of cols
+     * @param int  $rows       The number of rows
+     * @param int  $cols       The number of cols
      * @param bool $autoCreate Specifies whether the matrix should automatically
      *   be filled with newly created Image_Graph_Plotares objects, or they will
      *   be added manually
@@ -104,6 +106,8 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
      *
      * @param int $row The row
      * @param int $col The column
+     *
+     * @return void
      * @access private
      */
     function _pushEdges($row, $col)
@@ -131,6 +135,7 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
      *
      * @param int $row The row
      * @param int $col The column
+     *
      * @return Image_Graph_Layout The element of position ($row, $col) in the
      *   matrix
      */
@@ -147,10 +152,12 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
     /**
      * Get the area on the specified position in the matrix
      *
-     * @param int $row The row
-     * @param int $col The column
-     * @param Image_Graph_Layout $element The element to set in the position
+     * @param int                $row      The row
+     * @param int                $col      The column
+     * @param Image_Graph_Layout &$element The element to set in the position
      *   ($row, $col) in the matrix
+     *
+     * @return void
      */
     function setEntry($row, $col, &$element)
     {
@@ -161,6 +168,7 @@ class Image_Graph_Layout_Matrix extends Image_Graph_Layout
     /**
      * Update coordinates
      *
+     * @return void
      * @access private
      */
     function _updateCoords()

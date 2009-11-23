@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Figure
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id$
+ * @version    SVN: $Id$
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -40,7 +41,8 @@ require_once 'Image/Graph/Figure/Ellipse.php';
  * @package    Image_Graph
  * @subpackage Figure
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/Image_Graph
@@ -51,8 +53,8 @@ class Image_Graph_Figure_Circle extends Image_Graph_Figure_Ellipse
     /**
      * Image_Graph_Circle [Constructor]
      *
-     * @param int $x The center pixel of the circle on the canvas
-     * @param int $y The center pixel of the circle on the canvas
+     * @param int $x      The center pixel of the circle on the canvas
+     * @param int $y      The center pixel of the circle on the canvas
      * @param int $radius The radius in pixels of the circle
      */
     function Image_Graph_Figure_Circle($x, $y, $radius)

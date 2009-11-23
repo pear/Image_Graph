@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Logo
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Groupen
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id$
+ * @version    SVN: $Id$
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -42,7 +43,8 @@ require_once 'Image/Graph/Element.php';
  * @package    Image_Graph
  * @subpackage Logo
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Groupen
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/Image_Graph
@@ -74,7 +76,10 @@ class Image_Graph_Logo extends Image_Graph_Element
     /**
      * Logo [Constructor]
      *
-     * @param string $filename The filename and path of the image to use for logo
+     * @param string $filename  The filename and path of the image to use for logo
+     * @param ???    $alignment Where to align logo (IMAGE_GRAPH_ALIGN_...)
+     *
+     * @return void
      */
     function Image_Graph_Logo($filename, $alignment = IMAGE_GRAPH_ALIGN_TOP_RIGHT)
     {
@@ -86,8 +91,10 @@ class Image_Graph_Logo extends Image_Graph_Element
     /**
      * Sets the parent. The parent chain should ultimately be a GraPHP object
      *
+     * @param Image_Graph_Common &$parent The parent
+     *
+     * @return void
      * @see Image_Graph
-     * @param Image_Graph_Common $parent The parent
      * @access private
      */
     function _setParent(& $parent)
@@ -113,7 +120,7 @@ class Image_Graph_Logo extends Image_Graph_Element
             return false;
         }
 
-		$align = array();
+        $align = array();
 
         if ($this->_alignment & IMAGE_GRAPH_ALIGN_LEFT) {
             $x = $this->_parent->_left + 2;
@@ -139,11 +146,11 @@ class Image_Graph_Logo extends Image_Graph_Element
 
         $this->_canvas->image(
             array(
-            	'x' => $x,
-            	'y' => $y,
-            	'filename' => $this->_filename,
-	            'alignment' => $align
-	        )
+                'x' => $x,
+                'y' => $y,
+                'filename' => $this->_filename,
+                'alignment' => $align
+            )
         );
         return true;
     }

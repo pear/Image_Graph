@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Axis
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id$
+ * @version    SVN: $Id$
  * @link       http://pear.php.net/package/Image_Graph
  */
  
@@ -40,7 +41,8 @@ require_once 'Image/Graph/Axis.php';
  * @package    Image_Graph
  * @subpackage Axis
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/Image_Graph
@@ -86,6 +88,7 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
      * Preprocessor for values, ie for using logarithmic axis
      *
      * @param double $value The value to preprocess
+     *
      * @return double The preprocessed value
      * @access private
      */
@@ -97,8 +100,10 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
     /**
      * Get next label point
      *
-     * @param doubt $point The current point, if omitted or false, the first is
+     * @param doubt $currentLabel The current label point. If omitted or false, the first is
      *   returned
+     * @param int   $level        Label level
+     *
      * @return double The next label point
      * @access private
      */
@@ -136,6 +141,7 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
      * This is because it can change the axis range.
      *
      * @param double $value the intersection value to get the pixel-point for
+     *
      * @return double The pixel position along the axis
      * @access private
      */

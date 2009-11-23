@@ -18,13 +18,14 @@
  * to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  * 02111-1307 USA
  *
- * @category   Images
- * @package    Image_Graph
- * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
- * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id$
- * @link       http://pear.php.net/package/Image_Graph
+ * @category  Images
+ * @package   Image_Graph
+ * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright 2003-2009 The PHP Group
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version   SVN: $Id$
+ * @link      http://pear.php.net/package/Image_Graph
  */
 
 /**
@@ -35,13 +36,14 @@ require_once 'Image/Graph.php';
 /**
  * Class for simple creation of graphs
  *
- * @category   Images
- * @package    Image_Graph
- * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
- * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: @package_version@
- * @link       http://pear.php.net/package/Image_Graph
+ * @category  Images
+ * @package   Image_Graph
+ * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright 2003-2009 The PHP Group
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version   Release: @package_version@
+ * @link      http://pear.php.net/package/Image_Graph
  */
 class Image_Graph_Simple extends Image_Graph
 {
@@ -49,8 +51,14 @@ class Image_Graph_Simple extends Image_Graph
     /**
      * Image_Graph_Simple [Constructor]
      *
-     * @param int $width The width of the graph in pixels
-     * @param int $height The height of the graph in pixels
+     * @param int    $width     The width of the graph in pixels
+     * @param int    $height    The height of the graph in pixels
+     * @param ???    $plotType  ???
+     * @param ???    $data      ???
+     * @param string $title     The title
+     * @param string $lineColor Color for lines
+     * @param string $fillColor Color for fills
+     * @param ???    $font      ???
      */
     function Image_Graph_Simple($width, $height, $plotType, $data, $title, $lineColor = 'black', $fillColor = 'white', $font = false)
     {
@@ -71,7 +79,8 @@ class Image_Graph_Simple extends Image_Graph
 
         $this->add(
             Image_Graph::vertical(
-                Image_Graph::factory('title',
+                Image_Graph::factory(
+                    'title',
                     array(
                         $title,
                         array('size_rel' => 2)
@@ -99,10 +108,22 @@ class Image_Graph_Simple extends Image_Graph
 
     /**
      * Factory method to create the Image_Simple_Graph object.
+     *
+     * @param int    $width     ???
+     * @param int    $height    ???
+     * @param ???    $plotType  ???
+     * @param ???    $data      ???
+     * @param string $title     ???
+     * @param string $lineColor ???
+     * @param string $fillColor ???
+     * @param ???    $font      ???   
+     *
+     * @return Image_Simple_Graph
      */
     function &factory($width, $height, $plotType, $data, $title, $lineColor = 'black', $fillColor = 'white', $font = false)
     {
-        $obj =& Image_Graph::factory('Image_Graph_Simple',
+        $obj =& Image_Graph::factory(
+            'Image_Graph_Simple',
             array(
                 $width,
                 $height,

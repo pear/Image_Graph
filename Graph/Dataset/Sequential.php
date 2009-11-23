@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Dataset
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id$
+ * @version    SVN: $Id$
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -45,7 +46,8 @@ require_once 'Image/Graph/Dataset/Trivial.php';
  * @package    Image_Graph
  * @subpackage Dataset
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/Image_Graph
@@ -55,6 +57,8 @@ class Image_Graph_Dataset_Sequential extends Image_Graph_Dataset_Trivial
 
     /**
      * Image_Graph_SequentialDataset [Constructor]
+     *
+     * @param array $dataArray Array with data
      */
     function Image_Graph_Dataset_Sequential($dataArray = false)
     {
@@ -70,8 +74,10 @@ class Image_Graph_Dataset_Sequential extends Image_Graph_Dataset_Trivial
     /**
      * Add a point to the dataset
      *
-     * @param int $y The Y value to add, can be omited
+     * @param int $y  The Y value to add, can be omited
      * @param var $ID The ID of the point
+     *
+     * @return void
      */
     function addPoint($y, $ID = false)
     {
@@ -83,6 +89,7 @@ class Image_Graph_Dataset_Sequential extends Image_Graph_Dataset_Trivial
      *
      * @param var $x The variable to return an X value from, fx in a
      *   vector function data set
+     *
      * @return var The X value of the variable
      * @access private
      */
@@ -93,6 +100,7 @@ class Image_Graph_Dataset_Sequential extends Image_Graph_Dataset_Trivial
 
     /**
      * The minimum X value
+     *
      * @return var The minimum X value
      */
     function minimumX()
@@ -102,6 +110,7 @@ class Image_Graph_Dataset_Sequential extends Image_Graph_Dataset_Trivial
 
     /**
      * The maximum X value
+     *
      * @return var The maximum X value
      */
     function maximumX()
