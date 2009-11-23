@@ -5,7 +5,7 @@
 /**
  * Class for axis handling.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -61,7 +61,7 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
      */
     function Image_Graph_Axis_Logarithmic($type = IMAGE_GRAPH_AXIS_X)
     {
-        parent::Image_Graph_Axis($type);
+        parent::__construct($type);
         $this->showLabel(IMAGE_GRAPH_LABEL_MINIMUM + IMAGE_GRAPH_LABEL_MAXIMUM);
         $this->_minimum = 1;
         $this->_minimumSet = true;

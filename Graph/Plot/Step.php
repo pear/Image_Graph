@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -91,7 +91,7 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
         if (($multiType != 'stacked') && ($multiType != 'stacked100pct')) {
             $multiType = 'stacked';
         }
-        parent::Image_Graph_Plot($dataset, $multiType, $title);
+        parent::__construct($dataset, $multiType, $title);
     }
 
     /**

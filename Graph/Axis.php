@@ -5,7 +5,7 @@
 /**
  * Class for axis handling.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -269,7 +269,7 @@ require_once 'Image/Graph/Plotarea/Element.php';
      */
     function Image_Graph_Axis($type = IMAGE_GRAPH_AXIS_X)
     {
-        parent::Image_Graph_Element();
+        parent::__construct();
         $this->_type = $type;
         $this->_fillStyle = 'black';
     }

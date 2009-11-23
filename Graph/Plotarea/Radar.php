@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -53,7 +53,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
      */
     function Image_Graph_Plotarea_Radar()
     {
-        parent::Image_Graph_Element();
+        parent::__construct();
         $this->_padding = array('left' => 10, 'top' => 10, 'right' => 10, 'bottom' => 10);
         $this->_axisX =& Image_Graph::factory('Image_Graph_Axis_Radar');
         $this->_axisX->_setParent($this);

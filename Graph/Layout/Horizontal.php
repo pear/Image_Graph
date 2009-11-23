@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -90,7 +90,7 @@ class Image_Graph_Layout_Horizontal extends Image_Graph_Layout
      */
     function Image_Graph_Layout_Horizontal(& $part1, & $part2, $percentage = 50)
     {
-        parent::Image_Graph_Layout();
+        parent::__construct();
         if (!is_a($part1, 'Image_Graph_Layout')) {
             $this->_error(
                 'Cannot create layout on non-layouable parts: ' . get_class($part1),

@@ -8,7 +8,7 @@
  * If this fails, a basic requirement of Image_Graph is not met, and it is as
  * such not a Image_Graph failure but a (missing) component of PHP all together.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by

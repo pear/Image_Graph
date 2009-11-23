@@ -5,7 +5,7 @@
 /**
  * Image_Graph - Main class for the graph creation.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -54,7 +54,7 @@ class Image_Graph_Simple extends Image_Graph
      */
     function Image_Graph_Simple($width, $height, $plotType, $data, $title, $lineColor = 'black', $fillColor = 'white', $font = false)
     {
-        parent::Image_Graph($width, $height);
+        parent::__construct($width, $height);
 
         $plotarea =& Image_Graph::factory('plotarea');
 

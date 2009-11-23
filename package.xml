@@ -1,7 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
-<package version="1.0" packagerversion="1.4.7">
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.9.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+http://pear.php.net/dtd/tasks-1.0.xsd
+http://pear.php.net/dtd/package-2.0
+http://pear.php.net/dtd/package-2.0.xsd">
  <name>Image_Graph</name>
+ <channel>pear.php.net</channel>
  <summary>A package for displaying (numerical) data as a graph/chart/plot.</summary>
  <description>Image_Graph provides a set of classes that creates graphs/plots/charts based on (numerical) data.
 
@@ -13,930 +16,783 @@ The output is controlled by a Image_Canvas, which facilitates easy output to man
 
 Image_Graph is compatible with both PHP4 and PHP5.
  </description>
- <maintainers>
-  <maintainer>
-   <user>nosey</user>
-   <name>Jesper Veggerby</name>
-   <email>pear.nosey@veggerby.dk</email>
-   <role>lead</role>
-  </maintainer>
-  <maintainer>
-   <user>neufeind</user>
-   <name>Stefan Neufeind</name>
-   <email>pear.neufeind@speedpartner.de</email>
-   <role>lead</role>
-  </maintainer>
-  <maintainer>
-   <user>toby</user>
-   <name>Tobias Schlitt</name>
-   <email>toby@php.net</email>
-   <role>lead</role>
-  </maintainer>
-  </maintainers>
- <release>
-  <version>0.7.2</version>
-  <date>2006-03-02</date>
-  <license>LGPL</license>
-  <state>alpha</state>
-  <notes>* Added Pie chart support for grouping items with values below a specified threshold in a &quot;the rest&quot; group
-* Added possibility to set color of axis ticks (thanks to bdondo from forum)
-* Added clipping support, causing forceMinimum() and forceMaximum() to show expected results
-* Modified axis arrows, so that an axis with all negative values, the arrow will be shown at the minimum value instead of maximum
-* Fixed a bug with Image_Graph_DataPreprocessor_Function not working, when callback function is an object method
-* Fixed a bug with Candlestick, Band and Box &amp; Whisker plots not working when using markers
-* Fixed Bug #6024 &quot;Undefined variable: parameters&quot;
-* Fixed Bug #6085 &quot;Graph doesn&apos;t understand a numeric variable extracted from the GET method.&quot;
-* Fixed Bug #6919 &quot;Isolated points in linegraphs with breaks drawn incorrectly&quot;
-* Fixed Bug #6921 &quot;Marker not drawn for points with Y value == 0&quot;
-* Fixed Bug #6941 &quot;Logarithmic axis values between 0 and 1&quot;
-* Fixed Request #5985 &quot;Logarithmic Axis Minimum Value&quot;
-* Fixed a problem with labels not appearing on the same baseline
-* Added possibility to specify padding on all edges of an element separately
-* Updated some API documentation entries
-  </notes>
-  <deps>
-   <dep type="pkg" rel="ge" version="1.3.1" optional="no">PEAR</dep>
-   <dep type="pkg" rel="ge" version="0.3.0" optional="no">Image_Canvas</dep>
-   <dep type="pkg" rel="has" optional="yes">Numbers_Roman</dep>
-   <dep type="pkg" rel="has" optional="yes">Numbers_Words</dep>
-  </deps>
-  <provides type="class" name="Image_Graph_Axis" extends="Image_Graph_Plotarea_Element" />
-  <provides type="function" name="Image_Graph_Axis::showLabel" />
-  <provides type="function" name="Image_Graph_Axis::setDataPreProcessor" />
-  <provides type="function" name="Image_Graph_Axis::forceMinimum" />
-  <provides type="function" name="Image_Graph_Axis::forceMaximum" />
-  <provides type="function" name="Image_Graph_Axis::showArrow" />
-  <provides type="function" name="Image_Graph_Axis::hideArrow" />
-  <provides type="function" name="Image_Graph_Axis::setLabelInterval" />
-  <provides type="function" name="Image_Graph_Axis::setLabelOption" />
-  <provides type="function" name="Image_Graph_Axis::setLabelOptions" />
-  <provides type="function" name="Image_Graph_Axis::setTitle" />
-  <provides type="function" name="Image_Graph_Axis::setFixedSize" />
-  <provides type="function" name="Image_Graph_Axis::addMark" />
-  <provides type="function" name="Image_Graph_Axis::setTickOptions" />
-  <provides type="function" name="Image_Graph_Axis::setInverted" />
-  <provides type="function" name="Image_Graph_Axis::setAxisIntersection" />
-  <provides type="class" name="Image_Graph_Common" />
-  <provides type="function" name="Image_Graph_Common::hide" />
-  <provides type="function" name="Image_Graph_Common::add" />
-  <provides type="function" name="Image_Graph_Common::addNew" />
-  <provides type="function" name="is_a" />
-  <provides type="class" name="Image_Graph_DataPreprocessor" />
-  <provides type="class" name="Image_Graph_DataSelector" />
-  <provides type="class" name="Image_Graph_Dataset" />
-  <provides type="function" name="Image_Graph_Dataset::setName" />
-  <provides type="function" name="Image_Graph_Dataset::addPoint" />
-  <provides type="function" name="Image_Graph_Dataset::count" />
-  <provides type="function" name="Image_Graph_Dataset::minimumX" />
-  <provides type="function" name="Image_Graph_Dataset::maximumX" />
-  <provides type="function" name="Image_Graph_Dataset::minimumY" />
-  <provides type="function" name="Image_Graph_Dataset::maximumY" />
-  <provides type="function" name="Image_Graph_Dataset::first" />
-  <provides type="function" name="Image_Graph_Dataset::last" />
-  <provides type="class" name="Image_Graph_Element" extends="Image_Graph_Common" />
-  <provides type="function" name="Image_Graph_Element::setBackground" />
-  <provides type="function" name="Image_Graph_Element::showShadow" />
-  <provides type="function" name="Image_Graph_Element::setBackgroundColor" />
-  <provides type="function" name="Image_Graph_Element::setBorderStyle" />
-  <provides type="function" name="Image_Graph_Element::setBorderColor" />
-  <provides type="function" name="Image_Graph_Element::setLineStyle" />
-  <provides type="function" name="Image_Graph_Element::setLineColor" />
-  <provides type="function" name="Image_Graph_Element::setFillStyle" />
-  <provides type="function" name="Image_Graph_Element::setFillColor" />
-  <provides type="function" name="Image_Graph_Element::setFont" />
-  <provides type="function" name="Image_Graph_Element::setFontSize" />
-  <provides type="function" name="Image_Graph_Element::setFontAngle" />
-  <provides type="function" name="Image_Graph_Element::setFontColor" />
-  <provides type="function" name="Image_Graph_Element::setPadding" />
-  <provides type="function" name="Image_Graph_Element::width" />
-  <provides type="function" name="Image_Graph_Element::height" />
-  <provides type="function" name="Image_Graph_Element::write" />
-  <provides type="class" name="Image_Graph_Fill" extends="Image_Graph_Common" />
-  <provides type="class" name="Image_Graph_Font" extends="Image_Graph_Common" />
-  <provides type="function" name="Image_Graph_Font::setColor" />
-  <provides type="function" name="Image_Graph_Font::setAngle" />
-  <provides type="function" name="Image_Graph_Font::setSize" />
-  <provides type="class" name="Image_Graph_Grid" extends="Image_Graph_Plotarea_Element" />
-  <provides type="class" name="Image_Graph_Layout" extends="Image_Graph_Plotarea_Element" />
-  <provides type="class" name="Image_Graph_Legend" extends="Image_Graph_Layout" />
-  <provides type="function" name="Image_Graph_Legend::setAlignment" />
-  <provides type="function" name="Image_Graph_Legend::setPlotarea" />
-  <provides type="function" name="Image_Graph_Legend::setShowMarker" />
-  <provides type="class" name="Image_Graph_Logo" extends="Image_Graph_Element" />
-  <provides type="class" name="Image_Graph_Marker" extends="Image_Graph_Plotarea_Element" />
-  <provides type="function" name="Image_Graph_Marker::setSize" />
-  <provides type="function" name="Image_Graph_Marker::setSecondaryMarker" />
-  <provides type="class" name="Image_Graph_Plot" extends="Image_Graph_Plotarea_Element" />
-  <provides type="function" name="Image_Graph_Plot::setTitle" />
-  <provides type="function" name="Image_Graph_Plot::setMarker" />
-  <provides type="function" name="Image_Graph_Plot::setDataSelector" />
-  <provides type="function" name="Image_Graph_Plot::dataset" />
-  <provides type="class" name="Image_Graph_Plotarea" extends="Image_Graph_Layout" />
-  <provides type="function" name="Image_Graph_Plotarea::setPlotBorderStyle" />
-  <provides type="function" name="Image_Graph_Plotarea::add" />
-  <provides type="function" name="Image_Graph_Plotarea::hideAxis" />
-  <provides type="function" name="Image_Graph_Plotarea::clearAxis" />
-  <provides type="function" name="Image_Graph_Plotarea::getAxis" />
-  <provides type="function" name="Image_Graph_Plotarea::setAxisPadding" />
-  <provides type="class" name="Image_Graph_Simple" extends="Image_Graph" />
-  <provides type="function" name="Image_Graph_Simple::factory" />
-  <provides type="class" name="Image_Graph_Title" extends="Image_Graph_Layout" />
-  <provides type="function" name="Image_Graph_Title::setText" />
-  <provides type="function" name="Image_Graph_Title::setAlignment" />
-  <provides type="class" name="Image_Graph_Tool" />
-  <provides type="function" name="Image_Graph_Tool::mid" />
-  <provides type="function" name="Image_Graph_Tool::mirror" />
-  <provides type="function" name="Image_Graph_Tool::controlPoint" />
-  <provides type="function" name="Image_Graph_Tool::bezier" />
-  <provides type="function" name="Image_Graph_Tool::rotate" />
-  <provides type="function" name="Image_Graph_Tool::close2zero" />
-  <provides type="function" name="Image_Graph_Tool::calculateArcDimensionAndCenter" />
-  <provides type="function" name="Image_Graph_Tool::calculateLinearRegression" />
-  <provides type="class" name="Image_Graph_Axis_Category" extends="Image_Graph_Axis" />
-  <provides type="function" name="Image_Graph_Axis_Category::forceMinimum" />
-  <provides type="function" name="Image_Graph_Axis_Category::forceMaximum" />
-  <provides type="function" name="Image_Graph_Axis_Category::setLabelInterval" />
-  <provides type="class" name="Image_Graph_Axis_Logarithmic" extends="Image_Graph_Axis" />
-  <provides type="class" name="Image_Graph_Axis_Radar" extends="Image_Graph_Axis_Category" />
-  <provides type="function" name="Image_Graph_Axis_Radar::setDistanceFromEnd" />
-  <provides type="class" name="Image_Graph_Axis_Marker_Area" extends="Image_Graph_Grid" />
-  <provides type="function" name="Image_Graph_Axis_Marker_Area::setLowerBound" />
-  <provides type="function" name="Image_Graph_Axis_Marker_Area::setUpperBound" />
-  <provides type="class" name="Image_Graph_Axis_Marker_Line" extends="Image_Graph_Grid" />
-  <provides type="function" name="Image_Graph_Axis_Marker_Line::setValue" />
-  <provides type="class" name="Image_Graph_DataPreprocessor_Array" extends="Image_Graph_DataPreprocessor" />
-  <provides type="class" name="Image_Graph_DataPreprocessor_Currency" extends="Image_Graph_DataPreprocessor_Formatted" />
-  <provides type="class" name="Image_Graph_DataPreprocessor_Date" extends="Image_Graph_DataPreprocessor" />
-  <provides type="class" name="Image_Graph_DataPreprocessor_Formatted" extends="Image_Graph_DataPreprocessor" />
-  <provides type="class" name="Image_Graph_DataPreprocessor_Function" extends="Image_Graph_DataPreprocessor" />
-  <provides type="class" name="Image_Graph_DataPreprocessor_NumberText" extends="Image_Graph_DataPreprocessor" />
-  <provides type="class" name="Image_Graph_DataPreprocessor_RomanNumerals" extends="Image_Graph_DataPreprocessor" />
-  <provides type="class" name="Image_Graph_DataPreprocessor_Sequential" extends="Image_Graph_DataPreprocessor_Array" />
-  <provides type="class" name="Image_Graph_DataSelector_EveryNthPoint" extends="Image_Graph_DataSelector" />
-  <provides type="class" name="Image_Graph_DataSelector_NoZeros" extends="Image_Graph_DataSelector" />
-  <provides type="class" name="Image_Graph_DataSelector_Values" extends="Image_Graph_DataSelector" />
-  <provides type="function" name="Image_Graph_DataSelector_Values::setValueArray" />
-  <provides type="class" name="Image_Graph_Dataset_Function" extends="Image_Graph_Dataset" />
-  <provides type="function" name="Image_Graph_Dataset_Function::addPoint" />
-  <provides type="class" name="Image_Graph_Dataset_Random" extends="Image_Graph_Dataset_Trivial" />
-  <provides type="class" name="Image_Graph_Dataset_Sequential" extends="Image_Graph_Dataset_Trivial" />
-  <provides type="function" name="Image_Graph_Dataset_Sequential::addPoint" />
-  <provides type="function" name="Image_Graph_Dataset_Sequential::minimumX" />
-  <provides type="function" name="Image_Graph_Dataset_Sequential::maximumX" />
-  <provides type="class" name="Image_Graph_Dataset_Trivial" extends="Image_Graph_Dataset" />
-  <provides type="function" name="Image_Graph_Dataset_Trivial::addPoint" />
-  <provides type="function" name="Image_Graph_Dataset_Trivial::first" />
-  <provides type="function" name="Image_Graph_Dataset_Trivial::last" />
-  <provides type="function" name="Image_Graph_Dataset_Trivial::count" />
-  <provides type="class" name="Image_Graph_Dataset_VectorFunction" extends="Image_Graph_Dataset" />
-  <provides type="function" name="Image_Graph_Dataset_VectorFunction::addPoint" />
-  <provides type="class" name="Image_Graph_Figure_Circle" extends="Image_Graph_Figure_Ellipse" />
-  <provides type="class" name="Image_Graph_Figure_Ellipse" extends="Image_Graph_Element" />
-  <provides type="class" name="Image_Graph_Figure_Polygon" extends="Image_Graph_Element" />
-  <provides type="function" name="Image_Graph_Figure_Polygon::addVertex" />
-  <provides type="class" name="Image_Graph_Figure_Rectangle" extends="Image_Graph_Element" />
-  <provides type="class" name="Image_Graph_Fill_Array" extends="Image_Graph_Fill" />
-  <provides type="function" name="Image_Graph_Fill_Array::add" />
-  <provides type="function" name="Image_Graph_Fill_Array::addColor" />
-  <provides type="class" name="Image_Graph_Fill_Gradient" extends="Image_Graph_Fill" />
-  <provides type="class" name="Image_Graph_Fill_Image" extends="Image_Graph_Fill" />
-  <provides type="class" name="Image_Graph_Grid_Bars" extends="Image_Graph_Grid" />
-  <provides type="class" name="Image_Graph_Grid_Lines" extends="Image_Graph_Grid" />
-  <provides type="class" name="Image_Graph_Grid_Polar" extends="Image_Graph_Grid" />
-  <provides type="class" name="Image_Graph_Layout_Horizontal" extends="Image_Graph_Layout" />
-  <provides type="class" name="Image_Graph_Layout_Matrix" extends="Image_Graph_Layout" />
-  <provides type="function" name="Image_Graph_Layout_Matrix::getEntry" />
-  <provides type="function" name="Image_Graph_Layout_Matrix::setEntry" />
-  <provides type="class" name="Image_Graph_Layout_Vertical" extends="Image_Graph_Layout_Horizontal" />
-  <provides type="class" name="Image_Graph_Line_Array" extends="Image_Graph_Common" />
-  <provides type="function" name="Image_Graph_Line_Array::add" />
-  <provides type="function" name="Image_Graph_Line_Array::addColor" />
-  <provides type="class" name="Image_Graph_Line_Dashed" extends="Image_Graph_Line_Formatted" />
-  <provides type="class" name="Image_Graph_Line_Dotted" extends="Image_Graph_Line_Formatted" />
-  <provides type="class" name="Image_Graph_Line_Formatted" extends="Image_Graph_Line_Solid" />
-  <provides type="class" name="Image_Graph_Line_Solid" extends="Image_Graph_Common" />
-  <provides type="function" name="Image_Graph_Line_Solid::setThickness" />
-  <provides type="class" name="Image_Graph_Marker_Array" extends="Image_Graph_Marker" />
-  <provides type="function" name="Image_Graph_Marker_Array::add" />
-  <provides type="class" name="Image_Graph_Marker_Asterisk" extends="Image_Graph_Marker" />
-  <provides type="class" name="Image_Graph_Marker_Average" extends="Image_Graph_Marker" />
-  <provides type="class" name="Image_Graph_Marker_Box" extends="Image_Graph_Marker" />
-  <provides type="class" name="Image_Graph_Marker_Bubble" extends="Image_Graph_Marker_Circle" />
-  <provides type="function" name="Image_Graph_Marker_Bubble::setMaxRadius" />
-  <provides type="class" name="Image_Graph_Marker_Circle" extends="Image_Graph_Marker" />
-  <provides type="class" name="Image_Graph_Marker_Cross" extends="Image_Graph_Marker" />
-  <provides type="class" name="Image_Graph_Marker_Diamond" extends="Image_Graph_Marker" />
-  <provides type="class" name="Image_Graph_Marker_Icon" extends="Image_Graph_Marker" />
-  <provides type="function" name="Image_Graph_Marker_Icon::setPointX" />
-  <provides type="function" name="Image_Graph_Marker_Icon::setPointY" />
-  <provides type="class" name="Image_Graph_Marker_Pinpoint" extends="Image_Graph_Marker_Icon" />
-  <provides type="class" name="Image_Graph_Marker_Plus" extends="Image_Graph_Marker" />
-  <provides type="class" name="Image_Graph_Marker_Pointing" extends="Image_Graph_Marker" />
-  <provides type="function" name="Image_Graph_Marker_Pointing::setMarkerStart" />
-  <provides type="class" name="Image_Graph_Marker_ReversePinpoint" extends="Image_Graph_Marker_Icon" />
-  <provides type="class" name="Image_Graph_Marker_Star" extends="Image_Graph_Marker" />
-  <provides type="class" name="Image_Graph_Marker_Triangle" extends="Image_Graph_Marker" />
-  <provides type="class" name="Image_Graph_Marker_Value" extends="Image_Graph_Marker" />
-  <provides type="function" name="Image_Graph_Marker_Value::setBackground" />
-  <provides type="function" name="Image_Graph_Marker_Value::setBackgroundColor" />
-  <provides type="function" name="Image_Graph_Marker_Value::setDataPreprocessor" />
-  <provides type="class" name="Image_Graph_Marker_Pointing_Angular" extends="Image_Graph_Marker_Pointing" />
-  <provides type="class" name="Image_Graph_Marker_Pointing_Radial" extends="Image_Graph_Marker_Pointing" />
-  <provides type="class" name="Image_Graph_Plot_Area" extends="Image_Graph_Plot" />
-  <provides type="class" name="Image_Graph_Plot_Band" extends="Image_Graph_Plot" />
-  <provides type="class" name="Image_Graph_Plot_Bar" extends="Image_Graph_Plot" />
-  <provides type="function" name="Image_Graph_Plot_Bar::setSpacing" />
-  <provides type="function" name="Image_Graph_Plot_Bar::setBarWidth" />
-  <provides type="class" name="Image_Graph_Plot_BoxWhisker" extends="Image_Graph_Plot" />
-  <provides type="function" name="Image_Graph_Plot_BoxWhisker::setWhiskerSize" />
-  <provides type="class" name="Image_Graph_Plot_CandleStick" extends="Image_Graph_Plot" />
-  <provides type="class" name="Image_Graph_Plot_Dot" extends="Image_Graph_Plot" />
-  <provides type="class" name="Image_Graph_Plot_Impulse" extends="Image_Graph_Plot" />
-  <provides type="class" name="Image_Graph_Plot_Line" extends="Image_Graph_Plot" />
-  <provides type="class" name="Image_Graph_Plot_Odo" extends="Image_Graph_Plot" />
-  <provides type="function" name="Image_Graph_Plot_Odo::setCenter" />
-  <provides type="function" name="Image_Graph_Plot_Odo::setRange" />
-  <provides type="function" name="Image_Graph_Plot_Odo::setAngles" />
-  <provides type="function" name="Image_Graph_Plot_Odo::setRadiusWidth" />
-  <provides type="function" name="Image_Graph_Plot_Odo::setArrowSize" />
-  <provides type="function" name="Image_Graph_Plot_Odo::setArrowMarker" />
-  <provides type="function" name="Image_Graph_Plot_Odo::setTickLength" />
-  <provides type="function" name="Image_Graph_Plot_Odo::setAxisTicks" />
-  <provides type="function" name="Image_Graph_Plot_Odo::setArrowLineStyle" />
-  <provides type="function" name="Image_Graph_Plot_Odo::setArrowFillStyle" />
-  <provides type="function" name="Image_Graph_Plot_Odo::addRangeMarker" />
-  <provides type="function" name="Image_Graph_Plot_Odo::setRangeMarkerFillStyle" />
-  <provides type="class" name="Image_Graph_Plot_Pie" extends="Image_Graph_Plot" />
-  <provides type="function" name="Image_Graph_Plot_Pie::explode" />
-  <provides type="function" name="Image_Graph_Plot_Pie::setStartingAngle" />
-  <provides type="function" name="Image_Graph_Plot_Pie::setDiameter" />
-  <provides type="function" name="Image_Graph_Plot_Pie::setRestGroup" />
-  <provides type="class" name="Image_Graph_Plot_Radar" extends="Image_Graph_Plot" />
-  <provides type="class" name="Image_Graph_Plot_Step" extends="Image_Graph_Plot" />
-  <provides type="class" name="Image_Graph_Plot_Fit_Line" extends="Image_Graph_Plot" />
-  <provides type="class" name="Image_Graph_Plot_Smoothed_Area" extends="Image_Graph_Plot_Smoothed_Bezier" />
-  <provides type="class" name="Image_Graph_Plot_Smoothed_Bezier" extends="Image_Graph_Plot" />
-  <provides type="class" name="Image_Graph_Plot_Smoothed_Line" extends="Image_Graph_Plot_Smoothed_Bezier" />
-  <provides type="class" name="Image_Graph_Plot_Smoothed_Radar" extends="Image_Graph_Plot_Smoothed_Bezier" />
-  <provides type="class" name="Image_Graph_Plotarea_Element" extends="Image_Graph_Element" />
-  <provides type="class" name="Image_Graph_Plotarea_Map" extends="Image_Graph_Plotarea" />
-  <provides type="function" name="Image_Graph_Plotarea_Map::hideAxis" />
-  <provides type="function" name="Image_Graph_Plotarea_Map::addMappoint" />
-  <provides type="function" name="Image_Graph_Plotarea_Map::addPoint" />
-  <provides type="class" name="Image_Graph_Plotarea_Radar" extends="Image_Graph_Plotarea" />
-  <provides type="class" name="Image_Graph" extends="Image_Graph_Element" />
-  <provides type="function" name="Image_Graph::setCanvas" />
-  <provides type="function" name="Image_Graph::width" />
-  <provides type="function" name="Image_Graph::height" />
-  <provides type="function" name="Image_Graph::displayErrors" />
-  <provides type="function" name="Image_Graph::setLog" />
-  <provides type="function" name="Image_Graph::factory" />
-  <provides type="function" name="Image_Graph::layoutFactory" />
-  <provides type="function" name="Image_Graph::horizontal" />
-  <provides type="function" name="Image_Graph::vertical" />
-  <provides type="function" name="Image_Graph::done" />
-  <filelist>
-   <file role="doc" baseinstalldir="Image" name="docs/ChangeLog">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/colors.txt">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/LICENSE">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/README">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/all_negative.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/antialias.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/axis_direction.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/category_axis_explanation.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/clipping.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/color_chart.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/customize.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/datapreprocessor.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/double_category_axis.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/driver_filepdf.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/driver_pdf.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/driver_png_svg.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/driver_swf01.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/driver_swf02.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/driver_swf03.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/frontpage_sample.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/gradient_fill_area.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/gradient_pie.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/gradient_step.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/horizontal.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/html_image_map.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/imagemap.png">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/image_fill.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/index.html">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/layout_matrix.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/line_break.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/logo_graph.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/log_axis.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/log_axis_forcemin.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/log_axis_intersect.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/log_axis_low.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/manual_labels.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/misc01.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/misc02.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/misc03.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/misc04.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/misc05.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/misc06.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/multiple_plots.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/negative_values.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_all.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_all_horizontal.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_all_horizontal_invert.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_area.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_area_smooth.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_area_stack.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_band.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_bar.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_bar_horizontal.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_bar_multiple.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_bar_stacked.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_bar_stacked100pct.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_bar_stacked_horizontal.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_bar_stacked_negative.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_boxwhisker.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_candlestick.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_impulse.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_impulse_stacked.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_line.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_line_smooth.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_map.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_odo.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_pie.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_pie_rest.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_pie_rotate.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_radar.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_radar_smooth.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_scatter.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_scatter_linefit.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/plot_step.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/secondary_axis.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/simple.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/simple_graph.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/small_pie_plot.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/vector_function.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/data/colors.txt">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/images/audi-tt-coupe.jpg">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/images/audi.png">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/images/bmw.png">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/images/coins.png">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/images/mercedes.png">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/images/modify.jpg">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/images/mountain.jpg">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="doc" baseinstalldir="Image" name="docs/examples/images/porsche.png">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Axis.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Common.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Config.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Constants.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/DataPreprocessor.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/DataSelector.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Dataset.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Element.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Fill.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Font.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Grid.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Layout.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Legend.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Logo.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Marker.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plot.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plotarea.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Simple.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Title.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Tool.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Axis/Category.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Axis/Logarithmic.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Axis/Radar.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Axis/Marker/Area.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Axis/Marker/Line.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/DataPreprocessor/Array.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/DataPreprocessor/Currency.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/DataPreprocessor/Date.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/DataPreprocessor/Formatted.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/DataPreprocessor/Function.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/DataPreprocessor/NumberText.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/DataPreprocessor/RomanNumerals.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/DataPreprocessor/Sequential.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/DataSelector/EveryNthPoint.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/DataSelector/NoZeros.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/DataSelector/Values.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Dataset/Function.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Dataset/Random.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Dataset/Sequential.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Dataset/Trivial.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Dataset/VectorFunction.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Figure/Circle.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Figure/Ellipse.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Figure/Polygon.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Figure/Rectangle.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Fill/Array.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Fill/Gradient.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Fill/Image.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Grid/Bars.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Grid/Lines.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Grid/Polar.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Images/Icons/pinpoint.png">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Images/Icons/pinpointr.png">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Images/Maps/README">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Layout/Horizontal.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Layout/Matrix.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Layout/Vertical.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Line/Array.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Line/Dashed.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Line/Dotted.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Line/Formatted.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Line/Solid.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Marker/Array.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Marker/Asterisk.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Marker/Average.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Marker/Box.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Marker/Bubble.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Marker/Circle.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Marker/Cross.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Marker/Diamond.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Marker/Icon.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Marker/Pinpoint.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Marker/Plus.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Marker/Pointing.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Marker/ReversePinpoint.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Marker/Star.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Marker/Triangle.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Marker/Value.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Marker/Pointing/Angular.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Marker/Pointing/Radial.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plot/Area.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plot/Band.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plot/Bar.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plot/BoxWhisker.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plot/CandleStick.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plot/Dot.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plot/Impulse.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plot/Line.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plot/Odo.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plot/Pie.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plot/Radar.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plot/Step.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plot/Fit/Line.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plot/Smoothed/Area.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plot/Smoothed/Bezier.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plot/Smoothed/Line.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plot/Smoothed/Radar.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plotarea/Element.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plotarea/Map.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph/Plotarea/Radar.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="Image" name="tests/freetype.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="Image" name="tests/gd.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="Image" name="tests/README">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="Image" name="tests/axis/category.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="Image" name="tests/axis/intersection.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="Image" name="tests/axis/intersection_secondary_axis.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="Image" name="tests/axis/inversion.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="Image" name="tests/axis/labelinterval.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="Image" name="tests/axis/logarithmic.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="Image" name="tests/plot/area.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="Image" name="tests/plot/bar.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="Image" name="tests/plot/impulse.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="Image" name="tests/plot/line.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="Image" name="tests/plot/step.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="Image" name="tests/plot/horizontal/area.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="Image" name="tests/plot/horizontal/bar.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="Image" name="tests/plot/horizontal/impulse.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="Image" name="tests/plot/horizontal/line.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="Image" name="tests/plot/horizontal/step.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="php" baseinstalldir="Image" name="Graph.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-  </filelist>
- </release>
+ <lead>
+  <name>Jesper Veggerby</name>
+  <user>nosey</user>
+  <email>pear.nosey@veggerby.dk</email>
+  <active>yes</active>
+ </lead>
+ <lead>
+  <name>Stefan Neufeind</name>
+  <user>neufeind</user>
+  <email>pear.neufeind@speedpartner.de</email>
+  <active>yes</active>
+ </lead>
+ <lead>
+  <name>Tobias Schlitt</name>
+  <user>toby</user>
+  <email>toby@php.net</email>
+  <active>yes</active>
+ </lead>
+ <date>2009-11-23</date>
+ <time>00:22:19</time>
+ <version>
+  <release>0.7.3</release>
+  <api>0.7.2</api>
+ </version>
+ <stability>
+  <release>alpha</release>
+  <api>alpha</api>
+ </stability>
+ <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+ <notes>
+* PLEASE NOTE: Package now needs PHP 5.x (needed for workaround for Bug #16529 and future cleanups)
+* Fixed Bug #16529 &quot;Doesn't work with PHP 5.3.0&quot;
+ </notes>
+ <contents>
+  <dir name="/">
+   <dir name="docs">
+    <dir name="examples">
+     <dir name="data">
+      <file baseinstalldir="Image" name="colors.txt" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir> <!-- /docs/examples/data -->
+     <dir name="images">
+      <file baseinstalldir="Image" name="audi-tt-coupe.jpg" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="Image" name="audi.png" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="Image" name="bmw.png" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="Image" name="coins.png" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="Image" name="mercedes.png" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="Image" name="modify.jpg" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="Image" name="mountain.jpg" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="Image" name="porsche.png" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir> <!-- /docs/examples/images -->
+     <file baseinstalldir="Image" name="all_negative.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="antialias.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="axis_direction.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="category_axis_explanation.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="clipping.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="color_chart.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="customize.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="datapreprocessor.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="double_category_axis.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="driver_filepdf.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="driver_pdf.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="driver_png_svg.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="driver_swf01.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="driver_swf02.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="driver_swf03.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="frontpage_sample.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="gradient_fill_area.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="gradient_pie.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="gradient_step.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="horizontal.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="html_image_map.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="imagemap.png" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="image_fill.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="index.html" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="layout_matrix.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="line_break.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="logo_graph.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="log_axis.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="log_axis_forcemin.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="log_axis_intersect.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="log_axis_low.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="manual_labels.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="misc01.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="misc02.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="misc03.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="misc04.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="misc05.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="misc06.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="multiple_plots.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="negative_values.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_all.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_all_horizontal.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_all_horizontal_invert.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_area.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_area_smooth.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_area_stack.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_band.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_bar.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_bar_horizontal.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_bar_multiple.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_bar_stacked.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_bar_stacked100pct.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_bar_stacked_horizontal.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_bar_stacked_negative.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_boxwhisker.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_candlestick.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_impulse.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_impulse_stacked.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_line.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_line_smooth.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_map.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_odo.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_pie.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_pie_rest.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_pie_rotate.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_radar.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_radar_smooth.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_scatter.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_scatter_linefit.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="plot_step.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="secondary_axis.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="simple.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="simple_graph.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="small_pie_plot.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="vector_function.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /docs/examples -->
+    <file baseinstalldir="Image" name="ChangeLog" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="colors.txt" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="LICENSE" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="README" role="doc">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+   </dir> <!-- /docs -->
+   <dir name="Graph">
+    <dir name="Axis">
+     <dir name="Marker">
+      <file baseinstalldir="Image" name="Area.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="Image" name="Line.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir> <!-- /Graph/Axis/Marker -->
+     <file baseinstalldir="Image" name="Category.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Logarithmic.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Radar.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /Graph/Axis -->
+    <dir name="DataPreprocessor">
+     <file baseinstalldir="Image" name="Array.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Currency.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Date.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Formatted.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Function.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="NumberText.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="RomanNumerals.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Sequential.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /Graph/DataPreprocessor -->
+    <dir name="DataSelector">
+     <file baseinstalldir="Image" name="EveryNthPoint.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="NoZeros.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Values.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /Graph/DataSelector -->
+    <dir name="Dataset">
+     <file baseinstalldir="Image" name="Function.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Random.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Sequential.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Trivial.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="VectorFunction.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /Graph/Dataset -->
+    <dir name="Figure">
+     <file baseinstalldir="Image" name="Circle.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Ellipse.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Polygon.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Rectangle.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /Graph/Figure -->
+    <dir name="Fill">
+     <file baseinstalldir="Image" name="Array.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Gradient.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Image.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /Graph/Fill -->
+    <dir name="Grid">
+     <file baseinstalldir="Image" name="Bars.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Lines.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Polar.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /Graph/Grid -->
+    <dir name="Images">
+     <dir name="Icons">
+      <file baseinstalldir="Image" name="pinpoint.png" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="Image" name="pinpointr.png" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir> <!-- /Graph/Images/Icons -->
+     <dir name="Maps">
+      <file baseinstalldir="Image" name="README" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir> <!-- /Graph/Images/Maps -->
+    </dir> <!-- /Graph/Images -->
+    <dir name="Layout">
+     <file baseinstalldir="Image" name="Horizontal.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Matrix.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Vertical.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /Graph/Layout -->
+    <dir name="Line">
+     <file baseinstalldir="Image" name="Array.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Dashed.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Dotted.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Formatted.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Solid.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /Graph/Line -->
+    <dir name="Marker">
+     <dir name="Pointing">
+      <file baseinstalldir="Image" name="Angular.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="Image" name="Radial.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir> <!-- /Graph/Marker/Pointing -->
+     <file baseinstalldir="Image" name="Array.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Asterisk.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Average.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Box.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Bubble.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Circle.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Cross.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Diamond.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Icon.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Pinpoint.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Plus.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Pointing.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="ReversePinpoint.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Star.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Triangle.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Value.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /Graph/Marker -->
+    <dir name="Plot">
+     <dir name="Fit">
+      <file baseinstalldir="Image" name="Line.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir> <!-- /Graph/Plot/Fit -->
+     <dir name="Smoothed">
+      <file baseinstalldir="Image" name="Area.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="Image" name="Bezier.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="Image" name="Line.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="Image" name="Radar.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir> <!-- /Graph/Plot/Smoothed -->
+     <file baseinstalldir="Image" name="Area.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Band.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Bar.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="BoxWhisker.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="CandleStick.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Dot.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Impulse.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Line.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Odo.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Pie.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Radar.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Step.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /Graph/Plot -->
+    <dir name="Plotarea">
+     <file baseinstalldir="Image" name="Element.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Map.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="Radar.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /Graph/Plotarea -->
+    <file baseinstalldir="Image" name="Axis.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="Common.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="Config.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="Constants.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="DataPreprocessor.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="DataSelector.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="Dataset.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="Element.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="Fill.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="Font.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="Grid.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="Layout.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="Legend.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="Logo.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="Marker.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="Plot.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="Plotarea.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="Simple.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="Title.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="Tool.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+   </dir> <!-- /Graph -->
+   <dir name="tests">
+    <dir name="axis">
+     <file baseinstalldir="Image" name="category.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="intersection.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="intersection_secondary_axis.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="inversion.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="labelinterval.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="logarithmic.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /tests/axis -->
+    <dir name="plot">
+     <dir name="horizontal">
+      <file baseinstalldir="Image" name="area.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="Image" name="bar.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="Image" name="impulse.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="Image" name="line.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="Image" name="step.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir> <!-- /tests/plot/horizontal -->
+     <file baseinstalldir="Image" name="area.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="bar.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="impulse.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="line.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="Image" name="step.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /tests/plot -->
+    <file baseinstalldir="Image" name="freetype.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="gd.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="Image" name="README" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+   </dir> <!-- /tests -->
+   <file baseinstalldir="Image" name="Graph.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+  </dir> <!-- / -->
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.0.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0b1</min>
+   </pearinstaller>
+   <package>
+    <name>PEAR</name>
+    <channel>pear.php.net</channel>
+    <min>1.3.1</min>
+   </package>
+   <package>
+    <name>Image_Canvas</name>
+    <channel>pear.php.net</channel>
+    <min>0.3.0</min>
+   </package>
+  </required>
+  <optional>
+   <package>
+    <name>Numbers_Roman</name>
+    <channel>pear.php.net</channel>
+   </package>
+   <package>
+    <name>Numbers_Words</name>
+    <channel>pear.php.net</channel>
+   </package>
+  </optional>
+ </dependencies>
+ <phprelease />
  <changelog>
-   <release>
-    <version>0.3.0dev1</version>
-    <date>2004-10-24</date>
-    <license>LGPL</license>
-    <state>devel</state>
-    <notes>First devel build
-    </notes>
-   </release>
-   <release>
-    <version>0.3.0dev2</version>
-    <date>2005-01-13</date>
-    <license>LGPL</license>
-    <state>devel</state>
-    <notes>* Added functionality for multi-level labels (ticks, text, etc.) to support for minor and major labels (and more if needed)
+  <release>
+   <version>
+    <release>0.3.0dev1</release>
+    <api>0.3.0dev1</api>
+   </version>
+   <stability>
+    <release>devel</release>
+    <api>devel</api>
+   </stability>
+   <date>2004-10-24</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+First devel build
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.3.0dev2</release>
+    <api>0.3.0dev2</api>
+   </version>
+   <stability>
+    <release>devel</release>
+    <api>devel</api>
+   </stability>
+   <date>2005-01-13</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+* Added functionality for multi-level labels (ticks, text, etc.) to support for minor and major labels (and more if needed)
 * Added fontmapping in GD drivers useful for mapping mnemonic fontnames, i.e. Times New Roman to font file names (either partial or full)
 * Added configuration option in Config.php (IMAGE_GRAPH_SYSTEM_FONT_PATH) enabling to specify default search path for system fonts
     - On Windows systems this defaults to %SYSTEMROOT%\Fonts\
@@ -996,14 +852,21 @@ Image_Graph is compatible with both PHP4 and PHP5.
 * Fixed Image_Graph_Axis::force(Minimum|Maximum)
 * Removed default Image_Graph logo
 * Removed _graphWidth() and _graphHeight(), they are now handled by the driver
-    </notes>
-   </release>
-   <release>
-    <version>0.3.0dev3</version>
-    <date>2005-01-27</date>
-    <license>LGPL</license>
-    <state>devel</state>
-    <notes>* Added possibility to invert axis direction, fx. minimum at top or bottom
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.3.0dev3</release>
+    <api>0.3.0dev3</api>
+   </version>
+   <stability>
+    <release>devel</release>
+    <api>devel</api>
+   </stability>
+   <date>2005-01-27</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+* Added possibility to invert axis direction, fx. minimum at top or bottom
 * Added methods to handle axis label customization (Image_Graph_Axis::setLabelOption() and Image_Graph_Axis::setLabelOptions())
 * Minor change to the way GD driver(s) calculate height (so that fx. x-axis labels appear printed on the same baseline)
 * Fixed axis so that forceMinimum() works with axis intersection
@@ -1016,22 +879,36 @@ Image_Graph is compatible with both PHP4 and PHP5.
 * Performance optimization/tuning (axis, elements)
 * Removed XML_SVG driver which was included by mistake (SWF driver remains, but has several unimplemented features)
 * Added more tests
-    </notes>
-   </release>
-   <release>
-    <version>0.3.0dev4</version>
-    <date>2005-02-21</date>
-    <license>LGPL</license>
-    <state>devel</state>
-    <notes>Fixed problem with logarithmic axis causing an infinite loop
-    </notes>
-   </release>
-   <release>
-    <version>0.3.0</version>
-    <date>2005-02-25</date>
-    <license>LGPL</license>
-    <state>alpha</state>
-    <notes>Added possibility to use arrays of the type $data[$id] = array(&apos;x&apos; =&gt; $x, &apos;y&apos; =&gt; $y) for easy data addition to a dataset
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.3.0dev4</release>
+    <api>0.3.0dev4</api>
+   </version>
+   <stability>
+    <release>devel</release>
+    <api>devel</api>
+   </stability>
+   <date>2005-02-21</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+Fixed problem with logarithmic axis causing an infinite loop
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.3.0</release>
+    <api>0.3.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2005-02-25</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+Added possibility to use arrays of the type $data[$id] = array(&apos;x&apos; =&gt; $x, &apos;y&apos; =&gt; $y) for easy data addition to a dataset
 * Added use of &apos;null&apos; y-values in line plots (normal and smoothed) causing a break in the line (instead of dropping to zero)
 * Added possibility to make one legend use multiple plotareas
 * Added grouping to drivers (currently only fully supported by SVG driver)
@@ -1055,14 +932,21 @@ Image_Graph is compatible with both PHP4 and PHP5.
 	- Removed Image_Graph_Layout_Plotarea, it being completely obsolete with introduction of Image_Graph_Axis::setTitle()
 * Updated header comment blocks to conform to new standards as specified by RFC
 * Performance optimizations
-    </notes>
-   </release>
-   <release>
-    <version>0.4.0</version>
-    <date>2005-05-24</date>
-    <license>LGPL</license>
-    <state>alpha</state>
-    <notes>* Added support for antialiasing images when using GD (both using native GD method and Image_Graph own implementation)
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.4.0</release>
+    <api>0.4.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2005-05-24</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+* Added support for antialiasing images when using GD (both using native GD method and Image_Graph own implementation)
 * Added possibility to specify horizontal title alignment (left, right or center)
 * Fixed an &quot;off-by-one&quot; problem with secondary axis
 * Included all on-line examples in package
@@ -1070,14 +954,21 @@ Image_Graph is compatible with both PHP4 and PHP5.
 * Fixed bug #4113 &quot;Image_Graph_Driver_GD::pieSlice() warnings&quot;
 * Fixed bug #4333 &quot;Legend division by zero error on PieChart&quot;
 * Fixed bug #4417 &quot;Cannot use point ID as marker value&quot;
-    </notes>
-   </release>
-   <release>
-    <version>0.5.0</version>
-    <date>2005-08-08</date>
-    <license>LGPL</license>
-    <state>alpha</state>
-    <notes>* Major change: removed Image_Graph_Driver and subclasses and uses Image_Canvas instead, which implies:
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.5.0</release>
+    <api>0.5.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2005-08-08</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+* Major change: removed Image_Graph_Driver and subclasses and uses Image_Canvas instead, which implies:
     - Image_Graph_Color is obsolete, removing dependency on Image_Color (however Image_Canvas still depends on Image_Color)
     - Fonts are simplified (all identified by name) and implemented using Image_Graph_Font class, removing Image_Graph_Font subclasses (only subclasses!), removing Fonts/ folder
     - Added dependency on Image_Canvas
@@ -1099,25 +990,39 @@ Image_Graph is compatible with both PHP4 and PHP5.
     * Added Request #4451 &quot;Unable to define IMAGE_GRAPH_SYSTEM_FONT_PATH outside of Config.php&quot;
     * Fixed Bug #4484 &quot;SVG output problem with fill and alignment attributes of text&quot;
     * Fixed Bug #4586 &quot;Content type image/jpg does not recognized by IE&quot;
-    </notes>
-   </release>
-   <release>
-    <version>0.6.0</version>
-    <date>2005-08-27</date>
-    <license>LGPL</license>
-    <state>alpha</state>
-    <notes>* Added possibility to set starting angle of pie chart (at which angle does the first pieslice start) and the direction of the pies (clockwise or counter-clockwise)
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.6.0</release>
+    <api>0.6.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2005-08-27</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+* Added possibility to set starting angle of pie chart (at which angle does the first pieslice start) and the direction of the pies (clockwise or counter-clockwise)
     * Added Request #5031 &quot;Horizontal Bar graphs required&quot; - all plot types (except radar and pie) support horizontal, it is the &quot;Plotarea&quot; that is horizontal
     * Fixed Bug #5035 &quot;Legend and graph color mismatch when using zeros in stacked bar&quot;
     * Fixed Bug #5066 &quot;Reference Notices&quot;
-    </notes>
-   </release>
-   <release>
-    <version>0.7.0</version>
-    <date>2005-09-30</date>
-    <license>LGPL</license>
-    <state>alpha</state>
-    <notes>* Added Image_Graph_Plot_Odo (thanks Maxime Delorme)
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.7.0</release>
+    <api>0.7.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2005-09-30</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+* Added Image_Graph_Plot_Odo (thanks Maxime Delorme)
 * Added Image_Graph_DataSelector_Values (thanks Paolo)
 * Added best-fit line plot (Image_Graph_Plot_Fit_Line)
 * Added possibility to specify the pie plot diameter
@@ -1137,25 +1042,39 @@ Image_Graph is compatible with both PHP4 and PHP5.
 * Fixed so it is possible to use array(R, G, B, a?) as fill color
 * Fixed issue with markers not rotating along with plot when using setStartingAngle()
 * Fixed trivial dataset so that it is possible to use &apos;id&apos; as key when populating dataset in constructor
-    </notes>
-   </release>
-   <release>
-    <version>0.7.1</version>
-    <date>2005-10-05</date>
-    <license>LGPL</license>
-    <state>alpha</state>
-    <notes>* Fixed Bug #5415 &quot;Axis&apos;s wrong when plot is Dot/Scatter&quot;
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.7.1</release>
+    <api>0.7.1</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2005-10-05</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+* Fixed Bug #5415 &quot;Axis&apos;s wrong when plot is Dot/Scatter&quot;
 * Fixed Bug #5607 &quot;X Axis Labels align to right&quot;
 * Fixed a problem with horizontal plots and axis labels and titles not showing/aligning properly
 * Fixed a problem with horizontal Step plot
-    </notes>
-   </release>
-   <release>
-    <version>0.7.2</version>
-    <date>2006-03-02</date>
-    <license>LGPL</license>
-    <state>alpha</state>
-    <notes>* Added Pie chart support for grouping items with values below a specified threshold in a &quot;the rest&quot; group
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.7.2</release>
+    <api>0.7.2</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2006-03-02</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+* Added Pie chart support for grouping items with values below a specified threshold in a &quot;the rest&quot; group
 * Added possibility to set color of axis ticks (thanks to bdondo from forum)
 * Added clipping support, causing forceMinimum() and forceMaximum() to show expected results
 * Modified axis arrows, so that an axis with all negative values, the arrow will be shown at the minimum value instead of maximum
@@ -1170,7 +1089,23 @@ Image_Graph is compatible with both PHP4 and PHP5.
 * Fixed a problem with labels not appearing on the same baseline
 * Added possibility to specify padding on all edges of an element separately
 * Updated some API documentation entries
-    </notes>
-   </release>
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.7.3</release>
+    <api>0.7.2</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2009-11-23</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+* PLEASE NOTE: Package now needs PHP 5.x (needed for workaround for Bug #16529 and future cleanups)
+* Fixed Bug #16529 &quot;Doesn't work with PHP 5.3.0&quot;
+   </notes>
+  </release>
  </changelog>
 </package>

@@ -5,7 +5,7 @@
 /**
  * Image_Graph - Main class for the graph creation.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -78,7 +78,7 @@ class Image_Graph_Logo extends Image_Graph_Element
      */
     function Image_Graph_Logo($filename, $alignment = IMAGE_GRAPH_ALIGN_TOP_RIGHT)
     {
-        parent::Image_Graph_Element();
+        parent::__construct();
         $this->_filename = $filename;
         $this->_alignment = $alignment;
     }

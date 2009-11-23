@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -65,7 +65,7 @@ class Image_Graph_DataPreprocessor_Date extends Image_Graph_DataPreprocessor
      */
     function Image_Graph_DataPreprocessor_Date($format)
     {
-        parent::Image_Graph_DataPreprocessor();
+        parent::__construct();
         $this->_format = $format;
     }
 

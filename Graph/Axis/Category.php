@@ -5,7 +5,7 @@
 /**
  * Class for axis handling.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -65,7 +65,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      */
     function Image_Graph_Axis_Category($type = IMAGE_GRAPH_AXIS_X)
     {
-        parent::Image_Graph_Axis($type);
+        parent::__construct($type);
         $this->_labels = array();
         $this->setlabelInterval(1);
     }

@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -53,7 +53,7 @@ class Image_Graph_Marker_ReversePinpoint extends Image_Graph_Marker_Icon
      */
     function Image_Graph_Marker_ReversePinpoint()
     {
-        parent::Image_Graph_Marker_Icon(
+        parent::__construct(
             dirname(__FILE__).'/../Images/Icons/pinpointr.png'
         );
         $this->setPointX(10);

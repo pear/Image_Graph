@@ -5,7 +5,7 @@
 /**
  * Image_Graph - Main class for the graph creation.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -133,7 +133,7 @@ class Image_Graph extends Image_Graph_Element
      */
     function Image_Graph($params, $height = false, $createTransparent = false)
     {
-        parent::Image_Graph_Element();
+        parent::__construct();
 
         $this->setFont(Image_Graph::factory('Image_Graph_Font'));
 

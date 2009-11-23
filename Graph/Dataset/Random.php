@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -61,7 +61,7 @@ class Image_Graph_Dataset_Random extends Image_Graph_Dataset_Trivial
      */
     function Image_Graph_Dataset_Random($count, $minimum, $maximum, $includeZero = false)
     {
-        parent::Image_Graph_Dataset_Trivial();
+        parent::__construct();
         $i = 0;
         while ($i < $count) {
             $this->addPoint(

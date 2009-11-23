@@ -15,7 +15,7 @@
  * 
  * 2,2: A plot with all negative non-zero values 
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by

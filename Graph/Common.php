@@ -5,7 +5,7 @@
 /**
  * Image_Graph - Main class for the graph creation.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -26,29 +26,6 @@
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Image_Graph
  */
-
-if (!function_exists('is_a')) {
-
-    /**
-     * Check if an object is of a given class, this function is available as of PHP 4.2.0, so if it exist it will not be declared
-     *
-     * @link http://www.php.net/manual/en/function.is-a.php PHP.net Online Manual for function is_a()
-     * @param object $object The object to check class for
-     * @param string $class_name The name of the class to check the object for
-     * @return bool Returns TRUE if the object is of this class or has this class as one of its parents
-     */
-    function is_a($object, $class_name)
-    {
-        if (empty ($object)) {
-            return false;
-        }
-        $object = is_object($object) ? get_class($object) : $object;
-        if (strtolower($object) == strtolower($class_name)) {
-            return true;
-        }
-        return is_a(get_parent_class($object), $class_name);
-    }
-}
 
 /**
  * Include file Image/Canvas.php
