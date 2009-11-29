@@ -53,19 +53,18 @@ class Image_Graph_Marker_Average extends Image_Graph_Marker
     /**
      * Draw the marker on the canvas
      *
-     * @param int $x The X (horizontal) position (in pixels) of the marker on
-     *   the canvas
-     * @param int $y The Y (vertical) position (in pixels) of the marker on the
-     *   canvas
-     * @param array $values The values representing the data the marker 'points'
-     *   to
+     * @param int   $x      The X (horizontal) position (in pixels) of the marker on the canvas
+     * @param int   $y      The Y (vertical) position (in pixels) of the marker on the canvas
+     * @param array $values The values representing the data the marker 'points' to
+     *
+     * @return void
      * @access private
      */
     function _drawMarker($x, $y, $values = false)
     {
-        if ((isset($values['AVERAGE_Y'])) &&
-            (is_a($this->_parent, 'Image_Graph_Plot')))
-        {
+        if (isset($values['AVERAGE_Y'])
+            && is_a($this->_parent, 'Image_Graph_Plot')
+        ) {
             $point = $this->_pointXY(
                 array(
                     'X' => $values['APX'],
@@ -77,11 +76,11 @@ class Image_Graph_Marker_Average extends Image_Graph_Marker
 
             $this->_getLineStyle();
             $this->_canvas->line(
-            	array(
-                	'x0' => $point['X'] - 2,
-                	'y0' => $point['Y'],
-                	'x1' => $point['X'] + 2,
-                	'y1' => $point['Y']
+                array(
+                    'x0' => $point['X'] - 2,
+                    'y0' => $point['Y'],
+                    'x1' => $point['X'] + 2,
+                    'y1' => $point['Y']
                 )
             );
         }

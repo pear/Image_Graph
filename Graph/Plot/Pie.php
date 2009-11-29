@@ -106,30 +106,33 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
      * @param int $y1 The bottom-right y-coordinate
+     *
+     * @return void
      * @access private
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
     {
         $y = ($y0 + $y1) / 2;
         $this->_canvas->pieslice(
-        	array(
-        		'x' => $x1, 
-        		'y' => $y, 
-        		'rx' => abs($x1 - $x0) / 2, 
-        		'ry' => abs($y1 - $y0) / 2, 
-        		'v1' => 45, 
-        		'v2' => 315
-        	)
-    	);
+            array(
+                'x' => $x1, 
+                'y' => $y, 
+                'rx' => abs($x1 - $x0) / 2, 
+                'ry' => abs($y1 - $y0) / 2, 
+                'v1' => 45, 
+                'v2' => 315
+            )
+        );
     }
 
     /**
      * Calculate marker point data
      *
-     * @param array $point The point to calculate data for
+     * @param array $point     The point to calculate data for
      * @param array $nextPoint The next point
      * @param array $prevPoint The previous point
-     * @param array $totals The pre-calculated totals, if needed
+     * @param array &$totals   The pre-calculated totals, if needed
+     *
      * @return array An array containing marker point data
      * @access private
      */
@@ -177,6 +180,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
     /**
      * Draws markers on the canvas
      *
+     * @return void
      * @access private
      */
     function _drawMarker()
@@ -220,10 +224,9 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
                 while ($point = $dataset->_next()) {
                     if (($this->_restGroupLimit !== false) && ($point['Y'] <= $this->_restGroupLimit)) {
                         $the_rest += $point['Y'];
-                    }
-                    else {
-                        if ((!is_object($this->_dataSelector)) ||
-                             ($this->_dataSelector->select($point))
+                    } else {
+                        if ((!is_object($this->_dataSelector))
+                            || ($this->_dataSelector->select($point))
                         ) {
                             $point = $this->_getMarkerData(
                                 $point,
@@ -244,18 +247,18 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
                 if ($the_rest > 0) {
                     $point = array('X' => $this->_restGroupTitle, 'Y' => $the_rest);                   
                     $point = $this->_getMarkerData(
-                            $point,
-                            false,
-                            false,
-                            $totals
+                        $point,
+                        false,
+                        false,
+                        $totals
+                    );
+                    if (is_array($point)) {
+                        $this->_marker->_drawMarker(
+                            $point['MARKER_X'],
+                            $point['MARKER_Y'],
+                            $point
                         );
-                        if (is_array($point)) {
-                            $this->_marker->_drawMarker(
-                                $point['MARKER_X'],
-                                $point['MARKER_Y'],
-                                $point
-                            );
-                        }
+                    }
                 }
                 $number++;
             }
@@ -266,8 +269,10 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
     /**
      * Explodes a piece of this pie chart
      *
-     * @param int $explode Radius to explode with (or an array)
-     * @param string $x The 'x' value to explode or omitted
+     * @param int    $explode Radius to explode with (or an array)
+     * @param string $x       The 'x' value to explode or omitted
+     *
+     * @return void
      */
     function explode($explode, $x = false)
     {
@@ -288,6 +293,11 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
      * 
      * It is also possible to specify the direction of the plot angles (i.e. clockwise 'cw' or 
      * counterclockwise 'ccw')
+     *
+     * @param int    $angle     Angle for plot
+     * @param string $direction Direction for plot ('cw' [clockwise] or 'ccw' [counter-clockwise])
+     *
+     * @return void
      */
     function setStartingAngle($angle = 0, $direction = 'ccw') 
     {
@@ -304,7 +314,9 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
      * Use negative values for the maximum possible - minus this value (fx -2
      * to leave 1 pixel at each side)
      * 
-     * @param mixed @diameter The number of pixels
+     * @param mixed $diameter The number of pixels
+     *
+     * @return void
      */
     function setDiameter($diameter)
     {
@@ -316,8 +328,9 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
      * as "the rest"
      * 
      * @param double $limit The limit
-     * @param string $title The title to display in the legends (default 'The
-     * rest')
+     * @param string $title The title to display in the legends (default 'The rest')
+     *
+     * @return void
      */
     function setRestGroup($limit, $title = 'The rest')
     {
@@ -327,6 +340,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
     
     /**
      * Get the diameter of the plot
+     *
      * @return int The number of pixels the diameter is
      * @access private
      */
@@ -335,12 +349,10 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
         $diameter = 0;
         if ($this->_diameter === false) {
             $diameter = min($this->height(), $this->width()) * 0.75;
-        }
-        else {
+        } else {
             if ($this->_diameter === 'max') {
                 $diameter = min($this->height(), $this->width());
-            }
-            elseif ($this->_diameter < 0) {
+            } elseif ($this->_diameter < 0) {
                 $diameter = min($this->height(), $this->width()) + $this->_diameter;
             } else {
                 $diameter = $this->_diameter;
@@ -398,8 +410,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
             while ($point = $dataset->_next()) {
                 if (($this->_restGroupLimit !== false) && ($point['Y'] <= $this->_restGroupLimit)) {
                     $the_rest += $point['Y'];
-                }
-                else {
+                } else {
                     $angle1 = 360 * ($currentY / $totalY) + $this->_startingAngle;
                     $currentY += $this->_angleDirection * $point['Y'];
                     $angle2 = 360 * ($currentY / $totalY) + $this->_startingAngle;
@@ -427,16 +438,16 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
                     $this->_canvas->pieslice(
                         $this->_mergeData(
                             $point,
-                        	array(
-                        		'x' => $centerX + $dX, 
-                        		'y' => $centerY + $dY, 
-                        		'rx' => $radius1, 
-                        		'ry' => $radius1, 
-                        		'v1' => $angle1, 
-                        		'v2' => $angle2, 
-                        		'srx' => $radius0, 
-                        		'sry' => $radius0
-                        	)
+                            array(
+                                'x' => $centerX + $dX, 
+                                'y' => $centerY + $dY, 
+                                'rx' => $radius1, 
+                                'ry' => $radius1, 
+                                'v1' => $angle1, 
+                                'v2' => $angle2, 
+                                'srx' => $radius0, 
+                                'sry' => $radius0
+                            )
                         )
                     );
                 }
@@ -493,7 +504,9 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
     /**
      * Draw a sample for use with legend
      *
-     * @param array $param The parameters for the legend
+     * @param array &$param The parameters for the legend
+     *
+     * @return void
      * @access private
      */
     function _legendSample(&$param)
@@ -524,8 +537,7 @@ class Image_Graph_Plot_Pie extends Image_Graph_Plot
                     $caption = $point['X'];
                     if (($this->_restGroupLimit !== false) && ($point['Y'] <= $this->_restGroupLimit)) {
                         $the_rest += $point['Y'];
-                    }
-                    else {    
+                    } else {    
                         $this->_canvas->setFont($param['font']);
                         $width = 20 + $param['width'] + $this->_canvas->textWidth($caption);
                         $param['maxwidth'] = max($param['maxwidth'], $width);

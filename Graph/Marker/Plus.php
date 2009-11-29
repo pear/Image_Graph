@@ -49,49 +49,51 @@ require_once 'Image/Graph/Marker.php';
  */
 class Image_Graph_Marker_Plus extends Image_Graph_Marker
 {
-	
-	/**
-	 * The thickness of the plus in pixels (thickness is actually double this)
-	 * @var int
-	 * @access private
-	 */
-	var $_thickness = 2;
-	
+
+    /**
+     * The thickness of the plus in pixels (thickness is actually double this)
+     * @var int
+     * @access private
+     */
+    var $_thickness = 2;
+
     /**
      * Draw the marker on the canvas
      *
-     * @param int $x The X (horizontal) position (in pixels) of the marker on
+     * @param int   $x      The X (horizontal) position (in pixels) of the marker on
      *   the canvas
-     * @param int $y The Y (vertical) position (in pixels) of the marker on the
+     * @param int   $y      The Y (vertical) position (in pixels) of the marker on the
      *   canvas
      * @param array $values The values representing the data the marker 'points'
      *   to
+     *
+     * @return void
      * @access private
      */
     function _drawMarker($x, $y, $values = false)
     {
-    	if ($this->_thickness > 0) {
-    		$this->_getLineStyle();
-	        $this->_getFillStyle();
-	        $this->_canvas->addVertex(array('x' => $x - $this->_size, 'y' => $y - $this->_thickness));
-	        $this->_canvas->addVertex(array('x' => $x - $this->_thickness, 'y' => $y - $this->_thickness));
-	        $this->_canvas->addVertex(array('x' => $x - $this->_thickness, 'y' => $y - $this->_size));
-	        $this->_canvas->addVertex(array('x' => $x + $this->_thickness, 'y' => $y - $this->_size));
-	        $this->_canvas->addVertex(array('x' => $x + $this->_thickness, 'y' => $y - $this->_thickness));
-	        $this->_canvas->addVertex(array('x' => $x + $this->_size, 'y' => $y - $this->_thickness));
-	        $this->_canvas->addVertex(array('x' => $x + $this->_size, 'y' => $y + $this->_thickness));
-	        $this->_canvas->addVertex(array('x' => $x + $this->_thickness, 'y' => $y + $this->_thickness));
-	        $this->_canvas->addVertex(array('x' => $x + $this->_thickness, 'y' => $y + $this->_size));
-	        $this->_canvas->addVertex(array('x' => $x - $this->_thickness, 'y' => $y + $this->_size));
-	        $this->_canvas->addVertex(array('x' => $x - $this->_thickness, 'y' => $y + $this->_thickness));
-	        $this->_canvas->addVertex(array('x' => $x - $this->_size, 'y' => $y + $this->_thickness));
-	        $this->_canvas->polygon(array('connect' => true));
-    	} else {
-	        $this->_getLineStyle();
-	        $this->_canvas->line(array('x0' => $x - $this->_size, 'y0' => $y, 'x1' => $x + $this->_size, 'y1' => $y));
-	        $this->_getLineStyle();
-	        $this->_canvas->line(array('x0' => $x, 'y0' => $y - $this->_size, 'x1' => $x, 'y1' => $y + $this->_size));
-    	}
+        if ($this->_thickness > 0) {
+            $this->_getLineStyle();
+            $this->_getFillStyle();
+            $this->_canvas->addVertex(array('x' => $x - $this->_size, 'y' => $y - $this->_thickness));
+            $this->_canvas->addVertex(array('x' => $x - $this->_thickness, 'y' => $y - $this->_thickness));
+            $this->_canvas->addVertex(array('x' => $x - $this->_thickness, 'y' => $y - $this->_size));
+            $this->_canvas->addVertex(array('x' => $x + $this->_thickness, 'y' => $y - $this->_size));
+            $this->_canvas->addVertex(array('x' => $x + $this->_thickness, 'y' => $y - $this->_thickness));
+            $this->_canvas->addVertex(array('x' => $x + $this->_size, 'y' => $y - $this->_thickness));
+            $this->_canvas->addVertex(array('x' => $x + $this->_size, 'y' => $y + $this->_thickness));
+            $this->_canvas->addVertex(array('x' => $x + $this->_thickness, 'y' => $y + $this->_thickness));
+            $this->_canvas->addVertex(array('x' => $x + $this->_thickness, 'y' => $y + $this->_size));
+            $this->_canvas->addVertex(array('x' => $x - $this->_thickness, 'y' => $y + $this->_size));
+            $this->_canvas->addVertex(array('x' => $x - $this->_thickness, 'y' => $y + $this->_thickness));
+            $this->_canvas->addVertex(array('x' => $x - $this->_size, 'y' => $y + $this->_thickness));
+            $this->_canvas->polygon(array('connect' => true));
+        } else {
+            $this->_getLineStyle();
+            $this->_canvas->line(array('x0' => $x - $this->_size, 'y0' => $y, 'x1' => $x + $this->_size, 'y1' => $y));
+            $this->_getLineStyle();
+            $this->_canvas->line(array('x0' => $x, 'y0' => $y - $this->_size, 'x1' => $x, 'y1' => $y + $this->_size));
+        }
         parent::_drawMarker($x, $y, $values);
     }
 

@@ -61,11 +61,13 @@ class Image_Graph_Marker_Circle extends Image_Graph_Marker
     /**
      * Draw the marker on the canvas
      *
-     * @param int $x The X (horizontal) position (in pixels) of the marker on
+     * @param int   $x      The X (horizontal) position (in pixels) of the marker on
      *   the canvas
-     * @param int $y The Y (vertical) position (in pixels) of the marker on the
+     * @param int   $y      The Y (vertical) position (in pixels) of the marker on the
      *   canvas
      * @param array $values The values representing the data the marker 'points' to
+     *
+     * @return void
      * @access private
      */
     function _drawMarker($x, $y, $values = false)
@@ -76,17 +78,21 @@ class Image_Graph_Marker_Circle extends Image_Graph_Marker
         $dA = 2*pi()/($this->_size*2);
         $angle = 0;
         while ($angle < 2*pi()) {
-            $this->_canvas->addVertex(array('x' => 
-                $x + $this->_size*cos($angle), 'y' => 
-                $y - $this->_size*sin($angle)
-            ));
+            $this->_canvas->addVertex(
+                array(
+                    'x' => $x + $this->_size*cos($angle),
+                    'y' => $y - $this->_size*sin($angle)
+                )
+            );
             $angle += $dA;
         }
 
-        $this->_canvas->addVertex(array('x' => 
-            $x + $this->_size*cos(0), 'y' => 
-            $y - $this->_size*sin(0)
-        ));
+        $this->_canvas->addVertex(
+            array(
+                'x' => $x + $this->_size*cos(0),
+                'y' => $y - $this->_size*sin(0)
+            )
+        );
 
         $this->_canvas->polygon(array('connect' => true));
 

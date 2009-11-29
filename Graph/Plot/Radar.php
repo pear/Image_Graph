@@ -57,6 +57,8 @@ class Image_Graph_Plot_Radar extends Image_Graph_Plot
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
      * @param int $y1 The bottom-right y-coordinate
+     *
+     * @return void
      * @access private
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
@@ -97,10 +99,12 @@ class Image_Graph_Plot_Radar extends Image_Graph_Plot
 
                 $dataset->_reset();
                 while ($point = $dataset->_next()) {
-                    $this->_canvas->addVertex(array('x' => 
-                        $this->_pointX($point), 'y' => 
-                        $this->_pointY($point)
-                    ));
+                    $this->_canvas->addVertex(
+                        array(
+                            'x' => $this->_pointX($point),
+                            'y' => $this->_pointY($point)
+                        )
+                    );
                 }
                 $this->_getFillStyle($key);
                 $this->_getLineStyle($key);

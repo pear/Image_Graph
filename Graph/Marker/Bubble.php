@@ -65,6 +65,8 @@ class Image_Graph_Marker_Bubble extends Image_Graph_Marker_Circle
      * Sets the maximum radius the marker can occupy
      *
      * @param int $radius The new Image_Graph_max radius
+     *
+     * @return void
      */
     function setMaxRadius($radius)
     {
@@ -74,12 +76,14 @@ class Image_Graph_Marker_Bubble extends Image_Graph_Marker_Circle
     /**
      * Draw the marker on the canvas
      *
-     * @param int $x The X (horizontal) position (in pixels) of the marker on
+     * @param int   $x      The X (horizontal) position (in pixels) of the marker on
      *   the canvas
-     * @param int $y The Y (vertical) position (in pixels) of the marker on the
+     * @param int   $y      The Y (vertical) position (in pixels) of the marker on the
      *   canvas
      * @param array $values The values representing the data the marker 'points'
      *   to
+     *
+     * @return void
      * @access private
      */
     function _drawMarker($x, $y, $values = false)

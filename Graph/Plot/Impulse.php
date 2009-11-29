@@ -57,6 +57,8 @@ class Image_Graph_Plot_Impulse extends Image_Graph_Plot
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
      * @param int $y1 The bottom-right y-coordinate
+     *
+     * @return void
      * @access private
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
@@ -99,9 +101,9 @@ class Image_Graph_Plot_Impulse extends Image_Graph_Plot
             $dataset->_reset();
             while ($point = $dataset->_next()) {
                 $x0 = $this->_pointX($point);
-                if (($this->_multiType == 'stacked') ||
-                    ($this->_multiType == 'stacked100pct'))
-                {
+                if (($this->_multiType == 'stacked')
+                    || ($this->_multiType == 'stacked100pct')
+                ) {
                     $x = $point['X'];
 
                     if ($point['Y'] >= 0) {
@@ -149,8 +151,8 @@ class Image_Graph_Plot_Impulse extends Image_Graph_Plot
                     $p1 = $point;
                 }
 
-                if ((($minY = min($p0['Y'], $p1['Y'])) < $maxYaxis) &&
-                    (($maxY = max($p0['Y'], $p1['Y'])) > $minYaxis)
+                if ((($minY = min($p0['Y'], $p1['Y'])) < $maxYaxis)
+                    && (($maxY = max($p0['Y'], $p1['Y'])) > $minYaxis)
                 ) {
                     $p0['Y'] = $minY;
                     $p1['Y'] = $maxY;

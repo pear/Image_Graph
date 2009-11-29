@@ -53,9 +53,11 @@ class Image_Graph_Marker_Box extends Image_Graph_Marker
     /**
      * Draw the marker on the canvas
      *
-     * @param int $x The X (horizontal) position (in pixels) of the marker on the canvas
-     * @param int $y The Y (vertical) position (in pixels) of the marker on the canvas
+     * @param int   $x      The X (horizontal) position (in pixels) of the marker on the canvas
+     * @param int   $y      The Y (vertical) position (in pixels) of the marker on the canvas
      * @param array $values The values representing the data the marker 'points' to
+     *
+     * @return void
      * @access private
      */
     function _drawMarker($x, $y, $values = false)
@@ -63,11 +65,11 @@ class Image_Graph_Marker_Box extends Image_Graph_Marker
         $this->_getFillStyle();
         $this->_getLineStyle();
         $this->_canvas->rectangle(
-        	array(
-            	'x0' => $x - $this->_size,
-            	'y0' => $y - $this->_size,
-            	'x1' => $x + $this->_size,
-            	'y1' => $y + $this->_size
+            array(
+                'x0' => $x - $this->_size,
+                'y0' => $y - $this->_size,
+                'x1' => $x + $this->_size,
+                'y1' => $y + $this->_size
             )
         );
         parent::_drawMarker($x, $y, $values);

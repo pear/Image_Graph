@@ -53,9 +53,11 @@ class Image_Graph_Marker_Diamond extends Image_Graph_Marker
     /**
      * Draw the marker on the canvas
      *
-     * @param int $x The X (horizontal) position (in pixels) of the marker on the canvas
-     * @param int $y The Y (vertical) position (in pixels) of the marker on the canvas
+     * @param int   $x      The X (horizontal) position (in pixels) of the marker on the canvas
+     * @param int   $y      The Y (vertical) position (in pixels) of the marker on the canvas
      * @param array $values The values representing the data the marker 'points' to
+     *
+     * @return void
      * @access private
      */
     function _drawMarker($x, $y, $values = false)

@@ -57,6 +57,8 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
      * @param int $y1 The bottom-right y-coordinate
+     *
+     * @return void
      * @access private
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
@@ -82,9 +84,9 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
      *
      * A 'normal' step chart is 'stacked'
      *
-     * @param Dataset $dataset The data set (value containter) to plot
-     * @param string $multiType The type of the plot
-     * @param string $title The title of the plot (used for legends,
+     * @param Dataset &$dataset  The data set (value containter) to plot
+     * @param string  $multiType The type of the plot
+     * @param string  $title     The title of the plot (used for legends,
      *   {@link Image_Graph_Legend})
      */
     function Image_Graph_Plot_Step(& $dataset, $multiType = 'stacked', $title = '')
@@ -117,8 +119,7 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
 
         if ($this->_parent->_horizontal) {
             $width = $this->height() / ($this->_maximumX() + 2) / 2;
-        }
-        else {
+        } else {
             $width = $this->width() / ($this->_maximumX() + 2) / 2;
         }
 
@@ -169,8 +170,7 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
                     $y0 = $last;
                     $x1 = $this->_pointX($point);
                     $last = $y1 = $this->_pointY($point) - $width;
-                }
-                else {
+                } else {
                     $x0 = $last;
                     $y0 = $this->_pointY($point);
                     $last = $x1 = $this->_pointX($point) + $width;

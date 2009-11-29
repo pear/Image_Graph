@@ -53,53 +53,54 @@ class Image_Graph_Marker_Asterisk extends Image_Graph_Marker
     /**
      * Draw the marker on the canvas
      *
-     * @param int $x The X (horizontal) position (in pixels) of the marker on
+     * @param int   $x      The X (horizontal) position (in pixels) of the marker on
      *   the canvas
-     * @param int $y The Y (vertical) position (in pixels) of the marker on the
+     * @param int   $y      The Y (vertical) position (in pixels) of the marker on the
      *   canvas
-     * @param array $values The values representing the data the marker 'points'
-     *   to
+     * @param array $values The values representing the data the marker 'points' to
+     *
+     * @return void
      * @access private
      */
     function _drawMarker($x, $y, $values = false)
     {
         $this->_getLineStyle();
         $this->_canvas->line(
-        	array(
-            	'x0' => $x - $this->_size,
-            	'y0' => $y - $this->_size,
-            	'x1' => $x + $this->_size,
-            	'y1' => $y + $this->_size
+            array(
+                'x0' => $x - $this->_size,
+                'y0' => $y - $this->_size,
+                'x1' => $x + $this->_size,
+                'y1' => $y + $this->_size
             )
         );
 
         $this->_getLineStyle();
         $this->_canvas->line(
-        	array(
-            	'x0' => $x + $this->_size,
-            	'y0' => $y - $this->_size,
-            	'x1' => $x - $this->_size,
-            	'y1' => $y + $this->_size
+            array(
+                'x0' => $x + $this->_size,
+                'y0' => $y - $this->_size,
+                'x1' => $x - $this->_size,
+                'y1' => $y + $this->_size
             )
         );
 
         $this->_getLineStyle();
         $this->_canvas->line(
-        	array(
-            	'x0' => $x - $this->_size,
-            	'y0' => $y,
-            	'x1' => $x + $this->_size,
-            	'y1' => $y
+            array(
+                'x0' => $x - $this->_size,
+                'y0' => $y,
+                'x1' => $x + $this->_size,
+                'y1' => $y
             )
         );
 
         $this->_getLineStyle();
         $this->_canvas->line(
-        	array(
-            	'x0' => $x,
-            	'y0' => $y - $this->_size,
-            	'x1' => $x,
-            	'y1' => $y + $this->_size
+            array(
+                'x0' => $x,
+                'y0' => $y - $this->_size,
+                'x1' => $x,
+                'y1' => $y + $this->_size
             )
         );
 

@@ -18,14 +18,14 @@
  * to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  * 02111-1307 USA
  *
- * @category   Images
- * @package    Image_Graph
- * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
- * @copyright  2003-2009 The PHP Group
- * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    SVN: $Id$
- * @link       http://pear.php.net/package/Image_Graph
+ * @category  Images
+ * @package   Image_Graph
+ * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright 2003-2009 The PHP Group
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version   SVN: $Id$
+ * @link      http://pear.php.net/package/Image_Graph
  */
 
 /**
@@ -36,14 +36,14 @@ require_once 'Image/Graph/Element.php';
 /**
  * Representation of a element on a plotarea.
  *
- * @category   Images
- * @package    Image_Graph
- * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
- * @copyright  2003-2009 The PHP Group
- * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: @package_version@
- * @link       http://pear.php.net/package/Image_Graph
+ * @category  Images
+ * @package   Image_Graph
+ * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright 2003-2009 The PHP Group
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version   Release: @package_version@
+ * @link      http://pear.php.net/package/Image_Graph
  * @abstract
  */
 class Image_Graph_Plotarea_Element extends Image_Graph_Element
@@ -53,6 +53,7 @@ class Image_Graph_Plotarea_Element extends Image_Graph_Element
      * Get the X pixel position represented by a value
      *
      * @param double $point the value to get the pixel-point for
+     *
      * @return double The pixel position along the axis
      * @access private
      */
@@ -65,6 +66,7 @@ class Image_Graph_Plotarea_Element extends Image_Graph_Element
      * Get the Y pixel position represented by a value
      *
      * @param double $point the value to get the pixel-point for
+     *
      * @return double The pixel position along the axis
      * @access private
      */
@@ -77,6 +79,7 @@ class Image_Graph_Plotarea_Element extends Image_Graph_Element
      * Get the X and Y pixel position represented by a value
      *
      * @param array $point the values to get the pixel-point for
+     *
      * @return array The (x, y) pixel position along the axis
      * @access private
      */

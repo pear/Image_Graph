@@ -134,6 +134,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
      * Get the X pixel position represented by a value
      *
      * @param double $value The value to get the pixel-point for
+     *
      * @return double The pixel position along the axis
      * @access private
      */
@@ -159,6 +160,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
      * Get the Y pixel position represented by a value
      *
      * @param double $value The value to get the pixel-point for
+     *
      * @return double The pixel position along the axis
      * @access private
      */
@@ -184,6 +186,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
     /**
      * Update coordinates
      *
+     * @return void
      * @access private
      */
     function _updateCoords()

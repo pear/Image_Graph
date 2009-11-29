@@ -55,6 +55,15 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
     /**
      * (Add basic description here)
      *
+     * @param ??? $y       ???
+     * @param ??? $h       ???
+     * @param ??? $x_min   ???
+     * @param ??? $x_open  ???
+     * @param ??? $x_close ???
+     * @param ??? $x_max   ???
+     * @param ??? $ID      ???
+     *
+     * @return void
      * @access private
      */
     function _drawCandleStickH($y, $h, $x_min, $x_open, $x_close, $x_max, $ID) 
@@ -93,39 +102,48 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
     /**
      * (Add basic description here)
      *
+     * @param ??? $x       ???
+     * @param ??? $w       ???
+     * @param ??? $y_min   ???
+     * @param ??? $y_open  ???
+     * @param ??? $y_close ???
+     * @param ??? $y_max   ???
+     * @param ??? $ID      ???
+     *
+     * @return void
      * @access private
      */
     function _drawCandleStickV($x, $w, $y_min, $y_open, $y_close, $y_max, $ID) 
     {
         $this->_getLineStyle($ID);
         $this->_canvas->line(
-        	array(
-				'x0' => $x, 
-				'y0' => min($y_open, $y_close), 
-				'x1' => $x, 
-				'y1' => $y_max  
-			)
-		);
+            array(
+                'x0' => $x, 
+                'y0' => min($y_open, $y_close), 
+                'x1' => $x, 
+                'y1' => $y_max  
+            )
+        );
         $this->_getLineStyle($ID);
         $this->_canvas->line(
-        	array(
-				'x0' => $x, 
-				'y0' => max($y_open, $y_close), 
-				'x1' => $x, 
-				'y1' => $y_min
-			)
-		);
+            array(
+                'x0' => $x, 
+                'y0' => max($y_open, $y_close), 
+                'x1' => $x, 
+                'y1' => $y_min
+            )
+        );
     
         $this->_getLineStyle($ID);
         $this->_getFillStyle($ID);
         $this->_canvas->rectangle(
-        	array(
-				'x0' => $x - $w, 
-				'y0' => min($y_open, $y_close), 
-				'x1' => $x + $w, 
-				'y1' => max($y_open, $y_close)
-			)
-		);
+            array(
+                'x0' => $x - $w, 
+                'y0' => min($y_open, $y_close), 
+                'x1' => $x + $w, 
+                'y1' => max($y_open, $y_close)
+            )
+        );
     }
 
     /**
@@ -135,6 +153,8 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
      * @param int $y1 The bottom-right y-coordinate
+     *
+     * @return void
      * @access private
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
@@ -206,8 +226,7 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
                     }
     
                     $this->_drawCandleStickH($y, $width, $x_min, $x_open, $x_close, $x_max, $ID);
-                }
-                else {
+                } else {
                     $point['X'] = $data['X'];
                     //$y = $data['Y'];
     

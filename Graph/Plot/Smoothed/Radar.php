@@ -22,7 +22,8 @@
  * @package    Image_Graph
  * @subpackage Plot
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
  * @version    SVN: $Id$
  * @link       http://pear.php.net/package/Image_Graph
@@ -41,7 +42,8 @@ require_once 'Image/Graph/Plot/Smoothed/Bezier.php';
  * @package    Image_Graph
  * @subpackage Plot
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/Image_Graph
@@ -99,15 +101,15 @@ class Image_Graph_Plot_Smoothed_Radar extends Image_Graph_Plot_Smoothed_Bezier
 
                         $cp = $this->_getControlPoints($p1, $p0, $p2, $p3);
                         $this->_canvas->addSpline(
-	                    	array(
-	                        	'x' => $cp['X'],
-	                        	'y' => $cp['Y'],
-	                        	'p1x' => $cp['P1X'],
-	                        	'p1y' => $cp['P1Y'],
-	                        	'p2x' => $cp['P2X'],
-	                        	'p2y' => $cp['P2Y']
-	                        )
-	                    );
+                            array(
+                                'x' => $cp['X'],
+                                'y' => $cp['Y'],
+                                'p1x' => $cp['P1X'],
+                                'p1y' => $cp['P1Y'],
+                                'p2x' => $cp['P2X'],
+                                'p2y' => $cp['P2Y']
+                            )
+                        );
 
                         $next2last = $p0;
                         $last = $p1;
@@ -115,13 +117,13 @@ class Image_Graph_Plot_Smoothed_Radar extends Image_Graph_Plot_Smoothed_Bezier
 
                     $cp = $this->_getControlPoints($p1_, $plast_, $p2_, $p3_);
                     $this->_canvas->addSpline(
-                    	array(
-                        	'x' => $cp['X'],
-                        	'y' => $cp['Y'],
-                        	'p1x' => $cp['P1X'],
-                        	'p1y' => $cp['P1Y'],
-                        	'p2x' => $cp['P2X'],
-                        	'p2y' => $cp['P2Y']
+                        array(
+                            'x' => $cp['X'],
+                            'y' => $cp['Y'],
+                            'p1x' => $cp['P1X'],
+                            'p1y' => $cp['P1Y'],
+                            'p2x' => $cp['P2X'],
+                            'p2y' => $cp['P2Y']
                         )
                     );
                     $this->_getFillStyle($key);

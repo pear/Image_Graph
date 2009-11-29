@@ -169,9 +169,12 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
      * Plot_Odo [Constructor]
      *
      * dataset with one data per arrow
-     * @param Image_Graph_Dataset $dataset The data set (value containter) to
+     *
+     * @param Image_Graph_Dataset &$dataset The data set (value containter) to
      *   plot or an array of datasets
      *   {@link Image_Graph_Legend}
+     *
+     * @return void
      */
     function Image_Graph_Plot_Odo(&$dataset)
     {
@@ -182,14 +185,12 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
             $dataset =& $this->_dataset[$key];
             if (isset($min)) {
                 $min = min($dataset->minimumY(), $min);
-            }
-            else {
+            } else {
                 $min = $dataset->minimumY();
             }
             if (isset($max)) {
                 $max = max($dataset->maximumY(), $max);
-            }
-            else {
+            } else {
                 $max = $dataset->maximumY();
             }
         }
@@ -202,6 +203,8 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
      * 
      * @param int $centerX The center x point
      * @param int $centerY The center y point
+     *
+     * @return void
      */
     function setCenter($centerX, $centerY)
     {
@@ -212,9 +215,10 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
     /**
      * Convert a value to the angle position onto the odometer
      *
-     * @access private
      * @param int $value the value to convert
+     *
      * @return int the angle'position onto the odometer
+     * @access private
      */
     function _value2angle($value)
     {
@@ -224,6 +228,7 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
     /**
      * set some internal var
      *
+     * @return void
      * @access private
      */
     function _initialize()
@@ -260,45 +265,53 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
     /**
      * set min and max value of the range
      *
-     * @access public
      * @param integer $value_min the minimun value of the chart or the start value
      * @param integer $value_max the maximum value of the chart or the end value
+     *
+     * @return void
+     * @access public
      */
     function setRange($value_min, $value_max)
     {
-       $this->_value_min = $value_min;
-       $this->_value_max = $value_max;
+        $this->_value_min = $value_min;
+        $this->_value_max = $value_max;
     }
 
     /**
      * Set start's angle and amplitude of the chart
      *
-     * @access public
      * @param integer $deg_offset the start angle
-     * @param integer $deg_width the angle of the chart (the length)
+     * @param integer $deg_width  the angle of the chart (the length)
+     *
+     * @return void
+     * @access public
      */
     function setAngles($deg_offset, $deg_width)
     {
-       $this->_deg_offset = min(360, abs($deg_offset));
-       $this->_deg_width = min(360, abs($deg_width));
+        $this->_deg_offset = min(360, abs($deg_offset));
+        $this->_deg_width = min(360, abs($deg_width));
     }
 
     /**
      * set the width of the chart
      *
-     * @access public
      * @param string $radius_percent a value between 0 and 100
+     *
+     * @return void
+     * @access public
      */
     function setRadiusWidth($radius_percent)
     {
-       $this->_radiusPercent = $radius_percent;
+        $this->_radiusPercent = $radius_percent;
     }
     
     /**
      * set the width and length of the arrow (in percent of the total plot "radius")
      * 
-     * @param int length The length in percent
-     * @param int width The width in percent  
+     * @param int $length The length in percent
+     * @param int $width  The width in percent  
+     *
+     * @return void
      */
     function setArrowSize($length, $width)
     {
@@ -308,7 +321,10 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
 
     /**
      * Set the arrow marker
-     * @param Image_Graph_Marker $marker The marker to set for arrow marker
+     *
+     * @param Image_Graph_Marker &$marker The marker to set for arrow marker
+     *
+     * @return void
      */
     function setArrowMarker(&$marker)
     {
@@ -338,28 +354,33 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
     /**
      * set the length of the ticks
      *
+     * @param int $length Length of ticks
+     *
+     * @return void
      * @access public
-     * @param string $radius_percent a value between 0 and 100
      */
-    function setTickLength($radius)
+    function setTickLength($length)
     {
-        $this->_tickLength = $radius;
+        $this->_tickLength = $length;
     }
 
     /**
-     * set the length of the ticks
+     * set the axis ticks
      *
+     * @param int $ticks Ticks on axis
+     *
+     * @return void
      * @access public
-     * @param string $radius_percent a value between 0 and 100
      */
-    function setAxisTicks($int)
+    function setAxisTicks($ticks)
     {
-        $this->_axisTicks = $int;
+        $this->_axisTicks = $ticks;
     }
 
     /**
      * Draw the outline and the axis
      *
+     * @return void
      * @access private
      */
     function _drawAxis()
@@ -367,17 +388,17 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
         //draw outline
         $this->_getLineStyle();
         $this->_canvas->pieslice(
-                    array(
-                            'x' => $this->_centerX,
-                            'y' => $this->_centerY,
-                            'rx' => $this->_radius,
-                            'ry' => $this->_radius,
-                            'v1' => $this->_deg_offset,
-                            'v2' => $this->_deg_offset+$this->_deg_width,
-                            'srx' => $this->_radius * (1 - $this->_radiusPercent / 100),
-                            'sry' => $this->_radius * (1 - $this->_radiusPercent / 100)
-                        )
-                    );
+            array(
+                'x' => $this->_centerX,
+                'y' => $this->_centerY,
+                'rx' => $this->_radius,
+                'ry' => $this->_radius,
+                'v1' => $this->_deg_offset,
+                'v2' => $this->_deg_offset+$this->_deg_width,
+                'srx' => $this->_radius * (1 - $this->_radiusPercent / 100),
+                'sry' => $this->_radius * (1 - $this->_radiusPercent / 100)
+            )
+        );
                     
         //step for every 6�
         $step = (int) ($this->_totalY / $this->_deg_width * 6);
@@ -397,7 +418,7 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
             $deltaX = - $cos * $this->_tickLength ;
             $deltaY = - $sin * $this->_tickLength ;
             $this->_getLineStyle();
-            if(($i % $this->_axisTicks) == 0){
+            if (($i % $this->_axisTicks) == 0) {
                 $this->_canvas->line(array('x0' => $x, 'y0' => $y, 'x1' => $x + $deltaX, 'y1' => $y + $deltaY));
                 if ($this->_arrowMarker) {
                     $this->_arrowMarker->_drawMarker($x + $deltaX * 1.6, $y + $deltaY *1.6, $point);
@@ -415,6 +436,8 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
      * Set the line style of the arrows
      *
      * @param Image_Graph_Line $lineStyle The line style of the Arrow
+     *
+     * @return void
      * @see Image_Graph_Line
      * @access public
      */
@@ -427,6 +450,8 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
      * Set the fillstyle of the arrows
      *
      * @param Image_Graph_Fill $fillStyle The fill style of the arrows
+     *
+     * @return void
      * @see Image_Graph_Fill
      * @access public
      */
@@ -438,6 +463,7 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
     /**
      * Draw the arrows
      *
+     * @return void
      * @access private
      */
     function _drawArrow()
@@ -459,7 +485,13 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
                 $this->_canvas->addVertex(array('x' => $xr, 'y' => $yr));
                 list($xr,$yr) = Image_Graph_Tool::rotate($this->_centerX - $this->_arrowWidth * $this->_radius / 100, $this->_centerY, $this->_centerX, $this->_centerY, $deg);
                 $this->_canvas->addVertex(array('x' => $xr, 'y' => $yr));
-                list($xr,$yr) = Image_Graph_Tool::rotate($this->_centerX,$this->_centerY + $this->_arrowWidth * $this->_radius / 100, $this->_centerX, $this->_centerY, $deg);
+                list($xr, $yr) = Image_Graph_Tool::rotate(
+                    $this->_centerX,
+                    $this->_centerY + $this->_arrowWidth * $this->_radius / 100,
+                    $this->_centerX,
+                    $this->_centerY,
+                    $deg
+                );
                 $this->_canvas->addVertex(array('x' => $xr, 'y' => $yr));
                 $this->_canvas->polygon(array('connect' => true));
             }
@@ -469,10 +501,11 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
     /**
      * Calculate marker point data
      *
-     * @param array $point The point to calculate data for
+     * @param array $point     The point to calculate data for
      * @param array $nextPoint The next point
      * @param array $prevPoint The previous point
-     * @param array $totals The pre-calculated totals, if needed
+     * @param array &$totals   The pre-calculated totals, if needed
+     *
      * @return array An array containing marker point data
      * @access private
      */
@@ -501,6 +534,7 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
     /**
      * Draws markers of the arrows on the canvas
      *
+     * @return void
      * @access private
      */
     function _drawMarker()
@@ -516,32 +550,32 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
 
             /* $keys = array_keys($this->_dataset);
             foreach ($keys as $key) { */
-                $dataset =& $this->_dataset[0];
+            $dataset =& $this->_dataset[0];
 
-                $totals['RADIUS0'] = false;
-                $totals['ODO_RADIUS'] = 1.1 * $this->_radius * $this->_arrowLength / 100;
-                $totals['ALL_SUM_Y'] = $this->_totalY;
+            $totals['RADIUS0'] = false;
+            $totals['ODO_RADIUS'] = 1.1 * $this->_radius * $this->_arrowLength / 100;
+            $totals['ALL_SUM_Y'] = $this->_totalY;
 
-                $dataset->_reset();
-                while ($point = $dataset->_next()) {
-                    if ((!is_object($this->_dataSelector)) ||
-                         ($this->_dataSelector->select($point))
-                    ) {
-                        $point = $this->_getMarkerData(
-                            $point,
-                            false,
-                            false,
-                            $totals
+            $dataset->_reset();
+            while ($point = $dataset->_next()) {
+                if ((!is_object($this->_dataSelector))
+                    || ($this->_dataSelector->select($point))
+                ) {
+                    $point = $this->_getMarkerData(
+                        $point,
+                        false,
+                        false,
+                        $totals
+                    );
+                    if (is_array($point)) {
+                        $this->_marker->_drawMarker(
+                            $point['MARKER_X'],
+                            $point['MARKER_Y'],
+                            $point
                         );
-                        if (is_array($point)) {
-                            $this->_marker->_drawMarker(
-                                $point['MARKER_X'],
-                                $point['MARKER_Y'],
-                                $point
-                            );
-                        }
                     }
                 }
+            }
             /* }
             unset($keys); */
         }
@@ -550,15 +584,17 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
     /**
      * Set range
      *
-     * dataset with two data start and end value of the range
-     * @param Image_Graph_Dataset $dataset The data set (value containter) to
-     *   plot or an array of datasets
+     * add dataset with two data start and end value of the range
      *
+     * @param float   $min ???
+     * @param float   $max ???
+     * @param boolean $id  ??? (optional)
+     *
+     * @return void
      */
     function addRangeMarker($min, $max, $id = false)
     {
-        $this->_range[] = 
-            array(
+        $this->_range[] = array(
                 'min' => max($this->_value_min, min($min, $max)), 
                 'max' => min($this->_value_max, max($min, $max)), 
                 'id' => $id
@@ -568,7 +604,9 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
     /**
      * Set the fillstyle of the ranges
      *
-     * @param Image_Graph_Fill $fillStyle The fill style of the range
+     * @param Image_Graph_Fill &$rangeMarkerFillStyle The fill style of the range marker
+     *
+     * @return void
      * @see Image_Graph_Fill
      * @access public
      */
@@ -581,11 +619,12 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
     /**
      * Draw the ranges
      *
+     * @return void
      * @access private
      */
     function _drawRange()
     {
-        if($this->_range){
+        if ($this->_range) {
             $radius0 = $this->_radius * (1 - $this->_radiusPercent/100);
             foreach ($this->_range as $range) {
                 $angle1 = $this->_value2angle($range['min']);
@@ -620,6 +659,8 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
      * @param int $y1 The bottom-right y-coordinate
+     *
+     * @return void
      * @access private
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
@@ -634,7 +675,9 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
     /**
      * Draw a sample for use with legend
      *
-     * @param array $param The parameters for the legend
+     * @param array &$param The parameters for the legend
+     *
+     * @return void
      * @access private
      */
     function _legendSample(&$param)

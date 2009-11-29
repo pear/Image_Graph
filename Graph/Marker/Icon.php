@@ -75,8 +75,10 @@ class Image_Graph_Marker_Icon extends Image_Graph_Marker
      * Create an icon marker
      *
      * @param string $filename The filename of the icon
-     * @param int $width The 'new' width of the icon if it is to be resized
-     * @param int $height The 'new' height of the icon if it is to be resized
+     * @param int    $width    The 'new' width of the icon if it is to be resized
+     * @param int    $height   The 'new' height of the icon if it is to be resized
+     *
+     * @return void
      */
     function Image_Graph_Marker_Icon($filename, $width = 0, $height = 0)
     {
@@ -88,6 +90,8 @@ class Image_Graph_Marker_Icon extends Image_Graph_Marker
      * Set the X 'center' point of the marker
      *
      * @param int $x The X 'center' point of the marker
+     *
+     * @return void
      */
     function setPointX($x)
     {
@@ -98,6 +102,8 @@ class Image_Graph_Marker_Icon extends Image_Graph_Marker
      * Set the Y 'center' point of the marker
      *
      * @param int $y The Y 'center' point of the marker
+     *
+     * @return void
      */
     function setPointY($y)
     {
@@ -107,12 +113,14 @@ class Image_Graph_Marker_Icon extends Image_Graph_Marker
     /**
      * Draw the marker on the canvas
      *
-     * @param int $x The X (horizontal) position (in pixels) of the marker on
+     * @param int   $x      The X (horizontal) position (in pixels) of the marker on
      *   the canvas
-     * @param int $y The Y (vertical) position (in pixels) of the marker on the
+     * @param int   $y      The Y (vertical) position (in pixels) of the marker on the
      *   canvas
      * @param array $values The values representing the data the marker 'points'
      *   to
+     *
+     * @return void
      * @access private
      */
     function _drawMarker($x, $y, $values = false)
@@ -120,13 +128,13 @@ class Image_Graph_Marker_Icon extends Image_Graph_Marker
         parent::_drawMarker($x, $y, $values);
         if ($this->_filename) {
             $this->_canvas->image(
-            	array(
-            		'x' => $x, 
-            		'y' => $y, 
-            		'filename' => $this->_filename, 
-					'alignment' => array('horizontal' => 'center', 'vertical' => 'center')
-				)
-			);
+                array(
+                    'x' => $x, 
+                    'y' => $y, 
+                    'filename' => $this->_filename, 
+                    'alignment' => array('horizontal' => 'center', 'vertical' => 'center')
+                )
+            );
         }
     }
 

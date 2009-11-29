@@ -61,15 +61,17 @@ class Image_Graph_Plot_Dot extends Image_Graph_Plot
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
      * @param int $y1 The bottom-right y-coordinate
+     *
+     * @return void
      * @access private
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
     {
-    	if (isset($this->_marker)) {
-    		$key = key($this->_dataset);
-    		$samplePoint = $this->_dataset[$key]->_nearby();
-    		$this->_marker->_drawMarker(($x0 + $x1) / 2, ($y0 + $y1) / 2, $samplePoint);
-    	}
+        if (isset($this->_marker)) {
+            $key = key($this->_dataset);
+            $samplePoint = $this->_dataset[$key]->_nearby();
+            $this->_marker->_drawMarker(($x0 + $x1) / 2, ($y0 + $y1) / 2, $samplePoint);
+        }
     }
 
     /**

@@ -53,6 +53,8 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
     /**
      * Gets the fill style of the element
      *
+     * @param ??? $ID ???
+     *
      * @return int A GD filestyle representing the fill style
      * @see Image_Graph_Fill
      * @access private
@@ -69,6 +71,8 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
      * @param int $y1 The bottom-right y-coordinate
+     *
+     * @return void
      * @access private
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
@@ -115,9 +119,9 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
             $dataset->_reset();
             $numPoints = 0;
             while ($point = $dataset->_next()) {
-                if (($this->_multiType == 'stacked') ||
-                    ($this->_multiType == 'stacked100pct'))
-                {
+                if (($this->_multiType == 'stacked')
+                    || ($this->_multiType == 'stacked100pct')
+                ) {
                     $x = $point['X'];
                     if (!isset($current[$x])) {
                         $current[$x] = 0;
@@ -135,8 +139,7 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
                     if ($numPoints > 1) {
                         $this->_getLineStyle($key);
                         $this->_canvas->polygon(array('connect' => false, 'map_vertices' => true));
-                    }
-                    else {
+                    } else {
                         $this->_canvas->reset();
                     }
                     $numPoints = 0;
@@ -156,8 +159,7 @@ class Image_Graph_Plot_Line extends Image_Graph_Plot
             if ($numPoints > 1) {
                 $this->_getLineStyle($key);
                 $this->_canvas->polygon(array('connect' => false, 'map_vertices' => true));
-            }
-            else {
+            } else {
                 $this->_canvas->reset();
             }
         }

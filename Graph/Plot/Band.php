@@ -59,6 +59,8 @@ class Image_Graph_Plot_Band extends Image_Graph_Plot
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
      * @param int $y1 The bottom-right y-coordinate
+     *
+     * @return void
      * @access private
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
@@ -140,8 +142,7 @@ class Image_Graph_Plot_Band extends Image_Graph_Plot
                         $data['data'] = array();
                     }              
                     $lowerBand[] = $data;
-                }
-                else {
+                } else {
                     $point['X'] = $data['X'];
                     $y = $data['Y'];
     
@@ -179,7 +180,7 @@ class Image_Graph_Plot_Band extends Image_Graph_Plot
                 );
             }
             foreach ($upperBand as $point) {
-                $this->_canvas->addVertex(                
+                $this->_canvas->addVertex(
                     $this->_mergeData(
                         $point['data'],
                         array('x' => $point['X'], 'y' => $point['Y'])
