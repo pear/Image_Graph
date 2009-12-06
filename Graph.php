@@ -89,7 +89,7 @@ class Image_Graph extends Image_Graph_Element
      * 
      * Fx.:
      * 
-     * $Graph =& new Image_Graph(400, 300);
+     * $Graph = new Image_Graph(400, 300);
      * 
      * or using the factory method:
      * 
@@ -120,7 +120,7 @@ class Image_Graph extends Image_Graph_Element
      * 2) Use the canvas specified, pass a valid Image_Canvas as
      * parameter. Remember to pass by reference, i. e. &amp;$canvas, fx.:
      *
-     * $Graph =& new Image_Graph($Canvas);
+     * $Graph = new Image_Graph($Canvas);
      *
      * or using the factory method:
      *
@@ -454,20 +454,20 @@ class Image_Graph extends Image_Graph_Element
         if (is_array($params)) {
             switch (count($params)) {
             case 1:
-                $obj =& new $class(
+                $obj = new $class(
                     $params[0]
                 );
                 break;
 
             case 2:
-                $obj =& new $class(
+                $obj = new $class(
                     $params[0],
                     $params[1]
                 );
                 break;
 
             case 3:
-                $obj =& new $class(
+                $obj = new $class(
                     $params[0],
                     $params[1],
                     $params[2]
@@ -475,7 +475,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 4:
-                $obj =& new $class(
+                $obj = new $class(
                     $params[0],
                     $params[1],
                     $params[2],
@@ -484,7 +484,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 5:
-                $obj =& new $class(
+                $obj = new $class(
                     $params[0],
                     $params[1],
                     $params[2],
@@ -494,7 +494,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 6:
-                $obj =& new $class(
+                $obj = new $class(
                     $params[0],
                     $params[1],
                     $params[2],
@@ -505,7 +505,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 7:
-                $obj =& new $class(
+                $obj = new $class(
                     $params[0],
                     $params[1],
                     $params[2],
@@ -517,7 +517,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 8:
-                $obj =& new $class(
+                $obj = new $class(
                     $params[0],
                     $params[1],
                     $params[2],
@@ -530,7 +530,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 9:
-                $obj =& new $class(
+                $obj = new $class(
                     $params[0],
                     $params[1],
                     $params[2],
@@ -544,7 +544,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 10:
-                $obj =& new $class(
+                $obj = new $class(
                     $params[0],
                     $params[1],
                     $params[2],
@@ -559,15 +559,15 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             default:
-                $obj =& new $class();
+                $obj = new $class();
                 break;
 
             }
         } else {
             if ($params == null) {
-                $obj =& new $class();
+                $obj = new $class();
             } else {
-                $obj =& new $class($params);
+                $obj = new $class($params);
             }
         }
         return $obj;
@@ -614,7 +614,7 @@ class Image_Graph extends Image_Graph_Element
         
         include_once "Image/Graph/Layout/$layout.php";
         $class = "Image_Graph_Layout_$layout";
-        $obj =& new $class($part1, $part2, $percentage);
+        $obj = new $class($part1, $part2, $percentage);
         return $obj;
     }
 
