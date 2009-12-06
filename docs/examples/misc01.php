@@ -79,7 +79,7 @@ $Grid_SmoothedLine =& $Plotarea_SmoothedLine->addNew('line_grid', false, IMAGE_G
 $Grid_SmoothedLine->setLineColor('gray');  
 	
 // create the 1st dataset
-//$Dataset_SmoothedLine =& new Image_RandomDataset(4, 2, 15, true);
+//$Dataset_SmoothedLine = new Image_RandomDataset(4, 2, 15, true);
 // create the 1st plot as smoothed area chart using the 1st dataset
 $Plot_SmoothedLine =& $Plotarea_SmoothedLine->addNew('Image_Graph_Plot_Smoothed_Line', $Dataset_SmoothedLine);
 $Plot_SmoothedLine->setLineColor('orange');
