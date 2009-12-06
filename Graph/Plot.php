@@ -345,7 +345,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
                 $point['MARKER_Y2'] = $this->_pointY($point) +
                     (isset($totals['WIDTH']) ? $totals['WIDTH'] : 0);
     
-                $point['COLUMN_WIDTH'] = abs($point['MARKER_Y2'] - ($point['MARKER_Y1']) / count($this->_dataset));
+                $point['COLUMN_WIDTH'] = abs(($point['MARKER_Y2'] - $point['MARKER_Y1']) / count($this->_dataset));
     
                 $point['MARKER_Y'] = $point['MARKER_Y1'] +
                     ((isset($totals['NUMBER']) ? $totals['NUMBER'] : 0) + 0.5) *
@@ -383,7 +383,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
     
                 $point['MARKER_X2'] = $this->_pointX($point) + (isset($totals['WIDTH']) ? $totals['WIDTH'] : 0);
     
-                $point['COLUMN_WIDTH'] = abs($point['MARKER_X2'] - ($point['MARKER_X1']) / count($this->_dataset));
+                $point['COLUMN_WIDTH'] = abs(($point['MARKER_X2'] - $point['MARKER_X1']) / count($this->_dataset));
     
                 $point['MARKER_X'] = $point['MARKER_X1'] + ((isset($totals['NUMBER']) ? $totals['NUMBER'] : 0) + 0.5) * $point['COLUMN_WIDTH'];
     
