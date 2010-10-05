@@ -33,8 +33,8 @@ Image_Graph is compatible with both PHP4 and PHP5.</description>
  <date>2010-10-06</date>
  <time>01:01:26</time>
  <version>
-  <release>0.7.3</release>
-  <api>0.7.2</api>
+  <release>0.8.0</release>
+  <api>0.8.0</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -1065,8 +1065,8 @@ Added possibility to use arrays of the type $data[$id] = array(&apos;x&apos; =&g
   </release>
   <release>
    <version>
-    <release>0.7.3</release>
-    <api>0.7.2</api>
+    <release>0.8.0</release>
+    <api>0.8.0</api>
    </version>
    <stability>
     <release>alpha</release>
