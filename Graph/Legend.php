@@ -130,8 +130,8 @@ class Image_Graph_Legend extends Image_Graph_Layout
         $param['align'] = $this->_alignment;
         $param['x'] = $this->_left + $this->_padding['left'];
         $param['y'] = $this->_top + $this->_padding['top'];
-        $param['width'] = 16;
-        $param['height'] = 16;
+        $param['width'] = ($this->_width() + $this->_height()) / 16;
+        $param['height'] = ($this->_width() + $this->_height()) / 16;
         $param['show_marker'] = $this->_showMarker;
         $param['maxwidth'] = 0;
         $param['font'] = $this->_getFont();
