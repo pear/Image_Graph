@@ -33,6 +33,7 @@
     },
     "type": "library",
     "require": {
+        "pear/image_canvas": "*",
         "pear/pear_exception": "*",
         "pear/pear": "*"
     },
