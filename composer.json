@@ -21,6 +21,9 @@
             "./"
         ]
     },
+    "include-path": [
+        "./"
+    ],
     "description": "More info available on: http://pear.php.net/package/Image_Graph",
     "license": "LGPL",
     "name": "pear/image_graph",
@@ -30,6 +33,7 @@
     },
     "type": "library",
     "require": {
+        "pear/image_canvas": "*",
         "pear/pear_exception": "*",
         "pear/pear": "*"
     },
